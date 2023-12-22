@@ -7,7 +7,7 @@ order: 10
 # Basics
 
 ::: info
-All docs on this site refer to Balancer V2 which is currently live on Ethereum, Polygon, Arbitrum, and specific testnets.
+All docs on this site refer to Balancer V3.
 :::
 
 ## What is Balancer?
@@ -26,6 +26,10 @@ By separating the AMM curve logic and math from the core swapping functionality,
 - Entire protocols to be built on top (ex: Gyroscope)
 
 All of the aggregate liquidity is then easily accessible for swappers, aggregators, and arbitrageurs. The Balancer [Vault](/concepts/vault) optimizes batching and path logic so that gas costs and capital requirements remain extremely low. Each individual pool and project built on top benefits from the global liquidity within Balancer that brings deep liquidity for base assets and opens up swap paths.
+
+## Balancer V3
+
+Balancer V3 addresses the high complexity of the V2 system by decreasing complexity, while maintaining flexibility. This comes with being more opinionated for the main protocol interactions. A separate Router component is introduced that functions as the overall entrypoint to the Balancer system.
 
 ## Who uses Balancer?
 

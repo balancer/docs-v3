@@ -1,7 +1,7 @@
 ---
 home: true
 title: Home
-heroText: Balancer Docs
+heroText: Balancer V3 Docs
 heroImage: /images/backgrounds/main.svg
 homeImage: /images/hero-circles.png
 features:

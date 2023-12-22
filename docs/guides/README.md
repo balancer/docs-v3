@@ -4,6 +4,18 @@ heroImage: /images/backgrounds/blue.png
 
 # Developer Guides
 
+Below you find implementation examples for Balancer V3 based on the linked component for various target audiences such as:
+
+- Swappers & LPS
+- Arbitrageurs
+- Aggregator
+- Pool creators
+
+| Function | Audience     | Example - 1 | Example - 2 | Involved Components |
+| -------- | ------------ | ----------- | ----------- | ------------------- |
+| Swap     | Swapper & LP | Solidity    | JS - SDK    | Vault               |
+| Join     | Swapper & LP | Solidity    | JS - SDK    | Vault, SDK          |
+
 ## Arbitrageurs
 
 - [Flash Loans](/guides/arbitrageurs/flash-loans.md)
