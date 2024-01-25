@@ -131,16 +131,13 @@ Before the Vault passes the pool's balances to the pool contract it scales them 
 ### Invariant computation
 The pool's invariant is the core piece determining pool behaviour. The most common pool invariants these days are constant product, stable swap, constant sum. This function should compute the invariant based on current pool balances.
 
-#### Weighted Pool `computeInvariant` 
+#### Weighted Pool [`computeInvariant`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L73-L75) 
 Balancer Labs' Weighted Pool `computeInvariant` implements a constant value invariant.
 ```solidity
 function computeInvariant(uint256[] memory balancesLiveScaled18) public view returns (uint256) {
     return WeightedMath.computeInvariant(_getNormalizedWeights(), balancesLiveScaled18);
 }
 ```
-
-- Action: Link to code.
-
 #### Constant Price Pool `computeInvariant`
 A sample constant Price pool (X + Y = K) with 2 tokens could implement `computeInvariant` via:
 ```solidity
@@ -163,7 +160,7 @@ Similarly users can specify operations on the Router that effectively change the
 - Action: more broadly say that there is exact in and exact out. Operations that compute the exact out, you need the reverse invariant which is calculated via the balance computation. Difference between compute balance is compute invariant needs to be made more clear.
 
 
-#### Weighted Pool `computeBalance`
+#### Weighted Pool [`computeBalance`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L78-L89)
 Balancer Labs' Weighted Pool `computeBalance` implements a constant value invariant.
 
 ```solidity
