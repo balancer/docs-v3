@@ -1,9 +1,16 @@
 ---
 order: 2
 title: Custom Pool
+references:
+  - details: Balancer Pool Token
+    link: /concepts/advanced/balancerpooltoken
 ---
 
 # Custom Pools
+
+- Actions: Already start placeholders in the docs with detailed explanations and not go into depth in the other section so to not duplicate wording in multiple sections. 
+
+- Actions: Sequence Diagram should be a standalone site under overview. 
 
 Custom pools are smart contracts, which developers create to implement custom logic. The two main components a pool can implement are:
 
@@ -33,15 +40,25 @@ Inheriting from `IBasePool` forces you as a pool developer to implement all the 
 
 ## Inherit from BalancerPoolToken
 
-Balancer Pool Tokens (BPTs) are not implemented as standalone ERC20 Tokens but are part of the Vault's ERC20Multitoken contract. Inheriting from `BalancerPoolToken` allows the Pool to behave in compliance with the ERC20 standard while calls are delegated to the Vault's ERC20Multitoken contract. This means the BPT has all ERC20 features such as: `approve`, `transfer`, `transferFrom`, `totalSupply`, etc but is "managed" by the vault. BPT's have the same composability features as regular ERC20 contracts. For example to transfer a BPT you have the possibility to either call `bpt.transfer(from, to)` or `vault.transfer(address(bpt), from, to)`.
+Balancer Pool Tokens (BPTs) are not implemented as standalone ERC20 Tokens but are part of the Vault's ERC20Multitoken contract. The ERC20Multitoken contract pairs well with the Balancer V3 Vault as it encapsulates BPT management within the Vault and does not have dependency on the Pool contract, moving complexity from the Pool contract to the Vault. This voids read-only-reentrancy concerns as there is no seperate Vault & pool state anymore. Also concepts such as preminted BPT/Phantom BPT have been removed and the Vault is now fully BPT aware as it is the contract managing BPTs. A detailed explanation on BalancerPoolTokens is provided [here](). 
+
+
+Inheriting from `BalancerPoolToken` allows the Pool to behave in compliance with the ERC20 standard while calls are delegated to the Vault's ERC20Multitoken contract. This means the BPT has all ERC20 features such as: `approve`, `transfer`, `transferFrom`, `totalSupply`, etc. but is "managed" by the vault. BPT's have the same composability features as regular ERC20 contracts. For example to transfer a BPT you have the possibility to either call `bpt.transfer(from, to)` or `vault.transfer(address(bpt), from, to)`.
+
+- Action: speak to the why it is beneficial. The power of the multitoken standard. And then we get into the more specific parts of it. 
+- Action: They should speak to why the combination of ERC20 Multitoken & Vault pairs well. Allowing the Vault to have control of the tokens this allows (read only reentrancy issue, makes this not possible, also solves the issue of phantom BPT, (Vault is now BPT aware, before it always had to trust the pool)). 
+- Action: currently the benefit is not clear so make that stand out more. 
 
 ::: info
-The complexity of the Vault is split accross several contracts. The ERC20 functionality of BPTs is part of the [`VaultCommon`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L413-L448) & [`VaultExtension`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultCommon.sol#L17)
+The Balancer V3 Vault is split accross several contracts. The ERC20 functionality of BPTs is part of the [`VaultCommon`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L413-L448) & [`VaultExtension`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultCommon.sol#L17)
 :::
+
+-Action: In info link to Balancer Pool token and let reader know that it is the starting point. And from there he can traverse the the contract ""Add it as: o better understand the execution flow of the MultiTokenERC20 standard, refer to the implementation of the ERC20 functions in the BalancerPoolToken" 
+-Action: Rephrase note not as ERC20 but as ERC20 Multitoken in the 
 
 ## Pool construction
 
-Creating pools via a factory contract is the suggested approach, however not mandatory. The required constructor arguments for the pool to be working with the Balancer Vault are:
+Creating pools via a factory contract is the suggested approach, however not mandatory. The required constructor arguments for the pool to work with the Balancer Vault are:
 
 - `IVault vault`: the address of the Balancer Vault casted to the `IVault` interface type
 - `string name` : the BPT's name 
@@ -68,10 +85,13 @@ The majority of Balancer custom pools can be created by implementing the three c
 
 - `computeInvariant()`
 - `computeBalance()`
-- `oSwap()`
+- `onSwap()`
 
 ### Invariant computation
 The pool's invariant is the core piece determining pool behaviour. The most common pool invariants these days are constant product, stable swap, constant sum. This function should compute the invariant based on current pool balances.
+
+- Action: Move all the first MyCustomPool of all three sections to one section higher so it is less duplication.
+- Action: Change specific implementations to only show the function not the whole contract layout. 
 
 ```solidity
 contract MyCustomPool {
@@ -98,15 +118,17 @@ contract WeightedPool {
     }
 }
 ```
+
+Action: Link to code.
+
 #### Constant Price Pool `computeInvariant`
-A sample constant Price pool (X + Y = K) could implement `computeInvariant` via:
+A sample constant Price pool (X + Y = K) with 2 tokens could implement `computeInvariant` via:
 ```solidity
 contract ConstantPricePool {
     //...
     function computeInvariant(uint256[] memory balancesLiveScaled18) public view returns (uint256) {
         uint256 invariant;
         uint256 balancesLength = balancesLiveScaled18.length;
-        require(balancesLength == 2, "not a 2 token pool");
         for (uint256 i=0; i<balancesLength; i++) {
             invariant +=  balancesLength[i];
         }
@@ -119,9 +141,9 @@ contract ConstantPricePool {
 
 ### Balance computation
 Similarly users can specify operations on the Router that effectively change the pools invariant with user-defined values and require the computation of the resulting pool balances. For example a user-specified exactAmount of BPT out as part of a add liquidity operation. Passed parameters `balancesLiveScaled18` and `invariantRatio`are passed scaled as 18 decimals. `tokenInIndex`refers to the index of the pool's tokens based on registration order.
-TODO: Needs to be rephrased
-TODO: Nomenclature and terminology. 
-Action: more broadly say that there is exact in and exact out. Operations that compute the exact out, you need the reverse invariant which is calculated via the balance computation. Difference between compute balance is compute invariant needs to be made more clear.
+- TODO: Needs to be rephrased
+- TODO: Nomenclature and terminology. 
+- Action: more broadly say that there is exact in and exact out. Operations that compute the exact out, you need the reverse invariant which is calculated via the balance computation. Difference between compute balance is compute invariant needs to be made more clear.
 
 ```solidity
 contract MyCustomPool {
@@ -207,10 +229,15 @@ contract MyCustomPool {
 ```
 The Swap parameters definition can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol#L59-L67).
 
+- Action: on balances section applies to all of the functions not only to swaps so it should be incorporated there
+- Action: should be added as a section in the Vault.
 
 :::info on balances
 Before the Vault passes the pool's balances to the pool contract it scales them to 18 decimals and multiplies by the rate, if a rate provider was supplied during construction. A more detailed explanation on rate providers is [here](https://docs.balancer.fi/reference/contracts/rate-providers.html#yield-fees-for-weightedpools).
 :::
+
+
+- Action: Wording on fees needs to be improved. 
 
 :::info on fees.
 Fees are computed at the Vault level. Meaning as a pool developer you do not need to think about:
@@ -218,6 +245,66 @@ Fees are computed at the Vault level. Meaning as a pool developer you do not nee
 - Any fees going to the Balancer protocol
 A developer writing tests for token outflows on the Vault needs to take swap fees into account. 
 :::
+
+#### Weighted Pool `onSwap`
+
+Balancer Labs Weighted Pool implementation calculates the `amountOut` based on the swap type `SwapKind`. 
+
+```solidity
+/// @inheritdoc IBasePool
+    function onSwap(IBasePool.SwapParams memory request) public view onlyVault returns (uint256) {
+        uint256 balanceTokenInScaled18 = request.balancesScaled18[request.indexIn];
+        uint256 balanceTokenOutScaled18 = request.balancesScaled18[request.indexOut];
+
+        if (request.kind == SwapKind.GIVEN_IN) {
+            uint256 amountOutScaled18 = WeightedMath.computeOutGivenIn(
+                balanceTokenInScaled18,
+                _getNormalizedWeight(request.indexIn),
+                balanceTokenOutScaled18,
+                _getNormalizedWeight(request.indexOut),
+                request.amountGivenScaled18
+            );
+
+            return amountOutScaled18;
+        } else {
+            uint256 amountInScaled18 = WeightedMath.computeInGivenOut(
+                balanceTokenInScaled18,
+                _getNormalizedWeight(request.indexIn),
+                balanceTokenOutScaled18,
+                _getNormalizedWeight(request.indexOut),
+                request.amountGivenScaled18
+            );
+
+            // Fees are added after scaling happens, to reduce the complexity of the rounding direction analysis.
+            return amountInScaled18;
+        }
+    }
+```
+
+#### Constant Price Pool `onSwap`
+
+A sample constant Price pool (X + Y = K) could implement computeBalance via:
+
+```solidity
+contract ConstantPricePool {
+    //...
+    function onSwap(IBasePool.SwapParams memory request) public view onlyVault returns (uint256 amountCalculatedScaled18) {
+
+        uint256 balanceTokenInScaled18 = request.balancesScaled18[request.indexIn];
+        uint256 balanceTokenOutScaled18 = request.balancesScaled18[request.indexOut];
+
+        if (request.kind == IVault.SwapKind.GIVEN_IN) {
+            // check that enough liquidity is available
+            require(request.amountGivenScaled18 < balanceTokenOutScaled18, "no liquidity for trade");
+            return (request.balancesScaled18[request.indexIn] + request.amountGivenScaled18 
+            + request.balancesScaled18[request.indexOut]- computeInvariant(request.balancesScaled18));
+        } else {
+            revert("not implemented");
+        }
+    }
+}
+```
+
 
 
 
@@ -244,8 +331,7 @@ transfer it to a sequence diagram
 
 
 ## Optional custom add liquidity operations.
-Custom liquidity operations allow for not resolving the whole trade within one transactions. Cron Finance TWAMMs fit into the section as
-a custom TWAMM order is created/exited as part of these custom operations. These operations need to be implemented via:
+Custom liquidity operations allow for a more flexible exactAmountIn -> MinAmountOut & exactAmountOut -> MaxAmountIn behaviour. The custom liquidity additions do not enforce this intended behaviour.
 
 - `onAddLiquidityCustom`
 - `onRemoveLiquidityCustom`
@@ -267,6 +353,8 @@ Balancer supports pools that implement hooks. A hook is a codeblock that impleme
 - `onBeforeSwap`
 - `onAfterSwap`
 
+- Action add missing 2 functions. 
+
 :::info hooks & reentrancy
 It is possible to reenter the Vault as part of a hook execution as only the respective internal function like `_swap`, `_addLiquidity` & `_removeLiquidity` are reentrancy protected.
 :::
@@ -280,6 +368,8 @@ It is up to the developer to choose where the logic is implemented.
 
 ### Hook logic implementation as part of the pool's code
 
+Action: Use If Else rather than ternary.
+
 ```solidity
 contract MyCustomPool is BalancerPoolToken, IBasePool, IPoolCallbacks {
     //...
@@ -287,7 +377,8 @@ contract MyCustomPool is BalancerPoolToken, IBasePool, IPoolCallbacks {
     uint256 public constant MAX_AMOUNT_GIVEN = 100e18;
 
     function onBeforeSwap(IBasePool.SwapParams memory params) external view returns (bool) {
-        params.kind == IVault.SwapKind.GIVEN_IN? require(params.amountGivenScaled18 < MAX_AMOUNT_GIVEN, "amount in exceeds limit") : require(params.amountGivenScaled18 > MAX_AMOUNT_GIVEN, "amount out exceeds limit");
+        params.kind == IVault.SwapKind.GIVEN_IN? require(params.amountGivenScaled18 < MAX_AMOUNT_GIVEN, "amount in exceeds limit")
+        : require(params.amountGivenScaled18 > MAX_AMOUNT_GIVEN, "amount out exceeds limit");
         return true;
     }
 }
