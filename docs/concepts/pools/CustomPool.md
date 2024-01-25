@@ -342,9 +342,3 @@ contract myCustomPool is BalancerPoolToken, IBasePool, IPoolCallbacks {
 }
 ```
 
-## Hook examples
-
-- As a developer I want to take a cut of swapFees and route them to my own Treasury. How would I go about that
-- As a developer I want to update some external contract state on every swap with Balancer. For example a price oracle. How would I go about doing that?
-- As a developer I want to arbitrage additional dexes during swapTime to realise the arbitrage gains as part of the LP revenue or swap execution gain. How would I go about doing that?
-
