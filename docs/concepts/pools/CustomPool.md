@@ -43,11 +43,7 @@ Inheriting from `IBasePool` forces you as a pool developer to implement all the 
 Balancer Pool Tokens (BPTs) are not implemented as standalone ERC20 Tokens but are part of the Vault's ERC20Multitoken contract. The ERC20Multitoken contract pairs well with the Balancer V3 Vault as it encapsulates BPT management within the Vault and does not have dependency on the Pool contract, moving complexity from the Pool contract to the Vault. This voids read-only-reentrancy concerns as there is no seperate Vault & pool state anymore. Also concepts such as preminted BPT/Phantom BPT have been removed and the Vault is now fully BPT aware as it is the contract managing BPTs. A detailed explanation on BalancerPoolTokens is provided [here](). 
 
 
-Inheriting from `BalancerPoolToken` allows the Pool to behave in compliance with the ERC20 standard while calls are delegated to the Vault's ERC20Multitoken contract. This means the BPT has all ERC20 features such as: `approve`, `transfer`, `transferFrom`, `totalSupply`, etc. but is "managed" by the vault. BPT's have the same composability features as regular ERC20 contracts. For example to transfer a BPT you have the possibility to either call `bpt.transfer(from, to)` or `vault.transfer(address(bpt), from, to)`.
-
-- Action: speak to the why it is beneficial. The power of the multitoken standard. And then we get into the more specific parts of it. 
-- Action: They should speak to why the combination of ERC20 Multitoken & Vault pairs well. Allowing the Vault to have control of the tokens this allows (read only reentrancy issue, makes this not possible, also solves the issue of phantom BPT, (Vault is now BPT aware, before it always had to trust the pool)). 
-- Action: currently the benefit is not clear so make that stand out more. 
+Inheriting from `BalancerPoolToken` allows the Pool to behave in compliance with the ERC20 standard while calls are delegated to the Vault's ERC20Multitoken contract. This means the BPT has all ERC20 features such as: `approve`, `transfer`, `transferFrom`, `totalSupply`, etc. but is "managed" by the vault. BPT's have the same composability features as regular ERC20 contracts. For example to transfer a BPT you have the possibility to either call `bpt.transfer(from, to)` or `vault.transfer(address(bpt), from, to)`. 
 
 ::: info
 The Balancer V3 Vault is split accross several contracts. The ERC20 functionality of BPTs is part of the [`VaultCommon`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L413-L448) & [`VaultExtension`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultCommon.sol#L17)
@@ -135,34 +131,26 @@ Before the Vault passes the pool's balances to the pool contract it scales them 
 ### Invariant computation
 The pool's invariant is the core piece determining pool behaviour. The most common pool invariants these days are constant product, stable swap, constant sum. This function should compute the invariant based on current pool balances.
 
-- Action: Change specific implementations to only show the function not the whole contract layout. 
-
 #### Weighted Pool `computeInvariant` 
 Balancer Labs' Weighted Pool `computeInvariant` implements a constant value invariant.
 ```solidity
-contract WeightedPool {
-    //...
-    function computeInvariant(uint256[] memory balancesLiveScaled18) public view returns (uint256) {
-        return WeightedMath.computeInvariant(_getNormalizedWeights(), balancesLiveScaled18);
-    }
+function computeInvariant(uint256[] memory balancesLiveScaled18) public view returns (uint256) {
+    return WeightedMath.computeInvariant(_getNormalizedWeights(), balancesLiveScaled18);
 }
 ```
 
-Action: Link to code.
+- Action: Link to code.
 
 #### Constant Price Pool `computeInvariant`
 A sample constant Price pool (X + Y = K) with 2 tokens could implement `computeInvariant` via:
 ```solidity
-contract ConstantPricePool {
-    //...
-    function computeInvariant(uint256[] memory balancesLiveScaled18) public view returns (uint256) {
-        uint256 invariant;
-        uint256 balancesLength = balancesLiveScaled18.length;
-        for (uint256 i=0; i<balancesLength; i++) {
-            invariant +=  balancesLength[i];
-        }
-        return invariant;
+function computeInvariant(uint256[] memory balancesLiveScaled18) public view returns (uint256) {
+    uint256 invariant;
+    uint256 balancesLength = balancesLiveScaled18.length;
+    for (uint256 i=0; i<balancesLength; i++) {
+        invariant +=  balancesLength[i];
     }
+    return invariant;
 }
 ```
 
@@ -179,20 +167,17 @@ Similarly users can specify operations on the Router that effectively change the
 Balancer Labs' Weighted Pool `computeBalance` implements a constant value invariant.
 
 ```solidity
-contract WeightedPool {
-    /// @inheritdoc IBasePool
-    function computeBalance(
-        uint256[] memory balancesLiveScaled18,
-        uint256 tokenInIndex,
-        uint256 invariantRatio
-    ) external view returns (uint256 newBalance) {
-        return
-            WeightedMath.computeBalanceOutGivenInvariant(
-                balancesLiveScaled18[tokenInIndex],
-                _getNormalizedWeights()[tokenInIndex],
-                invariantRatio
-            );
-    }
+function computeBalance(
+    uint256[] memory balancesLiveScaled18,
+    uint256 tokenInIndex,
+    uint256 invariantRatio
+) external view returns (uint256 newBalance) {
+    return
+        WeightedMath.computeBalanceOutGivenInvariant(
+            balancesLiveScaled18[tokenInIndex],
+            _getNormalizedWeights()[tokenInIndex],
+            invariantRatio
+        );
 }
 ```
 
