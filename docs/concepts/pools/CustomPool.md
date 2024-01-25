@@ -87,18 +87,8 @@ The majority of Balancer custom pools can be created by implementing the three c
 - `computeBalance()`
 - `onSwap()`
 
-:::info on balances
-Before the Vault passes the pool's balances to the pool contract it scales them to 18 decimals and multiplies by the rate, if a rate provider was supplied during construction. A more detailed explanation on rate providers is [here](https://docs.balancer.fi/reference/contracts/rate-providers.html#yield-fees-for-weightedpools).
-:::
-
-### Invariant computation
-The pool's invariant is the core piece determining pool behaviour. The most common pool invariants these days are constant product, stable swap, constant sum. This function should compute the invariant based on current pool balances.
-
-- Action: Move all the first MyCustomPool of all three sections to one section higher so it is less duplication.
-- Action: Change specific implementations to only show the function not the whole contract layout. 
-
 ```solidity
-contract MyCustomPool {
+contract MyCustomPool is IBasePool, BalancerPoolToken {
     //...
     /**
      * @notice Computes and returns the pool's invariant.
@@ -109,9 +99,44 @@ contract MyCustomPool {
     function computeInvariant(uint256[] memory balancesLiveScaled18) external view returns (uint256 invariant) {
         //custom implementation
     }
+
+    /**
+     * @dev Computes the new balance of a token after an operation, given the invariant growth ratio and all other
+     * balances.
+     * @param balancesLiveScaled18 Current live balances (adjusted for decimals, rates, etc.)
+     * @param tokenInIndex The index of the token we're computing the balance for, in token registration order
+     * @param invariantRatio The ratio of the new invariant (after an operation) to the old
+     * @return newBalance The new balance of the selected token, after the operation
+     */
+    function computeBalance(
+        uint256[] memory balancesLiveScaled18,
+        uint256 tokenInIndex,
+        uint256 invariantRatio
+    ) external view returns(uint256 newBalance) {
+        //custom implementation
+    }
+
+    /**
+     * @notice Execute a swap in the pool.
+     * @param params Swap parameters
+     * @return amountCalculatedScaled18 Calculated amount for the swap
+     */
+    function onSwap(SwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
+        //custom implementation
+    }
     
 }
 ```
+
+:::info on balances
+Before the Vault passes the pool's balances to the pool contract it scales them to 18 decimals and multiplies by the rate, if a rate provider was supplied during construction. A more detailed explanation on rate providers is [here](https://docs.balancer.fi/reference/contracts/rate-providers.html#yield-fees-for-weightedpools).
+:::
+
+### Invariant computation
+The pool's invariant is the core piece determining pool behaviour. The most common pool invariants these days are constant product, stable swap, constant sum. This function should compute the invariant based on current pool balances.
+
+- Action: Change specific implementations to only show the function not the whole contract layout. 
+
 #### Weighted Pool `computeInvariant` 
 Balancer Labs' Weighted Pool `computeInvariant` implements a constant value invariant.
 ```solidity
@@ -149,26 +174,6 @@ Similarly users can specify operations on the Router that effectively change the
 - TODO: Nomenclature and terminology. 
 - Action: more broadly say that there is exact in and exact out. Operations that compute the exact out, you need the reverse invariant which is calculated via the balance computation. Difference between compute balance is compute invariant needs to be made more clear.
 
-```solidity
-contract MyCustomPool {
-    //...
-    /**
-     * @dev Computes the new balance of a token after an operation, given the invariant growth ratio and all other
-     * balances.
-     * @param balancesLiveScaled18 Current live balances (adjusted for decimals, rates, etc.)
-     * @param tokenInIndex The index of the token we're computing the balance for, in token registration order
-     * @param invariantRatio The ratio of the new invariant (after an operation) to the old
-     * @return newBalance The new balance of the selected token, after the operation
-     */
-    function computeBalance(
-        uint256[] memory balancesLiveScaled18,
-        uint256 tokenInIndex,
-        uint256 invariantRatio
-    ) external view returns(uint256 newBalance) {
-        //custom implementation
-    }
-}
-```
 
 #### Weighted Pool `computeBalance`
 Balancer Labs' Weighted Pool `computeBalance` implements a constant value invariant.
@@ -218,19 +223,8 @@ contract ConstantPricePool {
 
 ### Swap computation
 Users either do a swap with a exact in amount and get a variable out amount. This is the case if `SwapKind` is `GIVEN_IN` or users do a swap with a exact out amount and turn in a variable amount. This is the case when `SwapKind` is `GIVEN_OUT`. These scenarios are implemented as part of the `onSwap` function. 
-```solidity
-contract MyCustomPool {
-    //...
-    /**
-     * @notice Execute a swap in the pool.
-     * @param params Swap parameters
-     * @return amountCalculatedScaled18 Calculated amount for the swap
-     */
-    function onSwap(SwapParams calldata params) external returns (uint256        amountCalculatedScaled18) {
-        //custom implementation
-    }
-}
-```
+
+
 The Swap parameters definition can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol#L59-L67).
 
 
