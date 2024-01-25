@@ -311,8 +311,11 @@ contract MyCustomPool is BalancerPoolToken, IBasePool, IPoolCallbacks {
     uint256 public constant MAX_AMOUNT_GIVEN = 100e18;
 
     function onBeforeSwap(IBasePool.SwapParams memory params) external view returns (bool) {
-        params.kind == IVault.SwapKind.GIVEN_IN? require(params.amountGivenScaled18 < MAX_AMOUNT_GIVEN, "amount in exceeds limit")
-        : require(params.amountGivenScaled18 > MAX_AMOUNT_GIVEN, "amount out exceeds limit");
+        if (params.kind == IVault.SwapKind.GIVEN_IN) {
+            require(params.amountGivenScaled18 < MAX_AMOUNT_GIVEN, "amount in exceeds limit");
+        } else {
+            require(params.amountGivenScaled18 > MAX_AMOUNT_GIVEN, "amount out exceeds limit");
+        }
         return true;
     }
 }
