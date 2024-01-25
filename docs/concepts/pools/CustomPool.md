@@ -208,11 +208,7 @@ contract ConstantPricePool {
 ### Swap computation
 Users either do a swap with a exact in amount and get a variable out amount. This is the case if `SwapKind` is `GIVEN_IN` or users do a swap with a exact out amount and turn in a variable amount. This is the case when `SwapKind` is `GIVEN_OUT`. These scenarios are implemented as part of the `onSwap` function. 
 
-
 The Swap parameters definition can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol#L59-L67).
-
-
-- Action: Wording on fees needs to be improved. 
 
 #### Weighted Pool `onSwap`
 
