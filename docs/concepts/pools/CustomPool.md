@@ -87,6 +87,10 @@ The majority of Balancer custom pools can be created by implementing the three c
 - `computeBalance()`
 - `onSwap()`
 
+:::info on balances
+Before the Vault passes the pool's balances to the pool contract it scales them to 18 decimals and multiplies by the rate, if a rate provider was supplied during construction. A more detailed explanation on rate providers is [here](https://docs.balancer.fi/reference/contracts/rate-providers.html#yield-fees-for-weightedpools).
+:::
+
 ### Invariant computation
 The pool's invariant is the core piece determining pool behaviour. The most common pool invariants these days are constant product, stable swap, constant sum. This function should compute the invariant based on current pool balances.
 
@@ -228,13 +232,6 @@ contract MyCustomPool {
 }
 ```
 The Swap parameters definition can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol#L59-L67).
-
-- Action: on balances section applies to all of the functions not only to swaps so it should be incorporated there
-- Action: should be added as a section in the Vault.
-
-:::info on balances
-Before the Vault passes the pool's balances to the pool contract it scales them to 18 decimals and multiplies by the rate, if a rate provider was supplied during construction. A more detailed explanation on rate providers is [here](https://docs.balancer.fi/reference/contracts/rate-providers.html#yield-fees-for-weightedpools).
-:::
 
 
 - Action: Wording on fees needs to be improved. 
