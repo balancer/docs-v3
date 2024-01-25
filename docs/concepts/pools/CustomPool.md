@@ -8,8 +8,6 @@ references:
 
 # Custom Pools 
 
-- Actions: Sequence Diagram should be a standalone site under overview. 
-
 Custom pools are smart contracts, which developers create to implement custom logic. The two main components a pool can implement are:
 
 - Pool math
@@ -301,8 +299,6 @@ Various choices for hook implementations are possible. Either:
 It is up to the developer to choose where the logic is implemented.
 
 ### Hook logic implementation as part of the pool's code
-
-Action: Use If Else rather than ternary.
 
 ```solidity
 contract MyCustomPool is BalancerPoolToken, IBasePool, IPoolCallbacks {
