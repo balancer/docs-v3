@@ -6,9 +6,7 @@ references:
     link: /concepts/advanced/balancerpooltoken
 ---
 
-# Custom Pools
-
-- Actions: Already start placeholders in the docs with detailed explanations and not go into depth in the other section so to not duplicate wording in multiple sections. 
+# Custom Pools 
 
 - Actions: Sequence Diagram should be a standalone site under overview. 
 
@@ -43,14 +41,10 @@ Inheriting from `IBasePool` forces you as a pool developer to implement all the 
 Balancer Pool Tokens (BPTs) are not implemented as standalone ERC20 Tokens but are part of the Vault's ERC20Multitoken contract. The ERC20Multitoken contract pairs well with the Balancer V3 Vault as it encapsulates BPT management within the Vault and does not have dependency on the Pool contract, moving complexity from the Pool contract to the Vault. This voids read-only-reentrancy concerns as there is no seperate Vault & pool state anymore. Also concepts such as preminted BPT/Phantom BPT have been removed and the Vault is now fully BPT aware as it is the contract managing BPTs. A detailed explanation on BalancerPoolTokens is provided [here](). 
 
 
-Inheriting from `BalancerPoolToken` allows the Pool to behave in compliance with the ERC20 standard while calls are delegated to the Vault's ERC20Multitoken contract. This means the BPT has all ERC20 features such as: `approve`, `transfer`, `transferFrom`, `totalSupply`, etc. but is "managed" by the vault. BPT's have the same composability features as regular ERC20 contracts. For example to transfer a BPT you have the possibility to either call `bpt.transfer(from, to)` or `vault.transfer(address(bpt), from, to)`. 
+Inheriting from `BalancerPoolToken` allows the Pool to behave in compliance with the ERC20 standard while calls are delegated to the Vault's `ERC20Multitoken` contract. This means the BPT has all ERC20 features such as: `approve`, `transfer`, `transferFrom`, `totalSupply`, etc. but is "managed" by the vault. BPT's have the same composability features as regular ERC20 contracts. For example to transfer a BPT you have the possibility to either call `bpt.transfer(from, to)` or `vault.transfer(address(bpt), from, to)`. 
 
 ::: info
-The Balancer V3 Vault is split accross several contracts. The ERC20 functionality of BPTs is part of the [`VaultCommon`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L413-L448) & [`VaultExtension`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultCommon.sol#L17)
-:::
-
--Action: In info link to Balancer Pool token and let reader know that it is the starting point. And from there he can traverse the the contract ""Add it as: o better understand the execution flow of the MultiTokenERC20 standard, refer to the implementation of the ERC20 functions in the BalancerPoolToken" 
--Action: Rephrase note not as ERC20 but as ERC20 Multitoken in the 
+Take a look at the [BalancerPoolToken contract](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol) or an explainer on [ERC20MultiToken](TODO: add link to in depth ERC20MultiToken explainer):::
 
 ## Pool construction
 
