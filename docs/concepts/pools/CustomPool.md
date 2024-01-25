@@ -83,6 +83,10 @@ The majority of Balancer custom pools can be created by implementing the three c
 - `computeBalance()`
 - `onSwap()`
 
+::: note
+Balancer V3 has exact in - minimum out & max in - exact out operations available. Operations computing the minimum out require an invariant computation, whereas operations computing the exact out the reverse invariant is required. This reverse invariant is computed via `computeBalance`.
+:::
+
 ```solidity
 contract MyCustomPool is IBasePool, BalancerPoolToken {
     //...
@@ -128,6 +132,10 @@ contract MyCustomPool is IBasePool, BalancerPoolToken {
 Before the Vault passes the pool's balances to the pool contract it scales them to 18 decimals and multiplies by the rate, if a rate provider was supplied during construction. A more detailed explanation on rate providers is [here](https://docs.balancer.fi/reference/contracts/rate-providers.html#yield-fees-for-weightedpools).
 :::
 
+:::info on fees.
+Fees are computed at the Vault level and do not need to be taken into account when implementing custom pool functions. More on [Swap fee](/concepts/vault/swapfee.md) & [Yield fee](/concepts/vault/yieldfee.md).
+:::
+
 ### Invariant computation
 The pool's invariant is the core piece determining pool behaviour. The most common pool invariants these days are constant product, stable swap, constant sum. This function should compute the invariant based on current pool balances.
 
@@ -151,14 +159,8 @@ function computeInvariant(uint256[] memory balancesLiveScaled18) public view ret
 }
 ```
 
-
-
 ### Balance computation
-Similarly users can specify operations on the Router that effectively change the pools invariant with user-defined values and require the computation of the resulting pool balances. For example a user-specified exactAmount of BPT out as part of a add liquidity operation. Passed parameters `balancesLiveScaled18` and `invariantRatio`are passed scaled as 18 decimals. `tokenInIndex`refers to the index of the pool's tokens based on registration order.
-- TODO: Needs to be rephrased
-- TODO: Nomenclature and terminology. 
-- Action: more broadly say that there is exact in and exact out. Operations that compute the exact out, you need the reverse invariant which is calculated via the balance computation. Difference between compute balance is compute invariant needs to be made more clear.
-
+The available exact out operations available on Balancer V3 require the `computeBalance()` function as it acts as an inverse `computeInvariant()` function.
 
 #### Weighted Pool [`computeBalance`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L78-L89)
 Balancer Labs' Weighted Pool `computeBalance` implements a constant value invariant.
@@ -211,13 +213,6 @@ The Swap parameters definition can be found [here](https://github.com/balancer/b
 
 
 - Action: Wording on fees needs to be improved. 
-
-:::info on fees.
-Fees are computed at the Vault level. Meaning as a pool developer you do not need to think about:
-- Incorporating any fees going to LPs 
-- Any fees going to the Balancer protocol
-A developer writing tests for token outflows on the Vault needs to take swap fees into account. 
-:::
 
 #### Weighted Pool `onSwap`
 
