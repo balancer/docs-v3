@@ -42,7 +42,8 @@ Balancer Pool Tokens (BPTs) are not implemented as standalone ERC20 Tokens but a
 Inheriting from `BalancerPoolToken` allows the Pool to behave in compliance with the ERC20 standard while calls are delegated to the Vault's `ERC20Multitoken` contract. This means the BPT has all ERC20 features such as: `approve`, `transfer`, `transferFrom`, `totalSupply`, etc. but is "managed" by the vault. BPT's have the same composability features as regular ERC20 contracts. For example to transfer a BPT you have the possibility to either call `bpt.transfer(from, to)` or `vault.transfer(address(bpt), from, to)`. 
 
 ::: info
-Take a look at the [BalancerPoolToken contract](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol) or an explainer on [ERC20MultiToken](TODO: add link to in depth ERC20MultiToken explainer):::
+Take a look at the [BalancerPoolToken contract](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol) or an explainer on [ERC20MultiToken](TODO: add link to in depth ERC20MultiToken explainer)
+:::
 
 ## Pool construction
 
