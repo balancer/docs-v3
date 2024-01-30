@@ -32,7 +32,7 @@ While the Router has many user-centric entrypoints, the required callback implem
 - `addLiquidityCallback`
 - `RemoveLiquidityCallback`
 
-As the transaction now is within a transient accounting context, a Router can now implemented any arbitrary logic such as swaps, joins & exits. More complex operations like flashloans (from Balancer), interacting with external contracts and with Balancer pools. It is possible to reenter the Vault again (See Vault invocation) 
+As the transaction now is within a transient accounting context, a Router can now implemented any arbitrary logic such as swaps, joins & exits. More complex operations like flashloans (from Balancer), interacting with external contracts and with Balancer pools. It is possible to reenter the Vault again (See Vault invocation).
 
 #### Executing the Vault's core primitive
 Either a `swap` `addLiquidity` or `removeLiquidity` operation is called on the Vault & the Vault has stored the balances owed from the Router to the Vault as part of an internal `accountDelta` var. 
