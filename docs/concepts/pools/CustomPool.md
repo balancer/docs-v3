@@ -268,12 +268,15 @@ Custom liquidity operations allow for a more flexible exactAmountIn -> MinAmount
 - `onRemoveLiquidityCustom`
 
 ### Custom Liquidity addition
-TODO: small code snippet how cron finance opens a twamm trade
-Custom Liquidity additions allow for more customization as `amountIn` and `amountOut` are more flexible. In Balancer V2 Cron Finance for example used 
+Custom liquidity additions can be utilized if additional functionality should be built ontop of the regular pool functionality. 
+:::note
+As an example a pool can introduce it's own accounting state while drawing in tokens from the user to give them out at a later stage, without giving BPT back. [Cron Finance](https://github.com/Cron-Finance/v1-twamm/blob/main/contracts/twault/CronV1Pool.sol#L438) utilises this storage to create custom TWAMM orders that have accounting as part of the pool state.
+:::
 
 ### Custom Liquidity removal
-TODO: small code snippet how cron finance closes a twamm trade
-
+:::note
+As an example a pool can utilise it's own accounting state while giving back tokens to the user without drawing in BPT. This pool internal accounting is used by [Cron Finance](https://github.com/Cron-Finance/v1-twamm/blob/main/contracts/twault/CronV1Pool.sol#L569) to manage long term orders.
+:::
 
 # Hooks
 Balancer supports pools that implement hooks. A hook is a codeblock that implements arbitrary logic in a pool or external contract. Whenever a pool is registered in the Vault, part of the [`PoolConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L26-L37) stores this information. A set of [8 different pool hooks](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L9-L18) are available to be implemented, depending on what part of the execution flow the additional logic is needed. All hooks are expected to return a `boolean` type of either `true` on success or `false` on failure. When working with hooks, the suggestion is to inherit from [`IPoolCallbacks`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IPoolCallbacks.sol) as different hooks have access to different payloads. The available hooks are:
