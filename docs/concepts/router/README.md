@@ -51,5 +51,9 @@ Action: Verify this with Juani where transient is being executed as part of a qu
 Instead of calling `invoke` on the Vault, the Router calls `quote` on the Vault. This modifier ensures that it is a `staticcall` as in an offchain eth_call.
 All operations with the `withHandler` modifier can be queried. 
 
+:::info
+It is not possible to use queries as part of `view` functions onchain as the used Vault operations does state changes and would revert with `EvmError: StateChangeDuringStaticCall`. These scenarios are prohibited by the `query` modifier which requires the `tx.origin` to equal `address(0)`. This is the case if called in an offchain context.
+:::
+
 ## Custom Router
 Action: verify if what governance approvals are required for custom routers due to approvals.
