@@ -17,8 +17,16 @@ Besides [decimal scaling](decimalscaling.md) a tokens rate is taken into account
 A token's rate is defined as a 18 decimal fixed point number. It represents a factor of value difference relative to it's underlying. For example a rate of 11e17 of rETH means that 1reth has the value of 1.1 eth. 
 
 ## Rate instantiation
-Whenever a pool is registered a `TokenConfig` that includes the source address of the tokens rate is set. 
+Whenever a pool is registered a [`TokenConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L66-L70) that includes the source address of the tokens rate is set. 
 
 ## Rate scaling usage
-Rate scaling technically is used on every `swap`, `addLiqudity` & `removeLiquidity` operations. If the token has been registered as a `TokenType.WITH_RATE` an external call to the Rate Provider is made via `getRate` if the `TokenType.STANDARD` is selected the rate is set as `1e18`. These rates are used to upscale the balances as part of the Vault's primitives.  
+Rate scaling technically is used on every `swap`, `addLiqudity` & `removeLiquidity` operations. If the token has been registered as a `TokenType.WITH_RATE` an external call to the Rate Provider is made via `getRate` if the `TokenType.STANDARD` is selected the rate is set as `1e18`. These rates are used to upscale the `amountGiven` as part of the Vault's primitives.
+:::info
+1. Calling a swap has amount as [`amountGivenRaw`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L112)
+2. [`AmountGivenRaw` is upscaled](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L230C14-L230C33)
+3. [`AmountGivenScaled18`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L332) is forwarded to the pool.
+4. Rates are undone before returning either `amountIn` or `amountOut`
+:::
+
+
 
