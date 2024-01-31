@@ -124,8 +124,12 @@ contract MyCustomPool is IBasePool, BalancerPoolToken {
 Before the Vault passes the pool's balances to the pool contract it scales them to 18 decimals and multiplies by the rate, if a rate provider was supplied during construction. A more detailed explanation on rate providers is [here](https://docs.balancer.fi/reference/contracts/rate-providers.html#yield-fees-for-weightedpools).
 :::
 
-:::info on fees.
+:::info on fees
 Fees are computed at the Vault level and do not need to be taken into account when implementing custom pool functions. More on [Swap fee](/concepts/vault/swapfee.md) & [Yield fee](/concepts/vault/yieldfee.md).
+:::
+
+::: info on rounding
+placeholder for amountsCalculated rounding
 :::
 
 ### Invariant computation
