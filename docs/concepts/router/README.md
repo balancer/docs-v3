@@ -5,7 +5,7 @@ title: Overview
 
 # Router
 
-A Router is the required contract to facilitate user interactions with the Balancer V3 Vault. A Router acts as the default entrypoint for user operations and provides the required API to facilitate the user operations & queries
+A Router is the required contract to facilitate user interactions with the Balancer V3 Vault. A Router acts as the default entrypoint for user operations and provides the required API to facilitate the user operations & queries.
 
 ## Router design
 
@@ -15,12 +15,12 @@ The router is designed to closely interact with the Vault. Whenever a user opera
 2. Execute the respective Callback from the Vault 
 -  Call the vault's respective primitive (swap, add- or remove liquidity)
 -  Execute arbitrary logic required for the user operation
-5. Settle outstanding debt, the vault attributed to the Router during step 3
+5. Settle outstanding debt, the vault attributed to the Router during step 2
 
-Interacting with the Router returns the expect amountsIn/amountsOut & facilitates the interactions with the Balancer V3 Vault. The amountsIn/amountsOut for a given operation are also available as part of query functions. 
-swapCal
+Interacting with the Router returns the expect amountsIn/amountsOut & facilitates the interactions with the Balancer V3 Vault. The Router also exposes the Vault's primitives (swap, addLiquidity & removeLiquidity) as query functions. 
+
 ### Vault invocation
-The Router calling the Vault's `invoke` function places the caller in a temporarily list of allowed callers, so called `handlers`. Only these `handlers` are allowed to interact with the Vault directly. This triggers the functions `transient` modifier, enabling the transaction to be executed in a transient accounting context, allowing great flexibility with the Vault's token balances with the requirements to have a net zero balance at the end. Before token balances are settled at the end of the transaction, the Vault passes execution flow back to the Router to execute the user required operations. 
+The Router calling the Vault's `invoke` function places the caller in a temporarily list of allowed callers, so called `handlers`. Only these `handlers` are allowed to interact with the Vault directly. This triggers the functions `transient` modifier, enabling the transaction to be executed in a transient accounting context, allowing great flexibility with the Vault's token balances.
 
 ### Callback execution
 
@@ -42,10 +42,14 @@ With the transient accounting context enabled the Vault allows the router to pul
 this accounting approach with additional external calls or further Vault interactions allows for more flexible liquidity.
 
 ### Settling debt
-While the Vault's core primitives for sure accrue either debt & or credit, the Router's callback has this possibility as optional. Regardless of usage all debts & credits need to be settled at the end of the transaction otherwise the transaction [reverts](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L83) because the `_accountDelta` has not been cleared.
+While the Vault's core primitives accrue either debt & or credit (as part of the logic defined in pools), the Router's callback has this possibility as optional. Regardless of usage all debts & credits need to be settled at the end of the transaction otherwise the transaction [reverts](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L83) because the `_accountDelta` has not been cleared.
 
 ## Router Queries
-Querying user-operations execute the Vaults primitives but instead of setting debt/credit the query functions simply return the `amountsCalculated`. 
+Querying user-operations execute the Vaults primitives but instead of setting debt/credit the query functions simply return the `amountsCalculated`. However only valid calls succeed as the `transient` modifier ensures balance changes within the Vault are settled
+Action: Verify this with Juani where transient is being executed as part of a quote
+
+Instead of calling `invoke` on the Vault, the Router calls `quote` on the Vault. This modifier ensures that it is a `staticcall` as in an offchain eth_call.
+All operations with the `withHandler` modifier can be queried. 
 
 ## Custom Router
 Action: verify if what governance approvals are required for custom routers due to approvals.
