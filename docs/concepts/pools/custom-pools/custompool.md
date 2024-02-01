@@ -1,9 +1,6 @@
 ---
 order: 2
-title: Custom Pool
-references:
-  - details: Balancer Pool Token
-    link: /concepts/advanced/balancerpooltoken
+title: Create a Custom Pool Type with a Novel Invariant
 ---
 
 # Custom Pools 
@@ -11,13 +8,13 @@ references:
 Custom pools are smart contracts, which developers create to implement custom logic. The two main components a pool can implement are:
 
 - Pool math
-- Pool callbacks
+- Pool hooks
 
 The intention of the pool math component is the calculation of the pools invariant or other math related aspects such as amount of tokens going out of the vault or tokens required to go into the vault.
 
 # Development approach
 
-Creating custom Balancer pools builds on the core functions `computeInvariant` & `computeBalance` to implement the trade logic. Balancer provides two helpful contracts to inherit from:
+Creating custom Balancer pools builds on two core functions `computeInvariant` & `computeBalance` to implement the trade logic. Balancer provides two helpful contracts to inherit from:
 
 - [BalancerPoolToken.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol)
 - [IBasePool.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol)
