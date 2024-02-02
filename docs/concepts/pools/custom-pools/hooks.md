@@ -1,4 +1,6 @@
 ---
 order: 3
-title: Extend an Existing Pool Type Using Hooks
+title: Extend an existing pool type using hooks
 ---
+
+TODO: project team will create docs here
