@@ -82,19 +82,22 @@ They keyword `Live` denote balances that have been scaled by their respective `I
 :::
 
 ::: info How are add and remove liquidity operations implemented 
-Balancer protocol leverages a novel strategy, termed the [Liquidity invariant approach](/concepts/vault/liquidity-invariant-approach.html), to provide a generalized solution for liquidity operations.
+Balancer protocol leverages a novel approximation, termed the [Liquidity invariant approach](/concepts/vault/liquidity-invariant-approach.html), to provide a generalized solution for liquidity operations.
 By implementing `computeInvariant` and `computeBalance`, your custom AMM will immediately support all Balancer liquidity operations: `unbalanced`, `proportional` and `singleAsset`.
 :::
 
 ### On Swap
+
+TODO: blurb on the goal of `onSwap`.
 Balancer protocol supports two types of swaps:
 
 - `EXACT_IN` - The user defines the exact amount of `tokenIn` they want to spend.
 - `EXACT_OUT` - The user defines the exact amount of `tokenOut` they want to receive.
 
+
 The `minAmountOut` or `maxAmountIn` are enforced by the (Vault/Router? ADD link)
 
-TODO: add a blurb about the `onSwap` implementation of the constant price invariant.
+Our two-token `ConstantPricePool` implements `onSwap` as:
 ```solidity
 function onSwap(SwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
     if (request.kind == IVault.SwapKind.GIVEN_IN) {
@@ -106,8 +109,13 @@ function onSwap(SwapParams calldata params) external returns (uint256 amountCalc
 }
 ```
 
+::: info How are swap fees managed?
+TODO
+:::
+
 The `SwapParams` struct definition can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol#L59-L67).
 
+You can use the implementation of `onSwap` for the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L100-L126) and the StablePool as references.
 
 ### Compute Invariant
 
@@ -117,27 +125,21 @@ The pool's invariant is the core piece determining pool behaviour. A few commonl
 TODO: simple definition of an invariant
 :::
 
-[weighted pool computeInvariant](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L73-L75) 
-Balancer Labs' Weighted Pool `computeInvariant` implements a constant value invariant.
-
-
-Our `ConstantPricePool` (X + Y = K) with 2 tokens could implement `computeInvariant` via:
+Our two-token `ConstantPricePool` implements `computeInvariant` as:
 ```solidity
 function computeInvariant(uint256[] memory balancesLiveScaled18) external view returns (uint256 invariant) {
     invariant = balancesLiveScaled18[0] + balancesLiveScaled18[1];
 }
 ```
 
+You can use the implementation of `computeInvariant` for the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L73-L75) and the StablePool as references.
+
 ### Compute Balance
-The exact out operations available on Balancer V3 require the `computeBalance()` function as it acts as an inverse `computeInvariant()` function.
 
-Weighted Pool [`computeBalance`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L78-L89)
-Balancer Labs' Weighted Pool `computeBalance` implements a constant value invariant.
+Compute balance returns the new balance for a pool token given an invariant change. It is essentially the inverse of the pool's invariant. This function is needed to support
+`AddLiquidityKind.SINGLE_TOKEN_EXACT_OUT` and `RemoveLiquidityKind.SINGLE_TOKEN_EXACT_IN`.
 
-#### Constant Price Pool `computeBalance`
-A sample constant Price pool (X + Y = K) could implement `computeBalance` via:
-
-TODO: verify correctness & rename
+Our two-token `ConstantPricePool` implements `computeBalance` as:
 ```solidity
 function computeBalance(
     uint256[] memory balancesLiveScaled18,
@@ -150,8 +152,10 @@ function computeBalance(
 }
 ```
 
+You can use the implementation of `computeBalance` for the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L78-L89) and the StablePool as references.
+
 ## Add / Remove liquidity 
-Custom liquidity operations allow for a more flexible exactAmountIn -> MinAmountOut & exactAmountOut -> MaxAmountIn behaviour. The custom liquidity additions do not enforce this intended behaviour.
+Custom liquidity operations (`SINGLE_TOKEN_EXACT_OUT`, ) allow for a more flexible exactAmountIn -> MinAmountOut & exactAmountOut -> MaxAmountIn behaviour. The custom liquidity additions do not enforce this intended behaviour.
 
 - `onAddLiquidityCustom`
 - `onRemoveLiquidityCustom`
