@@ -23,10 +23,24 @@ To expedite the development process, Balancer provides two contracts to inherit 
 
 Both `IBasePool` and `BalancerPoolToken` are used across all core Balancer pools, even those implemented by Balancer Labs (ie: [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L18)).
 
-Below, we present a naive implementation of a two token `ConstantPricePool` as a useful reference for walking through the required functions necessary to implement a custom AMM on Balancer protocol: 
+Below, we present a naive implementation of a two token `ConstantPricePool` (X + Y = K) as a reference for walking through the required functions necessary to implement a custom AMM on Balancer protocol: 
 
 ```solidity
 contract ConstantPricePool is IBasePool, BalancerPoolToken {
+    /**
+     * @notice Execute a swap in the pool.
+     * @param params Swap parameters
+     * @return amountCalculatedScaled18 Calculated amount for the swap
+     */
+    function onSwap(SwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
+        if (request.kind == IVault.SwapKind.GIVEN_IN) {
+            amountCalculatedScaled18 = request.balancesScaled18[request.indexIn] + request.amountGivenScaled18
+                + request.balancesScaled18[request.indexOut] - computeInvariant(request.balancesScaled18);
+        } else {
+            revert("not implemented");
+        }
+    }
+    
     /**
      * @notice Computes and returns the pool's invariant.
      * @dev This function computes the invariant based on current balances
@@ -34,7 +48,7 @@ contract ConstantPricePool is IBasePool, BalancerPoolToken {
      * @return invariant The calculated invariant of the pool, represented as a uint256
      */
     function computeInvariant(uint256[] memory balancesLiveScaled18) external view returns (uint256 invariant) {
-        return balancesLiveScaled18[0] + balancesLiveScaled18[1];
+        invariant = balancesLiveScaled18[0] + balancesLiveScaled18[1];
     }
 
     /**
@@ -49,41 +63,51 @@ contract ConstantPricePool is IBasePool, BalancerPoolToken {
         uint256[] memory balancesLiveScaled18,
         uint256 tokenInIndex,
         uint256 invariantRatio
-    ) external view returns(uint256 newBalance) {
+    ) external pure returns (uint256 newBalance) {
         uint256 invariant = computeInvariant(balancesLiveScaled18);
-        uint256 invariantAfterJoin = invariant * invariantRatio / 1e18;
-
-        return invariantAfterJoin - balancesLiveScaled18[tokenInIndex == 1 ? 0 : 1];
-    }
-
-    /**
-     * @notice Execute a swap in the pool.
-     * @param params Swap parameters
-     * @return amountCalculatedScaled18 Calculated amount for the swap
-     */
-    function onSwap(SwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
-        uint256 balanceTokenInScaled18 = request.balancesScaled18[request.indexIn];
-        uint256 balanceTokenOutScaled18 = request.balancesScaled18[request.indexOut];
-
-        if (request.kind == IVault.SwapKind.GIVEN_IN) {
-            // check that enough liquidity is available
-            require(request.amountGivenScaled18 < balanceTokenOutScaled18, "no liquidity for trade");
-            return (request.balancesScaled18[request.indexIn] + request.amountGivenScaled18
-            + request.balancesScaled18[request.indexOut]- computeInvariant(request.balancesScaled18));
-        } else {
-            revert("not implemented");
-        }
+        
+        newBalance = (balancesLiveScaled18[tokenInIndex] + invariant.mulDown(invariantRatio)) - invariant;
     }
 }
 ```
 
 ::: info What is Scaled18?
-TODO
+Internally, Balancer protocol scales all tokens to 18 decimals to minimize the potential for errors that can occur when
+comparing tokens with different decimals numbers (ie: WETH/USDC). `Scaled18` is a suffix used to signify values has already been scaled.
+**By default, ALL values provided to the pool will always be `Scaled18`.** Refer to [Decimal scaling](/concepts/vault/decimalscaling.html) for more information.
 :::
 
-::: info In balancesLiveScaled18 what does Live refer to?
-TODO
+::: info What does Live refer to in balancesLiveScaled18?
+They keyword `Live` denote balances that have been scaled by their respective `IRateProvider` and have any pending yield fee removed. Refer to [Live Balances](/concepts/vault/livebalances.html) for more information.
 :::
+
+::: info How are add and remove liquidity operations implemented 
+Balancer protocol leverages a novel strategy, termed the [Liquidity invariant approach](/concepts/vault/liquidity-invariant-approach.html), to provide a generalized solution for liquidity operations.
+By implementing `computeInvariant` and `computeBalance`, your custom AMM will immediately support all Balancer liquidity operations: `unbalanced`, `proportional` and `singleAsset`.
+:::
+
+### On Swap
+Balancer protocol supports two types of swaps:
+
+- `EXACT_IN` - The user defines the exact amount of `tokenIn` they want to spend.
+- `EXACT_OUT` - The user defines the exact amount of `tokenOut` they want to receive.
+
+The `minAmountOut` or `maxAmountIn` are enforced by the (Vault/Router? ADD link)
+
+TODO: add a blurb about the `onSwap` implementation of the constant price invariant.
+```solidity
+function onSwap(SwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
+    if (request.kind == IVault.SwapKind.GIVEN_IN) {
+        amountCalculatedScaled18 = request.balancesScaled18[request.indexIn] + request.amountGivenScaled18
+        + request.balancesScaled18[request.indexOut] - computeInvariant(request.balancesScaled18);
+    } else {
+        revert("not implemented");
+    }
+}
+```
+
+The `SwapParams` struct definition can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol#L59-L67).
+
 
 ### Compute Invariant
 
@@ -93,137 +117,40 @@ The pool's invariant is the core piece determining pool behaviour. A few commonl
 TODO: simple definition of an invariant
 :::
 
-#### Weighted Pool [`computeInvariant`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L73-L75) 
+[weighted pool computeInvariant](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L73-L75) 
 Balancer Labs' Weighted Pool `computeInvariant` implements a constant value invariant.
+
+
+Our `ConstantPricePool` (X + Y = K) with 2 tokens could implement `computeInvariant` via:
 ```solidity
-function computeInvariant(uint256[] memory balancesLiveScaled18) public view returns (uint256) {
-    return WeightedMath.computeInvariant(_getNormalizedWeights(), balancesLiveScaled18);
-}
-```
-#### Constant Price Pool `computeInvariant`
-A sample constant Price pool (X + Y = K) with 2 tokens could implement `computeInvariant` via:
-```solidity
-function computeInvariant(uint256[] memory balancesLiveScaled18) public view returns (uint256) {
-    uint256 invariant;
-    uint256 balancesLength = balancesLiveScaled18.length;
-    for (uint256 i=0; i<balancesLength; i++) {
-        invariant +=  balancesLength[i];
-    }
-    return invariant;
+function computeInvariant(uint256[] memory balancesLiveScaled18) external view returns (uint256 invariant) {
+    invariant = balancesLiveScaled18[0] + balancesLiveScaled18[1];
 }
 ```
 
 ### Compute Balance
 The exact out operations available on Balancer V3 require the `computeBalance()` function as it acts as an inverse `computeInvariant()` function.
 
-#### Weighted Pool [`computeBalance`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L78-L89)
+Weighted Pool [`computeBalance`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L78-L89)
 Balancer Labs' Weighted Pool `computeBalance` implements a constant value invariant.
-
-```solidity
-function computeBalance(
-    uint256[] memory balancesLiveScaled18,
-    uint256 tokenInIndex,
-    uint256 invariantRatio
-) external view returns (uint256 newBalance) {
-    return
-        WeightedMath.computeBalanceOutGivenInvariant(
-            balancesLiveScaled18[tokenInIndex],
-            _getNormalizedWeights()[tokenInIndex],
-            invariantRatio
-        );
-}
-```
 
 #### Constant Price Pool `computeBalance`
 A sample constant Price pool (X + Y = K) could implement `computeBalance` via:
 
 TODO: verify correctness & rename
 ```solidity
-contract ConstantPricePool {
-    //...
-    function computeBalance(
-        uint256[] memory balancesLiveScaled18,
-        uint256 tokenInIndex,
-        uint256 invariantRatio
-    ) external view returns (uint256 newBalance) {
-        //compute current invariant
-        uint256 invariant = computeInvariant(balancesLiveScaled18);
-        uint256 invariantAfterJoin = invariant * invariantRatio / 1e18;
+function computeBalance(
+    uint256[] memory balancesLiveScaled18,
+    uint256 tokenInIndex,
+    uint256 invariantRatio
+) external pure returns (uint256 newBalance) {
+    uint256 invariant = computeInvariant(balancesLiveScaled18);
 
-        uint256 accessKey = (tokenInIndex == 1? 0 : 1);
-        uint256 balancesToSend = invariantAfterJoin - balancesLiveScaled18[accessKey];
-        return balancesToSend;
-    }
+    newBalance = (balancesLiveScaled18[tokenInIndex] + invariant.mulDown(invariantRatio)) - invariant;
 }
 ```
 
-
-
-### On Swap
-Users either do a swap with a exact in amount and get a variable out amount. This is the case if `SwapKind` is `GIVEN_IN` or users do a swap with a exact out amount and turn in a variable amount. This is the case when `SwapKind` is `GIVEN_OUT`. These scenarios are implemented as part of the `onSwap` function. 
-
-The Swap parameters definition can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol#L59-L67).
-
-#### Weighted Pool `onSwap`
-
-Balancer Labs Weighted Pool implementation calculates the `amountOut` based on the swap type `SwapKind`. 
-
-```solidity
-/// @inheritdoc IBasePool
-    function onSwap(IBasePool.SwapParams memory request) public view onlyVault returns (uint256) {
-        uint256 balanceTokenInScaled18 = request.balancesScaled18[request.indexIn];
-        uint256 balanceTokenOutScaled18 = request.balancesScaled18[request.indexOut];
-
-        if (request.kind == SwapKind.GIVEN_IN) {
-            uint256 amountOutScaled18 = WeightedMath.computeOutGivenIn(
-                balanceTokenInScaled18,
-                _getNormalizedWeight(request.indexIn),
-                balanceTokenOutScaled18,
-                _getNormalizedWeight(request.indexOut),
-                request.amountGivenScaled18
-            );
-
-            return amountOutScaled18;
-        } else {
-            uint256 amountInScaled18 = WeightedMath.computeInGivenOut(
-                balanceTokenInScaled18,
-                _getNormalizedWeight(request.indexIn),
-                balanceTokenOutScaled18,
-                _getNormalizedWeight(request.indexOut),
-                request.amountGivenScaled18
-            );
-
-            // Fees are added after scaling happens, to reduce the complexity of the rounding direction analysis.
-            return amountInScaled18;
-        }
-    }
-```
-
-#### Constant Price Pool `onSwap`
-
-A sample constant Price pool (X + Y = K) could implement computeBalance via:
-
-```solidity
-contract ConstantPricePool {
-    //...
-    function onSwap(IBasePool.SwapParams memory request) public view onlyVault returns (uint256 amountCalculatedScaled18) {
-
-        uint256 balanceTokenInScaled18 = request.balancesScaled18[request.indexIn];
-        uint256 balanceTokenOutScaled18 = request.balancesScaled18[request.indexOut];
-
-        if (request.kind == IVault.SwapKind.GIVEN_IN) {
-            // check that enough liquidity is available
-            require(request.amountGivenScaled18 < balanceTokenOutScaled18, "no liquidity for trade");
-            return (request.balancesScaled18[request.indexIn] + request.amountGivenScaled18 
-            + request.balancesScaled18[request.indexOut]- computeInvariant(request.balancesScaled18));
-        } else {
-            revert("not implemented");
-        }
-    }
-}
-```
-
-## Custom liquidity operations (Optional)
+## Add / Remove liquidity 
 Custom liquidity operations allow for a more flexible exactAmountIn -> MinAmountOut & exactAmountOut -> MaxAmountIn behaviour. The custom liquidity additions do not enforce this intended behaviour.
 
 - `onAddLiquidityCustom`
