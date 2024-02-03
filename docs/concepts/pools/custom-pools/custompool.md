@@ -145,13 +145,17 @@ function onSwap(SwapParams calldata params) external returns (uint256 amountCalc
 }
 ```
 
-::: info How are swap fees charged?
-TODO
-:::
-
 The `SwapParams` struct definition can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol#L59-L67).
 
 You can use the implementation of `onSwap` for the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L100-L126) and the StablePool as references.
+
+## Swap fees
+
+### Static swap fee
+
+### Dynamic swap fee
+
+## Hooks - Vault reentrancy
 
 ## Add / Remove liquidity 
 Custom liquidity operations (`SINGLE_TOKEN_EXACT_OUT`, ) allow for a more flexible exactAmountIn -> MinAmountOut & exactAmountOut -> MaxAmountIn behaviour. The custom liquidity additions do not enforce this intended behaviour.
