@@ -71,7 +71,7 @@ contract ConstantPricePool is IBasePool, BalancerPoolToken {
 }
 ```
 
-::: info What is Scaled18?
+::: info What does Scaled18 mean?
 Internally, Balancer protocol scales all tokens to 18 decimals to minimize the potential for errors that can occur when
 comparing tokens with different decimals numbers (ie: WETH/USDC). `Scaled18` is a suffix used to signify values has already been scaled.
 **By default, ALL values provided to the pool will always be `Scaled18`.** Refer to [Decimal scaling](/concepts/vault/decimalscaling.html) for more information.
@@ -81,7 +81,7 @@ comparing tokens with different decimals numbers (ie: WETH/USDC). `Scaled18` is 
 They keyword `Live` denote balances that have been scaled by their respective `IRateProvider` and have any pending yield fee removed. Refer to [Live Balances](/concepts/vault/livebalances.html) for more information.
 :::
 
-::: info How are add and remove liquidity operations implemented 
+::: info How are add and remove liquidity operations implemented?
 Balancer protocol leverages a novel approximation, termed the [Liquidity invariant approach](/concepts/vault/liquidity-invariant-approach.html), to provide a generalized solution for liquidity operations.
 By implementing `computeInvariant` and `computeBalance`, your custom AMM will immediately support all Balancer liquidity operations: `unbalanced`, `proportional` and `singleAsset`.
 :::
@@ -91,18 +91,18 @@ By implementing `computeInvariant` and `computeBalance`, your custom AMM will im
 Custom AMMs built on Balancer protocol are defined primarily by their invariant. Broadly speaking, an invariant is a mathematical function that defines
 how the AMM exchanges one asset for another. A few widely known invariants include [Constant Product (X * Y = K)](https://docs.uniswap.org/contracts/v2/concepts/protocol-overview/how-uniswap-works) and [Stableswap](https://berkeley-defi.github.io/assets/material/StableSwap.pdf).
 
-Our two-token `ConstantPricePool` implements `computeInvariant` as:
+Our two-token `ConstantPricePool` uses the constant sum invariant, or `X + Y = K`. To implement `computeInvariant`, we simply add the balances of the two tokens:
 ```solidity
 function computeInvariant(uint256[] memory balancesLiveScaled18) external view returns (uint256 invariant) {
     invariant = balancesLiveScaled18[0] + balancesLiveScaled18[1];
 }
 ```
 
-You can use the implementation of `computeInvariant` for the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L73-L75) and the StablePool as references.
+For additional references, refer to the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L73-L75) and StablePool implementations.
 
 ### Compute Balance
 
-Compute balance returns the new balance for a pool token given an invariant change. It is essentially the inverse of the pool's invariant. This function is needed to support
+Compute balance returns the new balance of a token given an invariant change. It is essentially the inverse of the pool's invariant. This function is needed to support
 `AddLiquidityKind.SINGLE_TOKEN_EXACT_OUT` and `RemoveLiquidityKind.SINGLE_TOKEN_EXACT_IN`.
 
 Our two-token `ConstantPricePool` implements `computeBalance` as:
@@ -118,7 +118,7 @@ function computeBalance(
 }
 ```
 
-You can use the implementation of `computeBalance` for the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L78-L89) and the StablePool as references.
+For additional references, refer to the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L78-L89) and StablePool implementations.
 
 ### On Swap
 
@@ -131,9 +131,10 @@ Balancer protocol supports two types of swaps:
 - `EXACT_OUT` - The user defines the exact amount of `tokenOut` they want to receive.
 
 
-The `minAmountOut` or `maxAmountIn` are enforced by the (Vault/Router? ADD link)
+The `minAmountOut` or `maxAmountIn` are enforced by the vault (TODO: add link).
 
-Our two-token `ConstantPricePool` implements `onSwap` as:
+For simplicity, our two-token `ConstantPricePool` only supports `EXACT_IN` swaps. We leave the implementation of `EXACT_OUT` as an exercise for the reader.
+implements `onSwap` as:
 ```solidity
 function onSwap(SwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
     if (request.kind == IVault.SwapKind.GIVEN_IN) {
@@ -147,7 +148,7 @@ function onSwap(SwapParams calldata params) external returns (uint256 amountCalc
 
 The `SwapParams` struct definition can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol#L59-L67).
 
-You can use the implementation of `onSwap` for the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L100-L126) and the StablePool as references.
+For additional references, refer to the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L100-L126) and StablePool implementations.
 
 ## Swap fees
 
