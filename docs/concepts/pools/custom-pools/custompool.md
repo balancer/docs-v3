@@ -7,10 +7,12 @@ title: Create a custom AMM with a novel invariant
 
 Balancer protocol provides developers with a modular architecture that enables the rapid development of custom AMMs.
 
-AMMs built on Balancer protocol leverage the security of the Balancer vault, tap into the network of the Balancer ecosystem, and .... TODO: add some more marketing content here.
+AMMs built on Balancer inherit the security of the Balancer vault, and benefit from a streamlined development process.
+Balancer V3 was re-built from the ground up with developer experience as a core focus.
+Development teams can now focus on their product innovation without having to build an entire AMM from the ground up.
 
 ::: info Are you in the right place?
-This section is for developers looking to develop a new custom pool type with a novel invariant. If you are looking to extend an existing pool type with hooks, start [here](/concepts/pools/custom-pools/hooks.html).
+This section is for developers looking to build a new custom pool type with a novel invariant. If you are looking to extend an existing pool type with hooks, start [here](/concepts/pools/custom-pools/hooks.html).
 :::
 
 ## Build your custom AMM
