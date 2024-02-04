@@ -97,7 +97,7 @@ For additional references, refer to the [WeightedPool](https://github.com/balanc
 
 ### Compute Balance
 
-Compute balance returns the new balance of a token given an invariant change. It is essentially the inverse of the pool's invariant. This function is needed to support
+Compute balance returns the new balance of a pool token necessary to achieve a new invariant. It is essentially the inverse of the pool's invariant. This function is needed to support
 `AddLiquidityKind.SINGLE_TOKEN_EXACT_OUT` and `RemoveLiquidityKind.SINGLE_TOKEN_EXACT_IN`.
 
 Our two-token `ConstantPricePool` implements `computeBalance` as:
