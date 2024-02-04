@@ -161,21 +161,51 @@ Hooks allow a pool to execute a piece of code immediately `before` or `after` mo
 Hooks allow a pool to reenter the vault within the context of a pool operation. While `onSwap`, `computeInvariant` and `computeBalance` must be executed within a reentrancy guard, the vault is architected such that hooks operate outside of this requirement.
 
 ## Add / Remove liquidity 
-Custom liquidity operations (`SINGLE_TOKEN_EXACT_OUT`, ) allow for a more flexible exactAmountIn -> MinAmountOut & exactAmountOut -> MaxAmountIn behaviour. The custom liquidity additions do not enforce this intended behaviour.
+As stated above, the implementation of `computeInvariant` and `computeBalance` allows a pool to support ALL [Add/Remove liquidity types](/concepts/vault/add-remove-liquidity-types.html).
+For instances where your custom AMM has additional requirements for add/remove liquidity operations, Balancer provides support for `AddLiquidityKind.CUSTOM` and `RemoveLiquidityKind.CUSTOM`.
+An example custom liquidity operation can be found in [Cron Finance's](https://docs.cronfi.com/twamm/) TWAMM implementation, specifically when the pool [registers long term orders](https://github.com/Cron-Finance/v1-twamm/blob/main/contracts/twault/CronV1Pool.sol#L438).
 
-- `onAddLiquidityCustom`
-- `onRemoveLiquidityCustom`
+When adding support for custom liquidity operations, it's recommended that your pool contract implement [IPoolLiquidity](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IPoolLiquidity.sol)
+
+```solidity
+contract ConstantPricePool is IBasePool, IPoolLiquidity, BalancerPoolToken {
+    ...
+}
+```
 
 ### Add liquidity custom
-Custom liquidity additions can be utilized if additional functionality should be built ontop of the regular pool functionality. 
-:::note
-As an example a pool can introduce it's own accounting state while drawing in tokens from the user to give them out at a later stage, without giving BPT back. [Cron Finance](https://github.com/Cron-Finance/v1-twamm/blob/main/contracts/twault/CronV1Pool.sol#L438) utilises this storage to create custom TWAMM orders that have accounting as part of the pool state.
-:::
+
+For your AMM to support add liquidity custom, it must:
+- Implement `onAddLiquidityCustom`, as defined [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IPoolLiquidity.sol#L22-L28)
+- Set `LiquidityManagement.supportsAddLiquidityCustom` to `true` on pool register.
 
 ### Remove liquidity custom
-:::note
-As an example a pool can utilise it's own accounting state while giving back tokens to the user without drawing in BPT. This pool internal accounting is used by [Cron Finance](https://github.com/Cron-Finance/v1-twamm/blob/main/contracts/twault/CronV1Pool.sol#L569) to manage long term orders.
-:::
+
+For your AMM to support remove liquidity custom, it must:
+- Implement `onRemoveLiquidityCustom`, as defined [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IPoolLiquidity.sol#L41-L47)
+- Set `LiquidityManagement.supportsRemoveLiquidityCustom` to `true` on pool register.
+
+### Remove support for built in liquidity operations
+
+There may be instances where your AMM should not support specific built-in liquidity operations. In such instances, the suggested strategy is to implement `onBeforeAddLiquidity` and/or `onBeforeRemoveLiquidity` and explicitly revert for any unsupported liquidity operations.
+
+```solidity
+function onBeforeAddLiquidity(
+    address sender,
+    uint256[] memory maxAmountsInScaled18,
+    uint256 minBptAmountOut,
+    uint256[] memory balancesScaled18,
+    bytes memory userData
+) external returns (bool success) {
+    // TODO: we need the kind here sirs!!!!
+    
+    if (kind == AddLiquidityKind.UNBALANCED) {
+        revert UnsupportedLiquidityKind();
+    }
+    
+    return true;
+}
+```
 
 
 ## How to deploy your pool
