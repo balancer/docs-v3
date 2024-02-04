@@ -33,12 +33,7 @@ contract ConstantPricePool is IBasePool, BalancerPoolToken {
      * @return amountCalculatedScaled18 Calculated amount for the swap
      */
     function onSwap(SwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
-        if (request.kind == IVault.SwapKind.GIVEN_IN) {
-            amountCalculatedScaled18 = request.balancesScaled18[request.indexIn] + request.amountGivenScaled18
-                + request.balancesScaled18[request.indexOut] - computeInvariant(request.balancesScaled18);
-        } else {
-            revert("not implemented");
-        }
+        amountCalculatedScaled18 = request.amountGivenScaled18;
     }
     
     /**
@@ -133,16 +128,11 @@ Balancer protocol supports two types of swaps:
 
 The `minAmountOut` or `maxAmountIn` are enforced by the vault (TODO: add link).
 
-For simplicity, our two-token `ConstantPricePool` only supports `EXACT_IN` swaps. We leave the implementation of `EXACT_OUT` as an exercise for the reader.
-implements `onSwap` as:
+When swapping tokens, our constant `K` must remain unchanged. Since our two-token `ConstantPricePool` uses the constant sum invariant (`X + Y = K`),
+the amount entering the pool will always equal the amount leaving the pool:
 ```solidity
 function onSwap(SwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
-    if (request.kind == IVault.SwapKind.GIVEN_IN) {
-        amountCalculatedScaled18 = request.balancesScaled18[request.indexIn] + request.amountGivenScaled18
-        + request.balancesScaled18[request.indexOut] - computeInvariant(request.balancesScaled18);
-    } else {
-        revert("not implemented");
-    }
+    amountCalculatedScaled18 = request.amountGivenScaled18;
 }
 ```
 
@@ -152,11 +142,23 @@ For additional references, refer to the [WeightedPool](https://github.com/balanc
 
 ## Swap fees
 
-### Static swap fee
+The charging of swap fees is managed entirely by the Balancer vault. The pool is only responsible for declaring the `swapFeePercentage` for any given swap or unbalanced liquidity operation. For more information, see [Swap fees](/concepts/vault/swapfees.html).
 
-### Dynamic swap fee
+::: info Do I need to take swap fees into account when implementing onSwap?
+No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swap, the amount in (`request.amountGivenScaled18`) will already have the swap fee removed before `onSwap` is called.
+:::
 
-## Hooks - Vault reentrancy
+Balancer supports two types of swap fees:
+
+- **Static swap fee** - Defined on `vault.registerPool()` and managed via calls to `vault.setStaticSwapFeePercentage()`. For more information, see [Swap fee](/concepts/vault/swapfee.html).
+- **Dynamic swap fee** - Allows a pool to define a swap fee percentage per operation. A pool flags that it supports dynamic fees on `vault.registerPool()`. For more information, see [Dynamic swap fees](/concepts/pools/custom-pools/dynamicswapfees.html).
+
+## Hooks
+
+Hooks allow a pool to execute a piece of code immediately `before` or `after` most pool operations. For example, the `afterSwap` hook is called immediately after `onSwap` and could be used to implement a Back trade. For a detailed understanding, see [Hooks](/concepts/pools/hooks.html)
+
+### Vault reentrancy
+Hooks allow a pool to reenter the vault within the context of a pool operation. While `onSwap`, `computeInvariant` and `computeBalance` must be executed within a reentrancy guard, the vault is architected such that hooks operate outside of this requirement.
 
 ## Add / Remove liquidity 
 Custom liquidity operations (`SINGLE_TOKEN_EXACT_OUT`, ) allow for a more flexible exactAmountIn -> MinAmountOut & exactAmountOut -> MaxAmountIn behaviour. The custom liquidity additions do not enforce this intended behaviour.
