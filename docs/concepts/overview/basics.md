@@ -23,7 +23,7 @@ By separating the AMM curve logic and math from the core swapping functionality,
 - Pools with changing weights (ex: [Liquidity Bootstrapping Pools](/concepts/pools/liquidity-bootstrapping))
 - Concentrated liquidity pools
 - Managed pools that allow customizable parameters
-- Entire protocols to be built on top (ex: Gyroscope)
+- Custom AMMs to be built on top (ex: Gyroscope, Xave)
 
 All of the aggregate liquidity is then easily accessible for swappers, aggregators, and arbitrageurs. The Balancer [Vault](/concepts/vault) optimizes batching and path logic so that gas costs and capital requirements remain extremely low. Each individual pool and project built on top benefits from the global liquidity within Balancer that brings deep liquidity for base assets and opens up swap paths.
 
