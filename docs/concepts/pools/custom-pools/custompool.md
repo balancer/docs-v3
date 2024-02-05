@@ -102,7 +102,7 @@ For additional references, refer to the [WeightedPool](https://github.com/balanc
 ### Compute Balance
 
 Compute balance returns the new balance of a pool token necessary to achieve an invariant change. It is essentially the inverse of the pool's invariant. The `invariantRatio` is the ratio of the new invariant (after an operation) to the old.
-Compute balance is used for liquidity operations where the token amount in/out is unknown, specifically [AddLiquidityKind.SINGLE_TOKEN_EXACT_OUT](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L582-L594) and [RemoveLiquidityKind.SINGLE_TOKEN_EXACT_IN](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L788-L800).
+Compute balance is used for liquidity operations where the token amount in/out is unknown, specifically [`AddLiquidityKind.SINGLE_TOKEN_EXACT_OUT`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L582-L594) and [`RemoveLiquidityKind.SINGLE_TOKEN_EXACT_IN`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L788-L800).
 
 Our two-token `ConstantPricePool` implements `computeBalance` as:
 ```solidity
