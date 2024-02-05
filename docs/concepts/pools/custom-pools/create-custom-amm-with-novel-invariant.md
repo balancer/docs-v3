@@ -170,7 +170,7 @@ No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swa
 Balancer supports two types of swap fees:
 
 - **Static swap fee**: Defined on `vault.registerPool()` and managed via calls to `vault.setStaticSwapFeePercentage()`. For more information, see [Swap fee](/concepts/vault/swapfee.html).
-- **Dynamic swap fee**: Allows a pool to define a swap fee percentage per operation. A pool flags that it supports dynamic fees on `vault.registerPool()`. For more information, see [Dynamic swap fees](/concepts/pools/custom-pools/dynamicswapfees.html).
+- **Dynamic swap fee**: Allows a pool to define a swap fee percentage per operation. A pool flags that it supports dynamic fees on `vault.registerPool()`. For more information, see [Dynamic swap fees](/concepts/pools/custom-pools/dynamic-swap-fees.html).
 
 ## Hooks
 
