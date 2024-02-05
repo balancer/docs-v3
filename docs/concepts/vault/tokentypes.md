@@ -26,17 +26,35 @@ For Boosted pools a user usually wants to join & exit these pools with the base 
 ## Yield fees
 To support protocol operations Balancer takes swap- & yield fees. If a token needs to pay yield fees depends on its type. The `STANDARD` does not have yield fees as the token itself does not have built-in yield. Tokens `WITH_RATE` pay yield fee if they are not classified as yield exempt during pool creation. `ERC4626` tokens always pay yield fees. Read more on [yield fees](./yieldfee.md).
 ## Buffer
-If a token is classified as `ERC4626` it will have a so called "Buffer" associated with it which allows gas-efficient trades to happen on Balancer without the need to wrap/unwrap during a token trade. This has the advantage that 100% of a pools `ERC4626` tokens can be generating yield. Read more on [Buffers]((Action: Link to Buffer page).
+If a token is classified as `ERC4626` it will have a so called "Buffer" associated with it which allows gas-efficient trades to happen on Balancer without the need to wrap/unwrap during a token trade. This has the advantage that 100% of a pools `ERC4626` tokens can be generating yield. Read more on [Buffers](Action: Link to Buffer page).
 
 
 ## `TokenType.STANDARD`
-A Standard Token in the V3 Vault context is a token such as BAL,WETH & DAI. It is natively compatible with Balancer. A `STANDARD` Token does not have any built-in references to other tokens which might imply an additional conversion to an underlying via some kind of exchange rate.
+A Standard token in the V3 Vault context is a token such as BAL, WETH & DAI. It is natively compatible with Balancer. A `STANDARD` token does not have any built-in references to other tokens which might imply an additional conversion to an underlying via some kind of exchange rate. A `STANDARD` token can easily be put into any kind of Balancer pool without external dependencies and will be found in the majority of pools available on Balancer. Typical pool compositions will be:
+
+- `STANDARD` - `STANDARD` (Weighted Pool: 80/20 BAL/WETH)
+- `STANDARD` - `WITH_RATE` (Stable Pool: DAI/sDAI)
+- `STANDARD` - `ERC4626` (Boosted Pool: DAI/waDAI & Buffer Pool: DAI/waDAI)
+
+This token is considered the most general in the Balancer V3 context.
 
 ## `TokenType.WITH_RATE`
-A `WITH_RATE` Token is any Token that is built on an underlying primitive via an exchange rate such as (wstETH -> stETH or sDAI -> DAI) or a Token with an exchange rate to an artificial reference such as (USD -> EURO). In these cases Balancer provides improved pool operations if a token is considered a `WITH_RATE` Token. The rates are fetched via a standard interface [IRateProvider](https://github.com/balancer/metastable-rate-providers/blob/master/contracts/interfaces/IRateProvider.sol#L18) but the rate is part of an external custom contract.
+A `WITH_RATE` token is any token that is built on an underlying primitive via an exchange rate such as (wstETH -> stETH or sDAI -> DAI) or a token with an exchange rate to an artificial reference such as (USD -> EURO). In these cases Balancer provides improved pool operations (accurate pricing) if a token is considered a `WITH_RATE` token. The rates are fetched via a standard interface [IRateProvider](https://github.com/balancer/metastable-rate-providers/blob/master/contracts/interfaces/IRateProvider.sol#L18) but the rate is part of an external custom contract and could be calculated like: $`(WETH * exchangeRate = wstETH)`$. Often times `WITH_RATE` tokens have "wrapped" in their name however a native wrapping & unwrapping functionality is not given within the Balancer Vault V3 due to non uniform exchange interfaces. Typical pool compositions will be:
+
+- `STANDARD` - `WITH_RATE` (Stable Pool: DAI/sDAI)
+- `WITH_RATE` - `WITH_RATE` - `WITH_RATE` (Stable Pool: rETH/wstETH/sfrxETH)
+- `WITH_RATE`- `ERC4626` - (Stable Pool: wstETH/yETH)
+
+The wstETH/yETH pool pays yield fees on gains on yETH and wstETH. A token `WITH_RATE`(wstETH) can be exempt from paying yield fees, whereas yETH cannot as it is `ERC4626` and yield fees are enforced. `WITH_RATE`tokens are usually paired with like-kind assets such as ETH/rETH; DAI/USDC; agEUR/stEUR. However no Buffer pools are required.
 
 ## `TokenType.ERC4626`
-`ERC4626` are .Examples of `ERC4626` Tokens can be found [here](https://www.vaults.fyi/vaults).
+`ERC4626` tokens are similar to `WITH_RATE` tokens in that they are exchangeable to a base asset via an exchangeRate. The exchangeRate is however standardized across all `ERC46426` tokens as defined in its [standard](ERC4626). This allows the Vault to handle wrapping & unwrapping natively and not depend on any external Relayers. Yield fees are enforced on the `ERC4626` token. The standardized interface allows an innovative pool solution to leverage `ERC4626` tokens to build yield-enhancing boosted pools on Balancer V3 where all users `ERC4626` tokens are 100% yield generating as trades are routed through Buffer pools if possible. Examples of `ERC4626` tokens can be found [here](https://www.vaults.fyi/vaults). Typical pools on Balancer containing `ERC4626` tokens are:
+
+- `WITH_RATE`- `ERC4626` - (Stable Pool: wstETH/yETH)
+- `STANDARD` - `ERC4626` - (Buffer Pool: DAI/sDAI)
+- `ERC4626` - `ERC4626` - (Boosted Pool: waUSDC/waDAI)
+
+
 
 
 
