@@ -29,6 +29,8 @@ Below, we present a naive implementation of a two token `ConstantPricePool` (X +
 
 ```solidity
 contract ConstantPricePool is IBasePool, BalancerPoolToken {
+    constructor(IVault vault, string name, string symbol) BalancerPoolToken(vault, name, symbol) {}
+    
     /**
      * @notice Execute a swap in the pool.
      * @param params Swap parameters
@@ -79,7 +81,7 @@ They keyword `Live` denote balances that have been scaled by their respective `I
 :::
 
 ::: info How are add and remove liquidity operations implemented?
-Balancer protocol leverages a novel approximation, termed the [Liquidity invariant approach](/concepts/vault/liquidity-invariant-approach.html), to provide a generalized solution for liquidity operations.
+Balancer protocol leverages a novel approximation, termed the [Liquidity invariant approximation](/concepts/vault/liquidity-invariant-approach.html), to provide a generalized solution for liquidity operations.
 By implementing `computeInvariant` and `computeBalance`, your custom AMM will immediately support all Balancer liquidity operations: `unbalanced`, `proportional` and `singleAsset`.
 :::
 
@@ -99,8 +101,8 @@ For additional references, refer to the [WeightedPool](https://github.com/balanc
 
 ### Compute Balance
 
-Compute balance returns the new balance of a pool token necessary to achieve a new invariant. It is essentially the inverse of the pool's invariant. This function is needed to support
-`AddLiquidityKind.SINGLE_TOKEN_EXACT_OUT` and `RemoveLiquidityKind.SINGLE_TOKEN_EXACT_IN`.
+Compute balance returns the new balance of a pool token necessary to achieve an invariant change. It is essentially the inverse of the pool's invariant. The `invariantRatio` is the ratio of the new invariant (after an operation) to the old.
+Compute balance is used for liquidity operations where the token amount in/out is unknown, specifically [AddLiquidityKind.SINGLE_TOKEN_EXACT_OUT](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L582-L594) and [RemoveLiquidityKind.SINGLE_TOKEN_EXACT_IN](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L788-L800).
 
 Our two-token `ConstantPricePool` implements `computeBalance` as:
 ```solidity
@@ -142,6 +144,21 @@ The `SwapParams` struct definition can be found [here](https://github.com/balanc
 
 For additional references, refer to the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L100-L126) and StablePool implementations.
 
+### Constructor arguments
+
+At a minimum, your constructor should have the required arguments to instantiate the `BalancerPoolToken`:
+
+- `IVault vault`: The address of the Balancer vault
+- `string name`: ERC20 compliant `name` that will identify the pool token (BPT).
+- `string symbol`: ERC20 compliant `symbol` that will identify the pool token (BPT).
+
+```solidity
+constructor(IVault vault, string name, string symbol) BalancerPoolToken(vault, name, symbol) {}
+```
+
+The approach taken by Balancer Labs is to define a [NewPoolParams](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L26-L31) struct to better organize the constructor arguments.
+
+
 ## Swap fees
 
 The charging of swap fees is managed entirely by the Balancer vault. The pool is only responsible for declaring the `swapFeePercentage` for any given swap or unbalanced liquidity operation. For more information, see [Swap fees](/concepts/vault/swapfees.html).
@@ -152,8 +169,8 @@ No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swa
 
 Balancer supports two types of swap fees:
 
-- **Static swap fee** - Defined on `vault.registerPool()` and managed via calls to `vault.setStaticSwapFeePercentage()`. For more information, see [Swap fee](/concepts/vault/swapfee.html).
-- **Dynamic swap fee** - Allows a pool to define a swap fee percentage per operation. A pool flags that it supports dynamic fees on `vault.registerPool()`. For more information, see [Dynamic swap fees](/concepts/pools/custom-pools/dynamicswapfees.html).
+- **Static swap fee**: Defined on `vault.registerPool()` and managed via calls to `vault.setStaticSwapFeePercentage()`. For more information, see [Swap fee](/concepts/vault/swapfee.html).
+- **Dynamic swap fee**: Allows a pool to define a swap fee percentage per operation. A pool flags that it supports dynamic fees on `vault.registerPool()`. For more information, see [Dynamic swap fees](/concepts/pools/custom-pools/dynamicswapfees.html).
 
 ## Hooks
 
@@ -209,26 +226,24 @@ function onBeforeAddLiquidity(
 }
 ```
 
+## Deploy your pool
 
-## How to deploy your pool
+When deploying your pool, there are three required steps that must be taken, in order:
 
-Creating pools via a factory contract is the suggested approach, however not mandatory. The required constructor arguments for the pool to work with the Balancer Vault are:
+1. Deploy the pool contract to the desired network, ensuring that the correct `vault` is provided. The address of the deployed contract will be needed in step `2` and `3`. **TODO: add link to official deployments**
+2. Call [`vault.registerPool()`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L93-L121). Register will identify the pool with the vault and allow you to define token config, hook support, pause windows, and custom liquidity operation support.
+3. Call [`vault.initialize()`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L130-L147). Initialize will perform any pool specific setup and seed the pool with initial liquidity, enabling swaps and normal liquidity operations.
 
-- `IVault vault`: the address of the Balancer Vault casted to the `IVault` interface type
-- `string name` : the BPT's name
-- `string symbol` the BPT's symbol
+Creating pools via a factory contract is the suggested approach, however not mandatory. Balancer's off-chain infrastructure uses the `factory` address as a means to identify the `type` of pool, which is important for integration into the UI, SDK, external aggregators, etc.
 
-A sample constructor of a custom pool could look like:
+### Balancer UI Support
 
-```solidity
-contract MyCustomPool is IBasePool, BalancerPoolToken {
-    ...
+TODO - an explanation on the steps required to be added to the UI.
 
-    constructor(IVault vault, string name, string symbol) BalancerPoolToken(vault, name, symbol) {
+### Balancer Swap UI support
 
-    }
-}
-```
+TODO - an explanation on the steps required to be supported by the swap UI.
 
-TODO: Before public launch revisit the way how swap fees are determined.
-Additionally a pool needs to be registered with the Vault via `vault.registerPool()`. It is recommended to register a pool during construction. By default a pool's swap fees are set to 0 and need to be updated via an authorized entity by calling `vault.setStaticSwapFeePercentage()`.
+### Aggregator support (1inch, paraswap, 0x, etc.)
+
+TODO - an explanation on the steps required for aggregator support.
