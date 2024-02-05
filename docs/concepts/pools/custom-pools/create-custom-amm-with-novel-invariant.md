@@ -180,7 +180,7 @@ Hooks allow a pool to execute a piece of code immediately `before` or `after` mo
 Hooks allow a pool to reenter the vault within the context of a pool operation. While `onSwap`, `computeInvariant` and `computeBalance` must be executed within a reentrancy guard, the vault is architected such that hooks operate outside of this requirement.
 
 ## Add / Remove liquidity 
-As stated above, the implementation of `computeInvariant` and `computeBalance` allows a pool to support ALL [Add/Remove liquidity types](/concepts/vault/add-remove-liquidity-types.html).
+The implementation of `computeInvariant` and `computeBalance` allows a pool to support ALL [Add/Remove liquidity types](/concepts/vault/add-remove-liquidity-types.html).
 For instances where your custom AMM has additional requirements for add/remove liquidity operations, Balancer provides support for `AddLiquidityKind.CUSTOM` and `RemoveLiquidityKind.CUSTOM`.
 An example custom liquidity operation can be found in [Cron Finance's](https://docs.cronfi.com/twamm/) TWAMM implementation, specifically when the pool [registers long term orders](https://github.com/Cron-Finance/v1-twamm/blob/main/contracts/twault/CronV1Pool.sol#L438).
 
