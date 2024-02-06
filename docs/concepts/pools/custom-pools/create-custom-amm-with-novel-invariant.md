@@ -11,9 +11,7 @@ AMMs built on Balancer inherit the security of the Balancer vault, and benefit f
 Balancer V3 was re-built from the ground up with developer experience as a core focus.
 Development teams can now focus on their product innovation without having to build an entire AMM.
 
-::: info Are you in the right place?
-This section is for developers looking to build a new custom pool type with a novel invariant. If you are looking to extend an existing pool type with hooks, start [here](/concepts/pools/custom-pools/hooks.html).
-:::
+_This section is for developers looking to build a new custom pool type with a novel invariant. If you are looking to extend an existing pool type with hooks, start [here](/concepts/pools/custom-pools/hooks.html)._
 
 ## Build your custom AMM
 
@@ -101,8 +99,8 @@ For additional references, refer to the [WeightedPool](https://github.com/balanc
 
 ### Compute Balance
 
-Compute balance returns the new balance of a pool token necessary to achieve an invariant change. It is essentially the inverse of the pool's invariant. The `invariantRatio` is the ratio of the new invariant (after an operation) to the old.
-Compute balance is used for liquidity operations where the token amount in/out is unknown, specifically [`AddLiquidityKind.SINGLE_TOKEN_EXACT_OUT`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L582-L594) and [`RemoveLiquidityKind.SINGLE_TOKEN_EXACT_IN`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L788-L800).
+`computeBalance` returns the new balance of a pool token necessary to achieve an invariant change. It is essentially the inverse of the pool's invariant. The `invariantRatio` is the ratio of the new invariant (after an operation) to the old.
+`computeBalance` is used for liquidity operations where the token amount in/out is unknown, specifically [`AddLiquidityKind.SINGLE_TOKEN_EXACT_OUT`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L582-L594) and [`RemoveLiquidityKind.SINGLE_TOKEN_EXACT_IN`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L788-L800).
 
 Our two-token `ConstantPricePool` implements `computeBalance` as:
 ```solidity
@@ -128,7 +126,6 @@ Balancer protocol supports two types of swaps:
 
 - `EXACT_IN` - The user defines the exact amount of `tokenIn` they want to spend.
 - `EXACT_OUT` - The user defines the exact amount of `tokenOut` they want to receive.
-
 
 The `minAmountOut` or `maxAmountIn` are enforced by the vault (TODO: add link).
 
@@ -182,7 +179,7 @@ Hooks allow a pool to reenter the vault within the context of a pool operation. 
 ## Add / Remove liquidity 
 The implementation of `computeInvariant` and `computeBalance` allows a pool to support ALL [Add/Remove liquidity types](/concepts/vault/add-remove-liquidity-types.html).
 For instances where your custom AMM has additional requirements for add/remove liquidity operations, Balancer provides support for `AddLiquidityKind.CUSTOM` and `RemoveLiquidityKind.CUSTOM`.
-An example custom liquidity operation can be found in [Cron Finance's](https://docs.cronfi.com/twamm/) TWAMM implementation, specifically when the pool [registers long term orders](https://github.com/Cron-Finance/v1-twamm/blob/main/contracts/twault/CronV1Pool.sol#L438).
+An example custom liquidity operation can be found in [Cron Finance's](https://docs.cronfi.com/twamm/) TWAMM implementation on Balancer V2, specifically when the pool [registers long term orders](https://github.com/Cron-Finance/v1-twamm/blob/main/contracts/twault/CronV1Pool.sol#L438).
 
 When adding support for custom liquidity operations, it's recommended that your pool contract implement [IPoolLiquidity](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IPoolLiquidity.sol)
 
