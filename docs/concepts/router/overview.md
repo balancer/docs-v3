@@ -1,6 +1,6 @@
 ---
 order: 0
-title: Overview
+title: Onchain API
 ---
 # Router
 The v3 Router is the entrypoint for user operations. It exposes the Vault's **liquidity operations** and allows **query operations**. Clearer function naming and less function inputs compared to the Vault allow easier integration. Using the Vault's liquidity operations (swap, addLiquidity, removeLiquidity) is not possible without a Router contract.
@@ -24,7 +24,7 @@ function initialize(
 ) external payable returns (uint256 bptAmountOut);
 ```
 
-Once a deployed pool contract has been [registered](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L93-L121) in the Vault, it can have liquidity added to it. The first liquidity addition is done by pool initialization. Afterwards the pools initialization state is changed to `true` in the `PoolConfig.isPoolInitialized`. Pool initialization mints BPT in exchange for tokens.
+Once a deployed pool contract has been [registered](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L93-L121) in the Vault, it can have liquidity added to it. The first liquidity addition is done by pool initialization. Afterwards the pools initialization state is changed to `true` in the `PoolConfig.isPoolInitialized`. Pool initialization mints BPT in exchange for tokens and can only be done once. 
 
 | Name          | Type          | Description   |
 | ------------- | ------------- | ------------  |
@@ -49,7 +49,7 @@ function addLiquidityUnbalanced(
 ) external payable returns (uint256 bptAmountOut);
 ```
 
-The most flexible way to add tokens to a liquidity pool. An unbalanced add liquidity allows arbitrary token amounts to be added to a pool. Depending on the ratio of tokens in the pool and tokens to be added this operation can cause price impact. To avoid price impact, add liquidity according to the pools token balance ratio. The Vault should already have approved allowances for at least `exactAmountsIn` for the pools tokens.
+The most flexible way to add tokens to a liquidity pool. An unbalanced add liquidity allows arbitrary token amounts to be added to a pool to avoid unnecessary dust in the depositors wallet. This is the standard approach to allow the user to specify exact token amounts in and does not enforce exact proportions of tokens to be added. 
 
 | Name          | Type          | Description   |
 | ------------- | ------------- | ------------  |
@@ -73,7 +73,7 @@ function addLiquiditySingleTokenExactOut(
 ) external payable returns (uint256 amountIn)
 ```
 
-Adding Liquidity to a pool with one single token receiving an exact amount of BPT out. This operation causes price impact. The Vault should already have approved allowances for at least `maxAmountIn` for `tokenIn`.
+Adding Liquidity to a pool with one single token receiving an exact amount of BPT out. This option is useful for getting an intended amount of `exactBptAmountOut` in order to further stake the BPT or use it as part of another operation. 
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -91,7 +91,7 @@ Adding Liquidity to a pool with one single token receiving an exact amount of BP
 ```solidity
 function addLiquidityCustom(
     address pool,
-    uint256[] memory amountsInScaled18,
+    uint256[] memory inputAmountsIn,
     uint256 minBptAmountOut,
     bool wethIsEth,
     bytes memory userData
@@ -103,7 +103,7 @@ This type of adding liquidity is possible if the `pool` has implemented [`onAddL
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
 | pool               |  `address`    | Address of the liquidity pool                                                                 |
-| amountsInScaled18  |  `uint256[]`  | Amounts of tokens to be added, sorted in token registration order and scaled to 18 decimals   |
+| inputAmountsIn     |  `uint256[]`  | Amounts of tokens to be added, sorted in token registration order and scaled to 18 decimals   |
 | minBptAmountOut    |  `uint256`    | Minimum amount of pool tokens to be received                                                  |
 | wethIsEth          |  `bool`       | If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens      |
 | userData           |  `bytes`      | Additional (optional) data required for adding liquidity                                      |
@@ -111,12 +111,6 @@ This type of adding liquidity is possible if the `pool` has implemented [`onAddL
 | amountsIn          |  `uint256[]`  | Actual amounts of tokens added, sorted in token registration order                            |
 | bptAmountOut       |  `uint256`    | Actual amount of pool tokens received                                                         |
 | returnData         |  `bytes`      | Arbitrary (optional) data with encoded response from the pool                                 |
-
-::: info What does Scaled18 mean?
-Internally, Balancer protocol scales all tokens to 18 decimals to minimize the potential for errors that can occur when
-comparing tokens with different decimals numbers (ie: WETH/USDC). `Scaled18` is a suffix used to signify values has already been scaled.
-**By default, ALL values provided to the pool will always be `Scaled18`.** Refer to [Decimal scaling](/concepts/vault/decimalscaling.html) for more information.
-:::
 
 ### removeLiquidityProportional
 
@@ -130,7 +124,7 @@ function removeLiquidityProportional(
 ) external payable returns (uint256[] memory amountsOut);
 ```
 
-This remove liquidity operation removes tokens from the pool in proportional amounts without causing price impact as `amountsOut` ratio received will be in the same pool token balances proportions. The Vault should already have approved allowances for at least `exactBptAmountIn` for `pool`.
+This remove liquidity operation removes tokens from the pool in proportional amounts without causing price impact as `amountsOut` ratio received will be in the same pool token balances proportions.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -155,7 +149,7 @@ function removeLiquiditySingleTokenExactIn(
 ) external payable returns (uint256 amountOut);
 ```
 
-This remove liquidity operation removes liquidity from a pool by getting a single token out. An exact `exactBptAmountIn` of pool token is burned. This operation causes price impact due to pool token balance ratios changing. The Vault should already have approved allowances for at least `exactBptAmountIn` for `pool`.
+This remove liquidity operation removes liquidity from a pool by getting atleast `minAmountOut` of a single token out. An exact `exactBptAmountIn` of pool token is burned.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -181,7 +175,7 @@ function removeLiquiditySingleTokenExactOut(
 ) external payable returns (uint256 bptAmountIn);
 ```
 
-Removes liquidity from a pool via a single token, specifying the exact amount of tokens to receive. This operation causes price impact due to pool token balance ratios changing. The Vault should already have approved allowances for at least `maxBptAmountIn` for `pool`.
+Removes liquidity from a pool via a single token, specifying the exact amount of tokens to receive but only giving up to `maxBptAmountIn` of pool tokens in exchange.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -207,7 +201,7 @@ function removeLiquidityCustom(
 ) external returns (uint256 bptAmountIn, uint256[] memory amountsOut, bytes memory returnData);
 ```
 
-This type of removing liquidity is possible if the `pool` has implemented [`onRemoveLiquidityCustom`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IPoolLiquidity.sol#L41-L47). It can be used for [custom built AMMs](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.md). The custom request usually is encoded as part of the `userData`. The Vault should already have approved allowances for at least `bptAmountIn` for `pool`.
+This type of removing liquidity is possible if the `pool` has implemented [`onRemoveLiquidityCustom`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IPoolLiquidity.sol#L41-L47). It can be used for [custom built AMMs](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.md). The custom request usually is encoded as part of the `userData`.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -235,7 +229,7 @@ function swapExactIn(
 ) external payable returns (uint256 amountOut)
 ```
 
-Swap `exactAmountIn` of `tokenIn` for as much as possible amount of `tokenOut` with a given liquidity `pool`. The Vault should already have approved allowances for at least `exactAmountIn` for `tokenIn`.
+Swap `exactAmountIn` of `tokenIn` for atleast `minAmountOut` of `tokenOut` with a given liquidity `pool`.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -265,7 +259,7 @@ function swapExactOut(
 ) external payable returns (uint256 amountIn);
 ```
 
-Swap the least amount of `tokenIn` for an `exactAmountOut` of `tokenOut`. The Vault should already have approved allowances for at least `amountIn` for `tokenIn`. 
+Swap up to `maxAmountIn` of `tokenIn` for an `exactAmountOut` of `tokenOut`. Useful for when there is already a next usage for `exactAmountOut` like as part of a longer swap route.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -332,18 +326,18 @@ Queries an `addLiquiditySingleTokenExactOut` operation without actually executin
 ```solidity
 function queryAddLiquidityCustom(
     address pool,
-    uint256[] memory amountsInScaled18,
+    uint256[] memory inputAmountsIn,
     uint256 minBptAmountOut,
     bytes memory userData
 ) external returns (uint256[] memory amountsIn, uint256 bptAmountOut, bytes memory returnData);
 ```
 
-Queries adding liquidity to a pool with a custom request.
+Queries adding liquidity to a pool with a custom request. This operation executes the same logic as `addLiquidityCustom` but instead only returns `amountsIn`, `bptAmountOut` and `returnData`.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
 | pool               |  `address`    | Address of the liquidity pool|
-| amountsInScaled18  |  `uint256[]`  | Upscaled Amounts of tokens to be added, sorted in token registration order |
+| inputAmountsIn     |  `uint256[]`  | Upscaled Amounts of tokens to be added, sorted in token registration order |
 | minBptAmountOut    |  `uint256`    | Expected minimum amount of pool tokens to receive                          |
 | userData           |  `bytes`      | Additional (optional) data required for the query                          |
 |                    |               |                                                                            |
@@ -428,7 +422,7 @@ function queryRemoveLiquidityCustom(
 ) external returns (uint256 bptAmountIn, uint256[] memory amountsOut, bytes memory returnData);
 ```
 
-Queries `removeLiquidityCustom` operation without actually executing it.
+Queries removing liquidity with a custom request without actually executing it. This operation executes the same logic as `removeLiquidityCustom` but instead only returns `bptAmountIn`, `amountsOut` and `returnData`.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -456,13 +450,13 @@ Queries a swap operation specifying an exact input token amount without actually
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
-| pool               |  `address`    | Address of the liquidity pool                                                                      |
-| tokenIn            |  `IERC20`     | Token to be swapped from                                                                           |
-| tokenOut           |  `IERC20`     | Token to be swapped to                                                                             |
-| exactAmountIn      |  `uint256`    | Exact amounts of input tokens to send                                                              |
-| userData           |  `bytes`      | Additional (optional) data required for the query                                                  |
-|                    |               |                                                                                                    |
-|                    |               | Calculated amount of output tokens to be received in exchange for the given input tokens           |
+| pool               |  `address`    | Address of the liquidity pool                        |
+| tokenIn            |  `IERC20`     | Token to be swapped from                                 |
+| tokenOut           |  `IERC20`     | Token to be swapped to                                 |
+| exactAmountIn      |  `uint256`    | Exact amounts of input tokens to send               
+| userData           |  `bytes`      | Additional (optional) data required for the query     
+|                    |               |                                                 |
+| amountOut          |  `uint256`    | Calculated amount of output tokens to be received in exchange for the given input tokens|
 
 
 ### querySwapExactOut
@@ -486,28 +480,4 @@ Queries a swap operation specifying an exact output token amount without actuall
 | exactAmountOut     |  `uint256`    | exactAmountOut Exact amounts of input tokens to receive                                            |
 | userData           |  `bytes`      | userData Additional (optional) data required for the query                                         |
 |                    |               |                                                                                                    |
-| amountIn           |               | amountIn Calculated amount of input tokens to be sent in exchange for the requested output tokens  |
-
-
-
-
-
-
-
-
-
-
-
-| Name               | Type          | Description   |
-| -------------      | ------------- | ------------  |
-| pool               |  `address`    | Address of the liquidity pool|
-|                    |               |                              |
-|                    |               |                              |
-|                    |               |                              |
-|                    |               |                              |
-|                    |               |                              |
-|                    |               |                              |
-|                    |               |                              |
-|                    |               |                              |
-|                    |               |                              |
-|                    |               |                              |
+| amountIn           |  `uint256`    | amountIn Calculated amount of input tokens to be sent in exchange for the requested output tokens  |
