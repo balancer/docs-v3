@@ -59,5 +59,5 @@ function approve(address owner, address spender, uint256 amount) external onlyVa
 ## How is ERC20 compliance achieved?
 
 ERC20MultiToken leverages the relationship between the Balancer vault and it's pools to ensure that all pool tokens (BPT) are fully ERC20 compliant.
-For a detailed discussion on how this is achieved, refer to the [BalancerPoolToken](/concepts/pools/BalancerPoolToken.html) section in the docs, or go directly to the
+For a detailed discussion on how this is achieved, refer to the [BalancerPoolToken](/concepts/pools/Balancer-Pool-Token.html) section in the docs, or go directly to the
 implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol).
