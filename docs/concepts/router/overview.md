@@ -3,10 +3,13 @@ order: 0
 title: Overview
 ---
 # Router
-The v3 Router is the entrypoint for user operations. It exposes the Vault's primitives and allows query operations. Clearer function naming and less function inputs compared to the Vault allow to better match a user intend and respective Router call.
+The v3 Router is the entrypoint for user operations. It exposes the Vault's **liquidity operations** and allows **query operations**. Clearer function naming and less function inputs compared to the Vault allow easier integration. Using the Vault's liquidity operations (swap, addLiquidity, removeLiquidity) is not possible without a Router contract.
+:::info
+This page documents the available Router API. If you are looking for a technical deep dive on the Router and it's interactions with the Vault see the [technical section](./technical.md).
+:::
 
 ## Liquidity operations
-Liquidity operations are transactions that change pool balances.
+Liquidity operations are transactions that change pool balances and are state changing. They are used for interacting with Balancer onchain and route through to the Vault's primitives.
 
 ### initialize
 
@@ -21,7 +24,7 @@ function initialize(
 ) external payable returns (uint256 bptAmountOut);
 ```
 
-Once a deployed pool contract has been registered in the Vault, it can have liquidity added to it. The first liquidity addition is done by pool initialization. Afterwards the pools initialization state is changed to `true` in the `PoolConfig.isPoolInitialized`. Pool initialization mints BPT in exchange for tokens.
+Once a deployed pool contract has been [registered](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L93-L121) in the Vault, it can have liquidity added to it. The first liquidity addition is done by pool initialization. Afterwards the pools initialization state is changed to `true` in the `PoolConfig.isPoolInitialized`. Pool initialization mints BPT in exchange for tokens.
 
 | Name          | Type          | Description   |
 | ------------- | ------------- | ------------  |
@@ -279,7 +282,7 @@ Swap the least amount of `tokenIn` for an `exactAmountOut` of `tokenOut`. The Va
 
 
 ## Query operations
-Query operations allow simulation of various operations on Balancer. The queries are expected to be used in an offchain and done by an `eth_call`. 
+Query operations allow simulation of various operations on Balancer. The queries are expected to be used in an offchain context and done by an `eth_call`. Query operations execute the same accounting logic as liquidity operations do and return the data without settling the operation.
 
 ### queryAddLiquidityUnbalanced
 ```solidity
