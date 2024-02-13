@@ -5,27 +5,26 @@ title: Technical description
 
 # Router
 
-A Router is the required contract to facilitate user interactions with the Balancer V3 Vault. A Router acts as the default entrypoint for user operations and provides the required API to facilitate the user operations & queries. It can be extended with arbitrary logic which can enhance the specific usecase at hand when interacting with Balancer.
+A Router is the required contract to facilitate user interactions with the Balancer V3 Vault and acts as the default entrypoint. **It provides the required API to facilitate user operations & queries**. It can be extended with arbitrary logic which can enhance the user experience when interacting with Balancer.
 
 :::info
-This section is a technical deep dive into how the Router - Vault interactions work. If you are looking to integrate against the Router, take a look at the [API docs](./overview.md);
+This section is a technical explainer of how the Router works. If you are looking to integrate against the Router, take a look at the [API docs](./overview.md).
 :::
 
 ## Router design
 
-The router is designed to closely interact with the Vault. Some advantages are that a user interacting with the Router has access to simplified function signatures (names & parameter types) allowing clear understanding of the function to be called. Complex user-interactions can be aggregated at the Router level and exposed via single functions rather than custom contracts needing to be built to serve these complex user-interactions. Also since user approvals are given to the Vault only once, a Router can be exchanged in case additions are required as it uses built-in functions in the Vault to settle the debt. 
-
-
- Whenever a user operation is done on the Vault a set of operations are executed. 
-
-
-1. It `invoke`s the Vault, allowing access to protected Vault functions
-2. Execute the respective Callback function the Vault calls on the Router
--  Call the Vault's respective primitive (swap, add- or remove liquidity)
--  Execute arbitrary logic required for the user operation
-5. Settle outstanding debt, the vault attributed to the Router during step 2
+The Router is designed to closely interact with the Vault. Some advantages are that a user interacting with the Router has access to simplified function signatures (names & parameter types) allowing more concise function naming. Complex user-interactions can be aggregated at the Router level and exposed via single functions rather than custom contracts needing to be built to serve these complex user-interactions.
 
 ### Sequence of interactions
+Every user interaction going through the Router follows the same pattern of execution flow. 
+
+1. The Router `invoke`s the Vault, allowing access to protected Vault functions that do token [accounting](/concepts/vault/transient.md)
+2. The Router executes the respective Callback function the Vault calls on the Router which include
+-  The Router calling the Vault's respective primitive (swap, add- or remove liquidity)
+-  The Router Executing arbitrary logic required for the user operation
+3. The Router settles outstanding debt, which the Vault attributed to the Router during step 2
+
+### Sequence Diagram
 The Router and Vault interact in a back and forth manner to achieve the intended outcome of liquidity or query operations.
 ![Router Vault interaction](/images/router-vault.png)
 
@@ -69,5 +68,12 @@ All operations with the `withHandler` modifier can be queried.
 It is not possible to use queries as part of `view` functions onchain as the used Vault operations does state changes and would revert with `EvmError: StateChangeDuringStaticCall`. These scenarios are prohibited by the `query` modifier which requires the `tx.origin` to equal `address(0)`. This is the case if called in an offchain context.
 :::
 
-## Custom Router
-Action: verify if what governance approvals are required for custom routers due to approvals.
+## Trusted Routers
+
+Using trusted Routers to settle accrued debt via `retrieve` reduces the amounts of token transfers for each operation from user -> router -> Vault to only user -> Vault. This is possible as `retrieve` uses token approvals users have given the Vault. This feature also necessitates putting `retrieve` to only work with trusted Routers. While any smart contract can work as a Router and settle debt via `settle`, creating a router that is trusted increases user experience for users by allowing it to settle debt via `retrieve`.
+
+
+Action: see if below section is still required:
+
+
+Also since user approvals are given to the Vault only once, the Router can use these to settle outstanding debt more efficiently. The Router can be exchanged in case additions are required as it uses built-in functions in the Vault to settle the debt without needing to update token approvals. 
