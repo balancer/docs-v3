@@ -34,8 +34,9 @@ Interacting with the Router returns the expect amountsIn/amountsOut & facilitate
 
 ### Vault invocation
 
+The Router calling the Vault's `invoke` function places the Router in a temporarily list of allowed callers, so called `handlers`. Only these `handlers` are allowed to interact with the Vault's functions that handle token accounting. This triggers the functions `transient` modifier, enabling the transaction to be executed in a [transient accounting context](/concepts/vault/transient.md), allowing great flexibility with the Vault's token balances only to be settled at the end. Triggering the `transient` context in a separate function allows clear separation of [ensuring settlement](/concepts/vault/transient.md)  and operations that do math and accounting as part of the Vaults core primitives.
 
-The Router calling the Vault's `invoke` function places the Router in a temporarily list of allowed callers, so called `handlers`. Only these `handlers` are allowed to interact with the Vault's functions that handle token accounting. This triggers the functions `transient` modifier, enabling the transaction to be executed in a [transient accounting context](/concepts/vault/transient.md), allowing great flexibility with the Vault's token balances only to be settled at the end. You can think of this step as the Router opening a tab with the Vault and any operations will attribute to the tab.
+You can think of this step as the Router opening a tab with the Vault and any operation on the Vault will attribute to that tab.
 
 ### Callback execution
 
@@ -59,13 +60,10 @@ With the transient accounting context enabled the Vault allows the router to pul
 this accounting approach with additional external calls or further Vault interactions allows for more flexible liquidity.
 
 ### Settling debt
-While the Vault's core primitives attribute either debt & or credit to the Router (as part of the logic defined in pools). Regardless of usage all debts & credits need to be settled at the end of the transaction otherwise the transaction [reverts](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L83) because the `_accountDelta` has not been cleared. This closes out the tab opened in step 1.
+While the Vault's core primitives attribute either debt & or credit to the Router (as part of the logic defined in pools). Regardless of usage all debts & credits need to be settled at the end of the transaction otherwise the transaction [reverts](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L83) because the debts & credits (`_accountDelta`) have not been cleared. This closes out the tab opened in step 1.
 
 ## Router Queries
-Querying user-operations execute the Vaults primitives but instead of setting debt/credit the query functions simply return the `amountsCalculated`. However only valid calls succeed as the `transient` modifier ensures balance changes within the Vault are settled
-
-Instead of calling `invoke` on the Vault, the Router calls `quote` on the Vault. This modifier ensures that it is a `staticcall` as in an offchain eth_call.
-All operations with the `withHandler` modifier can be queried. 
+The clear separation of enforcing debt settlement (via the call to `invoke`) and accounting & math operations as part of the Vault's core primitives enable any operation to be queryable. Querying user-operations execute the Vaults primitives but instead of setting debt/credit the query functions simply return the `amountsCalculated`. This is achieved by instead of calling `invoke` the Router calls `quote` on the Vault. The difference now is that debt & credit settlement is not enforced but the requirement that a `staticcall` is made as in an offchain eth_call. All operations with the `withHandler` modifier can be queried. 
 
 :::info onchain queries
 Action: test how `call` will work
@@ -76,4 +74,4 @@ It is not possible to use queries as part of `view` functions onchain as the use
 
 ## Trusted Routers
 
-Using trusted Routers to settle accrued debt via `retrieve` reduces the amounts of token transfers for each operation from user -> router -> Vault to only user -> Vault. This is possible as `retrieve` uses token approvals users have given the Vault. This feature also necessitates putting `retrieve` to only work with trusted Routers. While any smart contract can work as a Router and settle debt via `settle`, creating a router that is trusted increases user experience for users by allowing it to settle debt via `retrieve`.
+Using trusted Routers to settle accrued debt via `vault.retrieve()` instead of `vault.settle()` reduces the amounts of token transfers for each operation from user -> Router -> Vault to only user -> Vault. This is possible as `retrieve` uses token approvals users have given the Vault. This feature also necessitates putting `retrieve` to only work with trusted Routers. While any smart contract can work as a Router and settle debt via `settle`, creating a router that is trusted increases user experience for users by allowing it to settle debt via `retrieve`.
