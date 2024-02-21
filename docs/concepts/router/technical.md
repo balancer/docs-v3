@@ -12,7 +12,7 @@ This section is a technical explainer of how the Router works. If you are lookin
 
 ## Router design
 
-The Router is engineered to have a close interaction with the Balancer Vault and is the suggested way of interacting as it acts as the primary interface for common user interactions. It provides simplified function signatures, including names and parameter types, which contribute to concise function naming. The Router is capable of aggregating complex user interactions and exposing them through single functions.
+The Router is engineered to have a close interaction with the Balancer Vault and is the suggested way of interacting as it acts as the primary interface for common user interactions and makes interacting with Balancer easier. It provides simplified function signatures, including names and parameter types, which contribute to concise function naming. The Router is capable of aggregating complex user interactions and exposing them through single functions.
 
 ### Sequence Diagram
 The Router and Vault interact in a back and forth manner to achieve the intended outcome of liquidity or query operations.
