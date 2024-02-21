@@ -2,11 +2,12 @@
 order: 0
 title: Onchain API
 ---
-# Router
-The v3 Router is the entrypoint for user operations. It exposes the Vault's **liquidity operations** and allows **query operations**. Clearer function naming and less function inputs compared to the Vault allow easier integration. Using the Vault's liquidity operations (swap, addLiquidity, removeLiquidity) is not possible without a Router contract.
-:::info
-This page documents the available Router API. If you are looking for a technical deep dive on the Router and it's interactions with the Vault see the [technical section](./technical.md).
-:::
+# Router Onchain API
+The Router is the recommended entrypoint for user operations. It provides functions to both query and execute `swap`, `add` and `remove` operations against the Balancer vault.
+
+This router is a [Trusted Router](./technical.html#trusted-routers), so it will inherit the user's vault token approvals once `approved`.
+
+Because routers are stateless and do not hold token balances, they can be replaced safely and trustlessly, if necessary. These docs will always reference the latest version of the Balancer Router. 
 
 ## Liquidity operations
 Liquidity operations are transactions that change pool balances and are state changing. They are used for interacting with Balancer onchain and route through to the Vault's primitives.
