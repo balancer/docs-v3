@@ -30,4 +30,4 @@ The clear separation of enforcing debt settlement (via the call to `invoke`) and
 
 ## Trusted Routers
 
-Using trusted Routers to settle accrued debt via `vault.retrieve()` instead of `vault.settle()` reduces the amounts of token transfers for each operation from user -> Router -> Vault to only user -> Vault. This is possible as `retrieve` uses token approvals users have given the Vault. This feature also necessitates putting `retrieve` to only work with trusted Routers. While any smart contract can work as a Router and settle debt via `settle`, creating a router that is trusted increases user experience for users by allowing it to settle debt via `retrieve`.
+A trusted Router has access to the allowances users granted the Vault. This reduces the number of token transfers for each operation from user -> Router -> Vault to only user -> Vault. While any smart contract can work as a Router and settle debt via `vault.settle`, creating a router that is trusted increases user experience for users by allowing it to settle debt via `vault.retrieve`, which uses the allowances users have granted the Vault.
