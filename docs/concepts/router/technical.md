@@ -4,73 +4,29 @@ title: Technical description
 ---
 
 # Router
-
-A Router is the required contract to facilitate user interactions with the Balancer V3 Vault and acts as the default entrypoint. **It provides the required API to facilitate user operations & queries**. It can be extended with arbitrary logic which can enhance the user experience when interacting with Balancer.
+A smart contract is required to facilitate user interactions with Balancer due to the callback execution flow in the Vault. Balancer provides these smart contracts in the form of trusted Routers. It is important to note that any third party can create custom Routers to interact with the Vault. **These Routers offer the suggested API to facilitate user operations & queries**. The Router functionality developed by Balancer Labs cannot be extended but new smart contracts in the form of Routers can be developed.
 
 :::info
-This section is a technical explainer of how the Router works. If you are looking to integrate against the Router, take a look at the [API docs](./overview.md).
+This section is a technical explainer of how the Router works. If you are looking to integrate with the Router, take a look at the [API docs](./overview.md).
 :::
 
 ## Router design
 
-The Router is designed to closely interact with the Vault. Some advantages are that a user interacting with the Router has access to simplified function signatures (names & parameter types) allowing more concise function naming. Complex user-interactions can be aggregated at the Router level and exposed via single functions rather than custom contracts needing to be built to serve these complex user-interactions.
-
-### Sequence of interactions
-Every user interaction going through the Router follows the same pattern of execution flow. 
-
-1. The Router `invoke`s the Vault, allowing access to protected Vault functions that do token [accounting](/concepts/vault/transient.md)
-2. The Router executes the respective Callback function the Vault calls on the Router which include
--  The Router calling the Vault's respective primitive (swap, add- or remove liquidity)
--  The Router Executing arbitrary logic required for the user operation
-3. The Router settles outstanding debt, which the Vault attributed to the Router during step 2
+The Router is engineered to have a close interaction with the Balancer Vault and is the suggested way of interacting as it acts as the primary interface for common user interactions. It provides simplified function signatures, including names and parameter types, which contribute to concise function naming. The Router is capable of aggregating complex user interactions and exposing them through single functions.
 
 ### Sequence Diagram
 The Router and Vault interact in a back and forth manner to achieve the intended outcome of liquidity or query operations.
 ![Router Vault interaction](/images/router-vault.png)
 
+Every user interaction going through the Router follows the same pattern of execution flow. The elegance of `invoke` wrapping the transaction in a Vault context is further explained in the [transient accounting](/concepts/vault/transient.md) section
 
-Interacting with the Router returns the expect amountsIn/amountsOut & facilitates the interactions with the Balancer V3 Vault. The Router also exposes the Vault's primitives (swap, addLiquidity & removeLiquidity) as query functions. 
-
-
-### Vault invocation
-
-The Router calling the Vault's `invoke` function places the Router in a temporarily list of allowed callers, so called `handlers`. Only these `handlers` are allowed to interact with the Vault's functions that handle token accounting. This triggers the functions `transient` modifier, enabling the transaction to be executed in a [transient accounting context](/concepts/vault/transient.md), allowing great flexibility with the Vault's token balances only to be settled at the end. Triggering the `transient` context in a separate function allows clear separation of [ensuring settlement](/concepts/vault/transient.md)  and operations that do math and accounting as part of the Vaults core primitives.
-
-You can think of this step as the Router opening a tab with the Vault and any operation on the Vault will attribute to that tab.
-
-### Callback execution
-
-While the Router has many user-centric entrypoints, the required callback implementations are defined by the Vault's main three primitives (`swap`, `addLiquidity` and `removeLiquidity`). The Router supports these by implementing
-
-- `swapCallback`
-- `addLiquidityCallback`
-- `RemoveLiquidityCallback`
-
-As the transaction is now within a transient accounting context, a Router can now implemented any arbitrary logic, swaps, joins & exits and also utilise more complex operations like flashloans (from Balancer). Interacting with external contracts and reentering the Vault again (see Vault invocation) is possible as well.
-
-The combination of these possibilities enables great flexibility for operating with liquidity on Balancer.
-
-**Executing the Vault's core primitive**
-
-Either a `swap` `addLiquidity` or `removeLiquidity` operation is called on the Vault & the Vault has stored the balances owed from the Router to the Vault as part of an internal `accountDelta` var. 
-
-**Execute additional arbitrary logic**
-
-With the transient accounting context enabled the Vault allows the router to pull funds via `wire` and accrue debt or send funds to the Vault via `retrieve` and settle debt. Combining 
-this accounting approach with additional external calls or further Vault interactions allows for more flexible liquidity.
-
-### Settling debt
-While the Vault's core primitives attribute either debt & or credit to the Router (as part of the logic defined in pools). Regardless of usage all debts & credits need to be settled at the end of the transaction otherwise the transaction [reverts](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L83) because the debts & credits (`_accountDelta`) have not been cleared. This closes out the tab opened in step 1.
+1. The Router calls `invoke` on the Vault, allowing access to protected Vault functions that do token [accounting](/concepts/vault/transient.md) by triggering the `transient` modifier. This pushes the current caller on a list of `handlers` where only one handler is allowed to interact at any given moment to ensure no operations are overlapping. You can think of this step as the Router opening a tab with the Vault and any operation on the Vault will attribute to that tab.
+2. The Router executes the callback function like `swapCallback`, `addLiquidityCallback`, `removeLiquidityCallback` which calls the Vault's primitives like `swap`, `addLiquidity` and `removeLiquidity`. These operations add debt or credit to the Routers tab with the Vault. 
+3. To finalize the user operation, the Router needs to settle outstanding debt, which the Vault attributed to the Router during the execution of `swap`, `addLiquidity` or `removeLiquidity`. If debt & credit is not settled, the transaction will revert. This step closes out the tab opened with the Vault in step 1.
 
 ## Router Queries
 The clear separation of enforcing debt settlement (via the call to `invoke`) and accounting & math operations as part of the Vault's core primitives enable any operation to be queryable. Querying user-operations execute the Vaults primitives but instead of setting debt/credit the query functions simply return the `amountsCalculated`. This is achieved by instead of calling `invoke` the Router calls `quote` on the Vault. The difference now is that debt & credit settlement is not enforced but the requirement that a `staticcall` is made as in an offchain eth_call. All operations with the `withHandler` modifier can be queried. 
 
-:::info onchain queries
-Action: test how `call` will work
-
-
-It is not possible to use queries as part of `view` functions onchain as the used Vault operations does state changes and would revert with `EvmError: StateChangeDuringStaticCall`. These scenarios are prohibited by the `query` modifier which requires the `tx.origin` to equal `address(0)`. This is the case if called in an offchain context.
-:::
 
 ## Trusted Routers
 
