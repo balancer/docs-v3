@@ -30,4 +30,4 @@ The clear separation of enforcing debt settlement (via the call to `invoke`) and
 
 ## Trusted Routers
 
-A trusted Router has access to the allowances users granted the Vault. This reduces the number of token transfers for each operation from user -> Router -> Vault to only user -> Vault. While any smart contract can work as a Router and settle debt via `vault.settle`, creating a router that is trusted increases user experience for users by allowing it to settle debt via `vault.retrieve`, which uses the allowances users have granted the Vault.
+A Trusted Router has access to the allowances users have granted the Vault. This allows for a reduction in the number of token transfers for each operation from user -> Router -> Vault to user -> Vault. While any smart contract can work as a Router and settle debt via `vault.settle`, Trusted Routers can settle debt via `vault.retrieve`.
