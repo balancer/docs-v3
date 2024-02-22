@@ -25,7 +25,10 @@ Every user interaction going through the Router follows the same pattern of exec
 3. To finalize the user operation, the Router needs to settle outstanding debt which the Vault attributed to the Router during the execution of `swap`. If debt & credit is not settled, the transaction will revert. This step closes out the tab opened with the Vault in step 1.
 
 ## Router Queries
-The clear separation of enforcing debt settlement (via the call to `invoke`) and accounting & math operations as part of the Vault's core primitives enable any operation to be queryable. Querying user-operations execute the Vaults primitives but instead of setting debt/credit the query functions simply return the `amountsCalculated`. This is achieved by instead of calling `invoke` the Router calls `quote` on the Vault. The difference now is that debt & credit settlement is not enforced but the requirement that a `staticcall` is made as in an offchain eth_call. All operations with the `withHandler` modifier can be queried. 
+
+[Transient Accounting]() allows complex Vault operations to be queryable. To perform a query, the Router calls `quote` on the Vault.
+The vault enforces that any call to `quote` is performed as a `staticcall` made in an offchain `eth_call`. Inside of the `quote` context,
+the Router is allowed to perform any set of complex actions without settling debt.
 
 
 ## Trusted Routers
