@@ -4,10 +4,23 @@ title: Onchain API
 ---
 # Router Onchain API
 The Router is the recommended entrypoint for user operations. It provides functions to both query and execute `swap`, `add` and `remove` operations against the Balancer vault.
-
-This router is a [Trusted Router](./technical.html#trusted-routers), so it will inherit the user's vault token approvals once `approved`.
+[Transient Accounting](/concepts/vault/transient.html) enables a simple query system that ensures query functions will always return the exact same outcome as their state-changing counterpart.
 
 Because routers are stateless and do not hold token balances, they can be replaced safely and trustlessly, if necessary. These docs will always reference the latest version of the Balancer Router. 
+
+::: info User token approvals should always be for the Balancer Vault, never the router contract
+This router is a [Trusted Router](./technical.html#trusted-routers), so it will inherit vault token approvals once `approved` by both the user AND governance. In a scenario where an issue is discovered in a Trusted Router,
+governance has the ability to revoke the **Trusted** designation, disabling vault approval access globally.
+:::
+
+
+## Code
+
+[Router.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Router.sol)
+
+## Deployment Addresses
+
+BalancerV3Router01 is deployed at 0x..... on the Ethereum mainnet, ...... It was built from commit #####.
 
 ## Liquidity operations
 Liquidity operations are transactions that change pool balances and are state changing. They are used for interacting with Balancer onchain and route through to the Vault's primitives.
