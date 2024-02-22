@@ -20,14 +20,17 @@ The Router and Vault interact in a back and forth manner to achieve the intended
 
 Every user interaction going through the Router follows the same pattern of execution flow. The elegance of `invoke` wrapping the transaction in a Vault context is further explained in the [transient accounting](/concepts/vault/transient.md) section
 
-1. The Router calls `invoke` on the Vault, allowing access to protected Vault functions that do token [accounting](/concepts/vault/transient.md) by triggering the `transient` modifier. This pushes the current caller on a list of `handlers` where only one handler is allowed to interact at any given moment to ensure no operations are overlapping. You can think of this step as the Router opening a tab with the Vault and any operation on the Vault will attribute to that tab.
-2. The Router executes the callback function like `swapCallback`, `addLiquidityCallback`, `removeLiquidityCallback` which calls the Vault's primitives like `swap`, `addLiquidity` and `removeLiquidity`. These operations add debt or credit to the Routers tab with the Vault. 
-3. To finalize the user operation, the Router needs to settle outstanding debt, which the Vault attributed to the Router during the execution of `swap`, `addLiquidity` or `removeLiquidity`. If debt & credit is not settled, the transaction will revert. This step closes out the tab opened with the Vault in step 1.
+1. The Router calls `invoke` on the Vault, allowing access to protected state-changing functions that perform token [accounting](/concepts/vault/transient.md) by triggering the `transient` modifier. This pushes the current caller on a list of `handlers` where only one handler is allowed to interact at any given moment to ensure no operations are overlapping. You can think of this step as the Router opening a tab with the Vault and any operation on the Vault will attribute to that tab.
+2. The Router executes a callback function (ie: `swapCallback`) which calls the Vault's primitives (ie: `swap`). These operations add debt or credit to the handler's tab with the Vault. 
+3. To finalize the user operation, the Router needs to settle outstanding debt which the Vault attributed to the Router during the execution of `swap`. If debt & credit is not settled, the transaction will revert. This step closes out the tab opened with the Vault in step 1.
 
 ## Router Queries
-The clear separation of enforcing debt settlement (via the call to `invoke`) and accounting & math operations as part of the Vault's core primitives enable any operation to be queryable. Querying user-operations execute the Vaults primitives but instead of setting debt/credit the query functions simply return the `amountsCalculated`. This is achieved by instead of calling `invoke` the Router calls `quote` on the Vault. The difference now is that debt & credit settlement is not enforced but the requirement that a `staticcall` is made as in an offchain eth_call. All operations with the `withHandler` modifier can be queried. 
+
+[Transient Accounting]() allows complex Vault operations to be queryable. To perform a query, the Router calls `quote` on the Vault.
+The vault enforces that any call to `quote` is performed as a `staticcall` made in an offchain `eth_call`. Inside of the `quote` context,
+the Router is allowed to perform any set of complex actions without settling debt.
 
 
 ## Trusted Routers
 
-A trusted Router has access to the allowances users granted the Vault. This reduces the number of token transfers for each operation from user -> Router -> Vault to only user -> Vault. While any smart contract can work as a Router and settle debt via `vault.settle`, creating a router that is trusted increases user experience for users by allowing it to settle debt via `vault.retrieve`, which uses the allowances users have granted the Vault.
+A Trusted Router has access to the allowances users have granted the Vault. This allows for a reduction in the number of token transfers for each operation from user -> Router -> Vault to user -> Vault. While any smart contract can work as a Router and settle debt via `vault.settle`, Trusted Routers can settle debt via `vault.retrieve`.
