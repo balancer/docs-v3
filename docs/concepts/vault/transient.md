@@ -4,20 +4,27 @@ order: 7
 ---
 
 # Transient accounting
-When a Router invokes the Vault, the transaction is wrapped within a vault context to verify correct token accounting. This call opens a transient state. Every operation that modifies internal accounting is registered in transient accounting, accruing either debt or credit to the caller. Any contract invoking the Vault is registered as a `handler` and pushed to an internal list of current handlers. When a transient state is about to be closed, the current `handler` is removed from the internal list. If the current `handler` is the only one remaining the Vault checks that no credit or debt is outstanding on any of the used `handlers`. Once the transient state has been opened, the following operations are possible on the Vault.
+When the handler calls the Vault, the transaction is processed within a Vault context to ensure accurate token accounting. This action initiates a temporary, so called 'transient', state. All operations that alter the internal accounting are tracked in this transient state, accumulating either a debt or credit for the handler. 
 
-- `wire` (sends tokens from the Vault to a recipient)
-- `settle` (settles deltas for a token)
-- `retrieve` (Retrieves tokens from a sender)
-- `swap` (swaps tokenA for TokenB)
-- `addLiquidity` (adds token/tokens to a liquidity pool)
-- `removeLiquidity` (remove token/tokens from a liquidity pool)
+Any contract that calls the Vault becomes a 'handler' and is added to an internal list of active handlers. As a transient state nears its closure, the current handler is taken off this list. If the current handler is the last one on the list, the Vault verifies that there are no outstanding credits or debts linked to any handlers. 
+
+Once the transient state is active, the Vault can perform the following operations:
+
+- `wire`: Sends tokens from the Vault to a recipient.
+- `settle`: Balances the changes for a token.
+- `retrieve`: Collects tokens from a sender.
+- `swap`: Exchanges one type of token for another.
+- `addLiquidity`: Adds one or more tokens to a liquidity pool.
+- `removeLiquidity`: Removes one or more tokens from a liquidity pool.
 
 ## Key concepts
 
 ### 1. Enabling transient state
-The transient state is enabled when the `transient` modifier is executed as part of the Vault being invoked. First the current caller is pushed to the `_handlers` list. Next as part of the transient state being enabled, the Vault passes execution back to the caller as part of a callback allowing all functions above to be called. Once the operations which are part of the callback are finished, the transient state is to be netted out meaning all `handlers` except the last one are removed the `_handlers` list. The last `handler` can only be cleared if all credit & debt accrued as part of the callback execution is cleared meaning `_nonzeroDeltaCount` must be zero.
-```
+The transient state is activated when the `transient` modifier is used during the invocation of the Vault. Initially, the current caller is added to the `_handlers` list. As the transient state is enabled, the Vault hands back control to the caller through a callback, which allows all the previously mentioned functions to be called. 
+
+After the operations within the callback are completed, the transient state is expected to be closed. This means all `handlers`, except for the last one, are removed from the `_handlers` list. The final `handler` can only be removed if all the credit and debt accumulated during the callback execution is settled, which is indicated by `_nonzeroDeltaCount` being zero.
+
+```solidity
 modifier transient() {
     // Add the current handler to the list
     _handlers.push(msg.sender);
@@ -42,4 +49,52 @@ modifier transient() {
 }
 ```
 
-### 2. Accruing debt or credit
+### 2. Debt or credit tracking
+
+All of the functions listed above either accrue debt (`_takeDebt`) or supply credit (`_supplyCredit`) as part of their implementation. The amount of debt taken or credit supplied is stored in an internal mapping of `_tokenDeltas`. 
+
+```solidity
+/**
+ * @notice Represents the token due/owed to each handler.
+ * @dev Must all net to zero when the last handler is released.
+*/
+mapping(address => mapping(IERC20 => int256)) internal _tokenDeltas;
+```
+
+Each time debt is taken or credit is supplied for a given token, the `_tokenDeltas` mapping is updated to the net changes. If the net changes for a token & handler combination zero out the internal `_nonzeroDeltaCount` is decremented whereas a non zero net change increments the `_nonzeroDeltaCount`. 
+
+```solidity
+function _accountDelta(IERC20 token, int256 delta, address handler) internal {
+    // If the delta is zero, there's nothing to account for.
+    if (delta == 0) return;
+
+    // Ensure that the handler specified is indeed the caller.
+    if (handler != msg.sender) {
+        revert WrongHandler(handler, msg.sender);
+    }
+
+    // Get the current recorded delta for this token and handler.
+    int256 current = _tokenDeltas[handler][token];
+
+    // Calculate the new delta after accounting for the change.
+    int256 next = current + delta;
+
+    unchecked {
+        // If the resultant delta becomes zero after this operation,
+        // decrease the count of non-zero deltas.
+        if (next == 0) {
+            _nonzeroDeltaCount--;
+        }
+        // If there was no previous delta (i.e., it was zero) and now we have one,
+        // increase the count of non-zero deltas.
+        else if (current == 0) {
+            _nonzeroDeltaCount++;
+        }
+    }
+
+    // Update the delta for this token and handler.
+    _tokenDeltas[handler][token] = next;
+}
+```
+
+This transient accounting approach moves token balances tracking at the very beginning (opening a tab) and very end of an operation (closing the tab) and allowing complete flexibility of what happens inbetween with token amounts. There is no further management of balances required elsewhere allowing token accounting and execution logic to be separated. Eventually before the transient state is about to be closed, all that needs to be ensured is that `_nonzeroDeltaCount == 0`.
