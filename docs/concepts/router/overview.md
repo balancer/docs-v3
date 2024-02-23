@@ -113,8 +113,8 @@ function addLiquidityCustom(
 ) external payable returns (uint256[] memory amountsIn, uint256 bptAmountOut, bytes memory returnData);
 ```
 
-Available if the `pool` has implemented [`onAddLiquidityCustom`](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.html#add-liquidity-custom).
-[Custom AMMs](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.md) that require a non-standard strategy for adding liquidity will implement this function to serve a specific use case.
+Available if the pool has implemented [`onAddLiquidityCustom`](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.html#add-liquidity-custom).
+[Custom AMMs](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.md) that require a non-standard strategy for adding liquidity will implement this function to solve a specific use case.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -216,7 +216,8 @@ function removeLiquidityCustom(
 ) external returns (uint256 bptAmountIn, uint256[] memory amountsOut, bytes memory returnData);
 ```
 
-This type of removing liquidity is possible if the `pool` has implemented [`onRemoveLiquidityCustom`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IPoolLiquidity.sol#L41-L47). It can be used for [custom built AMMs](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.md). The custom request usually is encoded as part of the `userData`.
+Available if the pool has implemented [`onRemoveLiquidityCustom`](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.html#remove-liquidity-custom).
+[Custom AMMs](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.md) that require a non-standard strategy for removing liquidity will implement this function to solve a specific use case.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -244,7 +245,7 @@ function swapExactIn(
 ) external payable returns (uint256 amountOut)
 ```
 
-Swap `exactAmountIn` of `tokenIn` for atleast `minAmountOut` of `tokenOut` with a given liquidity `pool`.
+Swap `exactAmountIn` of `tokenIn` for at least `minAmountOut` of `tokenOut` with a given liquidity `pool`.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -274,7 +275,7 @@ function swapExactOut(
 ) external payable returns (uint256 amountIn);
 ```
 
-Swap up to `maxAmountIn` of `tokenIn` for an `exactAmountOut` of `tokenOut`. Useful for when there is already a next usage for `exactAmountOut` like as part of a longer swap route.
+Swap up to `maxAmountIn` of `tokenIn` for an `exactAmountOut` of `tokenOut`.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -291,7 +292,7 @@ Swap up to `maxAmountIn` of `tokenIn` for an `exactAmountOut` of `tokenOut`. Use
 
 
 ## Query functions
-Query operations allow simulation of various operations on Balancer. The queries are expected to be used in an offchain context and done by an `eth_call`. Query operations execute the same accounting logic as liquidity operations do and return the data without settling the operation.
+All state-changing functions have a query counterpart. Queries are expected to be used in an offchain context and done with an `eth_call`. [Transient Accounting](/concepts/vault/transient.html) enables query functions to execute the same accounting logic as state-changing functions, returning the outcome without settling the operation.
 
 ### queryAddLiquidityUnbalanced
 ```solidity
@@ -303,7 +304,7 @@ function queryAddLiquidityUnbalanced(
 ) external returns (uint256 bptAmountOut);
 ```
 
-Queries an `addLiquidityUnbalanced` operation without actually executing it.
+Queries an [`addLiquidityUnbalanced`](#addliquidityunbalanced) operation without executing it.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -325,7 +326,7 @@ function queryAddLiquiditySingleTokenExactOut(
 ) external returns (uint256 amountIn);
 ```
 
-Queries an `addLiquiditySingleTokenExactOut` operation without actually executing it.
+Queries an [`addLiquiditySingleTokenExactOut`](#addliquiditysingletokenexactout) operation without executing it.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -347,7 +348,7 @@ function queryAddLiquidityCustom(
 ) external returns (uint256[] memory amountsIn, uint256 bptAmountOut, bytes memory returnData);
 ```
 
-Queries adding liquidity to a pool with a custom request. This operation executes the same logic as `addLiquidityCustom` but instead only returns `amountsIn`, `bptAmountOut` and `returnData`.
+Queries an [`addLiquidityCustom`](#addliquiditycustom) operation without executing it.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -370,7 +371,7 @@ function queryRemoveLiquidityProportional(
 ) external returns (uint256[] memory amountsOut);
 ```
 
-Queries `removeLiquidityProportional` operation without actually executing it.
+Queries a [`removeLiquidityProportional`](#removeliquidityproportional) operation without executing it.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -392,7 +393,7 @@ function queryRemoveLiquiditySingleTokenExactIn(
 ) external returns (uint256 amountOut);
 ```
 
-Queries `removeLiquiditySingleTokenExactIn` operation without actually executing it.
+Queries a [`removeLiquiditySingleTokenExactIn`](#removeliquiditysingletokenexactin) operation without executing it.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -415,7 +416,7 @@ function queryRemoveLiquiditySingleTokenExactOut(
 ) external returns (uint256 bptAmountIn);
 ```
 
-Queries `removeLiquiditySingleTokenExactOut` operation without actually executing it.
+Queries a [`removeLiquiditySingleTokenExactOut`](#removeliquiditysingletokenexactout) operation without executing it.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -437,7 +438,7 @@ function queryRemoveLiquidityCustom(
 ) external returns (uint256 bptAmountIn, uint256[] memory amountsOut, bytes memory returnData);
 ```
 
-Queries removing liquidity with a custom request without actually executing it. This operation executes the same logic as `removeLiquidityCustom` but instead only returns `bptAmountIn`, `amountsOut` and `returnData`.
+Queries a [`removeLiquidityCustom`](#removeliquiditycustom) operation without executing it.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -461,7 +462,7 @@ function querySwapExactIn(
 ) external returns (uint256 amountOut);
 ```
 
-Queries a swap operation specifying an exact input token amount without actually executing it.
+Queries a [`swapExactIn`](#swapexactin) operation without executing it.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -485,7 +486,7 @@ function querySwapExactOut(
 ) external returns (uint256 amountIn);
 ```
 
-Queries a swap operation specifying an exact output token amount without actually executing it.
+Queries a [`swapExactOut`](#swapexactout) operation without executing it.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
