@@ -9,7 +9,7 @@ The Router is the recommended entrypoint for user operations. It provides functi
 Because routers are stateless and do not hold token balances, they can be replaced safely and trustlessly, if necessary. These docs will always reference the latest version of the Balancer Router. 
 
 ::: info User token approvals should always be for the Balancer Vault, never the router contract
-This router is a [Trusted Router](./technical.html#trusted-routers), so it will inherit vault token approvals once `approved` by both the user AND governance. In a scenario where an issue is discovered in a Trusted Router,
+The Balancer Router router is a [Trusted Router](./technical.html#trusted-routers), so it will inherit vault token approvals once `approved` by both the user AND governance. In a scenario where an issue is discovered in a Trusted Router,
 governance has the ability to revoke the **Trusted** designation, disabling vault approval access globally.
 :::
 
@@ -18,13 +18,12 @@ governance has the ability to revoke the **Trusted** designation, disabling vaul
 
 [Router.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Router.sol)
 
-## Deployment Addresses
+## Deployments
 
 BalancerV3Router01 is deployed at 0x..... on the Ethereum mainnet, ...... It was built from commit #####.
 
-## Liquidity operations
-Liquidity operations are transactions that change pool balances and are state changing. They are used for interacting with Balancer onchain and route through to the Vault's primitives.
-
+## State-changing functions
+The router's state-changing functions are used for interacting with Balancer onchain. They provide simple interfaces for the most common user actions performed against the Balancer Vault.
 ### initialize
 
 ```solidity
@@ -37,8 +36,8 @@ function initialize(
     bytes memory userData
 ) external payable returns (uint256 bptAmountOut);
 ```
-
-Once a deployed pool contract has been [registered](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L93-L121) in the Vault, it can have liquidity added to it. The first liquidity addition is done by pool initialization. Afterwards the pools initialization state is changed to `true` in the `PoolConfig.isPoolInitialized`. Pool initialization mints BPT in exchange for tokens and can only be done once. 
+Once a pool has been [registered](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L93-L121), a call to `initialize` is required to perform setup actions and seed the pool with initial liquidity.
+Until a pool is `initialized`, it will not support normal `swap`, `add` and `remove` operations. A pool can only be initialized once in its life-time, enforced by the vault. 
 
 | Name          | Type          | Description   |
 | ------------- | ------------- | ------------  |
@@ -63,7 +62,9 @@ function addLiquidityUnbalanced(
 ) external payable returns (uint256 bptAmountOut);
 ```
 
-The most flexible way to add tokens to a liquidity pool. An unbalanced add liquidity allows arbitrary token amounts to be added to a pool to avoid unnecessary dust in the depositors wallet. This is the standard approach to allow the user to specify exact token amounts in and does not enforce exact proportions of tokens to be added. 
+The preferred function for adding liquidity to a pool. `addLiquidityUnbalanced` allows exact amounts of any pool token to be added to the pool, avoiding unnecessary dust in the user's wallet.
+
+The un-proportional amounts will be charged the pool's `swapFeePercentage` to ensure that the user cannot circumvent the swap fee by using add/remove operations.
 
 | Name          | Type          | Description   |
 | ------------- | ------------- | ------------  |
@@ -87,7 +88,7 @@ function addLiquiditySingleTokenExactOut(
 ) external payable returns (uint256 amountIn)
 ```
 
-Adding Liquidity to a pool with one single token receiving an exact amount of BPT out. This option is useful for getting an intended amount of `exactBptAmountOut` in order to further stake the BPT or use it as part of another operation. 
+Add liquidity to a pool with a single token and receive an exact amount of BPT out. This function is useful for `EXACT_OUT` operations. 
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -112,7 +113,8 @@ function addLiquidityCustom(
 ) external payable returns (uint256[] memory amountsIn, uint256 bptAmountOut, bytes memory returnData);
 ```
 
-This type of adding liquidity is possible if the `pool` has implemented [`onAddLiquidityCustom`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IPoolLiquidity.sol#L22-L28). It can be used for [custom built AMMs](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.md). Compared to `addLiquidityUnbalanced` the amount of input tokens is flexible to allow custom pool implementations and the actual `amountsIn` are returned additionally. The custom request usually is encoded as part of the `userData`. 
+Available if the `pool` has implemented [`onAddLiquidityCustom`](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.html#add-liquidity-custom).
+[Custom AMMs](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.md) that require a non-standard strategy for adding liquidity will implement this function to serve a specific use case.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -138,7 +140,8 @@ function removeLiquidityProportional(
 ) external payable returns (uint256[] memory amountsOut);
 ```
 
-This remove liquidity operation removes tokens from the pool in proportional amounts without causing price impact as `amountsOut` ratio received will be in the same pool token balances proportions.
+The preferred function for removing liquidity from a pool. Tokens are removed from the pool in proportional amounts, causing zero price impact and avoiding the swap fee charged when exiting non-proportional.
+Specifying an `exactBptAmountIn` ensures that the user will not be left with any dust.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -162,8 +165,7 @@ function removeLiquiditySingleTokenExactIn(
     bytes memory userData
 ) external payable returns (uint256 amountOut);
 ```
-
-This remove liquidity operation removes liquidity from a pool by getting atleast `minAmountOut` of a single token out. An exact `exactBptAmountIn` of pool token is burned.
+Remove liquidity from the pool in a single token specifying `exactBptAmountIn` and `minAmountOut`. This function causes price impact. The pool's `swapFeePercentage` will be charged on the non-proportional exit amount.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -188,8 +190,7 @@ function removeLiquiditySingleTokenExactOut(
     bytes memory userData
 ) external payable returns (uint256 bptAmountIn);
 ```
-
-Removes liquidity from a pool via a single token, specifying the exact amount of tokens to receive but only giving up to `maxBptAmountIn` of pool tokens in exchange.
+Remove liquidity from the pool in a single token specifying `maxBptAmountIn` and `exactAmountOut`. This function causes price impact. The pool's `swapFeePercentage` will be charged on the non-proportional exit amount.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -289,7 +290,7 @@ Swap up to `maxAmountIn` of `tokenIn` for an `exactAmountOut` of `tokenOut`. Use
 | amountOut          |  `uint256`    | Calculated amount of output tokens to be received in exchange for the given input tokens      |
 
 
-## Query operations
+## Query functions
 Query operations allow simulation of various operations on Balancer. The queries are expected to be used in an offchain context and done by an `eth_call`. Query operations execute the same accounting logic as liquidity operations do and return the data without settling the operation.
 
 ### queryAddLiquidityUnbalanced
