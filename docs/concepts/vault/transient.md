@@ -4,11 +4,10 @@ order: 7
 ---
 
 # Transient accounting
-When the handler calls the Vault, the transaction is processed within a Vault context to ensure accurate token accounting. This action initiates a temporary, so called 'transient', state. All operations that alter the internal accounting are tracked in this transient state, accumulating either a debt or credit for the handler. 
 
-Any contract that calls the Vault becomes a 'handler' and is added to an internal list of active handlers. As a transient state nears its closure, the current handler is taken off this list. If the current handler is the last one on the list, the Vault verifies that there are no outstanding credits or debts linked to any handlers. 
+Transient accounting shifts the validation of accurate token accounting to the start and conclusion of a Vault interaction. This is achieved by initiating a transient state that monitors the debt and credit associated with the Vault. This transient state guarantees the atomic execution of operations within it and confirms the proper settlement of all debt and credit at the end of the execution, prior to exiting the transient state.
 
-Once the transient state is active, the Vault can perform the following operations:
+Upon activation of the transient state, the handler contract is given permissions to certain Vault functions. This is managed by the Vault maintaining a list of handlers authorized to call these functions. The Vault then returns execution control back to the handler through a callback. The handler is now authorized to call:
 
 - `wire`: Sends tokens from the Vault to a recipient.
 - `settle`: Balances the changes for a token.
