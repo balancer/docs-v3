@@ -14,7 +14,7 @@ Tokens should be defined as `WITH_RATE` when they have an externally available e
 - `wstETH` - A wrapped version of the rebasing token stETH, the wstETH rate represents the exchange rate of wstETH -> stETH, which grows as staking rewards accumulate.
 - `EURe` - When pairing a EURO stable coin against a USD stable coin, there is a known FX market exchange rate of EUR -> USD. 
 
-See [Rate scaling](./ratescaling.md) For an in-depth explanation on how Balancer manages tokens with rates.
+See [Rate scaling](./rate-scaling.md) For an in-depth explanation on how Balancer manages tokens with rates.
 
 When [registering](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L156) a token as `WITH_RATE`, your [`TokenConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L68) should resemble the following:
 ```solidity
@@ -31,7 +31,7 @@ TODO
 :::
 
 ## ERC4626 vault tokens (`ERC4626`)
-`ERC4626` is an extension of `ERC20` that proposes a standard interface for token vaults. Balancer embraces this standard to empower the next generation of Boosted Pools, see [Boosted Tokens (ERC4626)](./boostedtokens.md) for more information.
+`ERC4626` is an extension of `ERC20` that proposes a standard interface for token vaults. Balancer embraces this standard to empower the next generation of Boosted Pools, see [Boosted Tokens (ERC4626)](./boosted-tokens-erc4626.md) for more information.
 
 An example of an `ERC4626` token is `waUSDC`, a wrapper for AAVE's aUSDC.
 

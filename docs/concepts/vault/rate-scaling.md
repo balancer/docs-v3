@@ -18,7 +18,7 @@ TODO: something about LVR mitigation as a result of applying token rates, possib
 
 TODO: scaling done in vault to standardize approach, no longer handled in the pool. allow fo simplicity in pool
 
-Besides [decimal scaling](decimalscaling.md) a tokens rate is taken into account in Balancer under in the following scenarios:
+Besides [decimal scaling](decimal-scaling.md) a tokens rate is taken into account in Balancer under in the following scenarios:
 - price computation as part of Stable & boosted pools
 - Yield fee computation when tokens with a rate are part of pools
 
