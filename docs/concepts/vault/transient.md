@@ -5,7 +5,7 @@ order: 7
 
 # Transient accounting
 
-Transient accounting shifts the validation of accurate token accounting to the start and conclusion of a Vault interaction. This is achieved by initiating a transient state that monitors the debt and credit associated with the Vault. This transient state guarantees the atomic execution of operations within it and confirms the proper settlement of all debt and credit at the end of the execution, prior to exiting the transient state.
+Transient accounting shifts the validation of accurate token accounting to the start and conclusion of a Vault interaction. This is achieved by initiating a transient state that monitors the debt and credit associated with the handler. This transient state guarantees the atomic execution of operations within it and confirms the proper settlement of all debt and credit at the end of the execution, prior to exiting the transient state.
 
 Upon activation of the transient state, the handler contract is given permissions to certain Vault functions. This is managed by the Vault maintaining a list of handlers authorized to call these functions. The Vault then returns execution control back to the handler through a callback. The handler is now authorized to call:
 
@@ -21,7 +21,7 @@ Upon activation of the transient state, the handler contract is given permission
 ### 1. Enabling transient state
 The transient state is activated when the `transient` modifier is used during the invocation of the Vault. Initially, the current caller is added to the `_handlers` list. As the transient state is enabled, the Vault hands back control to the caller through a callback, which allows all the previously mentioned functions to be called. 
 
-After the operations within the callback are completed, the transient state is expected to be closed. This means all `handlers`, except for the last one, are removed from the `_handlers` list. The final `handler` can only be removed if all the credit and debt accumulated during the callback execution is settled, which is indicated by `_nonzeroDeltaCount` being zero.
+After the operations within the callback are completed, the transient state is expected to be closed. This means all `handlers`, except for the last one, are removed from the `_handlers` list. The final `handler` can only be removed if all the credit and debt accumulated to each individual handler during the callback execution is settled, which is indicated by `_nonzeroDeltaCount` being zero.
 
 ```solidity
 modifier transient() {
@@ -95,5 +95,4 @@ function _accountDelta(IERC20 token, int256 delta, address handler) internal {
     _tokenDeltas[handler][token] = next;
 }
 ```
-
-This transient accounting approach moves token balances tracking at the very beginning (opening a tab) and very end of an operation (closing the tab) and allowing complete flexibility of what happens inbetween with token amounts. There is no further management of balances required elsewhere allowing token accounting and execution logic to be separated. Eventually before the transient state is about to be closed, all that needs to be ensured is that `_nonzeroDeltaCount == 0`.
+This transient accounting approach starts tracking token balances at the beginning of an operation (when opening a tab) and stops at the end (when closing the tab), providing full flexibility for any token amount changes in between. This eliminates the need for additional balance management elsewhere, allowing for a clear separation between token accounting and execution logic. Before closing the temporary state, the only requirement is to ensure that `_nonzeroDeltaCount` equals 0.
