@@ -3,7 +3,7 @@ title: Yield Fee
 order: 10
 ---
 # Yield fee. 
-On every state changing vault interaction a yield fee is charged, depending on a token's specific configuration. This fee is paid by liquidity providers depending on the token's exemption status in the [`TokenConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L73). The `yieldFeePercentage` parameter, which is controlled by the protocol, sets the fee's percentage. It's important to note that this percentage is consistent across all pools.
+On every state changing vault interaction a yield fee is charged, depending on a token's specific configuration. This fee is paid by liquidity providers depending on the token's exemption status in the [`TokenConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L73) as the token that has accrued yield. The `yieldFeePercentage` parameter, which is controlled by the protocol, sets the fee's percentage. It's important to note that this percentage is consistent across all pools.
 
 ## Importance for the Balancer protocol
 The application of the yield fee serves three primary purposes that make it an excellent fit for the Balancer protocol:
