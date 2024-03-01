@@ -6,18 +6,20 @@
 - Javascript examples feel a bit strange - SDK is full process whereas non-sdk is just contract interaction
 -->
 
-This guide will demonstrate how to add liquidity to a pool. We will use the `addLiquidityUnbalanced` method which adds with arbitrary token amounts. Other add methods are supported, see the [API-TODO](TODO) for more detail.
+This guide demonstrates how to add liquidity to a pool. We will use the `addLiquidityUnbalanced` method, since it allows exact amounts of any pool token to be added to a pool, avoiding unnecessary dust in the user's wallet. Other add methods are supported, see the [Router API](../router/overview.html) for more detail.
+
+_This guide is for adding liquidity to Balancer V3. If you're looking to add liquidity to a Balancer V2 pool, start [here]()._
 
 ## Core Concepts
 
-The core concepts of adding liquidity are the same for JS and SC development:
-* The sender must approve the Vault (not the Router) for each token they are providing liquidity
-* Token amount inputs/outputs are always in the raw token scale, e.g. 1USDC should be sent as 1000000 because it has 6 decimals
+The core concepts of adding liquidity are the same for any programming language or framework:
+* The sender must approve the Vault (not the Router) for each token they wish to add to the pool
+* Token amount inputs/outputs are always in the raw token scale, e.g. `1 USDC` should be sent as `1000000` because it has 6 decimals
 * Transactions are always sent to the [Router](../router/overview.md)
 * In exchange for providing liquidity the sender will receive [Balancer Pool Tokens](../pools/balancer-pool-token.md) (BPTs) which represents their share of the pool and can be used to remove liquidity at any time
 
 The Router interface for `addLiquidityUnbalanced` is:
-```
+```solidity
 /**
 * @notice Adds with arbitrary token amounts in to a pool.
 * @param pool Address of the liquidity pool
@@ -36,16 +38,16 @@ function addLiquidityUnbalanced(
 ) external payable returns (uint256 bptAmountOut);
 ```
 
-* The sender defines the exact amounts of the tokens they wish to send, `exactAmountsIn`, the vault will use no more or less than this. Note these must be sent in token registration order (TODO - Confirm how this is determined. Maybe add another section?)
-* The sender defines the minimum amount of BPT tokens they should receive, `minBptAmountOut`. If the amount is less than this (e.g. because of slippage) the transaction will revert
-* If wethIsEth is set to true to enable auto wrapping of the native asset the transaction must be sent with the appropriate value amount
-* userData is a field that allows for custom flexibility. In this case it serves no purpose and `0x` value can be used.
+* `exactAmountsIn` defines the exact amounts of each token to add to the pool. _Note: these must be sent in token registration order (TODO - Confirm how this is determined. Maybe add another section?)_
+* `minBptAmountOut` defines the minimum amount of BPT to receive. If the amount is less than this (e.g. because of slippage) the transaction will revert
+* If `wethIsEth` is set to `true`, the Router will deposit the `exactAmountIn` of `ETH` into the `WETH` contract. So, the transaction must be sent with the appropriate `value` amount
+* `userData` allows additional parameters to be provided for custom pool types. In most cases it is not required and a value of `0x` can be provided.
 
 The following sections provide specific implementation details for Javascript (with and without the SDK) and Solidity.
 
 ## Javascript With SDK
 
-This example demonstrates the full flow for adding liquidity for a given pool. The SDK is used to easily fetch pool data from the [API-TODO add link]() and create a transaction with user defined slippage protection. 
+This example demonstrates the full flow for adding liquidity to a given pool. The SDK provides functionality to easily fetch pool data from the [API-TODO add link]() and create a transaction with user defined slippage protection. 
 
 ```typescript
 TODO - THIS IS NOT FINALISED
@@ -64,6 +66,9 @@ import {
 // User defined
 const chainId = ChainId.MAINNET;
 const userAccount = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
+// Balancer V3 uses the pool address as the poolId.
+// Balancer V2 uses a unique poolId generated when the pool is registered.
+// TODO: Would do this as an address insted of an id since these docs are for v3
 const poolId =
     '0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014'; // 80BAL-20WETH
 const slippage = Slippage.fromPercentage('1'); // 1%
@@ -227,7 +232,9 @@ encodeFunctionData({
 
 The following code snippet shows how to add liquidity from a smart contract.
 
-It's important to note that queries cannot be used in the same block to set `minBptAmountOut` due to possible manipulation. The integrator must set limits appropriately using some other methods - TODO should we provide some examples?
+::: warning Queries cannot be used within the same block to set minBptAmountOut due to possible manipulation
+The integrator must set limits appropriately using some other methods - TODO should we provide some examples?
+:::
 
 ```solidity
 TODO - Placeholder example needs updated
