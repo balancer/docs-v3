@@ -1,3 +1,8 @@
+---
+order: 2
+title: Add liquidity to a pool
+---
+
 # Add liquidity to a pool
 
 <!--
