@@ -147,12 +147,11 @@ TODO for feedback:
   - Not showing how to calculate limits
   - using arbitrary example values
 
-<details>
-<summary><b>Viem</b></summary>
-
-1. Do a query
+::: code-tabs#shell
+@tab Viem
 ```typescript
 TODO - Placeholder example needs updated
+// 1. Do a query
 const client = createPublicClient({
     transport: http(rpcUrl),
     chain: CHAINS[chainId],
@@ -169,64 +168,59 @@ const { result: bptAmountOut } = await client.simulateContract({
         '0x',
     ],
 });
-```
-2. Construct call
-```typescript
+
+// 2. Construct call
 TODO - Placeholder example needs updated
 encodeFunctionData({
-    abi: balancerRouterAbi,
-    functionName: 'addLiquidityUnbalanced',
-    args: [
-        input.poolId,
-        input.amountsIn.map((a) => a.amount),
-        amounts.minimumBpt,
-        input.wethIsEth,
-        '0x',
-    ],
+  abi: balancerRouterAbi,
+  functionName: 'addLiquidityUnbalanced',
+  args: [
+    input.poolId,
+    input.amountsIn.map((a) => a.amount),
+    amounts.minimumBpt,
+    input.wethIsEth,
+    '0x',
+  ],
 });
 ```
-</details>
 
-<details>
-<summary><b>Ethers</b></summary>
+@tab Ethers
 
-1. Do a query
 ```typescript
 TODO - Placeholder example needs updated
+// 1. Do a query
 const client = createPublicClient({
-    transport: http(rpcUrl),
-    chain: CHAINS[chainId],
+  transport: http(rpcUrl),
+  chain: CHAINS[chainId],
 });
 
 const { result: bptAmountOut } = await client.simulateContract({
-    address: BALANCER_ROUTER[chainId],
-    abi: balancerRouterAbi,
-    functionName: 'queryAddLiquidityUnbalanced',
-    args: [
-        poolAddress,
-        maxAmountsIn,
-        0n, // minBptOut set to 0 when querying
-        '0x',
-    ],
+  address: BALANCER_ROUTER[chainId],
+  abi: balancerRouterAbi,
+  functionName: 'queryAddLiquidityUnbalanced',
+  args: [
+    poolAddress,
+    maxAmountsIn,
+    0n, // minBptOut set to 0 when querying
+    '0x',
+  ],
 });
-```
-2. Construct call
-```typescript
+
+// 2. Construct call
 TODO - Placeholder example needs updated
 encodeFunctionData({
-    abi: balancerRouterAbi,
-    functionName: 'addLiquidityUnbalanced',
-    args: [
-        input.poolId,
-        input.amountsIn.map((a) => a.amount),
-        amounts.minimumBpt,
-        input.wethIsEth,
-        '0x',
-    ],
+  abi: balancerRouterAbi,
+  functionName: 'addLiquidityUnbalanced',
+  args: [
+    input.poolId,
+    input.amountsIn.map((a) => a.amount),
+    amounts.minimumBpt,
+    input.wethIsEth,
+    '0x',
+  ],
 });
 ```
-</details>
-
+:::
 
 ## Solidity
 
