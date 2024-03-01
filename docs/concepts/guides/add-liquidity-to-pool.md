@@ -5,15 +5,9 @@ title: Add liquidity to a pool
 
 # Add liquidity to a pool
 
-<!--
-- Assume reader has basic knowledge of web3 dev. e.g. not explaining concepts like approaval, weth wrapping, etc
-- Top level concepts shared amongst all
-- Javascript examples feel a bit strange - SDK is full process whereas non-sdk is just contract interaction
--->
-
 This guide demonstrates how to add liquidity to a pool. We will use the `addLiquidityUnbalanced` method, since it allows exact amounts of any pool token to be added to a pool, avoiding unnecessary dust in the user's wallet. Other add methods are supported, see the [Router API](../router/overview.html) for more detail.
 
-_This guide is for adding liquidity to Balancer V3. If you're looking to add liquidity to a Balancer V2 pool, start [here]()._
+_This guide is for adding liquidity to Balancer V3. If you're looking to add liquidity to a Balancer V2 pool, start [here](TODO)._
 
 ## Core Concepts
 
@@ -43,7 +37,7 @@ function addLiquidityUnbalanced(
 ) external payable returns (uint256 bptAmountOut);
 ```
 
-* `exactAmountsIn` defines the exact amounts of each token to add to the pool. _Note: these must be sent in token registration order (TODO - Confirm how this is determined. Maybe add another section?)_
+* `exactAmountsIn` defines the exact amounts of each token to add to the pool. _Note: these must be sent in [token registration order](./finding-pool-token-order.md)_
 * `minBptAmountOut` defines the minimum amount of BPT to receive. If the amount is less than this (e.g. because of slippage) the transaction will revert
 * If `wethIsEth` is set to `true`, the Router will deposit the `exactAmountIn` of `ETH` into the `WETH` contract. So, the transaction must be sent with the appropriate `value` amount
 * `userData` allows additional parameters to be provided for custom pool types. In most cases it is not required and a value of `0x` can be provided.
@@ -52,11 +46,9 @@ The following sections provide specific implementation details for Javascript (w
 
 ## Javascript With SDK
 
-This example demonstrates the full flow for adding liquidity to a given pool. The SDK provides functionality to easily fetch pool data from the [API-TODO add link]() and create a transaction with user defined slippage protection. 
+This example demonstrates the full flow for adding liquidity to a given pool. The SDK provides functionality to easily fetch pool data from the [Balancer Pools API-TODO add link]() and create a transaction with user defined slippage protection. 
 
 ```typescript
-TODO - THIS IS NOT FINALISED
-
 import { parseUnits } from 'viem';
 import {
     AddLiquidityInput,
@@ -64,36 +56,24 @@ import {
     AddLiquidity,
     BalancerApi,
     ChainId,
-    PriceImpact,
     Slippage,
 } from '@balancer/sdk';
 
 // User defined
 const chainId = ChainId.MAINNET;
 const userAccount = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
+const rpcUrl = 'RPC_END_POINT'
 // Balancer V3 uses the pool address as the poolId.
-// Balancer V2 uses a unique poolId generated when the pool is registered.
-// TODO: Would do this as an address insted of an id since these docs are for v3
-const poolId =
-    '0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014'; // 80BAL-20WETH
+const pool = '0x1e5b830439fce7aa6b430ca31a9d4dd775294378';
+const amountsIn = [1000000000000000000n, 1000000000000000000n];
 const slippage = Slippage.fromPercentage('1'); // 1%
 
-// Start a local anvil fork that will be used to query/tx against
-const { rpcUrl } = await startFork(ANVIL_NETWORKS.MAINNET);
-
-// API is used to fetch relevant pool data
+// API can be used to fetch relevant pool data
 const balancerApi = new BalancerApi(
     'https://backend-v3-canary.beets-ftm-node.com/graphql',
     chainId,
 );
-const poolState = await balancerApi.pools.fetchPoolState(poolId);
-
-// We create arbitrary amounts in but these would usually be set by user
-const amountsIn = poolState.tokens.map((t) => ({
-    rawAmount: parseUnits('1', t.decimals),
-    decimals: t.decimals,
-    address: t.address,
-}));
+const poolState = await balancerApi.pools.fetchPoolState(pool);
 
 // Construct the AddLiquidityInput, in this case an AddLiquidityUnbalanced
 const addLiquidityInput: AddLiquidityInput = {
@@ -103,54 +83,125 @@ const addLiquidityInput: AddLiquidityInput = {
     kind: AddLiquidityKind.Unbalanced,
 };
 
-// Simulate addLiquidity to get the amount of BPT out
+// Query addLiquidity to get the amount of BPT out
 const addLiquidity = new AddLiquidity();
 const queryOutput = await addLiquidity.query(addLiquidityInput, poolState);
 
-console.log('\nAdd Liquidity Query Output:');
-console.log('Tokens In:');
-queryOutput.amountsIn.map((a) =>
-    console.log(a.token.address, a.amount.toString()),
-);
-console.log(`BPT Out: ${queryOutput.bptOut.amount.toString()}`);
+console.log(`Expected BPT Out: ${queryOutput.bptOut.amount.toString()}`);
 
-// Apply slippage to the BPT amount received from the query and construct the call
+// Applies slippage to the BPT out amount and constructs the call
 const call = addLiquidity.buildCall({
     ...queryOutput,
     slippage,
-    sender: userAccount,
-    recipient: userAccount,
     chainId,
     wethIsEth: false,
 });
 
-console.log('\nWith slippage applied:');
-console.log('Max tokens in:');
-call.maxAmountsIn.forEach((a) =>
-    console.log(a.token.address, a.amount.toString()),
-);
 console.log(`Min BPT Out: ${call.minBptOut.amount.toString()}`);
+
+const hash = await client.sendTransaction({
+    account: userAccount,
+    data: call.data,
+    to: call.to,
+    value: call.value,
+});
 ```
 
-TODO - Go through example describing most relevant points, e.g.:
-* SDK intro/installation.
-  * The [Balancer SDK TODO - link to SDK section like V2 had?](https://github.com/balancer/b-sdk) is a Typescript/Javascript library for interfacing with the Balancer protocol
-* API interaction (detailing API query)
-* Querying - what its doing and why its important
-* Setting Slippage
+### Balancer SDK
+
+The [Balancer SDK](https://github.com/balancer/b-sdk) is a Typescript/Javascript library for interfacing with the Balancer protocol and can be installed with
+
+::: code-tabs#shell
+@tab pnpm
+
+```bash
+pnpm add @balancer-labs/sdk
+```
+
+@tab yarn
+
+```bash
+yarn add @balancer-labs/sdk
+```
+
+@tab npm
+```bash
+npm install @balancer-labs/sdk
+```
+:::
+
+The three main helper classes we use from the SDK are:
+* `BalancerApi` - to simplify retrieving pool data from the Pools API
+* `AddLiquidity` - to build addLiquidity queries and transactions
+* `Slippage` - to simplify creating limits with user defined slippage 
+
+### Fetching Pool Data
+
+In this example we use the BalancerApi `fetchPoolState` function to fetch the pool data required for the addLiquidityUnbalanced `poolState` parameter. 
+```typescript
+const balancerApi = new BalancerApi(
+    'https://backend-v3-canary.beets-ftm-node.com/graphql',
+    chainId,
+);
+const poolState = await balancerApi.pools.fetchPoolState(pool);
+```
+To see the full query used to fetch pool state see the code [here](https://github.com/balancer/b-sdk/blob/41d2623743ab7fa466ed4d0f5f5c7e5aa16b7d91/src/data/providers/balancer-api/modules/pool-state/index.ts#L7).
+
+### Queries and safely setting slippage limits
+
+[Router queries](../router/technical.md#router-queries) allow for simulation of operations without execution. In this example, when the SDK `query` function is called: 
+
+```typescript
+const queryOutput = await addLiquidity.query(addLiquidityInput, poolState);
+// queryOutput.bptOut
+```
+the Routers [queryAddLiquidityUnbalanced](../router/overview.md#queryaddliquidityunbalanced) function is used to find the amount of BPT that would be received, `bptOut`.
+
+In the next step `buildCall` uses the `bptOut` and the user defined `slippage` to calculate the `minBptAmountOut`:
+```typescript
+const call = addLiquidity.buildCall({
+    ...queryOutput,
+    slippage,
+    chainId,
+    wethIsEth: false,
+});
+```
+For a min out type limit we want to remove the slippage from the amount (for max in slippage should be added). The SDK Slippage `applyTo` function shows how this is applied:
+```typescript
+/**
+ * Applies slippage to an amount in a given direction
+ *
+ * @param amount amout to apply slippage to
+ * @param direction +1 adds the slippage to the amount, and -1 will remove the slippage from the amount
+ * @returns
+ */
+public applyTo(amount: bigint, direction: 1 | -1 = 1): bigint {
+    return MathSol.mulDownFixed(
+        amount,
+        BigInt(direction) * this.amount + WAD,
+    );
+}
+```
+
+### Constructing the call
+
+The output of the `buildCall` function provides all that is needed to submit the addLiquidity transaction:
+* `to` - the address of the Router
+* `data` - the encoded call data
+* `value` - the native asset value to be sent
+
+It also returns the `minBptOut` amount which can be useful to display/validation purposes before the transaction is sent.
 
 ## Javascript Without SDK
 
-These snippets demonstrate how to interact with the Router contract directly with the popular Viem and Ethers libraries.
+The following Viem and Ethers snippets demonstrate how to interact with the Router functions:
 
-- TODO - Explaining what a query is and how it can be beneficial for setting limits
+* [queryAddLiquidityUnbalanced](../router/overview.md#queryaddliquidityunbalanced), a [Router query](../router/technical.md#router-queries) used to simulate the operation. Returns the amount of BPT that would be received without submitting a transaction.
+* [addLiquidityUnbalanced](), the function used to add the liquidity.
 
-TODO for feedback:
-- The following would show code snippets for querying and creating call data
-- Would not show the whole flow, e.g.
-  - Not showing how to fetch pool info
-  - Not showing how to calculate limits
-  - using arbitrary example values
+Resources:
+* [Router ABI]() TODO Add ABI section and link.
+* [Router deployment addresses]() TODO Add Address section and link.
 
 ::: code-tabs#shell
 @tab Viem
