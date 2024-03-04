@@ -7,7 +7,7 @@ title: Add liquidity to a pool
 
 This guide demonstrates how to add liquidity to a pool. We will use the `addLiquidityUnbalanced` method, since it allows exact amounts of any pool token to be added to a pool, avoiding unnecessary dust in the user's wallet. Other add methods are supported, see the [Router API](../router/overview.html) for more detail.
 
-_This guide is for adding liquidity to Balancer V3. If you're looking to add liquidity to a Balancer V2 pool, start [here](TODO)._
+_This guide is for adding liquidity to Balancer V3. If you're looking to add liquidity to a Balancer V2 pool, start [here](https://docs.balancer.fi/guides/builders/join-pool.html)._
 
 ## Core Concepts
 
@@ -46,7 +46,7 @@ The following sections provide specific implementation details for Javascript (w
 
 ## Javascript With SDK
 
-This example demonstrates the full flow for adding liquidity to a given pool. The SDK provides functionality to easily fetch pool data from the [Balancer Pools API-TODO add link]() and create a transaction with user defined slippage protection. 
+This example demonstrates the full flow for adding liquidity to a given pool. The SDK provides functionality to easily fetch pool data from the [Balancer Pools API](https://docs.balancer.fi/guides/API/) and create a transaction with user defined slippage protection. 
 
 ```typescript
 import { parseUnits } from 'viem';
@@ -109,7 +109,7 @@ const hash = await client.sendTransaction({
 
 ### Balancer SDK
 
-The [Balancer SDK](https://github.com/balancer/b-sdk) is a Typescript/Javascript library for interfacing with the Balancer protocol and can be installed with
+The [Balancer SDK](https://github.com/balancer/b-sdk) is a Typescript/Javascript library for interfacing with the Balancer protocol and can be installed with:
 
 ::: code-tabs#shell
 @tab pnpm
@@ -200,81 +200,76 @@ The following Viem and Ethers snippets demonstrate how to interact with the Rout
 * [addLiquidityUnbalanced](), the function used to add the liquidity.
 
 Resources:
-* [Router ABI]() TODO Add ABI section and link.
-* [Router deployment addresses]() TODO Add Address section and link.
+* [Router ABI](../router/abi.md#ABI)
+* [Router deployment addresses](../router/abi.md#Deployments)
 
 ::: code-tabs#shell
 @tab Viem
 ```typescript
-TODO - Placeholder example needs updated
-// 1. Do a query
+// Query operation
 const client = createPublicClient({
-    transport: http(rpcUrl),
-    chain: CHAINS[chainId],
+  transport: http(RPC_URL),
+  chain: sepolia,
 });
 
 const { result: bptAmountOut } = await client.simulateContract({
-    address: BALANCER_ROUTER[chainId],
-    abi: balancerRouterAbi,
-    functionName: 'queryAddLiquidityUnbalanced',
-    args: [
-        poolAddress,
-        maxAmountsIn,
-        0n, // minBptOut set to 0 when querying
-        '0x',
-    ],
+  address: routerAddress,
+  abi: routerAbi,
+  functionName: "queryAddLiquidityUnbalanced",
+  args: [
+    "0x1e5b830439fce7aa6b430ca31a9d4dd775294378",
+    [100000000000000000n, 100000000000000000n],
+    0n, // minBptOut set to 0 when querying
+    "0x",
+  ],
 });
 
-// 2. Construct call
-TODO - Placeholder example needs updated
-encodeFunctionData({
-  abi: balancerRouterAbi,
-  functionName: 'addLiquidityUnbalanced',
+// Sending transaction
+const walletClient = createWalletClient({
+  chain: sepolia,
+  transport: http(RPC_URL),
+});
+
+const hash = await walletClient.writeContract({
+  address: routerAddress,
+  abi: routerAbi,
+  functionName: "addLiquidityUnbalanced",
   args: [
-    input.poolId,
-    input.amountsIn.map((a) => a.amount),
-    amounts.minimumBpt,
-    input.wethIsEth,
-    '0x',
+    "0x1e5b830439fce7aa6b430ca31a9d4dd775294378",
+    [100000000000000000n, 100000000000000000n],
+    900000000000000000n, // minBptOut must be set appropriately
+    "0x",
   ],
+  account: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
 });
 ```
 
 @tab Ethers
 
 ```typescript
-TODO - Placeholder example needs updated
-// 1. Do a query
-const client = createPublicClient({
-  transport: http(rpcUrl),
-  chain: CHAINS[chainId],
-});
+// Query operation
+const provider = new JsonRpcProvider(RPC_URL);
 
-const { result: bptAmountOut } = await client.simulateContract({
-  address: BALANCER_ROUTER[chainId],
-  abi: balancerRouterAbi,
-  functionName: 'queryAddLiquidityUnbalanced',
-  args: [
-    poolAddress,
-    maxAmountsIn,
-    0n, // minBptOut set to 0 when querying
-    '0x',
-  ],
-});
+const router = new Contract(
+  routerAddress,
+  routerAbi,
+  provider
+);
 
-// 2. Construct call
-TODO - Placeholder example needs updated
-encodeFunctionData({
-  abi: balancerRouterAbi,
-  functionName: 'addLiquidityUnbalanced',
-  args: [
-    input.poolId,
-    input.amountsIn.map((a) => a.amount),
-    amounts.minimumBpt,
-    input.wethIsEth,
-    '0x',
-  ],
-});
+const bptAmountOut = await router.queryAddLiquidityUnbalanced.staticCall(
+  "0x1e5b830439fce7aa6b430ca31a9d4dd775294378",
+  [100000000000000000n, 100000000000000000n],
+  0n, // minBptOut set to 0 when querying
+  "0x"
+);
+
+// Sending transaction
+const tx = await router.addLiquidityUnbalanced(
+  "0x1e5b830439fce7aa6b430ca31a9d4dd775294378",
+  [100000000000000000n, 100000000000000000n],
+  900000000000000000n, // minBptOut must be set appropriately
+  "0x"
+);
 ```
 :::
 
@@ -287,31 +282,27 @@ The integrator must set limits appropriately using some other methods - TODO sho
 :::
 
 ```solidity
-TODO - Placeholder example needs updated
-pragma solidity ^0.7.0;
+pragma solidity ^0.8.4;
 
-import "@balancer-labs/v2-vault/contracts/interfaces/IVault.sol";
-import "@balancer-labs/v2-vault/contracts/interfaces/IFlashLoanRecipient.sol";
+// TODO - Assume there will be interface type package? Needs updated when released.
+import "@balancer-labs/...../IRouter.sol";
 
-contract FlashLoanRecipient is IFlashLoanRecipient {
-    IVault private constant vault = "0xBA12222222228d8Ba445958a75a0704d566BF2C8";
+contract AddLiquidityUnbalanced {
+    IRouter private constant router = "0x1e5b830439fce7aa6b430ca31a9d4dd775294378";
 
-    function makeFlashLoan(
-        IERC20[] memory tokens,
-        uint256[] memory amounts,
-        bytes memory userData
-    ) external {
-      vault.flashLoan(this, tokens, amounts, userData);
-    }
-
-    function receiveFlashLoan(
-        IERC20[] memory tokens,
-        uint256[] memory amounts,
-        uint256[] memory feeAmounts,
+    function addLiquidityUnbalanced(
+        address pool,
+        uint256[] memory exactAmountsIn,
+        uint256 minBptAmountOut,
+        bool wethIsEth,
         bytes memory userData
     ) external override {
-        require(msg.sender == vault);
-        ...
+        router.addLiquidityUnbalanced(
+          pool,
+          exactAmountsIn,
+          minBptAmountOut,
+          userData
+        );
     }
 }
 ```
