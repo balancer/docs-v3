@@ -10,6 +10,29 @@ order: 30
 - Diagrams of increasing complexity. Simple architecture of all components and their one main function
 - Add new smart contract components to diagram (either inheritance, authorisation, factories at a later stage.).
 
+The Balancer protocol architecture is based on three main components, which serve a unique purpose in making Balancer flexible while drastically reducing complexity of pool code. Each liquidity pool is a separate contract but token balances are tracked at the Vault level. 
+
+- Router: Entrypoint for user operations with simple interfaces
+- Vault: Handle liquidity operations and accounting
+- Pool: Expose pool math via invariant calculations
+
+## Overview
+The diagram shows the core components making up Balancer and their sequence of interactions including the main goal of each interaction.
+
+![Router Vault interaction](/images/architecture-1.png)
+
+### Router API
+The [Router API](/concepts/Router/overview.md)
+
+
+
+## Router
+The design for the Router has been chosen to 
+
+## Vault
+
+## Pool
+
 ## Optional
 
 - Excalidraw components of how all Balancer components enable a frontend-trade?
