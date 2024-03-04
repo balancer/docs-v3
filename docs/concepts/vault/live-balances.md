@@ -4,14 +4,31 @@ order: 5
 ---
 
 # Intro
-Live balances are a key concept within the Balancer code base. They are used in most internal calculations and functions that are available for external consumption. The purpose of live balances is to provide an accurate representation of the expected token balances. This is particularly useful for contracts that need to work with these balances like the Vault, pools and externally developed contracts.
+Live balances are a fundamental concept within the Balancer protocol. They play a crucial role in most internal computations and functions that are accessible externally. Live balances can be thought of as raw balances that have been 1) upscaled to 18 decimals, 2) adjusted for token rates, and 3) had yield fees deducted.
 
-In essence, live balances offer a snapshot of token balances 'as is', serving as a complement to raw balances. For instance, consider a pool with DAI (`STANDARD` token) and waDAI (`ERC4626` token), with an exchange rate of DAI/waDAI being 1.1. A balanced pool would report raw balances of 100 DAI and 90.9 waDAI. However, the live balances for this pool would report 100 DAI and 100 DAI (90.9 waDAI unwrapped to 100 DAI).
+The primary purpose of live balances is to provide an accurate depiction of the anticipated token balances. This is especially beneficial for contracts that need to interact with these balances, such as the Vault, pools, and contracts developed externally.
 
-This abstraction simplifies several complexities, such as:
+Here's a Solidity code snippet that calculates a live balance:
 
-- abstracting away wrappedToken balances and representing the balances as unwrapped tokens with an exchange rate applied. This is the case for boosted pools (`ERC4626`) and tokens `WITH_RATE`.
-- Yield fees which can accrue on a per block basis by an increasing tokenRate are already accounted for when fetching live balances. Generally speaking live is used to denote amounts where any pending yield fee has already been removed, as the Vault manages yield fees.
+```solidity
+liveBalancesScaled18[pool][token] = 
+    // Fetch the raw balance of the token for the specified pool
+    rawBalances[pool][token] *
+    // Scale the raw balance to achieve 18-decimal internal accounting
+    (18 - token.decimals()) *
+    // Scale the 18-decimal balance to include the token's rate
+    token.getRate() - 
+    // Deduct the accrued yield fees by comparing the yield gain (changes in rate since the last yield fees were charged)
+    yieldFees[pool][token]
+```
+This code retrieves the raw balance of a token for a given pool, scales it to 18 decimals for internal accounting, adjusts it for the token's rate, and then deducts any accrued yield fees. The result is the live balance for that token in the specified pool.
+
+Live balances provide a real-time view of token balances, complementing the role of raw balances. For example, let's consider a pool containing DAI (a `STANDARD` token) and wstETH (a `WITH_RATE` token), with an exchange rate of DAI/wstETH at 4049. A balanced pool would show raw balances of 100 wstETH and 404900 DAI. However, the live balances for this pool would display 115 ETH and 404900 DAI, as 100 wstETH is equivalent to 115 ETH when unwrapped.
+
+This concept simplifies several complexities, including:
+
+It abstracts the balances of wrapped tokens, representing them as unwrapped tokens with an applied exchange rate. This is particularly useful for boosted pools (`ERC4626`) and `WITH_RATE` tokens.
+Yield fees, which can accumulate on a per-block basis due to an increasing token rate, are already factored in when retrieving live balances. Generally, the term 'live' is used to denote amounts where any pending yield fee has already been deducted, as the Vault handles yield fees.
 
 
 
