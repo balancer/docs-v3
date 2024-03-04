@@ -288,7 +288,11 @@ pragma solidity ^0.8.4;
 import "@balancer-labs/...../IRouter.sol";
 
 contract AddLiquidityUnbalanced {
-    IRouter private constant router = "0x1e5b830439fce7aa6b430ca31a9d4dd775294378";
+    IRouter public router;
+
+    constructor(IRouter _router) {
+      router = _router;
+    };
 
     function addLiquidityUnbalanced(
         address pool,
