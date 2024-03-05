@@ -31,7 +31,7 @@ The diagram shows the core components that make up Balancer Protocol and the tra
 
 5. To maintain accurate accounting and ensure the Vault's token balances align with it's internal accounting, the Router's accrued credit and/or debt must be settled by the end the transaction.
 
-6. In the final step, the Vault verifies that the Router has correctly settled its accrued debts and credits. The transaction will only succeed if the debts and credits have been accurately settled; otherwise, it will be reverted.
+6. In the final step, the Vault verifies that the Router has correctly settled its accrued debts and credits. The transaction will only succeed if everything has been accurately settled; otherwise, it will be reverted.
 
 ## Detailed overview
 
