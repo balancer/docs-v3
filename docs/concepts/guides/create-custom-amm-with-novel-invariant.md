@@ -158,7 +158,7 @@ The approach taken by Balancer Labs is to define a [NewPoolParams](https://githu
 
 ## Swap fees
 
-The charging of swap fees is managed entirely by the Balancer vault. The pool is only responsible for declaring the `swapFeePercentage` for any given swap or unbalanced liquidity operation. For more information, see [Swap fees](/concepts/vault/swapfees.html).
+The charging of swap fees is managed entirely by the Balancer vault. The pool is only responsible for declaring the `swapFeePercentage` for any given swap or unbalanced liquidity operation. For more information, see [Swap fees](/concepts/vault/swap-fee.html).
 
 ::: info Do I need to take swap fees into account when implementing onSwap?
 No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swap, the amount in (`request.amountGivenScaled18`) will already have the swap fee removed before `onSwap` is called.
@@ -166,8 +166,8 @@ No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swa
 
 Balancer supports two types of swap fees:
 
-- **Static swap fee**: Defined on `vault.registerPool()` and managed via calls to `vault.setStaticSwapFeePercentage()`. For more information, see [Swap fee](/concepts/vault/swapfee.html).
-- **Dynamic swap fee**: Allows a pool to define a swap fee percentage per operation. A pool flags that it supports dynamic fees on `vault.registerPool()`. For more information, see [Dynamic swap fees](/concepts/pools/custom-pools/dynamic-swap-fees.html).
+- **Static swap fee**: Defined on `vault.registerPool()` and managed via calls to `vault.setStaticSwapFeePercentage()`. For more information, see [Swap fee](/concepts/vault/swap-fee.html).
+- **Dynamic swap fee**: Allows a pool to define a swap fee percentage per operation. A pool flags that it supports dynamic fees on `vault.registerPool()`. For more information, see [Dynamic swap fees](/concepts/vault/swap-fee.html#dynamic-swap-fee).
 
 ## Hooks
 
