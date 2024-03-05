@@ -29,7 +29,7 @@ The diagram shows the core components that make up Balancer Protocol and the tra
 
 4. Once the required token amounts have been calculated, these amounts are recorded as either credit or debt in the Vault. The amount of Balancer Pool Tokens (bpt) to be minted or burned is also determined.
 
-5. To maintain accurate accounting and ensure the Vault's token balances align with internal accounting, the Router's accrued credit and/or debt must be settled by the end the transaction.
+5. To maintain accurate accounting and ensure the Vault's token balances align with it's internal accounting, the Router's accrued credit and/or debt must be settled by the end the transaction.
 
 6. In the final step, the Vault verifies that the Router has correctly settled its accrued debts and credits. The transaction will only succeed if the debts and credits have been accurately settled; otherwise, it will be reverted.
 
