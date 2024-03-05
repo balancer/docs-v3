@@ -107,7 +107,7 @@ const hash = await client.sendTransaction({
 });
 ```
 
-### Balancer SDK
+### Install the Balancer SDK
 
 The [Balancer SDK](https://github.com/balancer/b-sdk) is a Typescript/Javascript library for interfacing with the Balancer protocol and can be installed with:
 
