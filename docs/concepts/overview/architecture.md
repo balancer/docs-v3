@@ -39,7 +39,7 @@ The diagram shows the core components making up Balancer and their sequence of i
 
 1. The Balancer Router is the primary interface for interacting with Balancer. It offers a user-friendly way to access Balancer functions and simplifies the process by managing direct interactions with the Vault. Any smart contract can function as a Router.
 
-2. The Router invokes the Vault's `invoke` method and is added to a list of `_handlers`. These handlers are assigned either debt or credit as part of the ongoing transaction. The entries on this Transactional Accounting Balance (TAB) are stored in transient storage, allowing them to reenter the vault if required.
+2. The Router invokes the Vault's `invoke` method and is added to a list of `_handlers`. These handlers are assigned either debt or credit as part of the ongoing transaction. The entries on this Transactional Accounting Balance (TAB) are stored in transient storage, allowing them to reenter the vault (as part of a hook operation) if required.
 
 3. With the TAB open, the Vault calls back into the Router's specific action callback implementation (for example, swapCallback for a swap action) to continue the regular transaction flow.
 
