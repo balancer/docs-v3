@@ -5,7 +5,7 @@ title: Add liquidity to a pool
 
 # Add liquidity to a pool
 
-This guide demonstrates how to add liquidity to a pool. We will use the `addLiquidityUnbalanced` method, since it allows exact amounts of any pool token to be added to a pool, avoiding unnecessary dust in the user's wallet. Other add methods are supported, see the [Router API](../router/overview.html) for more detail.
+This guide demonstrates how to add liquidity to a pool. We will use the `addLiquidityUnbalanced` method, since it allows exact amounts of any pool token to be added to a pool, avoiding unnecessary dust in the user's wallet. See the [Router API](../router/overview.html) for other supported add methods.
 
 _This guide is for adding liquidity to Balancer V3. If you're looking to add liquidity to a Balancer V2 pool, start [here](https://docs.balancer.fi/guides/builders/join-pool.html)._
 
@@ -145,17 +145,17 @@ const balancerApi = new BalancerApi(
 );
 const poolState = await balancerApi.pools.fetchPoolState(pool);
 ```
-To see the full query used to fetch pool state see the code [here](https://github.com/balancer/b-sdk/blob/41d2623743ab7fa466ed4d0f5f5c7e5aa16b7d91/src/data/providers/balancer-api/modules/pool-state/index.ts#L7).
+To see the full query used to fetch pool state refer to the code [here](https://github.com/balancer/b-sdk/blob/41d2623743ab7fa466ed4d0f5f5c7e5aa16b7d91/src/data/providers/balancer-api/modules/pool-state/index.ts#L7).
 
 ### Queries and safely setting slippage limits
 
-[Router queries](../router/technical.md#router-queries) allow for simulation of operations without execution. In this example, when the SDK `query` function is called: 
+[Router queries](../router/technical.md#router-queries) allow for simulation of operations without execution. In this example, when the `query` function is called: 
 
 ```typescript
 const queryOutput = await addLiquidity.query(addLiquidityInput, poolState);
 // queryOutput.bptOut
 ```
-the Routers [queryAddLiquidityUnbalanced](../router/overview.md#queryaddliquidityunbalanced) function is used to find the amount of BPT that would be received, `bptOut`.
+The Routers [queryAddLiquidityUnbalanced](../router/overview.md#queryaddliquidityunbalanced) function is used to find the amount of BPT that would be received, `bptOut`.
 
 In the next step `buildCall` uses the `bptOut` and the user defined `slippage` to calculate the `minBptAmountOut`:
 ```typescript
@@ -166,7 +166,10 @@ const call = addLiquidity.buildCall({
     wethIsEth: false,
 });
 ```
-For a min out type limit we want to remove the slippage from the amount (for max in slippage should be added). The SDK Slippage `applyTo` function shows how this is applied:
+
+In the full example above, we defined our slippage as `Slippage.fromPercentage('1')`, meaning that we if we do not receive at least 99% of our expected `bptOut`, the transaction should revert.
+Internally, the SDK subtracts 1% from the query output, as shown in `Slippage.applyTo` below:
+
 ```typescript
 /**
  * Applies slippage to an amount in a given direction
@@ -194,12 +197,12 @@ It also returns the `minBptOut` amount which can be useful to display/validation
 
 ## Javascript Without SDK
 
-The following Viem and Ethers snippets demonstrate how to interact with the Router functions:
+The following Viem and Ethers snippets demonstrate how to perform an add liquidity unbalanced operation. To achieve this, we use two Router functions:
 
-* [queryAddLiquidityUnbalanced](../router/overview.md#queryaddliquidityunbalanced), a [Router query](../router/technical.md#router-queries) used to simulate the operation. Returns the amount of BPT that would be received without submitting a transaction.
-* [addLiquidityUnbalanced](), the function used to add the liquidity.
+* [`addLiquidityUnbalanced`]() - Add liquidity to a pool, unbalanced.
+* [`queryAddLiquidityUnbalanced`](../router/overview.md#queryaddliquidityunbalanced) - The [router query](../router/technical.md#router-queries) used to simulate an add liquidity unbalanced operation. It returns the exact amount of BPT that would be received.
 
-Resources:
+**Resources**:
 * [Router ABI](../router/abi.md#ABI)
 * [Router deployment addresses](../router/abi.md#Deployments)
 
@@ -217,10 +220,10 @@ const { result: bptAmountOut } = await client.simulateContract({
   abi: routerAbi,
   functionName: "queryAddLiquidityUnbalanced",
   args: [
-    "0x1e5b830439fce7aa6b430ca31a9d4dd775294378",
-    [100000000000000000n, 100000000000000000n],
+    "0x1e5b830439fce7aa6b430ca31a9d4dd775294378", // pool address
+    [100000000000000000n, 100000000000000000n], // token amounts in raw form
     0n, // minBptOut set to 0 when querying
-    "0x",
+    "0x", // userData, set to 0x in most scenarios
   ],
 });
 
@@ -235,10 +238,10 @@ const hash = await walletClient.writeContract({
   abi: routerAbi,
   functionName: "addLiquidityUnbalanced",
   args: [
-    "0x1e5b830439fce7aa6b430ca31a9d4dd775294378",
-    [100000000000000000n, 100000000000000000n],
+    "0x1e5b830439fce7aa6b430ca31a9d4dd775294378", // pool address
+    [100000000000000000n, 100000000000000000n], // token amounts in raw form
     900000000000000000n, // minBptOut must be set appropriately
-    "0x",
+    "0x", // userData, set to 0x in most scenarios
   ],
   account: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
 });
@@ -257,18 +260,18 @@ const router = new Contract(
 );
 
 const bptAmountOut = await router.queryAddLiquidityUnbalanced.staticCall(
-  "0x1e5b830439fce7aa6b430ca31a9d4dd775294378",
-  [100000000000000000n, 100000000000000000n],
+  "0x1e5b830439fce7aa6b430ca31a9d4dd775294378", // pool address
+  [100000000000000000n, 100000000000000000n], // token amounts in raw form
   0n, // minBptOut set to 0 when querying
-  "0x"
+  "0x" // userData, set to 0x in most scenarios
 );
 
 // Sending transaction
 const tx = await router.addLiquidityUnbalanced(
-  "0x1e5b830439fce7aa6b430ca31a9d4dd775294378",
-  [100000000000000000n, 100000000000000000n],
+  "0x1e5b830439fce7aa6b430ca31a9d4dd775294378", // pool address
+  [100000000000000000n, 100000000000000000n], // token amounts in raw form
   900000000000000000n, // minBptOut must be set appropriately
-  "0x"
+  "0x" // userData, set to 0x in most scenarios
 );
 ```
 :::
@@ -292,7 +295,7 @@ contract AddLiquidityUnbalanced {
 
     constructor(IRouter _router) {
       router = _router;
-    };
+    }
 
     function addLiquidityUnbalanced(
         address pool,
