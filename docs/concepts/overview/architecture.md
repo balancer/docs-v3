@@ -23,9 +23,9 @@ The diagram shows the core components that make up Balancer Protocol and the tra
 
 1. The [Router]() serves as the initial point of interaction with the Balancer protocol. It provides a user-friendly interface for interacting with the Balancer Vault.
 
-2. The Router establishes a Transactional Accounting Balance (TAB) with the [Vault](). This TAB records all tokens expected to be deposited and withdrawn during operations such as adding and removing liquidity, swaps, and additional liquidity operations like flash loans.
+2. The Router establishes a Transactional Accounting Balance (TAB) with the [Vault](). This TAB records all credits and debits resulting from operations such as adding liquidity, removing liquidity and swaps.
 
-3. The initial core Vault operation selected by the user (such as swap, add liquidity, or remove liquidity) necessitates the execution of mathematical operations. These operations are defined in the [pool]() contract and calculate the required number of tokens to be deposited or withdrawn, depending on the vault operation used. The behavior of these operations is determined by the specific mathematical model employed by the pool, such as a StablePool or Weighted Pool.
+3. The initial core Vault operation selected by the user (such as swap, add liquidity, or remove liquidity) necessitates the execution of mathematical operations. These operations are defined in the [pool]() contract and calculate the required number of tokens to be deposited or withdrawn, depending on the vault operation used. The behavior of these operations is determined by the invariant defined by the pool.
 
 4. Once the required token amounts have been calculated, these amounts are recorded as either credit or debt in the Vault. The amount of Balancer Pool Tokens (bpt) to be minted or burned is also determined.
 
