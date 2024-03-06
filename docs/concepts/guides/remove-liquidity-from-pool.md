@@ -5,7 +5,7 @@ title: Remove liquidity from a pool
 
 # Remove liquidity from a pool
 
-This guide demonstrates how to remove liquidity from a pool. We will use the preferred function for removing liquidity from a pool, `removeLiquidityProportional`. Tokens are removed from the pool in proportional amounts, causing zero price impact and avoiding the swap fee charged when exiting non-proportional. Specifying an exactBptAmountIn ensures that the user will not be left with any dust. See the [Router API](../router/overview.html) for other supported remove methods.
+This guide demonstrates how to remove liquidity from a pool. We will use the preferred function for removing liquidity, `removeLiquidityProportional`. Tokens are removed from the pool in proportional amounts, causing zero price impact and avoiding the swap fee charged when exiting non-proportional. Specifying an exactBptAmountIn ensures that the user will not be left with any dust. See the [Router API](../router/overview.html) for other supported remove methods.
 
 _This guide is for removing liquidity to Balancer V3. If you're looking to remove liquidity from a Balancer V2 pool, start [here](https://docs.balancer.fi/guides/builders/exit-pool.html)._
 
@@ -149,7 +149,7 @@ The three main helper classes we use from the SDK are:
 
 ### Fetching Pool Data
 
-In this example we use the BalancerApi `fetchPoolState` function to fetch the pool data required for the addLiquidityUnbalanced `poolState` parameter. 
+In this example we use the BalancerApi `fetchPoolState` function to fetch the pool data required for the removeLiquidityProportional `poolState` parameter. 
 ```typescript
 const balancerApi = new BalancerApi(
     'https://backend-v3-canary.beets-ftm-node.com/graphql',
@@ -202,7 +202,7 @@ public applyTo(amount: bigint, direction: 1 | -1 = 1): bigint {
 
 The output of the `buildCall` function provides all that is needed to submit the removeLiquidity transaction:
 * `to` - the address of the Router
-* `data` - the encoded call data
+* `call` - the encoded call data
 * `value` - the native asset value to be sent
 
 It also returns the `minAmountsOut` amounts which can be useful to display/validation purposes before the transaction is sent.

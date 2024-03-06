@@ -203,7 +203,7 @@ public applyTo(amount: bigint, direction: 1 | -1 = 1): bigint {
 
 The output of the `buildCall` function provides all that is needed to submit the addLiquidity transaction:
 * `to` - the address of the Router
-* `data` - the encoded call data
+* `call` - the encoded call data
 * `value` - the native asset value to be sent
 
 It also returns the `minBptOut` amount which can be useful to display/validation purposes before the transaction is sent.
