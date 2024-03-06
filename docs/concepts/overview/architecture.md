@@ -17,21 +17,21 @@ The Balancer protocol architecture is based on three main components, which serv
 - Pool: Expose pool math via invariant calculations
 
 ## Overview
-The diagram shows the core components making up Balancer and their sequence of interactions including the main goal of each interaction.
+The diagram shows the core components that make up Balancer Protocol and the transaction flow through the primary system components.
 
 ![Router Vault interaction](/images/architecture-1.png)
 
-1. The [Router]() serves as the initial point of interaction with Balancer. It provides a user-friendly interface for Balancer functions and abstracts away direct interactions with the Vault.
+1. The [Router]() serves as the initial point of interaction with the Balancer protocol. It provides a user-friendly interface for interacting with the Balancer Vault.
 
-2. The Router establishes a Transactional Accounting Balance (TAB) with the [Vault](). This TAB records all tokens expected to be deposited and withdrawn during operations such as adding and removing liquidity, swaps, and additional liquidity operations like flash loans.
+2. The Router establishes a Transactional Accounting Balance (TAB) with the [Vault](). This TAB records all credits and debits resulting from operations such as adding liquidity, removing liquidity and swaps.
 
-3. The initial core Vault operation selected by the user (such as swap, add liquidity, or remove liquidity) necessitates the execution of mathematical operations. These operations are defined in the [pool]() contract and calculate the required number of tokens to be deposited or withdrawn, depending on the vault operation used. The behavior of these operations is determined by the specific mathematical model employed by the pool, such as a StablePool or Weighted Pool.
+3. The initial core Vault operation selected by the user (such as swap, add liquidity, or remove liquidity) necessitates the execution of mathematical operations. These operations are defined in the [pool]() contract and calculate the required number of tokens to be deposited or withdrawn, depending on the vault operation used. The behavior of these operations is determined by the invariant defined by the pool.
 
 4. Once the required token amounts have been calculated, these amounts are recorded as either credit or debt in the Vault. The amount of Balancer Pool Tokens (bpt) to be minted or burned is also determined.
 
-5. To maintain accurate accounting and ensure the Vault's token balances align with internal accounting, the Router's accrued credit and/or debt must be settled, resulting in a evened out change.
+5. To maintain accurate accounting and ensure the Vault's token balances align with it's internal accounting, the Router's accrued credit and/or debt must be settled by the end the transaction.
 
-6. In the final step, the Vault verifies that the Router has correctly settled its accrued debts and credits. The transaction will only succeed if the debts and credits have been accurately settled; otherwise, it will be reverted.
+6. In the final step, the Vault verifies that the Router has correctly settled its accrued debts and credits. The transaction will only succeed if everything has been accurately settled; otherwise, it will be reverted.
 
 ## Detailed overview
 
