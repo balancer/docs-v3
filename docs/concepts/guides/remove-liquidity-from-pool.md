@@ -49,74 +49,85 @@ The following sections provide specific implementation details for Javascript (w
 This example demonstrates the full flow for removing liquidity from a given pool. The SDK provides functionality to easily fetch pool data from the [Balancer Pools API](https://docs.balancer.fi/guides/API/) and create a transaction with user defined slippage protection. 
 
 ```typescript
-  // User defined:
-  const chainId = ChainId.MAINNET;
-  const userAccount = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
-  const rpcUrl = "RPC_END_POINT";
-  // Balancer V3 uses the pool address as the poolId.
-  const pool =
-    "0x1e5b830439fce7aa6b430ca31a9d4dd775294378";
-  const slippage = Slippage.fromPercentage("1"); // 1%
+import {
+  BalancerApi,
+  ChainId,
+  InputAmount,
+  PoolState,
+  RemoveLiquidity,
+  RemoveLiquidityInput,
+  RemoveLiquidityKind,
+  Slippage,
+} from "@balancer/sdk";
 
-  // API can be used to fetch relevant pool data
-  const balancerApi = new BalancerApi(
-    "https://backend-v3-canary.beets-ftm-node.com/graphql",
-    chainId
-  );
-  const poolState: PoolState = await balancerApi.pools.fetchPoolState(pool);
+// User defined:
+const chainId = ChainId.MAINNET;
+const userAccount = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+const rpcUrl = "RPC_END_POINT";
+// Balancer V3 uses the pool address as the poolId.
+const pool =
+  "0x1e5b830439fce7aa6b430ca31a9d4dd775294378";
+const slippage = Slippage.fromPercentage("1"); // 1%
 
-  // Construct the RemoveLiquidityInput, in this case a RemoveLiquiditySingleTokenExactIn
-  const bptIn: InputAmount = {
-    rawAmount: 1000000000000000000n,
-    decimals: 18,
-    address: poolState.address,
-  };
+// API can be used to fetch relevant pool data
+const balancerApi = new BalancerApi(
+  "https://backend-v3-canary.beets-ftm-node.com/graphql",
+  chainId
+);
+const poolState: PoolState = await balancerApi.pools.fetchPoolState(pool);
 
-  // Construct the RemoveLiquidityInput, in this case an RemoveLiquidityProportional
-  const removeLiquidityInput: RemoveLiquidityInput = {
-    chainId,
-    rpcUrl,
-    bptIn,
-    kind: RemoveLiquidityKind.Proportional,
-  };
+// Construct the RemoveLiquidityInput, in this case a RemoveLiquiditySingleTokenExactIn
+const bptIn: InputAmount = {
+  rawAmount: 1000000000000000000n,
+  decimals: 18,
+  address: poolState.address,
+};
 
-  // Query removeLiquidity to get the token out amounts
-  const removeLiquidity = new RemoveLiquidity();
-  const queryOutput = await removeLiquidity.query(
-    removeLiquidityInput,
-    poolState
-  );
+// Construct the RemoveLiquidityInput, in this case an RemoveLiquidityProportional
+const removeLiquidityInput: RemoveLiquidityInput = {
+  chainId,
+  rpcUrl,
+  bptIn,
+  kind: RemoveLiquidityKind.Proportional,
+};
 
-  console.log(
-    `BPT In: ${queryOutput.bptIn.amount.toString()},\nExpected Tokens Out:`
-  );
-  console.table({
-    tokensOut: queryOutput.amountsOut.map((a) => a.token.address),
-    amountsOut: queryOutput.amountsOut.map((a) => a.amount),
-  });
+// Query removeLiquidity to get the token out amounts
+const removeLiquidity = new RemoveLiquidity();
+const queryOutput = await removeLiquidity.query(
+  removeLiquidityInput,
+  poolState
+);
 
-  // Applies slippage to the tokens out amounts and constructs the call
-  const call = removeLiquidity.buildCall({
-    ...queryOutput,
-    slippage,
-    sender: userAccount,
-    recipient: userAccount,
-    chainId,
-    wethIsEth: false,
-  });
+console.log(
+  `BPT In: ${queryOutput.bptIn.amount.toString()},\nExpected Tokens Out:`
+);
+console.table({
+  tokensOut: queryOutput.amountsOut.map((a) => a.token.address),
+  amountsOut: queryOutput.amountsOut.map((a) => a.amount),
+});
 
-  console.log(`Min Tokens Out:`);
-  console.table({
-    tokensOut: call.minAmountsOut.map((a) => a.token.address),
-    minAmountsOut: call.minAmountsOut.map((a) => a.amount),
-  });
+// Applies slippage to the tokens out amounts and constructs the call
+const call = removeLiquidity.buildCall({
+  ...queryOutput,
+  slippage,
+  sender: userAccount,
+  recipient: userAccount,
+  chainId,
+  wethIsEth: false,
+});
 
-  const hash = await client.sendTransaction({
-    account: userAccount,
-    data: call.call,
-    to: call.to,
-    value: call.value,
-  });
+console.log(`Min Tokens Out:`);
+console.table({
+  tokensOut: call.minAmountsOut.map((a) => a.token.address),
+  minAmountsOut: call.minAmountsOut.map((a) => a.amount),
+});
+
+const hash = await client.sendTransaction({
+  account: userAccount,
+  data: call.call,
+  to: call.to,
+  value: call.value,
+});
 ```
 
 ### Install the Balancer SDK
