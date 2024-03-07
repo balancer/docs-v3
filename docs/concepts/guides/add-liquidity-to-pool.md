@@ -49,15 +49,15 @@ The following sections provide specific implementation details for Javascript (w
 This example demonstrates the full flow for adding liquidity to a given pool. The SDK provides functionality to easily fetch pool data from the [Balancer Pools API](https://docs.balancer.fi/guides/API/) and create a transaction with user defined slippage protection. 
 
 ```typescript
-import { parseUnits } from 'viem';
 import {
-    AddLiquidityInput,
-    AddLiquidityKind,
-    AddLiquidity,
-    BalancerApi,
-    ChainId,
-    Slippage,
-} from '@balancer/sdk';
+  AddLiquidityInput,
+  AddLiquidityKind,
+  AddLiquidity,
+  BalancerApi,
+  ChainId,
+  Slippage,
+  InputAmount,
+} from "@balancer/sdk";
 
 // User defined
 const chainId = ChainId.MAINNET;
@@ -65,7 +65,18 @@ const userAccount = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
 const rpcUrl = 'RPC_END_POINT'
 // Balancer V3 uses the pool address as the poolId.
 const pool = '0x1e5b830439fce7aa6b430ca31a9d4dd775294378';
-const amountsIn = [1000000000000000000n, 1000000000000000000n];
+const amountsIn: InputAmount[] = [
+  {
+    address: "0xba100000625a3754423978a60c9317c58a424e3D",
+    decimals: 18,
+    rawAmount: 1000000000000000000n,
+  },
+  {
+    address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    decimals: 18,
+    rawAmount: 1000000000000000000n,
+  },
+];
 const slippage = Slippage.fromPercentage('1'); // 1%
 
 // API can be used to fetch relevant pool data
@@ -90,18 +101,20 @@ const queryOutput = await addLiquidity.query(addLiquidityInput, poolState);
 console.log(`Expected BPT Out: ${queryOutput.bptOut.amount.toString()}`);
 
 // Applies slippage to the BPT out amount and constructs the call
-const call = addLiquidity.buildCall({
+  const call = addLiquidity.buildCall({
     ...queryOutput,
     slippage,
     chainId,
     wethIsEth: false,
-});
+    sender: userAccount,
+    recipient: userAccount
+  });
 
 console.log(`Min BPT Out: ${call.minBptOut.amount.toString()}`);
 
 const hash = await client.sendTransaction({
     account: userAccount,
-    data: call.data,
+    data: call.call,
     to: call.to,
     value: call.value,
 });
@@ -190,7 +203,7 @@ public applyTo(amount: bigint, direction: 1 | -1 = 1): bigint {
 
 The output of the `buildCall` function provides all that is needed to submit the addLiquidity transaction:
 * `to` - the address of the Router
-* `data` - the encoded call data
+* `call` - the encoded call data
 * `value` - the native asset value to be sent
 
 It also returns the `minBptOut` amount which can be useful to display/validation purposes before the transaction is sent.
@@ -199,7 +212,7 @@ It also returns the `minBptOut` amount which can be useful to display/validation
 
 The following Viem and Ethers snippets demonstrate how to perform an add liquidity unbalanced operation. To achieve this, we use two Router functions:
 
-* [`addLiquidityUnbalanced`]() - Add liquidity to a pool, unbalanced.
+* [`addLiquidityUnbalanced`](../router/overview.md#addliquidityunbalanced) - Add liquidity to a pool, unbalanced.
 * [`queryAddLiquidityUnbalanced`](../router/overview.md#queryaddliquidityunbalanced) - The [router query](../router/technical.md#router-queries) used to simulate an add liquidity unbalanced operation. It returns the exact amount of BPT that would be received.
 
 **Resources**:
@@ -241,6 +254,7 @@ const hash = await walletClient.writeContract({
     "0x1e5b830439fce7aa6b430ca31a9d4dd775294378", // pool address
     [100000000000000000n, 100000000000000000n], // token amounts in raw form
     900000000000000000n, // minBptOut must be set appropriately
+    false, // wethIsEth for Eth wrapping
     "0x", // userData, set to 0x in most scenarios
   ],
   account: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
@@ -271,6 +285,7 @@ const tx = await router.addLiquidityUnbalanced(
   "0x1e5b830439fce7aa6b430ca31a9d4dd775294378", // pool address
   [100000000000000000n, 100000000000000000n], // token amounts in raw form
   900000000000000000n, // minBptOut must be set appropriately
+  false, // wethIsEth for Eth wrapping
   "0x" // userData, set to 0x in most scenarios
 );
 ```
@@ -307,6 +322,7 @@ contract AddLiquidityUnbalanced {
           pool,
           exactAmountsIn,
           minBptAmountOut,
+          wethIsEth,
           userData
         );
     }
