@@ -5,7 +5,7 @@ title: Router Interaction
 
 # Router Interaction
 
-This guide demonstrates how to execute single and multi-path Swaps on the Balancer Router. The examples are for the exactIn swap type, see the [Router API](../../router/overview.md) for exactOut details.
+This guide demonstrates how to execute single and multi-path swaps. The examples are for the exactIn swap type, see the [Router API](../../router/overview.md) for exactOut details.
 
 _This guide is for Swapping on Balancer V3. If you're looking to Swap using Balancer V2, start [here](https://docs.balancer.fi/reference/swaps/batch-swaps.html)._
 
