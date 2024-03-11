@@ -226,8 +226,8 @@ The following Viem and Ethers snippets demonstrate how to perform a remove liqui
 * [`queryRemoveLiquidityProportional`](../router/overview.md#queryremoveliquidityproportional) - The [router query](../router/technical.md#router-queries) used to simulate a remove liquidity unbalanced operation. It returns the exact amounts of tokens that would be received.
 
 **Resources**:
-* [Router ABI](../router/abi.md#ABI)
-* [Router deployment addresses](../router/abi.md#Deployments)
+* [Router ABI](../router/abi-deployments.md#abi)
+* [Router deployment addresses](../router/abi-deployments.md#deployments)
 
 ::: code-tabs#shell
 @tab Viem
