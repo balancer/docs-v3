@@ -5,7 +5,7 @@ title: BalancerPoolToken (BPT)
 # BalancerPoolToken
 
 
-The BalancerPoolToken contract complies with the ERC20 token standard by implementing the required methods and properties of an ERC20 token. **However, instead of managing the state of the token itself, it delegates these responsibilities to the Vault contract, which is an instance of ERC20MultiToken.** This is done to centralize the accounting and management of the tokens, ensuring atomic updates to critical pool state and to shift complexity from the Pool to the Vault. 
+The BalancerPoolToken contract complies with the ERC20 token standard by implementing the required methods and properties of an ERC20 token. **However, instead of managing the state of the token itself, it delegates these responsibilities to the Vault contract, which is an instance of [ERC20MultiToken](/concepts/vault/erc20-multi-token.md).** This is done to centralize the accounting and management of the tokens, ensuring atomic updates to critical pool state and to shift complexity from the Pool to the Vault. 
 
 Here's how the BalancerPoolToken contract achieves this:
 
