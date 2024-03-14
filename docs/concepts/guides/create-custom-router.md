@@ -3,10 +3,6 @@ order: 6
 title: Create a custom router
 ---
 
----
-order: 2
-title: Create a custom router
----
 # Create a custom Router
 
 A custom Router is a smart contract which interacts with the Balancer Vault and utilizes the Vaults function in unique combinations. The deployment of a custom Router is beneficial for various projects in the DeFi space. To name some verticals this could be: 
@@ -33,8 +29,13 @@ import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import { IVault } from "@balancer-labs/v3-interfaces/contracts/vault/IVault.sol";
 
-import { RemoveLiquidityParams, RemoveLiquidityKind, AddLiquidityKind, SwapKind, AddLiquidityParams } from "@balancer-labs/v3-interfaces/contracts/vault/VaultTypes.sol";
-
+import {
+    RemoveLiquidityParams,
+    RemoveLiquidityKind,
+    AddLiquidityKind,
+    SwapKind,
+    AddLiquidityParams
+} from "@balancer-labs/v3-interfaces/contracts/vault/VaultTypes.sol";
 
 interface IMockLiquidityGauge {
     function deposit(uint256 value, address forWhom, bool willClaim) external;
@@ -43,12 +44,13 @@ interface IMockLiquidityGauge {
 /**
  * @title MigrationRouter
  * @notice Router for migrating liquidity from one pool to another and staking the new BPT
- * @dev This contract utilises proportional remove liquidity and unbalanced add liquidity to ensure
+ * @dev This contract utilizes proportional remove liquidity and unbalanced add liquidity to ensure
  * accrued credit on withdrawl is perfectly canceled out via debt accrued on the add liquidity operation, ensuring no
- * ERC20 Tokens (Except the BPT) need to be transfered. 
+ * ERC20 Tokens (Except the BPT) need to be transferred.
  */
 contract MigrationRouter {
     IVault private immutable _vault;
+
     constructor(address vault) {
         _vault = IVault(vault);
     }
@@ -69,12 +71,22 @@ contract MigrationRouter {
         uint256 minBptAmountOutOfJoin,
         address poolToJoin,
         address gaugeToStakeIn,
-        address sender) external {        
+        address sender
+    ) external {
         _vault.lock(
-            abi.encodeWithSignature("migrate8020PoolAndStakeHook(address,uint256,uint256[],uint256,address,address,address)",
-            poolToExit, exactAmountsInOfExit, minAmountsOutOfExit, minBptAmountOutOfJoin, poolToJoin, gaugeToStakeIn, sender)
+            abi.encodeWithSignature(
+                "migrate8020PoolAndStakeHook(address,uint256,uint256[],uint256,address,address,address)",
+                poolToExit,
+                exactAmountsInOfExit,
+                minAmountsOutOfExit,
+                minBptAmountOutOfJoin,
+                poolToJoin,
+                gaugeToStakeIn,
+                sender
+            )
         );
     }
+
     /**
      * @param poolToExit the pool the LP removes liquidity from
      * @param exactAmountsInOfExit exact amount of BPT to burn for share of the pool's tokens.
@@ -92,7 +104,6 @@ contract MigrationRouter {
         address poolToJoin,
         address gaugeToStakeIn,
         address sender
-
     ) external {
         // user already has BPT in possession as it was unstaked previously
 
@@ -106,9 +117,7 @@ contract MigrationRouter {
             userData: "0x"
         });
 
-        (, uint256[] memory amountsOut, ) = _vault.removeLiquidity(
-            params
-        );
+        (, uint256[] memory amountsOut, ) = _vault.removeLiquidity(params);
 
         // addLiquidity
         AddLiquidityParams memory addLiquidityParams = AddLiquidityParams({
@@ -120,9 +129,7 @@ contract MigrationRouter {
             userData: "0x"
         });
 
-        (, uint256 bptAmountOut, ) = _vault.addLiquidity(
-            addLiquidityParams
-        );
+        (, uint256 bptAmountOut, ) = _vault.addLiquidity(addLiquidityParams);
 
         // bpt has been minted to Router and Router stakes for the `sender`
         IMockLiquidityGauge(gaugeToStakeIn).deposit(bptAmountOut, sender, false);
