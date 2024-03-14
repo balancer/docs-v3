@@ -1,11 +1,11 @@
 ---
 order: 2
-title: Router Interaction
+title: Custom Paths with the Router
 ---
 
-# Router Interaction
+# Custom Paths with the Router
 
-This guide demonstrates how to execute single and multi-path swaps. The examples are for the exactIn swap type, see the [Router API](../../router/overview.md) for exactOut details.
+This guide illustrates the process of executing swaps through the router once swap paths have been established. The examples provided encompass both single and multi-path swap types, focusing on exactIn swaps. For additional information on exactOut swaps, please refer to the [Router API](../../router/overview.md) documentation.
 
 _This guide is for Swapping on Balancer V3. If you're looking to Swap using Balancer V2, start [here](https://docs.balancer.fi/reference/swaps/batch-swaps.html)._
 

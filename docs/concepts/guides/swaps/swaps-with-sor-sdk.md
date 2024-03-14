@@ -1,11 +1,11 @@
 ---
-order: 3
-title: Smart Order Router & Swaps
+order: 1
+title: Swapping with the Balancer Smart Order Router and SDK
 ---
 
-# Smart Order Router & Swaps
+# Swapping with the Balancer Smart Order Router and SDK
 
-This guide demonstrates how the Balancer Smart Order Router (SOR), accessed via the Balancer API, can be used to find optimal swap paths for a token pair. The SDK is then used to create and submit a swap transaction. 
+This guide showcases the capabilities of the Balancer Smart Order Router (SOR) accessible through the Balancer API, focusing on its ability to identify optimal swap paths for a given token pair. Subsequently, we explore the process of utilizing the SDK to seamlessly create and execute swap transactions.
 
 _This guide uses the Balancer API SOR which will find the best result using V2 and V3 liquidity. The SDK supports both._
 
