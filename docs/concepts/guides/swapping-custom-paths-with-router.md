@@ -7,7 +7,7 @@ title: Swapping with Custom Paths and the Router
 
 This guide illustrates the process of executing swaps through the router once swap paths have been established. The examples provided encompass both single and multi-path swap types, focusing on exactIn swaps. For additional information on exactOut swaps, please refer to the [Router API](../router/overview.md) documentation.
 
-_To use the Balancer Smart Order Router to find efficient swap paths see [this guide](./swaps-with-sor-sdk.md)._
+_To use the Balancer Smart Order Router to find efficient swap paths for a pair see [this guide](./swaps-with-sor-sdk.md)._
 
 _This guide is for Swapping on Balancer V3. If you're looking to Swap using Balancer V2, start [here](https://docs.balancer.fi/reference/swaps/batch-swaps.html)._
 
@@ -24,9 +24,212 @@ The core concepts of executing Swaps are the same for any programming language o
   * Single Swap: A swap, tokenIn > tokenOut, using a single pool. This is the most gas efficient option for a swap of this kind.
   * Multi-path Swaps: Swaps involving multiple paths but all executed in the same transaction. Each path can have its own (or the same) tokenIn/tokenOut.
 
-The following sections provide specific implementation details for single and batch swaps for Javascript and Solidity. 
+The following sections provide specific implementation details for Javascript (with and without the SDK) and Solidity.
 
-## Single Swap
+## Custom Paths With The SDK
+
+The SDK `Swap` object provides functionality to easily fetch updated swap quotes and create swap transactions with user defined slippage protection.
+
+```typescript
+import {
+  ChainId,
+  Slippage,
+  SwapKind,
+  Swap,
+  SwapBuildOutputExactIn,
+} from "@balancer/sdk";
+import { Address } from "viem";
+
+// User defined
+const swapInput = {
+  chainId: ChainId.SEPOLIA,
+  swapKind: SwapKind.GivenIn,
+  paths: [
+    {
+      pools: ["0x1e5b830439fce7aa6b430ca31a9d4dd775294378" as Address],
+      tokens: [
+        {
+          address: "0xb19382073c7a0addbb56ac6af1808fa49e377b75" as Address,
+          decimals: 18,
+        }, // tokenIn
+        {
+          address: "0xf04378a3ff97b3f979a46f91f9b2d5a1d2394773" as Address,
+          decimals: 18,
+        }, // tokenOut
+      ],
+      vaultVersion: 3 as const,
+      inputAmountRaw: 1000000000000000000n,
+      outputAmountRaw: 990000000000000000n,
+    },
+  ],
+};
+
+// Swap object provides useful helpers for re-querying, building call, etc
+const swap = new Swap(swapInput);
+
+console.log(
+  `Input token: ${swap.inputAmount.token.address}, Amount: ${swap.inputAmount.amount}`
+);
+console.log(
+  `Output token: ${swap.outputAmount.token.address}, Amount: ${swap.outputAmount.amount}`
+);
+
+// Get up to date swap result by querying onchain
+const updatedOutputAmount = await swap.query(RPC_URL);
+console.log(`Updated amount: ${updatedOutputAmount.amount}`);
+
+// Build call data using user defined slippage
+const callData = swap.buildCall({
+    slippage: Slippage.fromPercentage("0.1"), // 0.1%,
+    deadline: 999999999999999999n, // Deadline for the swap, in this case infinite
+    expectedAmountOut: updatedOutputAmount,
+    wethIsEth: false
+  }) as SwapBuildOutputExactIn;
+
+console.log(
+  `Min Amount Out: ${callData.minAmountOut.amount}\n\nTx Data:\nTo: ${callData.to}\nCallData: ${callData.callData}\nValue: ${callData.value}`
+);
+```
+
+### Install the Balancer SDK
+
+The [Balancer SDK](https://github.com/balancer/b-sdk) is a Typescript/Javascript library for interfacing with the Balancer protocol and can be installed with:
+
+::: code-tabs#shell
+@tab pnpm
+
+```bash
+pnpm add @balancer-labs/sdk
+```
+
+@tab yarn
+
+```bash
+yarn add @balancer-labs/sdk
+```
+
+@tab npm
+```bash
+npm install @balancer-labs/sdk
+```
+:::
+
+The two main helper classes we use from the SDK are:
+* `Swap` - to build swap queries and transactions
+* `Slippage` - to simplify creating limits with user defined slippage 
+
+### Providing Custom Paths To The Balancer SDK
+
+`swapInput` must be of the following type:
+
+```typescript
+type SwapInput = {
+    chainId: number;
+    paths: Path[];
+    swapKind: SwapKind;
+};
+```
+* `chainId` - the chain the swap is valid for
+* `swapKind` - either a `GivenIn` or `GivenOut`
+* `paths` - An array of paths that define a swap from a tokenIn>tokenOut where a path looks like:
+```typescript
+type Path = {
+    pools: Address[] | Hex[];
+    tokens: TokenApi[];
+    outputAmountRaw: bigint;
+    inputAmountRaw: bigint;
+    vaultVersion: 2 | 3;
+};
+```
+* `pools` - an array of pools that will be swapped against, ordered sequentially for the path.
+* `tokens` - an array of tokens that will be swapped to/from, ordered sequentially for the path. `tokens[0]` is the initial `tokenIn` and `tokens[length-1]` is the final `tokenOut` for the path.
+* `inputAmountRaw`/`outputAmountRaw` - the final input/output amounts for the path.
+* `vaultVersion` - the version of the Balancer protocol. Note each path must use the same vaultVersion.
+
+Using the input given above as an illustrative example:
+```typescript
+const swapInput = {
+  chainId: ChainId.SEPOLIA,
+  swapKind: SwapKind.GivenIn,
+  paths: [
+    {
+      pools: ["0x1e5b830439fce7aa6b430ca31a9d4dd775294378" as Address],
+      tokens: [
+        {
+          address: "0xb19382073c7a0addbb56ac6af1808fa49e377b75" as Address,
+          decimals: 18,
+        }, // tokenIn
+        {
+          address: "0xf04378a3ff97b3f979a46f91f9b2d5a1d2394773" as Address,
+          decimals: 18,
+        }, // tokenOut
+      ],
+      vaultVersion: 3 as const,
+      inputAmountRaw: 1000000000000000000n,
+      outputAmountRaw: 990000000000000000n,
+    },
+  ],
+};
+```
+We can infer:
+* The swap is of the GivenIn type and is valid for Balancer V3 on Sepolia
+* There is one path swapping:
+  * token: `0xb19382073c7a0addbb56ac6af1808fa49e377b75` to `0xf04378a3ff97b3f979a46f91f9b2d5a1d2394773`
+  * using pool: `0x1e5b830439fce7aa6b430ca31a9d4dd775294378`
+  * with an input amount of `1000000000000000000` (or 1 scaled to human format)
+  * with an output amount of `990000000000000000` (or 9.9 scaled to human format)
+
+### Queries and safely setting slippage limits
+
+[Router queries](../router/technical.md#router-queries) allow for simulation of operations without execution. In this example, when the `query` function is called:
+```
+const updated = await swap.query(RPC_URL);
+```
+An onchain call is used to find an updated result for the swap paths, in this case the amount of token out that would be received,  `updatedOutputAmount`, given the original `inputAmountRaw` as the input.
+
+In the next step `buildCall` uses the `updatedOutputAmount` and the user defined `slippage` to calculate the `minAmountOut`:
+```typescript
+const callData = swap.buildCall({
+    slippage: Slippage.fromPercentage("1"), // 1%,
+    deadline: 999999999999999999n, // Deadline for the swap, in this case infinite
+    expectedAmountOut: updatedOutputAmount,
+    wethIsEth: false
+  }) as SwapBuildOutputExactIn;
+```
+
+In the full example above, we defined our slippage as `Slippage.fromPercentage('1')`, meaning that we if we do not receive at least 99% of our expected `updatedOutputAmount`, the transaction should revert.
+Internally, the SDK subtracts 1% from the query output, as shown in `Slippage.applyTo` below:
+
+```typescript
+/**
+ * Applies slippage to an amount in a given direction
+ *
+ * @param amount amout to apply slippage to
+ * @param direction +1 adds the slippage to the amount, and -1 will remove the slippage from the amount
+ * @returns
+ */
+public applyTo(amount: bigint, direction: 1 | -1 = 1): bigint {
+    return MathSol.mulDownFixed(
+        amount,
+        BigInt(direction) * this.amount + WAD,
+    );
+}
+```
+
+### Constructing the call
+
+The output of the `buildCall` function provides all that is needed to submit the Swap transaction:
+* `to` - the address of the Router
+* `call` - the encoded call data
+* `value` - the native asset value to be sent
+
+It also returns the `minAmountOut` amount which can be useful to display/validation purposes before the transaction is sent.
+
+## Custom Paths Without The SDK
+
+The following section illustrates swap operations on the Router through examples implemented in Javascript and Solidity.
+
+### Single Swap
 
 The following code examples demonstrate how to execute a single token swap specifying an exact input token amount. To achieve this, we use two Router functions:
 
@@ -65,7 +268,7 @@ function swapSingleTokenExactIn(
 * `deadline` the UNIX timestamp at which the swap must be completed by - if the transaction is confirmed after this time then the transaction will fail.
 * `userData` allows additional parameters to be provided for custom pool types. In most cases it is not required and a value of `0x` can be provided.
 
-### Javascript
+#### Javascript Without SDK
 
 **Resources**:
 * [Router ABI](../router/abi-deployments.md#abi)
@@ -148,7 +351,7 @@ const tx = await router.swapSingleTokenExactIn(
 ```
 :::
 
-### Solidity
+#### Solidity
 
 ::: warning Queries cannot be used within the same block to set minAmountOut due to possible manipulation
 :::
@@ -190,7 +393,7 @@ contract SingleSwap {
 }
 ```
 
-## Multi Path Swap
+### Multi Path Swap
 
 :::warning
 Multi-path Swaps use the Balancer [BatchRouter-TODO we need a link to more info here?]()
@@ -247,7 +450,7 @@ struct SwapPathExactAmountIn {
   * tokenOut == pool: router will add liqudity using `tokenIn`
 
 
-### Javascript
+#### Javascript
 
 **Resources**:
 * [Batch Router ABI](../router/abi-deployments-batchRouter.md#abi)
@@ -378,7 +581,7 @@ const tx = await router.swapExactIn(
 ```
 :::
 
-### Solidity
+#### Solidity
 
 ::: warning Queries cannot be used within the same block to set minAmountOut due to possible manipulation
 :::
