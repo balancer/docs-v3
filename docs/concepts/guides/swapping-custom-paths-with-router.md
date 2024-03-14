@@ -1,11 +1,13 @@
 ---
-order: 2
-title: Custom Paths with the Router
+order: 4
+title: Swapping with Custom Paths and the Router
 ---
 
-# Custom Paths with the Router
+# Swapping with Custom Paths with the Router
 
-This guide illustrates the process of executing swaps through the router once swap paths have been established. The examples provided encompass both single and multi-path swap types, focusing on exactIn swaps. For additional information on exactOut swaps, please refer to the [Router API](../../router/overview.md) documentation.
+This guide illustrates the process of executing swaps through the router once swap paths have been established. The examples provided encompass both single and multi-path swap types, focusing on exactIn swaps. For additional information on exactOut swaps, please refer to the [Router API](../router/overview.md) documentation.
+
+_To use the Balancer Smart Order Router to find efficient swap paths see [this guide](./swaps-with-sor-sdk.md)._
 
 _This guide is for Swapping on Balancer V3. If you're looking to Swap using Balancer V2, start [here](https://docs.balancer.fi/reference/swaps/batch-swaps.html)._
 
@@ -28,8 +30,8 @@ The following sections provide specific implementation details for single and ba
 
 The following code examples demonstrate how to execute a single token swap specifying an exact input token amount. To achieve this, we use two Router functions:
 
-* [`swapSingleTokenExactIn`](../../router/overview.md#swapsingletokenexactin) - Execute a swap specifying an exact input token amount.
-* [`querySwapSingleTokenExactIn`](../../router/overview.md#queryswapsingletokenexactin) - The [router query](../router/technical.md#router-queries) used to simulate a swap. It returns the exact amount of token out that would be received.
+* [`swapSingleTokenExactIn`](../router/overview.md#swapsingletokenexactin) - Execute a swap specifying an exact input token amount.
+* [`querySwapSingleTokenExactIn`](../router/overview.md#queryswapsingletokenexactin) - The [router query](../router/technical.md#router-queries) used to simulate a swap. It returns the exact amount of token out that would be received.
 
 The Router interface for `swapSingleTokenExactIn` is:
 ```solidity
@@ -66,8 +68,8 @@ function swapSingleTokenExactIn(
 ### Javascript
 
 **Resources**:
-* [Router ABI](../../router/abi-deployments.md#abi)
-* [Router deployment addresses](../../router/abi-deployments.md#deployments)
+* [Router ABI](../router/abi-deployments.md#abi)
+* [Router deployment addresses](../router/abi-deployments.md#deployments)
 
 ::: code-tabs#shell
 @tab Viem
@@ -196,8 +198,8 @@ Multi-path Swaps use the Balancer [BatchRouter-TODO we need a link to more info 
 
 The following code examples demonstrate how to execute a multi path swap specifying exact input token amounts. To achieve this, we use two Router functions:
 
-* [`swapExactIn`](../../router/overview.md#swapexactin) - Execute a swap involving multiple paths, specifying exact input token amounts.
-* [`querySwapExactIn`](../../router/overview.md#queryswapexactin) - The [router query](../router/technical.md#router-queries) used to simulate a swap. It returns the exact amount of token out for each swap path.
+* [`swapExactIn`](../router/overview.md#swapexactin) - Execute a swap involving multiple paths, specifying exact input token amounts.
+* [`querySwapExactIn`](../router/overview.md#queryswapexactin) - The [router query](../router/technical.md#router-queries) used to simulate a swap. It returns the exact amount of token out for each swap path.
 
 The Router interface for `swapExactIn` is:
 
@@ -248,8 +250,8 @@ struct SwapPathExactAmountIn {
 ### Javascript
 
 **Resources**:
-* [Batch Router ABI](../../router/abi-deployments-batchRouter.md#abi)
-* [Batch Router deployment addresses](../../router/abi-deployments-batchRouter.md#deployments)
+* [Batch Router ABI](../router/abi-deployments-batchRouter.md#abi)
+* [Batch Router deployment addresses](../router/abi-deployments-batchRouter.md#deployments)
 
 ::: code-tabs#shell
 @tab Viem

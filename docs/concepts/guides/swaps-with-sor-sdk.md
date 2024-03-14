@@ -1,5 +1,5 @@
 ---
-order: 1
+order: 3
 title: Swapping with the Balancer Smart Order Router and SDK
 ---
 

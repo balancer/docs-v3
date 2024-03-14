@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 10
 title: Finding Pool Token Order
 ---
 
