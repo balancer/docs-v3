@@ -183,7 +183,7 @@ We can infer:
 
 [Router queries](../router/technical.md#router-queries) allow for simulation of operations without execution. In this example, when the `query` function is called:
 ```
-const updated = await swap.query(RPC_URL);
+const updatedOutputAmount = await swap.query(RPC_URL);
 ```
 An onchain call is used to find an updated result for the swap paths, in this case the amount of token out that would be received,  `updatedOutputAmount`, given the original `inputAmountRaw` as the input.
 
@@ -378,7 +378,7 @@ contract SingleSwap {
         uint256 deadline,
         bool wethIsEth,
         bytes calldata userData
-    ) external override {
+    ) external {
         router.swapSingleTokenExactIn(
           pool,
           tokenIn,
@@ -604,7 +604,7 @@ contract MultiPathSwap {
         uint256 deadline,
         bool wethIsEth,
         bytes calldata userData
-    ) external override {
+    ) external {
         router.swapExactIn(
           paths,
           deadline,
