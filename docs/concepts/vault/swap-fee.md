@@ -1,6 +1,6 @@
 ---
 title: Swap Fee
-order: 4
+order: 8
 ---
 # Swap fee
 A swap fee is charged for each swap & unbalanced join and unbalanced exit pool operations on the non proportional amounts. When a pool is registered, the initial swap fee is passed as a parameter and stored as part of [the pool's configuration](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L33). The swap fee is always charged in the token going out of the Vault.

@@ -1,6 +1,6 @@
 ---
 title: Token Types
-order: 9
+order: 4
 ---
 
 

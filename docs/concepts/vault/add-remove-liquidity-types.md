@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 11
 title: Add/Remove liquidity types
 ---
 

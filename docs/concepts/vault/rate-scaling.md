@@ -1,6 +1,6 @@
 ---
 title: Rate scaling
-order: 3
+order: 6
 ---
 
 # Rate scaling

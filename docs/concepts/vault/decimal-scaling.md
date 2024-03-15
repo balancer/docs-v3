@@ -1,6 +1,6 @@
 ---
 title: Decimal scaling
-order: 2
+order: 5
 ---
 
 # Decimal scaling

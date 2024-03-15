@@ -1,5 +1,5 @@
 ---
 title: Liquidity invariant approximation
-order: 5
+order: 10
 ---
 
