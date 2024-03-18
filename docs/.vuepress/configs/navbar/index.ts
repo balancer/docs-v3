@@ -10,10 +10,6 @@ export const navbar: NavbarConfig = [
     link: '/sdk/overview',
   },
   {
-    text: 'Developer Guides',
-    link: '/guides',
-  },
-  {
     text: 'Reference',
     children: [
       {
@@ -140,7 +136,16 @@ export const navbar: NavbarConfig = [
             link: '/reference/dune/',
           },
         ],
-      },      
+      },
+      {
+        text: 'API',
+        children: [
+          {
+            text: 'Overview',
+            link: '/reference/API/',
+          },
+        ],
+      },
       {
         text: 'Swaps / Joins / Exits',
         children: [
