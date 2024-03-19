@@ -5,9 +5,9 @@ heroText: Balancer V3 Docs
 heroImage: /images/backgrounds/main.svg
 homeImage: /images/hero-circles.png
 features:
-  - title: Basics
+  - title: Empty
     icon: /images/quick-link-basics.svg
-    details: Learn how Balancer works under the hood
+    details: lorem ipsum
     link: /concepts/overview/basics
   - title: Integrate
     icon: /images/quick-link-integrate.svg
