@@ -18,87 +18,11 @@ export const navbar: NavbarConfig = [
         children: [
           {
             text: 'Deployment Addresses',
-            link: '/reference/contracts/deployment-addresses/mainnet',
-            children: [
-              {
-                text: 'Mainnet',
-                link: '/reference/contracts/deployment-addresses/mainnet',
-              },
-              {
-                text: 'Arbitrum',
-                link: '/reference/contracts/deployment-addresses/arbitrum',
-              },
-              {
-                text: 'Optimism',
-                link: '/reference/contracts/deployment-addresses/optimism',
-              },
-              {
-                text: 'Polygon',
-                link: '/reference/contracts/deployment-addresses/polygon',
-              },
-              {
-                text: 'Gnosis',
-                link: '/reference/contracts/deployment-addresses/gnosis',
-              },
-              {
-                text: 'Polygon zkEVM',
-                link: '/reference/contracts/deployment-addresses/zkevm',
-              },
-              {
-                text: 'Avalanche',
-                link: '/reference/contracts/deployment-addresses/avalanche',
-              },
-              {
-                text: 'Goerli(testnet)',
-                link: '/reference/contracts/deployment-addresses/goerli',
-              },
-              {
-                text: 'Sepolia(testnet)',
-                link: '/reference/contracts/deployment-addresses/sepolia',
-              },
-            ],
+            link: '/reference/contracts',
           },
           {
             text: 'Authorizer Permissions',
             link: '/reference/authorizer',
-            children: [
-              {
-                text: 'Mainnet',
-                link: '/reference/authorizer/mainnet',
-              },
-              {
-                text: 'Arbitrum',
-                link: '/reference/authorizer/arbitrum',
-              },
-              {
-                text: 'Optimism',
-                link: '/reference/authorizer/optimism',
-              },
-              {
-                text: 'Polygon',
-                link: '/reference/authorizer/polygon',
-              },
-              {
-                text: 'Gnosis',
-                link: '/reference/authorizer/gnosis',
-              },
-              {
-                text: 'Polygon zkEVM',
-                link: '/reference/authorizer/zkevm'
-              },
-              {
-                text: 'Avalanche',
-                link: '/reference/authorizer/avalanche'
-              },
-              {
-                text: 'Goerli(testnet)',
-                link: '/reference/authorizer/goerli',
-              },
-              {
-                text: 'Sepolia(testnet)',
-                link: '/reference/authorizer/sepolia',
-              },
-            ],
           },
           {
             text: 'APIs',
@@ -144,16 +68,6 @@ export const navbar: NavbarConfig = [
             text: 'Overview',
             link: '/reference/API/',
           },
-        ],
-      },
-      {
-        text: 'Swaps / Joins / Exits',
-        children: [
-          '/reference/swaps/batch-swaps',
-          '/reference/swaps/flash-swaps',
-          '/reference/swaps/single-swap',
-          '/reference/joins-and-exits/pool-joins',
-          '/reference/joins-and-exits/pool-exits',
         ],
       },
       {
