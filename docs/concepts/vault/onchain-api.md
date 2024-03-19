@@ -13,6 +13,88 @@ When interacting with the Balancer Vault via solidity, it is recommended to cast
 
 ## Transient accounting
 
+### lock
+
+```solidity
+/**
+ * @notice Creates a lock context for a sequence of operations.
+ * @dev Performs a callback on msg.sender with arguments provided in `data`. The Callback is `transient`,
+ * meaning all balances for the caller have to be settled at the end.
+ *
+ * @param data Contains function signature and args to be passed to the msg.sender
+ * @return result Resulting data from the call
+ */
+function lock(bytes calldata data) external payable returns (bytes memory result);
+```
+
+This function creates a lock context for a sequence of operations.
+
+| Name                  | Type      | Description   |
+| --------------------- | --------- | ------------- |
+| data                  | `bytes`   | Contains function signature and args to be passed to the msg.sender. |
+| result                | `bytes`   | Resulting data from the call. |
+
+### settle
+
+```solidity
+/**
+ * @notice Settles deltas for a token; must be successful for the current lock to be released.
+ * @param token Token's address
+ * @return paid Amount paid during settlement
+ */
+function settle(IERC20 token) external returns (uint256 paid);
+```
+
+This function settles deltas for a token; must be successful for the current lock to be released.
+
+| Name                  | Type      | Description   |
+| --------------------- | --------- | ------------- |
+| token                 | `IERC20`  | Token's address. |
+| paid                  | `uint256` | Amount paid during settlement. |
+
+### sendTo
+
+```solidity
+/**
+ * @notice Sends tokens to a recipient.
+ * @param token Token's address
+ * @param to Recipient's address
+ * @param amount Amount of tokens to send
+ */
+function sendTo(IERC20 token, address to, uint256 amount) external;
+```
+
+This function sends tokens to a recipient.
+
+| Name                  | Type      | Description   |
+| --------------------- | --------- | ------------- |
+| token                 | `IERC20`  | Token's address. |
+| to                    | `address` | Recipient's address. |
+| amount                | `uint256` | Amount of tokens to send. |
+
+### takeFrom
+
+```solidity
+/**
+ * @notice Transfers tokens from a sender to the Vault.
+ * @dev This function can transfer tokens from users using allowances granted to the Vault.
+ * Only trusted routers are permitted to call it. Untrusted routers should use `settle` instead.
+ *
+ * @param token Token's address
+ * @param from Sender's address
+ * @param amount Amount of tokens to pull from the sender into the Vault
+ */
+function takeFrom(IERC20 token, address from, uint256 amount) external;
+```
+
+This function transfers tokens from a sender to the Vault.
+
+| Name                  | Type      | Description   |
+| --------------------- | --------- | ------------- |
+| token                 | `IERC20`  | Token's address. |
+| from                  | `address` | Sender's address. |
+| amount                | `uint256` | Amount of tokens to pull from the sender into the Vault. |
+
 ### getLocker
 
 ```solidity
@@ -288,6 +370,29 @@ This function gets the configuration parameters of a pool.
 | --------------------- | --------- | ------------- |
 | pool                  | `address` | Address of the pool. |
 | PoolConfig            | `PoolConfig` | Pool configuration. |
+
+### getPoolTokenCountAndIndexOfToken
+
+```solidity
+/**
+ * @notice Gets the index of a token in a given pool.
+ * @dev Reverts if the pool is not registered, or if the token does not belong to the pool.
+ * @param pool Address of the pool
+ * @param token Address of the token
+ * @return tokenCount Number of tokens in the pool
+ * @return index Index corresponding to the given token in the pool's token list
+ */
+function getPoolTokenCountAndIndexOfToken(address pool, IERC20 token) external view returns (uint256, uint256);
+```
+
+This function gets the index of a token in a given pool.
+
+| Name                  | Type      | Description   |
+| --------------------- | --------- | ------------- |
+| pool                  | `address` | Address of the pool. |
+| token                 | `IERC20`  | Address of the token. |
+| tokenCount            | `uint256` | Number of tokens in the pool. |
+| index                 | `uint256` | Index corresponding to the given token in the pool's token list. |
 
 ## Pool Tokens
 
@@ -687,90 +792,6 @@ This function returns the Vault Admin contract address.
 | Vault Admin           | `address` | The Vault Admin contract address. |
 
 
-## Transient Accounting
-
-### lock
-
-```solidity
-/**
- * @notice Creates a lock context for a sequence of operations.
- * @dev Performs a callback on msg.sender with arguments provided in `data`. The Callback is `transient`,
- * meaning all balances for the caller have to be settled at the end.
- *
- * @param data Contains function signature and args to be passed to the msg.sender
- * @return result Resulting data from the call
- */
-function lock(bytes calldata data) external payable returns (bytes memory result);
-```
-
-This function creates a lock context for a sequence of operations.
-
-| Name                  | Type      | Description   |
-| --------------------- | --------- | ------------- |
-| data                  | `bytes`   | Contains function signature and args to be passed to the msg.sender. |
-| result                | `bytes`   | Resulting data from the call. |
-
-### settle
-
-```solidity
-/**
- * @notice Settles deltas for a token; must be successful for the current lock to be released.
- * @param token Token's address
- * @return paid Amount paid during settlement
- */
-function settle(IERC20 token) external returns (uint256 paid);
-```
-
-This function settles deltas for a token; must be successful for the current lock to be released.
-
-| Name                  | Type      | Description   |
-| --------------------- | --------- | ------------- |
-| token                 | `IERC20`  | Token's address. |
-| paid                  | `uint256` | Amount paid during settlement. |
-
-### sendTo
-
-```solidity
-/**
- * @notice Sends tokens to a recipient.
- * @param token Token's address
- * @param to Recipient's address
- * @param amount Amount of tokens to send
- */
-function sendTo(IERC20 token, address to, uint256 amount) external;
-```
-
-This function sends tokens to a recipient.
-
-| Name                  | Type      | Description   |
-| --------------------- | --------- | ------------- |
-| token                 | `IERC20`  | Token's address. |
-| to                    | `address` | Recipient's address. |
-| amount                | `uint256` | Amount of tokens to send. |
-
-### takeFrom
-
-```solidity
-/**
- * @notice Transfers tokens from a sender to the Vault.
- * @dev This function can transfer tokens from users using allowances granted to the Vault.
- * Only trusted routers are permitted to call it. Untrusted routers should use `settle` instead.
- *
- * @param token Token's address
- * @param from Sender's address
- * @param amount Amount of tokens to pull from the sender into the Vault
- */
-function takeFrom(IERC20 token, address from, uint256 amount) external;
-```
-
-This function transfers tokens from a sender to the Vault.
-
-| Name                  | Type      | Description   |
-| --------------------- | --------- | ------------- |
-| token                 | `IERC20`  | Token's address. |
-| from                  | `address` | Sender's address. |
-| amount                | `uint256` | Amount of tokens to pull from the sender into the Vault. |
-
 ## Add liquidity
 
 ### addLiquidity
@@ -857,30 +878,6 @@ This function swaps tokens based on provided parameters.
 | amountInRaw           | `uint256` | Amount of input tokens for the swap. |
 | amountOutRaw          | `uint256` | Amount of output tokens from the swap. |
 
-## Pool Information
-
-### getPoolTokenCountAndIndexOfToken
-
-```solidity
-/**
- * @notice Gets the index of a token in a given pool.
- * @dev Reverts if the pool is not registered, or if the token does not belong to the pool.
- * @param pool Address of the pool
- * @param token Address of the token
- * @return tokenCount Number of tokens in the pool
- * @return index Index corresponding to the given token in the pool's token list
- */
-function getPoolTokenCountAndIndexOfToken(address pool, IERC20 token) external view returns (uint256, uint256);
-```
-
-This function gets the index of a token in a given pool.
-
-| Name                  | Type      | Description   |
-| --------------------- | --------- | ------------- |
-| pool                  | `address` | Address of the pool. |
-| token                 | `IERC20`  | Address of the token. |
-| tokenCount            | `uint256` | Number of tokens in the pool. |
-| index                 | `uint256` | Index corresponding to the given token in the pool's token list. |
 
 ## Authentication
 
