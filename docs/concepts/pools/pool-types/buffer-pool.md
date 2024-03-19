@@ -1,7 +1,9 @@
 ---
-title: Buffer
-order: 6
+order: 3
+title: Buffer Pool
 ---
+
+# Buffer Pool
 
 - Buffer pools are special purpose pools
 - Designed to trade two correlated assets. Specifically a STANDARD TOKEN & ERC4626 TOKEN
