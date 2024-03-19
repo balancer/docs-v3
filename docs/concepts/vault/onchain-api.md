@@ -5,7 +5,7 @@ title: Onchain API
 
 # The Vault
 
-This page displays all functions which are callable on the Vault. Some functions are defined in extension contracts due to bytecodesize limits. More info on this is [here](./)
+This page displays all functions which are callable on the Vault. Some functions are defined in extension contracts due to bytecodesize limits. More info on this is [here](./).
 
 :::info
 When interacting with the Balancer Vault via solidity, it is recommended to cast the Vaults address to an `IVault`. This `IVault` interface includes all functions which are callable on the Vault, even the ones defined in `VaultExtension.sol` and `VaultAdmin.sol`. You can find the interface [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVault.sol) or as part of [this]() npm package.
