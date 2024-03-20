@@ -12,7 +12,7 @@ features:
   - title: Build a custom AMM
     icon: /images/quick-link-basics.svg
     details: Build a custom AMM on Balancer and benefit from your pool being fully integrated in the DeFi ecosystem
-    link: /concepts/overview/basics
+    link: concepts/guides/create-custom-amm-with-novel-invariant.html
   - title: Balancer SDK
     icon: /images/quick-link-integrate.svg
     details: The Balancer SDK provides seamless interaction capabilities with Balancer in Javascript
@@ -20,15 +20,15 @@ features:
   - title: Boosted Pools
     icon: /images/quick-link-boosted.svg
     details: Learn how they work and why they increase capital efficiency
-    link: /reference/contracts/deployment-addresses/mainnet.html
+    link: /concepts/pools/pool-types/boosted-pool.html
   - title: Enhance pools with Hooks
     icon: /images/quick-link-guides.svg
     details: Hooks allow time-tested Balancer pools to be enhanced with functionalities your protocol requires
-    link: /guides
+    link: /concepts/pools/hooks.html
   - title: Balancer API
     icon: /images/quick-link-api.svg
     details: The Balancer API powers the Balancer SDK & Frontend. Learn how to use it to fetch optimized trade paths 
-    link: /concepts/pools/boosted.html
+    link: /reference/API
   - title: Liquidity Bootstrapping Pools
     icon: /images/quick-link-lbp.svg
     details: For fair token launches and NFT drops
@@ -36,12 +36,15 @@ features:
   - title: Build a sustainable business on Balancer
     icon: /images/
     details: Revenue share for pool creators enables you to focus on your protocols value proposition while your pool lives within the Balancer ecosystem
+    link: /concepts/vault/revenue-share.html
   - title: Explore features
     icon: /images/..
     details: Balancer offers a wide range of features which can be utilized by various DeFi participants
+    link: concepts/overview/features.html
   - title: Governance & Liquidity Mining
     icon: /images/..
     details: Balancer's core pool framework incentives liquidity where it drives the best impact on protocol revenue
+    link: /reference/vebal-and-gauges/gauges.html
 
 footer:
 ---

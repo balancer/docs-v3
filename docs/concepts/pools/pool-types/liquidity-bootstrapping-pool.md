@@ -1,4 +1,4 @@
 ---
 order: 6
-title: Boosted Pool
+title: Liquidity Bootstrapping Pool
 ---
