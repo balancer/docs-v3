@@ -231,9 +231,9 @@ Available if the pool has implemented [`onRemoveLiquidityCustom`](/concepts/pool
 | amountsOut         |  `uint256[]`  | Actual amounts of tokens received, sorted in token registration order                       |
 | userData           |  `bytes`      | Arbitrary (optional) data with encoded response from the pool                               |
 
-### swapExactIn
+### swapSingleTokenExactIn
 ```solidity
-function swapExactIn(
+function swapSingleTokenExactIn(
     address pool,
     IERC20 tokenIn,
     IERC20 tokenOut,
@@ -261,9 +261,9 @@ Swap `exactAmountIn` of `tokenIn` for at least `minAmountOut` of `tokenOut` with
 | amountOut          |  `uint256`    | Calculated amount of output tokens to be received in exchange for the given input tokens      |
 
 
-### swapExactOut
+### swapSingleTokenExactOut
 ```solidity
-function swapExactOut(
+function swapSingleTokenExactOut(
     address pool,
     IERC20 tokenIn,
     IERC20 tokenOut,
@@ -290,6 +290,51 @@ Swap up to `maxAmountIn` of `tokenIn` for an `exactAmountOut` of `tokenOut`.
 |                    |               |                                                                                               |
 | amountOut          |  `uint256`    | Calculated amount of output tokens to be received in exchange for the given input tokens      |
 
+### swapExactIn
+```solidity
+function swapExactIn(
+    SwapPathExactAmountIn[] memory paths,
+    uint256 deadline,
+    bool wethIsEth,
+    bytes calldata userData
+) external payable returns (uint256[] memory pathAmountsOut, address[] memory tokensOut, uint256[] memory amountsOut);
+```
+
+Executes a swap operation involving multiple `paths` specifying exact input token amounts.
+
+| Name              | Type                     | Description                                                                         |
+|-------------------|--------------------------|-------------------------------------------------------------------------------------|
+| paths             | `SwapPathExactAmountIn[]`| Swap paths from token in to token out, specifying exact amounts in                  |
+| deadline          | `uint256`                | Deadline for the swap in UNIX time after which the transaction will revert          |
+| wethIsEth         | `bool`                   | If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens |
+| userData          | `bytes`                  | Additional (optional) data required for the swap                                    |
+|                   |                          |                                                                                     |
+| pathAmountsOut    | `uint256[]`              | Calculated amounts of output tokens corresponding to the last step of each given path |
+| tokensOut         | `address[]`              | Calculated output token addresses                                                   |
+| amountsOut        | `uint256[]`              | Calculated amounts of output tokens, ordered by output token address                |
+
+### swapExactOut
+```solidity
+function swapExactOut(
+    SwapPathExactAmountOut[] memory paths,
+    uint256 deadline,
+    bool wethIsEth,
+    bytes calldata userData
+) external payable returns (uint256[] memory pathAmountsIn, address[] memory tokensIn, uint256[] memory amountsIn);
+```
+
+Executes a swap operation involving multiple `paths` specifying exact output token amounts.
+
+| Name              | Type                     | Description                                                                         |
+|-------------------|--------------------------|-------------------------------------------------------------------------------------|
+| paths             | `SwapPathExactAmountOut[]`| Swap paths from token in to token out, specifying exact amounts out                 |
+| deadline          | `uint256`                | Deadline for the swap in UNIX time after which the transaction will revert          |
+| wethIsEth         | `bool`                   | If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens |
+| userData          | `bytes`                  | Additional (optional) data required for the swap                                    |
+|                   |                          |                                                                                     |
+| pathAmountsIn     | `uint256[]`              | Calculated amounts of input tokens corresponding to the last step of each given path |
+| tokensIn          | `address[]`              | Calculated input token addresses                                                   |
+| amountsIn         | `uint256[]`              | Calculated amounts of input tokens, ordered by input token address                 |
 
 ## Query functions
 All state-changing functions have a query counterpart. Queries are expected to be used in an offchain context and done with an `eth_call`. [Transient Accounting](/concepts/vault/transient.html) enables query functions to execute the same accounting logic as state-changing functions, returning the outcome without settling the operation.
@@ -451,9 +496,9 @@ Queries a [`removeLiquidityCustom`](#removeliquiditycustom) operation without ex
 | amountsOut         |  `uint256[]`  | Expected amounts of tokens to receive, sorted in token registration order                          |
 | returnData         |  `bytes`      | Arbitrary (optional) data with encoded response from the pool                                      |
 
-### querySwapExactIn
+### querySwapSingleTokenExactIn
 ```solidity
-function querySwapExactIn(
+function querySwapSingleTokenExactIn(
     address pool,
     IERC20 tokenIn,
     IERC20 tokenOut,
@@ -462,7 +507,7 @@ function querySwapExactIn(
 ) external returns (uint256 amountOut);
 ```
 
-Queries a [`swapExactIn`](#swapexactin) operation without executing it.
+Queries a [`swapSingleTokenExactIn`](#swapsingletokenexactin) operation without executing it.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -475,9 +520,9 @@ Queries a [`swapExactIn`](#swapexactin) operation without executing it.
 | amountOut          |  `uint256`    | Calculated amount of output tokens to be received in exchange for the given input tokens|
 
 
-### querySwapExactOut
+### querySwapSingleTokenExactOut
 ```solidity
-function querySwapExactOut(
+function querySwapSingleTokenExactOut(
     address pool,
     IERC20 tokenIn,
     IERC20 tokenOut,
@@ -486,7 +531,7 @@ function querySwapExactOut(
 ) external returns (uint256 amountIn);
 ```
 
-Queries a [`swapExactOut`](#swapexactout) operation without executing it.
+Queries a [`swapSingleTokenExactOut`](#swapsingletokenexactout) operation without executing it.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -497,3 +542,41 @@ Queries a [`swapExactOut`](#swapexactout) operation without executing it.
 | userData           |  `bytes`      | userData Additional (optional) data required for the query                                         |
 |                    |               |                                                                                                    |
 | amountIn           |  `uint256`    | amountIn Calculated amount of input tokens to be sent in exchange for the requested output tokens  |
+
+### querySwapExactIn
+```solidity
+function querySwapExactIn(
+    SwapPathExactAmountIn[] memory paths,
+    bytes calldata userData
+) external returns (uint256[] memory pathAmountsOut, address[] memory tokensOut, uint256[] memory amountsOut);
+```
+
+Queries a [`swapExactIn`](#swapexactin) operation without executing it.
+
+| Name              | Type                     | Description                                                                         |
+|-------------------|--------------------------|-------------------------------------------------------------------------------------|
+| paths             | `SwapPathExactAmountIn[]`| Swap paths from token in to token out, specifying exact amounts in                  |
+| userData          | `bytes`                  | Additional (optional) data required for the swap                                    |
+|                   |                          |                                                                                     |
+| pathAmountsOut    | `uint256[]`              | Calculated amounts of output tokens corresponding to the last step of each given path |
+| tokensOut         | `address[]`              | Calculated output token addresses                                                   |
+| amountsOut        | `uint256[]`              | Calculated amounts of output tokens, ordered by output token address                |
+
+### querySwapExactOut
+```solidity
+function querySwapExactOut(
+    SwapPathExactAmountOut[] memory paths,
+    bytes calldata userData
+) external returns (uint256[] memory pathAmountsIn, address[] memory tokensIn, uint256[] memory amountsIn);
+```
+
+Queries a [`swapExactOut`](#swapexactout) operation without executing it.
+
+| Name              | Type                     | Description                                                                         |
+|-------------------|--------------------------|-------------------------------------------------------------------------------------|
+| paths             | `SwapPathExactAmountOut[]`| Swap paths from token in to token out, specifying exact amounts out                 |
+| userData          | `bytes`                  | Additional (optional) data required for the swap                                    |
+|                   |                          |                                                                                     |
+| pathAmountsIn     | `uint256[]`              | Calculated amounts of input tokens corresponding to the last step of each given path |
+| tokensIn          | `address[]`              | Calculated input token addresses                                                   |
+| amountsIn         | `uint256[]`              | Calculated amounts of input tokens, ordered by input token address                 |
