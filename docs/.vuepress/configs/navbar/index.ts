@@ -10,6 +10,24 @@ export const navbar: NavbarConfig = [
     link: '/sdk/overview',
   },
   {
+    text: 'API',
+    link: '/api/overview',
+  },
+  {
+    text: 'Data',
+    link: '/data/overview',
+    children: [
+      {
+        text: 'Dune Dashboard',
+        link: '/data/dune-dashboard',
+      },
+      {
+        text: 'Subgraph',
+        link: '/data/subgraph',
+      },
+    ]
+  },
+  {
     text: 'Reference',
     children: [
       {
@@ -26,48 +44,14 @@ export const navbar: NavbarConfig = [
           },
           {
             text: 'APIs',
-            link: '/reference/contracts/apis/vault',
+            link: '/reference/contracts/api/readme.md',
+          },
+          {
+            text: 'ABIs',
+            link: '/reference/contracts/abi/readme.md',
           },
           '/reference/contracts/security',
           '/reference/contracts/error-codes',
-          '/reference/contracts/query-functions',
-        ],
-      },
-      {
-        text: 'Subgraph',
-        children: [
-          {
-            text: 'Overview',
-            link: '/reference/subgraph/',
-            children: [
-              {
-                text: 'Core',
-                link: '/reference/subgraph/core/entities',
-              },
-              {
-                text: 'Gauges',
-                link: '/reference/subgraph/gauges/entities',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        text: 'Dune',
-        children: [
-          {
-            text: 'Overview',
-            link: '/reference/dune/',
-          },
-        ],
-      },
-      {
-        text: 'API',
-        children: [
-          {
-            text: 'Overview',
-            link: '/reference/API/',
-          },
         ],
       },
       {
