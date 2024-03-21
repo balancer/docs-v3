@@ -11,19 +11,18 @@ export const navbar: NavbarConfig = [
   },
   {
     text: 'API',
-    link: '/api/overview',
+    link: '/reference/api/readme.md',
   },
   {
     text: 'Data',
-    link: '/data/overview',
     children: [
       {
         text: 'Dune Dashboard',
-        link: '/data/dune-dashboard',
+        link: '/reference/dune/readme.md',
       },
       {
         text: 'Subgraph',
-        link: '/data/subgraph',
+        link: '/reference/subgraph/readme.md',
       },
     ]
   },
