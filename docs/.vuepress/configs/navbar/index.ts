@@ -69,6 +69,13 @@ export const navbar: NavbarConfig = [
           '/reference/vebal-and-gauges/vebal',
         ],
       },
+      {
+        text: 'LP-Tokens',
+        children: [
+          '/reference/lp-tokens/underlying.md',
+          '/reference/lp-tokens/valuing.md',
+        ]
+      },
     ],
   },
   {
