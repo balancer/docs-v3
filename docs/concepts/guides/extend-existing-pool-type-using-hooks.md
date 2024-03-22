@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 6
 title: Extend an existing pool type using hooks
 ---
 
