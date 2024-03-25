@@ -63,6 +63,7 @@ export const navbar: NavbarConfig = [
           '/reference/math/weighted-math',
           '/reference/math/stable-math',
           '/reference/math/linear-math',
+          '/reference/math/impermanent-loss',
         ],
       },
       {
