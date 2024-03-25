@@ -4,33 +4,38 @@ title: Home
 heroText: Balancer V3 Docs
 heroImage: /images/backgrounds/main.svg
 homeImage: /images/hero-circles.png
-features:
-  - title: Basics
-    icon: /images/quick-link-basics.svg
-    details: Learn how Balancer works under the hood
-    link: /concepts/overview/basics
-  - title: Integrate
-    icon: /images/quick-link-integrate.svg
-    details: Jump into the SDK, APIs, and ways to integrate Balancer
-    link: /sdk/overview
-  - title: Smart Contracts
-    icon: /images/quick-link-contracts.svg
-    details: Deployment addresses, ABIs, helpful walkthroughs, and more
-    link: /reference/contracts/deployment-addresses/mainnet.html
-  - title: Dev Guides
-    icon: /images/quick-link-guides.svg
-    details: Follow along helpful guides with example code
-    link: /guides
-  - title: Boosted Pools
-    icon: /images/quick-link-boosted.svg
-    details: Learn how they work and how to contruct them
-    link: /concepts/pools/boosted.html
-  - title: Liquidity Bootstrapping Pools
-    icon: /images/quick-link-lbp.svg
-    details: For fair token launches and NFT drops
-    link: /concepts/pools/liquidity-bootstrapping.html
+
+columns:
+  - header: Pool creators
+    description: Build your own AMM by implementing just 2 functions or extend a working AMM with custom hooks.
+    cards:
+      - title: Build a custom AMM
+        content: Build a custom AMM on Balancer and benefit from your pool being fully integrated in the DeFi ecosystem
+        link: "concepts/guides/create-custom-amm-with-novel-invariant.html"
+      - title: Enhance pools with Hooks
+        content: Hooks allow time-tested Balancer pools to be enhanced with functionalities your protocol requires
+        link: "/concepts/pools/hooks.html"
+      - title: Earn a portion of pool revenue
+        content: Balancer allows pool creators to participate from the success of a pool by sharing part of it's revenue.
+        link: "/concepts/overview/basics"
+  - header: Builders
+    description: Using additional technologies such as SDK, API and Subgraph to interact & fetch data from Balancer.
+    cards:
+      - title: Understand the architecture
+        content: Be it Queries, batchSwaps or transient accounting. Balancers liquidity is readily available.
+        link: "/concepts/overview/architecture"
+      - title: Add liquidity to earn swap fees.
+        content: The guide shows various approached to adding liquidity to a pool.
+        link: "/guides//add-liquidity-to-pool.html"
+      - title: Make a swap to exchange tokens
+        content: Explore how the optimal trade paths leads to best trade execution.
+        link: "/concepts/guides/swaps-with-sor-sdk.html"
+
+
 footer:
 ---
+
+<HomeCards :columns="$frontmatter.columns" />
 
 ## More Resources
 

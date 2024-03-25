@@ -1,19 +1,7 @@
 ---
-order: 3
-title: Router Deployments & ABI
+order: 1
+title: Router
 ---
-
-// TODO - Update before launch
-
-## Deployments
-
-| Network  | Address                                      |
-|----------|----------------------------------------------|
-| Sepolia  | 0x03CBccbe8d2073A1dC186aE6Bcd95390Fcdff36f  |
-| Mainnet  | TODO                                         |
-
-
-## ABI
 
 ```json
 [
