@@ -17,6 +17,8 @@ The result is pool contracts that are compact and much easier to reason about.
 
 `TODO: add short descriptions for each section`
 
+`TODO: maybe add some visuals here`
+
 - [On-chain API](./onchain-api.html)
 - Features
   - [Transient accounting](./features/transient.html) - 
