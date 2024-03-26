@@ -5,8 +5,6 @@ title: Onchain API
 
 # The Vault
 
-This page displays all functions which are callable on the Vault. Some functions are defined in extension contracts due to bytecodesize limits. More info on this is [here](./).
-
 :::info Use the Router for swap, add liquidity and remove liquidity operations 
 The [Router](../router/overview.html) is the primary entry-point for the Balancer Protocol. It exposes developer friendly interfaces for complex protocol interactions.
 :::
