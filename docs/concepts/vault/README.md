@@ -5,21 +5,26 @@ order: 0
 
 # The Vault
 
+The Vault is the core of the Balancer protocol; it is a smart contract that holds and manages all tokens in each Balancer pool.
+First introduced in Balancer v2, the vault architecture separates token accounting from pool logic, allowing for simplified pool contracts that focus
+on the implementation of their swap, add liquidity and remove liquidity logic.
 
-The Balancer Vault is the fundamental component of the Balancer protocol. It comprises three on-chain contracts that store tokens and facilitate liquidity operations. The Vault uses a `lock` mechanism to support batch operations with guaranteed settlement. 
+This architecture brings different pool designs under the same umbrella; the Vault is agnostic to pool math and can accommodate any system that satisfies a few requirements. Anyone who comes up with a novel idea can develop a custom pool
+plugged directly into Balancer's existing liquidity instead of needing to build their own Decentralized Exchange.
 
-The Vault is designed to be reentrant and secure, achieved through a tight coupling between the Vault and Router. It is responsible for:
+In v3, the vault more formally defines the requirements of a pool contract, shifting core design patterns out of the pool and into the vault.
+The result is pool contracts that are compact and much easier to reason about.
 
-- Token accounting, including minting and burning of Balancer Pool Tokens (BPT).
-- Transaction settlement, ensuring all "lockers" are fully processed and all deltas are zero at the end.
-- Storing pool configuration, including tokens, balances, supported hooks, and pool pause & initialization state.
-- TODO: review Enforcing minimum / maximum trade sizes and BPT minting/burning operations via fudge factors. (Note: This point needs further review for accuracy)
-- Managing the pausing of the Vault itself and pools, and handling the recovery mode.
-- Handling token scaling factors to account for token prices & yield fees.
+`TODO: add short descriptions for each section`
 
-
-The Vault is composed of three deployed contracts. All interactions with Balancer are enforced to always go through the `Vault.sol` deployed contract. This architecture is necessary due to the bytecode size limit enforced by the Ethereum Virtual Machine (EVM). The Vault inherits from OpenZeppelin's Proxy contract and uses delegate calls to the `VaultExtension.sol`. Similarly, `VaultExtension.sol` also inherits from OpenZeppelin's Proxy and delegate calls into the `VaultAdmin.sol`. This setup allows the inclusion of all functions required to interact with the Vault.
-
-:::info
-When interacting with the Balancer Vault via solidity, it is recommended to cast the Vaults address to an `IVault`. This `IVault` interface includes all functions which are callable on the Vault, even the ones defined in `VaultExtension.sol` and `VaultAdmin.sol`. You can find the interface [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVault.sol) or as part of [this]() npm package.
-:::
+- [On-chain API](./onchain-api.html)
+- Features
+  - [Transient accounting](./features/transient.html) - 
+  - [ERC20MultiToken](./features/erc20-multi-token.html)
+  - [Token types](./features/token-types.html)
+  - [Decimal scaling](./features/decimal-scaling.html) -
+  - [Rate scaling](./features/rate-scaling.html)
+  - [Yield fee](./features/yield-fee.html)
+  - [Swap fee](./features/swap-fee.html)
+  - [Live balances](./features/live-balances.html)
+  - [Liquidity invariant approximation](./features/liquidity-invariant-approximation.html)

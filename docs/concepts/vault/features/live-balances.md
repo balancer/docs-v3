@@ -1,5 +1,5 @@
 ---
-title: Live Balances
+title: Live balances
 order: 9
 ---
 
