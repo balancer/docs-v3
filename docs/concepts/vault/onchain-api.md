@@ -7,6 +7,10 @@ title: Onchain API
 
 This page displays all functions which are callable on the Vault. Some functions are defined in extension contracts due to bytecodesize limits. More info on this is [here](./).
 
+:::info Use the Router for swap, add liquidity and remove liquidity operations 
+The [Router](../router/overview.html) is the primary entry-point for the Balancer Protocol. It exposes developer friendly interfaces for complex protocol interactions.
+:::
+
 :::info Interacting with the Vault on-chain
 The  Ethereum Virtual Machine (EVM) imposes bytecode restrictions that limit the size of deployed contracts. In order to achieve the desired functionality, the Vault exceeds
 the bytecode limit of ###kb. To overcome this, the Vault inherits from OpenZeppelin's Proxy contract and leverages delegate calls,
@@ -14,7 +18,6 @@ allowing for the vault to utilize the functionality of more than one deployed sm
 
 When interacting with the Balancer Vault via solidity, it is recommended to cast the Vaults address to an `IVault`. You can find the interface [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVault.sol) or as part of [this]() npm package.
 :::
-
 
 ## Transient accounting
 
