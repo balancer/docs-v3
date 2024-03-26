@@ -19,7 +19,7 @@ TODO: verify expected yield fee percentage.
 This mechanism is used to bootstrap liquidity and maintain deep liquidity for tokens on Balancer to facilitate low slippage for sizeable trades.
 
 ## Implementation
-The implementation of yield fees utilizes a Balancer internal concept called [live balances](./live-balances.md). Yield fees are computed by taking the difference in `currentLiveBalance` and `lastLiveBalance` and multiplying it by the `yieldFeePercentage`. Fees only get charged if yield has accrued.
+The implementation of yield fees utilizes a Balancer internal concept called [live balances](live-balances.md). Yield fees are computed by taking the difference in `currentLiveBalance` and `lastLiveBalance` and multiplying it by the `yieldFeePercentage`. Fees only get charged if yield has accrued.
 ```solidity
 function _computeYieldProtocolFeesDue(
     PoolData memory poolData,
@@ -47,7 +47,7 @@ function _computeYieldProtocolFeesDue(
     }
 }
 ```
-The `feeAmountRaw` represents the final computed yield fee value. Here, 'Raw' signifies that the [rate scaling](./rate-scaling.md) has been reversed, as indicated by the `toRawUndoRateRoundDown` expression.
+The `feeAmountRaw` represents the final computed yield fee value. Here, 'Raw' signifies that the [rate scaling](rate-scaling.md) has been reversed, as indicated by the `toRawUndoRateRoundDown` expression.
 
 :::info
 to check if a token in a liquidity pool is subject to yield fees, you need to listen to the `PoolCreated` event of the pool creation transaction. The percentage of yield fees charged by the vault can be read via `vault.getYieldFeePercentage()`. 

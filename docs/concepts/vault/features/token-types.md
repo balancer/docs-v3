@@ -14,7 +14,7 @@ Tokens should be defined as `WITH_RATE` when they have an externally available e
 - `wstETH` - A wrapped version of the rebasing token stETH, the wstETH rate represents the exchange rate of wstETH -> stETH, which grows as staking rewards accumulate.
 - `EURe` - When pairing a EURO stable coin against a USD stable coin, there is a known FX market exchange rate of EUR -> USD. 
 
-See [Rate scaling](./rate-scaling.md) For an in-depth explanation on how Balancer manages tokens with rates.
+See [Rate scaling](rate-scaling.md) For an in-depth explanation on how Balancer manages tokens with rates.
 
 When [registering](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L156) a token as `WITH_RATE`, your [`TokenConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L68) should resemble the following:
 ```solidity
