@@ -1,6 +1,6 @@
 ---
 title: Transient accounting
-order: 2
+order: 1
 ---
 
 # Transient accounting

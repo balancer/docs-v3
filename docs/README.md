@@ -24,7 +24,7 @@ features:
     link: /guides
   - title: Partner Onboarding
     icon: /images/quick-link-boosted.svg
-    details: Looking to deploy liquidity on Balancer? Find out everything you need to know here.
+    details: Looking to deploy liquidity on Balancer? Find everything you need to know here.
     link: /concepts/pools/boosted.html
   - title: Data and Analytics
     icon: /images/quick-link-lbp.svg

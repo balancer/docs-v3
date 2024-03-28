@@ -1,6 +1,6 @@
 ---
 title: ERC20MultiToken
-order: 3
+order: 2
 ---
 
 # ERC20MultiToken
