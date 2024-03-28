@@ -5,32 +5,31 @@ heroText: Balancer V3 Docs
 heroImage: /images/backgrounds/main.svg
 homeImage: /images/hero-circles.png
 
-columns:
-  - header: Pool creators
-    description: Build your own AMM by implementing just 2 functions or extend a working AMM with custom hooks.
-    cards:
-      - title: Build a custom AMM
-        content: Build a custom AMM on Balancer and benefit from your pool being fully integrated in the DeFi ecosystem
-        link: "concepts/guides/create-custom-amm-with-novel-invariant.html"
-      - title: Enhance pools with Hooks
-        content: Hooks allow time-tested Balancer pools to be enhanced with functionalities your protocol requires
-        link: "/concepts/pools/hooks.html"
-      - title: Earn a portion of pool revenue
-        content: Balancer allows pool creators to participate from the success of a pool by sharing part of it's revenue.
-        link: "/concepts/overview/basics"
-  - header: Builders
-    description: Using additional technologies such as SDK, API and Subgraph to interact & fetch data from Balancer.
-    cards:
-      - title: Understand the architecture
-        content: Be it Queries, batchSwaps or transient accounting. Balancers liquidity is readily available.
-        link: "/concepts/overview/architecture"
-      - title: Add liquidity to earn swap fees.
-        content: The guide shows various approached to adding liquidity to a pool.
-        link: "/guides//add-liquidity-to-pool.html"
-      - title: Make a swap to exchange tokens
-        content: Explore how the optimal trade paths leads to best trade execution.
-        link: "/concepts/guides/swaps-with-sor-sdk.html"
-
+features:
+  - title: Build a custom AMM
+    icon: /images/quick-link-guides.svg
+    details: Build your own AMM or extend an existing pool type with hooks
+    link: /concepts/overview/build-a-custom-amm
+  - title: Integrate
+    icon: /images/quick-link-integrate.svg
+    details: Add or remove liquidity, swap from one token to another, or jump into the SDK and API.
+    link: /concepts/overview/integrate
+  - title: Smart Contracts
+    icon: /images/quick-link-contracts.svg
+    details: Deployment addresses, ABIs, helpful walkthroughs, and more
+    link: /reference/contracts/deployment-addresses/mainnet.html
+  - title: Basics
+    icon: /images/quick-link-basics.svg
+    details: Learn how Balancer works under the hood
+    link: /guides
+  - title: Partner Onboarding
+    icon: /images/quick-link-boosted.svg
+    details: wip - Core pool framework, ve8020, capital efficient boosted pools, deploy your PoL
+    link: /concepts/pools/boosted.html
+  - title: Balancer Data
+    icon: /images/quick-link-lbp.svg
+    details: dune dashboards, analytics, subgraph, etc
+    link: /concepts/pools/liquidity-bootstrapping.html
 
 footer:
 ---

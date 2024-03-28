@@ -1,9 +1,9 @@
 ---
-order: 1
-title: Custom AMMs built on Balancer
+order: 50
+title: Build a custom AMM on Balancer
 ---
 
-# Custom AMMs built on Balancer
+# Build a custom AMM
 
 AMMs built on the Balancer protocol benefit from the security of the Balancer vault. This enables developers to utilize
 the well-developed Balancer AMM ecosystem, while the vault's optimized architecture streamlines the development process
@@ -19,3 +19,5 @@ When building a custom AMM on Balancer, there are two paths that can be taken:
 - [Create a custom AMM with a novel invariant](/concepts/developer-guides/create-custom-amm-with-novel-invariant.html)
 - [Extend an existing pool type using hooks](/concepts/developer-guides/extend-existing-pool-type-using-hooks.html)
 
+
+`TODO: add additional useful links`
