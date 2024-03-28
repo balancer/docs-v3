@@ -109,18 +109,18 @@ The [Balancer SDK](https://github.com/balancer/b-sdk) is a Typescript/Javascript
 @tab pnpm
 
 ```bash
-pnpm add @balancer-labs/sdk
+pnpm add @balancer/sdk
 ```
 
 @tab yarn
 
 ```bash
-yarn add @balancer-labs/sdk
+yarn add @balancer/sdk
 ```
 
 @tab npm
 ```bash
-npm install @balancer-labs/sdk
+npm install @balancer/sdk
 ```
 :::
 
