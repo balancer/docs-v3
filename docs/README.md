@@ -24,11 +24,11 @@ features:
     link: /guides
   - title: Partner Onboarding
     icon: /images/quick-link-boosted.svg
-    details: wip - Core pool framework, ve8020, capital efficient boosted pools, deploy your PoL
+    details: Looking to deploy liquidity on Balancer? Find out everything you need to know here.
     link: /concepts/pools/boosted.html
-  - title: Balancer Data
+  - title: Data and Analytics
     icon: /images/quick-link-lbp.svg
-    details: dune dashboards, analytics, subgraph, etc
+    details: All things data
     link: /concepts/pools/liquidity-bootstrapping.html
 
 footer:
