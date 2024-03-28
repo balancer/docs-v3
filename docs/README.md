@@ -37,6 +37,10 @@ footer:
 
 <HomeCards :columns="$frontmatter.columns" />
 
+## Pool Developers
+
+## Builders / Integrators
+
 ## More Resources
 
 **Github Repos**
