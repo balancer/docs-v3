@@ -8,7 +8,7 @@ order: 4
 Working with fixed-point math in Solidity presents a unique set of challenges that developers must navigate to ensure accurate and secure smart contract functionality.
 
 In an effort to abstract this complexity, the Vault manages decimal and rate scaling internally, scaling all token balances and input values prior to being sent to the [Pool](/concepts/pools).
-By implementing decimal and rate scaling at the vault, we ensure consistency of rounding direction across all [Custom Pool](/concepts/pools/CustomPool.html) implementations, removing a significant
+By doing this, we ensure consistency of rounding direction across all [Custom Pool](/concepts/pools/CustomPool.html) implementations, removing a significant
 amount of complexity from the pool and allowing it to focus primarily on it's invariant implementation.
 
 ## Decimal scaling
