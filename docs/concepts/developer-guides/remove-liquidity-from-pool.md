@@ -110,8 +110,6 @@ console.table({
 const call = removeLiquidity.buildCall({
   ...queryOutput,
   slippage,
-  sender: userAccount,
-  recipient: userAccount,
   chainId,
   wethIsEth: false,
 });

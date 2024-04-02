@@ -106,8 +106,6 @@ console.log(`Expected BPT Out: ${queryOutput.bptOut.amount.toString()}`);
     slippage,
     chainId,
     wethIsEth: false,
-    sender: userAccount,
-    recipient: userAccount
   });
 
 console.log(`Min BPT Out: ${call.minBptOut.amount.toString()}`);
