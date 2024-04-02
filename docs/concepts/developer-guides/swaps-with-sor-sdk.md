@@ -19,7 +19,8 @@ import {
   TokenAmount,
   Swap,
   SwapBuildOutputExactIn,
-  SwapCallExactIn,
+  SwapBuildCallInput,
+  ExactInQueryOutput
 } from "@balancer/sdk";
 
 // User defined
@@ -71,16 +72,16 @@ console.log(
 );
 
 // Get up to date swap result by querying onchain
-const updated = await swap.query(RPC_URL);
-console.log(`Updated amount: ${updated.amount}`);
+const updated = await swap.query(RPC_URL) as ExactInQueryOutput;
+console.log(`Updated amount: ${updated.expectedAmountOut}`);
 
-let buildInput: SwapCallExactIn;
+let buildInput: SwapBuildCallInput;
 // In V2 the sender/recipient can be set, in V3 it is always the msg.sender
 if (swap.vaultVersion === 2) {
     buildInput = {
         slippage,
         deadline,
-        expectedAmountOut: updated,
+        queryOutput: updated,
         wethIsEth,
         sender: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
         recipient: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
@@ -89,7 +90,7 @@ if (swap.vaultVersion === 2) {
     buildInput = {
         slippage,
         deadline,
-        expectedAmountOut: updated,
+        queryOutput: updated,
         wethIsEth,
     };
 }
@@ -156,10 +157,10 @@ By default the API will return the swap that gives the best result from either V
 [Router queries](../router/technical.md#router-queries) allow for simulation of operations without execution. In this example, when the `query` function is called: 
 
 ```typescript
-const updated = await swap.query(RPC_URL);
-// updated.amount
+const updated = await swap.query(RPC_URL) as ExactInQueryOutput;
+// updated.expectedAmountOut
 ```
-An onchain call is used to find an updated result for the swap paths, `amount`.
+An onchain call is used to find an updated result for the swap paths, `expectedAmountOut`.
 
 In the next step `buildCall` uses the `amount` and the user defined `slippage` to calculate the `minAmountOut`:
 ```typescript
@@ -189,13 +190,13 @@ public applyTo(amount: bigint, direction: 1 | -1 = 1): bigint {
 In Balancer V2 the swap functions required the user to define the `sender` and `recipient` as part of the [FundManagement](https://docs.balancer.fi/reference/swaps/batch-swaps.html#fundmanagement-struct) parameter. In V3 this is no longer an option and the msg.sender is always the sender/recipient. `swap.vaultVersion` is used to correctly construct the parameters for the `buildCall` function:
 
 ```typescript
-let buildInput: SwapCallExactIn;
+let buildInput: SwapBuildCallInput;
 // In V2 the sender/recipient can be set, in V3 it is always the msg.sender
 if (swap.vaultVersion === 2) {
     buildInput = {
         slippage,
         deadline,
-        expectedAmountOut: updated,
+        queryOutput: updated,
         wethIsEth,
         sender: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
         recipient: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
@@ -204,7 +205,7 @@ if (swap.vaultVersion === 2) {
     buildInput = {
         slippage,
         deadline,
-        expectedAmountOut: updated,
+        queryOutput: updated,
         wethIsEth,
     };
 }

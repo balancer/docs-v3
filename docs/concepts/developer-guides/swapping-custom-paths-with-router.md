@@ -37,6 +37,7 @@ import {
   SwapKind,
   Swap,
   SwapBuildOutputExactIn,
+  ExactInQueryOutput
 } from "@balancer/sdk";
 import { Address } from "viem";
 
@@ -75,14 +76,14 @@ console.log(
 );
 
 // Get up to date swap result by querying onchain
-const updatedOutputAmount = await swap.query(RPC_URL);
-console.log(`Updated amount: ${updatedOutputAmount.amount}`);
+const updatedOutputAmount = await swap.query(RPC_URL) as ExactInQueryOutput;
+console.log(`Updated amount: ${updatedOutputAmount.expectedAmountOut}`);
 
 // Build call data using user defined slippage
 const callData = swap.buildCall({
     slippage: Slippage.fromPercentage("0.1"), // 0.1%,
     deadline: 999999999999999999n, // Deadline for the swap, in this case infinite
-    expectedAmountOut: updatedOutputAmount,
+    queryOutput: updatedOutputAmount,
     wethIsEth: false
   }) as SwapBuildOutputExactIn;
 
@@ -183,7 +184,7 @@ We can infer:
 
 [Router queries](../router/technical.md#router-queries) allow for simulation of operations without execution. In this example, when the `query` function is called:
 ```
-const updatedOutputAmount = await swap.query(RPC_URL);
+const updatedOutputAmount = await swap.query(RPC_URL) as ExactInQueryOutput;
 ```
 An onchain call is used to find an updated result for the swap paths, in this case the amount of token out that would be received,  `updatedOutputAmount`, given the original `inputAmountRaw` as the input.
 
@@ -192,7 +193,7 @@ In the next step `buildCall` uses the `updatedOutputAmount` and the user defined
 const callData = swap.buildCall({
     slippage: Slippage.fromPercentage("1"), // 1%,
     deadline: 999999999999999999n, // Deadline for the swap, in this case infinite
-    expectedAmountOut: updatedOutputAmount,
+    queryOutput: updatedOutputAmount,
     wethIsEth: false
   }) as SwapBuildOutputExactIn;
 ```
