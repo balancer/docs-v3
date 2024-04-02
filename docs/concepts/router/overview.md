@@ -411,7 +411,6 @@ Queries an [`addLiquidityCustom`](#addliquiditycustom) operation without executi
 function queryRemoveLiquidityProportional(
     address pool,
     uint256 exactBptAmountIn,
-    uint256[] memory minAmountsOut,
     bytes memory userData
 ) external returns (uint256[] memory amountsOut);
 ```
@@ -422,7 +421,6 @@ Queries a [`removeLiquidityProportional`](#removeliquidityproportional) operatio
 | -------------      | ------------- | ------------  |
 | pool               |  `address`    | Address of the liquidity pool                                                                       |
 | exactBptAmountIn   |  `uint256`    | Exact amount of pool tokens provided for the query                                                  |
-| minAmountsOut      |  `uint256[]`  | Expected minimum amounts of tokens to receive, sorted in token alphanumeric order                   |
 | userData           |  `bytes`      | Additional (optional) data required for the query                                                   |
 |                    |               |                                                                                                     |
 | amountsOut         |  `uint256[]`  | Expected amounts of tokens to receive, sorted in token alphanumeric order                           |
@@ -433,7 +431,6 @@ function queryRemoveLiquiditySingleTokenExactIn(
     address pool,
     uint256 exactBptAmountIn,
     IERC20 tokenOut,
-    uint256 minAmountOut,
     bytes memory userData
 ) external returns (uint256 amountOut);
 ```
@@ -445,7 +442,6 @@ Queries a [`removeLiquiditySingleTokenExactIn`](#removeliquiditysingletokenexact
 | pool               |  `address`    | Address of the liquidity pool                                                                      |
 | exactBptAmountIn   |  `uint256`    | Exact amount of pool tokens provided for the query                                                 |
 | tokenOut           |  `IERC20`     | Token used to remove liquidity                                                                     |
-| minAmountOut       |  `uint256`    | Expected minimum amount of tokens to receive                                                       |
 | userData           |  `bytes`      | Additional (optional) data required for the query                                                  |
 |                    |               |                                                                                                    |
 | amountOut          |  `uint256`    | Expected amount of tokens to receive                                                               |
@@ -454,7 +450,6 @@ Queries a [`removeLiquiditySingleTokenExactIn`](#removeliquiditysingletokenexact
 ```solidity
 function queryRemoveLiquiditySingleTokenExactOut(
     address pool,
-    uint256 maxBptAmountIn,
     IERC20 tokenOut,
     uint256 exactAmountOut,
     bytes memory userData
@@ -466,7 +461,6 @@ Queries a [`removeLiquiditySingleTokenExactOut`](#removeliquiditysingletokenexac
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
 | pool               |  `address`    | Address of the liquidity pool                                                                      |
-| maxBptAmountIn     |  `uint256`    | Maximum amount of pool tokens provided                                                             |
 | tokenOut           |  `IERC20`     | Token used to remove liquidity                                                                     |
 | exactAmountOut     |  `uint256`    | ExactAmountOut Expected exact amount of tokens to receive                                          |
 | userData           |  `bytes`      | userData Additional (optional) data required for the query                                         |
