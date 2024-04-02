@@ -114,7 +114,7 @@ function addLiquidityCustom(
 ```
 
 Available if the pool has implemented [`onAddLiquidityCustom`](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.html#add-liquidity-custom).
-[Custom AMMs](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.md) that require a non-standard strategy for adding liquidity will implement this function to solve a specific use case.
+[Custom AMMs](../developer-guides/create-custom-amm-with-novel-invariant.md) that require a non-standard strategy for adding liquidity will implement this function to solve a specific use case.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
@@ -217,7 +217,7 @@ function removeLiquidityCustom(
 ```
 
 Available if the pool has implemented [`onRemoveLiquidityCustom`](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.html#remove-liquidity-custom).
-[Custom AMMs](/concepts/pools/custom-pools/create-custom-amm-with-novel-invariant.md) that require a non-standard strategy for removing liquidity will implement this function to solve a specific use case.
+[Custom AMMs](../developer-guides/create-custom-amm-with-novel-invariant.md) that require a non-standard strategy for removing liquidity will implement this function to solve a specific use case.
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |

@@ -214,8 +214,8 @@ The following Viem and Ethers snippets demonstrate how to perform an add liquidi
 * [`queryAddLiquidityUnbalanced`](../router/overview.md#queryaddliquidityunbalanced) - The [router query](../router/technical.md#router-queries) used to simulate an add liquidity unbalanced operation. It returns the exact amount of BPT that would be received.
 
 **Resources**:
-* [Router ABI](../router/abi-deployments.md#abi)
-* [Router deployment addresses](../router/abi-deployments.md#deployments)
+* [Router ABI](../router/abi-deployments-balancerRouter.md#abi)
+* [Router deployment addresses](../router/abi-deployments-balancerRouter.md#deployments)
 
 ::: code-tabs#shell
 @tab Viem

@@ -272,8 +272,8 @@ function swapSingleTokenExactIn(
 #### Javascript Without SDK
 
 **Resources**:
-* [Router ABI](../router/abi-deployments.md#abi)
-* [Router deployment addresses](../router/abi-deployments.md#deployments)
+* [Router ABI](../router/abi-deployments-balancerRouter.md#abi)
+* [Router deployment addresses](../router/abi-deployments-balancerRouter.md#deployments)
 
 ::: code-tabs#shell
 @tab Viem
