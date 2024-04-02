@@ -1,6 +1,6 @@
 ---
-order: 6
-title: Extend an existing pool type using hooks
+order: 9
+title: Weighted Pool Creation Example
 ---
 
 :::info Work in progress
