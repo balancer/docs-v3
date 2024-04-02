@@ -6,7 +6,7 @@ references:
     link: /reference/math/stable-math
 ---
 
-# Composable Stable Pools
+# Stable Pools
 
 ## Overview
 
@@ -19,7 +19,7 @@ Stable Pools are designed for assets that are either expected to consistently sw
 
 ### Stable Swaps Under the Balancer Umbrella
 
-One of the key advantages to having Composable Stable Pools on Balancer specifically is that they are plugged into the same protocol as all other pools. Swapping between stablecoins is frequently used for arbitrage when one token is paired with two different stablecoins in different pools. By leveraging Batch Swaps on Balancer, these swaps can be combined into a single, gas-efficient transaction.
+One of the key advantages to having Stable Pools on Balancer specifically is that they are plugged into the same protocol as all other pools. Swapping between stablecoins is frequently used for arbitrage when one token is paired with two different stablecoins in different pools. By leveraging Batch Swaps on Balancer, these swaps can be combined into a single, gas-efficient transaction.
 
 
 #### Example
@@ -36,5 +36,3 @@ With `StablePool[DAI, USDC, USDT]`, we can directly pair the LP token, or BPT, a
 stETH is a token that represents **Staked Ether**, combining the value of deposited ETH with staking returns. As an ERC20, stETH tokens can be swapped as one would swap WETH, allowing the benefits of ETH 2.0 staking while allowing users to continue using their staked Ether on decentralized finance products.
 
 Balancer Stable Pools are ideal for the wstETH-WETH pair as the stETH asset is highly correlated but not pegged 1:1 to ETH as it accrues staking returns.
-
-Note: To make stETH compatible with Balancer's streaming/rebasing tokens, stETH must be wrapped into wstETH. This is done through a relayer contract.

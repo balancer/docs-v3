@@ -10,9 +10,9 @@ Balancer is a flexible protocol and as such there are many choices a user or pro
 
 ## Pool Types
 
-Choosing the type of pool to use is straightforward based on a few simple factors. The primary being the expected price variations between the tokens in the pool. For most non-stable assets a [Weighted Pool](/concepts/pools/weighted.md) is the right choice. For assets that are stable like stablecoins or assets that are stable against each other with a known price rate (ex: wstETH/weth), a [Composable Stable Pool](/concepts/pools/composable-stable.md) allows for much deeper liquidity.
+Choosing the type of pool to use is straightforward based on a few simple factors. The primary being the expected price variations between the tokens in the pool. For most non-stable assets a [Weighted Pool](/concepts/pools/known-pool-types/weighted-pool.html) is the right choice. For assets that are stable like stablecoins or assets that are stable against each other with a known price rate (ex: wstETH/weth), a [Stable Pool](/concepts/pools/known-pool-types/stable-pool.html) allows for much deeper liquidity.
 
-The Balancer Dapp has a [pool creation interface](https://app.balancer.fi/#/ethereum/pool/create) for weighted pools. For stable pool creation, reach out to our devs on [Discord](https://discord.balancer.fi/) for assistance.
+The Balancer Dapp has a pool creation interface, which will be accessible soon. For stable pool creation, reach out to our devs on [Discord](https://discord.balancer.fi/) for assistance.
 
 ## Token Composition
 
@@ -20,7 +20,6 @@ The Balancer Dapp has a [pool creation interface](https://app.balancer.fi/#/ethe
 
 One of the frequent mistakes in new weighted pools has to do with the token composition. A common example is a user creating a 33/33/33 weighted pool with XYZ / WETH / USDC (where XYZ represents any arbitrary token). The thinking behind this is by adding both WETH and USDC to the pool it makes it easier to swap XYZ into either. In a vacuum this may be true, but by doing so this actually hurts slippage for this pool and also is not ideal for overall platform liquidity. Instead a better option is to pair XYZ with a WETH/USDC pool BPT (or even more ideally a bb-a-USDC/(wstETH/weth) pool BPT). Now if a swapper wanted to go from WETH->XYZ, for the same dollar amounts the 50/50 pool will have more liquidity and therefore better slippage for a given pair than 33/33. All of the frontends, aggregators, and arbitrageurs can automatically see the underlying tokens of the BPT paired and create direct paths from WETH->XYZ and USDC->XYZ with minimal gas costs.
 
-In general, weighted pools should stick to 2 tokens and pair with a "core routing" Balancer pool like bb-a-usd, (wstETH/weth), or (bb-a-usd/wst-ETH). More than 2 tokens in a pool can be useful for stable pools or managed pools where the pool is viewed more as an ETF.
 
 ## Fees
 
