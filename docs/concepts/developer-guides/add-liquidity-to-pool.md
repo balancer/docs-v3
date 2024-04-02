@@ -22,7 +22,7 @@ The Router interface for `addLiquidityUnbalanced` is:
 /**
 * @notice Adds with arbitrary token amounts in to a pool.
 * @param pool Address of the liquidity pool
-* @param exactAmountsIn Exact amounts of tokens to be added, sorted in token registration order
+* @param exactAmountsIn Exact amounts of tokens to be added, sorted in alphanumeric order
 * @param minBptAmountOut Minimum amount of pool tokens to be received
 * @param wethIsEth If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens
 * @param userData Additional (optional) data required for adding liquidity
@@ -37,7 +37,7 @@ function addLiquidityUnbalanced(
 ) external payable returns (uint256 bptAmountOut);
 ```
 
-* `exactAmountsIn` defines the exact amounts of each token to add to the pool. _Note: these must be sent in [token registration order](./finding-pool-token-order.md)_
+* `exactAmountsIn` defines the exact amounts of each token to add to the pool. _Note: these must be sent sorted in alphanumeric order_
 * `minBptAmountOut` defines the minimum amount of BPT to receive. If the amount is less than this (e.g. because of slippage) the transaction will revert
 * If `wethIsEth` is set to `true`, the Router will deposit the `exactAmountIn` of `ETH` into the `WETH` contract. So, the transaction must be sent with the appropriate `value` amount
 * `userData` allows additional parameters to be provided for custom pool types. In most cases it is not required and a value of `0x` can be provided.
@@ -106,8 +106,6 @@ console.log(`Expected BPT Out: ${queryOutput.bptOut.amount.toString()}`);
     slippage,
     chainId,
     wethIsEth: false,
-    sender: userAccount,
-    recipient: userAccount
   });
 
 console.log(`Min BPT Out: ${call.minBptOut.amount.toString()}`);

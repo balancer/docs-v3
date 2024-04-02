@@ -23,10 +23,10 @@ The Router interface for `removeLiquidityProportional` is:
 * @notice Removes liquidity with proportional token amounts from a pool, burning an exact pool token amount.
 * @param pool Address of the liquidity pool
 * @param exactBptAmountIn Exact amount of pool tokens provided
-* @param minAmountsOut Minimum amounts of tokens to be received, sorted in token registration order
+* @param minAmountsOut Minimum amounts of tokens to be received
 * @param wethIsEth If true, outgoing WETH will be unwrapped to ETH; otherwise the Vault will send WETH tokens
 * @param userData Additional (optional) data required for removing liquidity
-* @return amountsOut Actual amounts of tokens received, sorted in token registration order
+* @return amountsOut Actual amounts of tokens received
 */
 function removeLiquidityProportional(
     address pool,
@@ -38,7 +38,7 @@ function removeLiquidityProportional(
 ```
 
 * `exactBptAmountIn` defines the exact amount of the pool token that will be sent.
-* `minAmountsOut` defines the minimum amount of each token to receive. If the amount is less than this (e.g. because of slippage) the transaction will revert. _Note: these must be sent in [token registration order](./finding-pool-token-order.md)_
+* `minAmountsOut` defines the minimum amount of each token to receive. If the amount is less than this (e.g. because of slippage) the transaction will revert. _Note: these values correspond to the same index value of pool tokens which are sorted alphanumerically_
 * If `wethIsEth` is set to `true`, and a pool token is `WETH`, the Router will unwrap to `ETH` and forward to the sender.
 * `userData` allows additional parameters to be provided for custom pool types. In most cases it is not required and a value of `0x` can be provided.
 
@@ -110,8 +110,6 @@ console.table({
 const call = removeLiquidity.buildCall({
   ...queryOutput,
   slippage,
-  sender: userAccount,
-  recipient: userAccount,
   chainId,
   wethIsEth: false,
 });

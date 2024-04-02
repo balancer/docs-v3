@@ -687,7 +687,7 @@ This function checks whether a pool is in recovery mode.
  * @param pool Address of the pool
  * @param from Address of user to burn pool tokens from
  * @param exactBptAmountIn Input pool token amount
- * @return amountsOut Actual calculated amounts of output tokens, sorted in token registration order
+ * @return amountsOut Actual calculated amounts of output tokens, sorted in token alphanumeric order
  */
 function removeLiquidityRecovery(
     address pool,
@@ -703,7 +703,7 @@ This function removes liquidity from a pool specifying exact pool tokens in, wit
 | pool                  | `address` | Address of the pool. |
 | from                  | `address` | Address of user to burn pool tokens from. |
 | exactBptAmountIn      | `uint256` | Input pool token amount. |
-| amountsOut            | `uint256[]` | Actual calculated amounts of output tokens, sorted in token registration order. |
+| amountsOut            | `uint256[]` | Actual calculated amounts of output tokens, sorted in token alphanumeric order. |
 
 
 ## Queries
