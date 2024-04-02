@@ -43,7 +43,7 @@ Until a pool is `initialized`, it will not support normal `swap`, `add` and `rem
 | ------------- | ------------- | ------------  |
 | pool          |  `address`    | Address of the liquidity pool|
 | tokens        |  `IERC20[]`   | Pool tokens                                                                                      |
-| exactAmountsIn|  `uint256[]`  | Exact amounts of tokens to be added, sorted in token registration order                          |
+| exactAmountsIn|  `uint256[]`  | Exact amounts of tokens to be added, sorted in token alphanumeric order                          |
 |minBptAmountOut|  `uint256`    | Minimum amount of pool tokens to be received                                                     |
 | wethIsEth     |  `bool`       | If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens         |
 | userData      |  `bytes`      | Additional (optional) data required for adding initial liquidity                                 |
@@ -69,7 +69,7 @@ The un-proportional amounts will be charged the pool's `swapFeePercentage` to en
 | Name          | Type          | Description   |
 | ------------- | ------------- | ------------  |
 | pool          |  `address`    | Address of the liquidity pool                                                                 |
-| exactAmountsIn|  `uint256[]`  | Exact amounts of tokens to be added, sorted in token registration order                       |
+| exactAmountsIn|  `uint256[]`  | Exact amounts of tokens to be added, sorted in token alphanumeric order                       |
 |minBptAmountOut|  `uint256`    | Minimum amount of pool tokens to be received                                                  |
 | wethIsEth     |  `bool`       | If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens      |
 | userData      |  `bytes`      | Additional (optional) data required for adding liquidity                                      |
@@ -119,12 +119,12 @@ Available if the pool has implemented [`onAddLiquidityCustom`](/concepts/pools/c
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
 | pool               |  `address`    | Address of the liquidity pool                                                                 |
-| inputAmountsIn     |  `uint256[]`  | Amounts of tokens to be added, sorted in token registration order and scaled to 18 decimals   |
+| inputAmountsIn     |  `uint256[]`  | Amounts of tokens to be added, sorted in token alphanumeric order and scaled to 18 decimals   |
 | minBptAmountOut    |  `uint256`    | Minimum amount of pool tokens to be received                                                  |
 | wethIsEth          |  `bool`       | If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens      |
 | userData           |  `bytes`      | Additional (optional) data required for adding liquidity                                      |
 |                    |               |                                                                                               |
-| amountsIn          |  `uint256[]`  | Actual amounts of tokens added, sorted in token registration order                            |
+| amountsIn          |  `uint256[]`  | Actual amounts of tokens added, sorted in token alphanumeric order                            |
 | bptAmountOut       |  `uint256`    | Actual amount of pool tokens received                                                         |
 | returnData         |  `bytes`      | Arbitrary (optional) data with encoded response from the pool                                 |
 
@@ -147,11 +147,11 @@ Specifying an `exactBptAmountIn` ensures that the user will not be left with any
 | -------------      | ------------- | ------------  |
 | pool               |  `address`    | Address of the liquidity pool                                                                |
 | exactBptAmountIn   |  `uint256`    | Exact amount of pool tokens provided                                                         |
-| minAmountsOut      |  `uint256[]`  | Minimum amounts of tokens to be received, sorted in token registration order                 |
+| minAmountsOut      |  `uint256[]`  | Minimum amounts of tokens to be received, sorted in token alphanumeric order                 |
 | wethIsEth          |  `bool`       | If true, outgoing WETH will be unwrapped to ETH; otherwise the Vault will send WETH tokens   |
 | userData           |  `bytes`      | Additional (optional) data required for removing liquidity                                   |
 |                    |               |                                                                                              |
-| amountsOut         |  `uint256[]`  | Actual amounts of tokens received, sorted in token registration order                        |
+| amountsOut         |  `uint256[]`  | Actual amounts of tokens received, sorted in token alphanumeric order                        |
 
 ### removeLiquiditySingleTokenExactIn
 
@@ -223,12 +223,12 @@ Available if the pool has implemented [`onRemoveLiquidityCustom`](/concepts/pool
 | -------------      | ------------- | ------------  |
 | pool               |  `address`    | Address of the liquidity pool                                                               |
 | maxBptAmountIn     |  `uint256`    | Maximum amount of pool tokens provided                                                      |
-| minAmountsOut      |  `uint256[]`  | Minimum amounts of tokens to be received, sorted in token registration order                |
+| minAmountsOut      |  `uint256[]`  | Minimum amounts of tokens to be received, sorted in token alphanumeric order                |
 | wethIsEth          |  `bool`       | If true, outgoing WETH will be unwrapped to ETH; otherwise the Vault will send WETH tokens  |
 | userData           |  `bytes`      | Additional (optional) data required for removing liquidity                                  |
 |                    |               |                                                                                             |
 | bptAmountIn        |  `uint256`    | Actual amount of pool tokens burned                                                         |
-| amountsOut         |  `uint256[]`  | Actual amounts of tokens received, sorted in token registration order                       |
+| amountsOut         |  `uint256[]`  | Actual amounts of tokens received, sorted in token alphanumeric order                       |
 | userData           |  `bytes`      | Arbitrary (optional) data with encoded response from the pool                               |
 
 ### swapSingleTokenExactIn
@@ -354,7 +354,7 @@ Queries an [`addLiquidityUnbalanced`](#addliquidityunbalanced) operation without
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
 | pool               |  `address`    | Address of the liquidity pool                                                                 |
-| exactAmountsIn     |  `uint256[]`  | Exact amounts of tokens to be added, sorted in token registration order                       |
+| exactAmountsIn     |  `uint256[]`  | Exact amounts of tokens to be added, sorted in token alphanumeric order                       |
 | minBptAmountOut    |  `uint256`    | Expected minimum amount of pool tokens to receive                                             |
 | userData           |  `bytes`      | Additional (optional) data required for the query                                             |
 |                    |               |                                                                                               |
@@ -376,7 +376,7 @@ Queries an [`addLiquiditySingleTokenExactOut`](#addliquiditysingletokenexactout)
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
 | pool               |  `address`    | Address of the liquidity pool|
-| tokenIn            |  `IERC20`     | Exact amounts of tokens to be added, sorted in token registration order |
+| tokenIn            |  `IERC20`     | Exact amounts of tokens to be added, sorted in token alphanumeric order |
 | maxAmountIn        |  `uint256`    | Expected minimum amount of pool tokens to receive                       |
 | exactBptAmountOut  |  `uint256`    | Additional (optional) data required for the query                       |
 | userData           |  `bytes`      |                                                                         |
@@ -398,11 +398,11 @@ Queries an [`addLiquidityCustom`](#addliquiditycustom) operation without executi
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
 | pool               |  `address`    | Address of the liquidity pool|
-| inputAmountsIn     |  `uint256[]`  | Upscaled Amounts of tokens to be added, sorted in token registration order |
+| inputAmountsIn     |  `uint256[]`  | Upscaled Amounts of tokens to be added, sorted in token alphanumeric order |
 | minBptAmountOut    |  `uint256`    | Expected minimum amount of pool tokens to receive                          |
 | userData           |  `bytes`      | Additional (optional) data required for the query                          |
 |                    |               |                                                                            |
-| amountsIn          |  `uint256[]`  | Expected amounts of tokens to add, sorted in token registration order      | 
+| amountsIn          |  `uint256[]`  | Expected amounts of tokens to add, sorted in token alphanumeric order      | 
 | bptAmountOut       |  `uint256`    | Expected amount of pool tokens to receive                                  | 
 | returnData         |  `bytes`      | Arbitrary (optional) data with encoded response from the pool              |
 
@@ -422,10 +422,10 @@ Queries a [`removeLiquidityProportional`](#removeliquidityproportional) operatio
 | -------------      | ------------- | ------------  |
 | pool               |  `address`    | Address of the liquidity pool                                                                       |
 | exactBptAmountIn   |  `uint256`    | Exact amount of pool tokens provided for the query                                                  |
-| minAmountsOut      |  `uint256[]`  | Expected minimum amounts of tokens to receive, sorted in token registration order                   |
+| minAmountsOut      |  `uint256[]`  | Expected minimum amounts of tokens to receive, sorted in token alphanumeric order                   |
 | userData           |  `bytes`      | Additional (optional) data required for the query                                                   |
 |                    |               |                                                                                                     |
-| amountsOut         |  `uint256[]`  | Expected amounts of tokens to receive, sorted in token registration order                           |
+| amountsOut         |  `uint256[]`  | Expected amounts of tokens to receive, sorted in token alphanumeric order                           |
 
 ### queryRemoveLiquiditySingleTokenExactIn
 ```solidity
@@ -489,11 +489,11 @@ Queries a [`removeLiquidityCustom`](#removeliquiditycustom) operation without ex
 | -------------      | ------------- | ------------  |
 | pool               |  `address`    | Address of the liquidity pool|
 | maxBptAmountIn     |  `uint256`    | Maximum amount of pool tokens provided                                                             |
-| minAmountsOut      |  `uint256[]`  | Expected minimum amounts of tokens to receive, sorted in token registration order                  |
+| minAmountsOut      |  `uint256[]`  | Expected minimum amounts of tokens to receive, sorted in token alphanumeric order                  |
 | userData           |  `bytes`      | Additional (optional) data required for the query                                                  |
 |                    |               |                                                                                                    |
 | bptAmountIn        |  `uint256`    | Expected amount of pool tokens to burn                                                             |
-| amountsOut         |  `uint256[]`  | Expected amounts of tokens to receive, sorted in token registration order                          |
+| amountsOut         |  `uint256[]`  | Expected amounts of tokens to receive, sorted in token alphanumeric order                          |
 | returnData         |  `bytes`      | Arbitrary (optional) data with encoded response from the pool                                      |
 
 ### querySwapSingleTokenExactIn
