@@ -24,11 +24,7 @@ export const navbar: NavbarConfig = [
         text: 'Subgraph',
         link: '/reference/subgraph/readme.md',
       },
-      {
-        text: 'Defilytica',
-        link: 'https://balancer.defilytica.com/#/corePools',
-      }
-    ]
+    ],
   },
   {
     text: 'Reference',
