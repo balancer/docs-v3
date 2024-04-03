@@ -38,15 +38,11 @@ footer:
 
 **Github Repos**
 
-- [Smart Contracts](https://github.com/balancer/balancer-v2-monorepo)
-- [Deployments](https://github.com/balancer/balancer-deployments)
+- [Smart Contracts](https://github.com/balancer/balancer-v3-monorepo)
+- [Deployments](https://github.com/balancer/pvt-deployments/tree/master)
 - [SDK](https://github.com/balancer/balancer-sdk)
-- [Smart Order Router](https://github.com/balancer/balancer-sor)
-- [Frontend](https://github.com/balancer/frontend-v2)
-- [Subgraph](https://github.com/balancer/balancer-subgraph-v2)
+- [API](https://github.com/balancer/backend)
+- [Frontend](https://github.com/balancer/frontend-v3)
+- [Subgraph](https://github.com/balancer/balancer-subgraph-v3)
 
-**Analytics & Dashboards**
 
-- [DefiLlama](https://defillama.com/protocol/balancer)
-- [Analytics](https://balancer.defilytica.com/)
-- [Dune dashboards](https://dune.com/browse/dashboards?team=balancer)
