@@ -4,3 +4,6 @@ title: Partner onboarding
 ---
 
 # Partner Onboarding
+:::info
+This page is currently work in progress.
+:::

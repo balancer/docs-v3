@@ -19,10 +19,9 @@ By separating the AMM curve logic and math from the core swapping functionality,
 - Traditional 50/50 $x*y=k$ weighted pools
 - Custom weights like 80/20 for controlled exposure
 - Stable swap curves
-- Nested pools (ex: [Boosted Pools](/concepts/pools/boosted))
-- Pools with changing weights (ex: [Liquidity Bootstrapping Pools](/concepts/pools/liquidity-bootstrapping))
+- Nested pools (ex: [Boosted Pools](/concepts/pools/exploring-available-balancer-pools/boosted-pool.html))
+- Pools with changing weights (ex: [Liquidity Bootstrapping Pools](/concepts/pools/exploring-available-balancer-pools/liquidity-bootstrapping-pool.html))
 - Concentrated liquidity pools
-- Managed pools that allow customizable parameters
 - Custom AMMs to be built on top (ex: Gyroscope, Xave)
 
 All of the aggregate liquidity is then easily accessible for swappers, aggregators, and arbitrageurs. The Balancer [Vault](/concepts/vault) optimizes batching and path logic so that gas costs and capital requirements remain extremely low. Each individual pool and project built on top benefits from the global liquidity within Balancer that brings deep liquidity for base assets and opens up swap paths.
