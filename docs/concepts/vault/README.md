@@ -15,16 +15,12 @@ plugged directly into Balancer's existing liquidity instead of needing to build 
 In v3, the vault more formally defines the requirements of a pool contract, shifting core design patterns out of the pool and into the vault.
 The result is pool contracts that are compact and much easier to reason about.
 
-`TODO: add short descriptions for each section`
-
-`TODO: maybe add some visuals here`
-
 - [On-chain API](./onchain-api.html)
 - Features
-  - [Transient accounting](./features/transient.html) - 
+  - [Transient accounting](./features/transient.html)
   - [ERC20MultiToken](./features/erc20-multi-token.html)
   - [Token types](./features/token-types.html)
-  - [Decimal scaling](./features/decimal-scaling.html) -
+  - [Decimal scaling](./features/decimal-scaling.html)
   - [Rate scaling](./features/rate-scaling.html)
   - [Yield fee](./features/yield-fee.html)
   - [Swap fee](./features/swap-fee.html)
