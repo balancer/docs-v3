@@ -2,30 +2,65 @@
 
 **Alpha Release, use with caution, there may be breaking changes**
 
-A service that acts as a caching layer for Balancer Pools information. This service runs using AWS Lambda, DynamoDB, API Gateway and AppSync.
-This was built to speed up frontend queries, and for services such as Gnosis to use to route orders through Balancer pools.
+Balancer's API exposes data on Balancer's smart contracts accessible via graphql. The API is running as a graphql server and is deployed at [https://api-v3.balancer.fi](https://api-v3.balancer.fi).
 
-This package consists of CDK scripts that setup all the required infrastructure, and code for all the lambdas and services involved.
+Queries are organised around these main domains: Further documentation is available on the self documented [api server](https://api-v3.balancer.fi).
 
-It has the following components:
+- Pools
+- Gauges
+- Events
+- Users
+- Tokens
+- Prices
+- SOR
 
-- A DynamoDB database that hold Balancer pool information with tokens and current balances.
-- A Lambda that fetches the latest data from the graph / infura and updates the database.
-- An API Gateway server and set of lambdas that handle user requests.
-- An AppSync GraphQL endpoint for loading decorated pools.
-  ![](/images/pools-api-diagram.png)
 
-## Disclaimers
-
-This software is in Alpha and may have breaking changes at any time. There is little security implemented on the Lambda
-functions or GraphQL interface so anyone can call them.
-
-# Sections
-
-#### [Development and installation of the API](./setup.md)
-
-#### [Using the API](./usage.md)
-
-# Code
-
-The Source Code for the API can be found [on Github](https://github.com/balancer/balancer-api)
+# Examples
+Get a pool's details including APRs.
+```json
+{
+  poolGetPool(id: "0x7f2b3b7fbd3226c5be438cde49a519f442ca2eda00020000000000000000067d", chain:MAINNET) {
+    id
+    name
+    type
+    version
+    allTokens {
+      address
+      name
+    }
+    displayTokens {
+      ...on GqlPoolTokenDisplay {
+        symbol
+      }
+    }
+    dynamicData {
+      totalLiquidity
+      apr {
+        swapApr
+        nativeRewardApr {
+          ...on GqlPoolAprTotal {
+            total
+          }
+        }
+        thirdPartyApr {
+          ...on GqlPoolAprTotal {
+            total
+          }
+        }
+        items {
+          title
+          apr {
+            ...on GqlPoolAprRange {
+              min
+              max
+            }
+            ...on GqlPoolAprTotal {
+              total
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
