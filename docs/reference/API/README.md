@@ -17,7 +17,7 @@ Queries are organised around these main domains: Further documentation is availa
 
 # Examples
 Get a pool's details including APRs.
-```json
+```graphql
 {
   poolGetPool(id: "0x7f2b3b7fbd3226c5be438cde49a519f442ca2eda00020000000000000000067d", chain:MAINNET) {
     id
