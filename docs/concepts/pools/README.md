@@ -3,14 +3,8 @@ order: 1
 title: Overview
 ---
 
-# Pools
+# Balancer Pools: Unmatched Design Flexibility
 
-Balancer is infinitely extendible to allow for any conceivable pool type with custom curves, logic, parameters, and more.
+Balancer Pools are smart contracts that define how traders can swap between tokens on Balancer Protocol. What makes Balancer Pools unique from those of other protocols is their unparalleled flexibility. The architecture of Balancer Protocol empowers anyone to create their own custom pool types. With the introduction of [Hooks](./hooks.md) and [Dynamic Swap Fees](./dynamic-swap-fees.md) in V3, the realm of customization is boundless. Several custom pools have already been developed by external protocols like [Gyroscope](https://www.gyro.finance/) and [Xave](https://www.xave.co/). You can follow [this guide](../developer-guides/create-custom-amm-with-novel-invariant.md) to embark on creating your own custom pools.
 
-## Pool Types
-
-## Pool Composability
-
-The above classes of pools already highlights the flexibility of Balancer, but taking this a step further _composition_ of those pools is where Balancer starts to shine. A great example of this is tokens paired with the boosted stable pool. Most tokens will want to pair with either stables or native assets like ETH and historically every token creates an AMM pool which leads to something like `ABC/USDC`, `XYZ/USDC`, etc. That ends up being a lot of duplicated & isolated stable liquidity that also needs further hops to connect to other stablecoins. On Balancer, `ABC` and `XYZ` can both be paired with `bb-a-usd` which has amazing shared capital efficiency and creates direct routes between `ABC->USDC`, `ABC->USDT`, and `ABC->DAI`.
-
-These types of nested pools and unique combinations are only possible on Balancer due to the vault architecture, and other concepts like pre-minted BPTs, relayers to allow for joinswaps, and more.
+Balancer has already developed, audited and deployed a variety of pool types showcasing diverse functionalities. These pools are readily accessible for existing use cases without requiring permission, and the accompanying code serves as a valuable resource for custom pool development. For more details see the [Exploring Available Balancer Pools](./exploring-available-balancer-pools/available-pools.md) section.

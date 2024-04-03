@@ -4,31 +4,33 @@ title: Home
 heroText: Balancer V3 Docs
 heroImage: /images/backgrounds/main.svg
 homeImage: /images/hero-circles.png
+
 features:
-  - title: Basics
-    icon: /images/quick-link-basics.svg
-    details: Learn how Balancer works under the hood
-    link: /concepts/overview/basics
+  - title: Build a custom AMM
+    icon: /images/quick-link-guides.svg
+    details: Build your own AMM or extend an existing pool type with hooks
+    link: /concepts/overview/build-a-custom-amm
   - title: Integrate
     icon: /images/quick-link-integrate.svg
-    details: Jump into the SDK, APIs, and ways to integrate Balancer
-    link: /sdk/overview
+    details: Add or remove liquidity, swap from one token to another, or jump into the SDK and API.
+    link: /concepts/overview/integrate
   - title: Smart Contracts
     icon: /images/quick-link-contracts.svg
     details: Deployment addresses, ABIs, helpful walkthroughs, and more
     link: /reference/contracts/deployment-addresses/mainnet.html
-  - title: Dev Guides
-    icon: /images/quick-link-guides.svg
-    details: Follow along helpful guides with example code
+  - title: Basics
+    icon: /images/quick-link-basics.svg
+    details: Learn how Balancer works under the hood
     link: /guides
-  - title: Boosted Pools
+  - title: Partner Onboarding
     icon: /images/quick-link-boosted.svg
-    details: Learn how they work and how to contruct them
+    details: Looking to deploy liquidity on Balancer? Find everything you need to know here.
     link: /concepts/pools/boosted.html
-  - title: Liquidity Bootstrapping Pools
+  - title: Data and Analytics
     icon: /images/quick-link-lbp.svg
-    details: For fair token launches and NFT drops
+    details: All things data
     link: /concepts/pools/liquidity-bootstrapping.html
+
 footer:
 ---
 

@@ -57,9 +57,7 @@ The diagram shows the core components that make up Balancer Protocol and the tra
 
 
 ### Router API
-The [Router API](/concepts/Router/overview.md)
-
-
+The [Router API](../../concepts/router/overview.md)
 
 ## Router
 The design for the Router has been chosen to 

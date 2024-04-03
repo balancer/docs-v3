@@ -1,51 +1,43 @@
 ---
+order: 1
 title: Intro
 heroImage: /images/backgrounds/purple.png
 ---
 
 # Balancer SDK
 
-The Balancer SDK is a Typescript/Javascript library for interfacing with the Balancer protocol. This includes common contract interactions, calculations, the Smart Order Router, and more.
+The Balancer SDK is a Typescript/Javascript library for interfacing with the Balancer protocol. This includes common contract interactions such as add/remove liquidity and swaps.
 
-[![npm version](https://img.shields.io/npm/v/@balancer-labs/sdk/latest.svg)](https://www.npmjs.com/package/@balancer-labs/sdk/v/latest)
+[![npm version](https://img.shields.io/npm/v/@balancer/sdk/latest.svg)](https://www.npmjs.com/package/@balancer/sdk/v/latest)
 
-Some functionality of the SDK, including the SOR can also be accessed via the Balancer API for developers not using ts.  Find details in the [API Section](../../guides/API/README.md)
+Smart Order Router functionality is accessed via the Balancer API. Find details in the [API Section](../../reference/API/README.md).
 
 
-## Setup
+## Installation
 
 Install the package with
 
 ::: code-tabs#shell
+@tab pnpm
+
+```bash
+pnpm add @balancer/sdk
+```
 
 @tab yarn
 
 ```bash
-yarn install @balancer-labs/sdk
+yarn add @balancer/sdk
 ```
 
 @tab npm
-
 ```bash
-npm install @balancer-labs/sdk
+npm install @balancer/sdk
 ```
 :::
 
-The SDK uses the below environment variables as part of the configuration. Set these in an `.env` file or your preferred way of loading `ENV` variables
+## Guides & Examples
 
-```bash
-# .env
-INFURA=
-```
+For detailed guides explaining how to use the SDK for common actions please see [Developer Guides](../../concepts/developer-guides/add-liquidity-to-pool.md).
 
-Initialize the SDK in your code using
-
-```typescript
-import { BalancerSDK, BalancerSdkConfig, Network } from '@balancer-labs/sdk';
-
-const config: BalancerSdkConfig = {
-  network: Network.MAINNET,
-  rpcUrl: `https://mainnet.infura.io/v3/${process.env.INFURA}`,
-};
-const balancer = new BalancerSDK(config);
-```
+There are also detailed examples that run against a local fork in the [SDK repo](https://github.com/balancer/b-sdk/tree/main/examples).
