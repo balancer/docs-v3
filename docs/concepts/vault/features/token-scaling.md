@@ -73,19 +73,15 @@ A token's rate is defined as a 18 decimal fixed point number. It represents a fa
 
 ### Creating a pool with tokens that have rates
 
-On pool [register](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L116C9-L116C20) a [TokenConfig](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L66-L70) is provided for each of the pool's tokens.
-To define a token with a rate, specify the token type as  `TokenType.WITH_RATE`. Additionally, you must provide a `rateProvider` address that implements the `IRateProvider` interface. Refer to [Token types](/concepts/vault/tokentypes.html) for a detailed explanation on each token type.
-
-:::info
-`ERC-4626` vault tokens do not require an external `rateProvider`. For `ERC-4626` tokens, you can provide the `ZERO_ADDRESS` for the `rateProvider` function argument.
-:::
+On pool [register](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L83) a [TokenConfig](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L74-L89) is provided for each of the pool's tokens.
+To define a token with a rate, specify the token type as  `TokenType.WITH_RATE`. Additionally, you must provide a `rateProvider` address that implements the `IRateProvider` interface. Refer to [Token types](/concepts/vault/features/token-types.html) for a detailed explanation on each token type.
 
 ### Rate scaling usage
 Rate scaling technically is used on every `swap`, `addLiqudity` & `removeLiquidity` operations. If the token has been registered as a `TokenType.WITH_RATE` an external call to the Rate Provider is made via `getRate` if the `TokenType.STANDARD` is selected the rate is set as `1e18`. These rates are used to upscale the `amountGiven` as part of the Vault's primitives.
 :::info
 1. Calling a swap has amount as [`amountGivenRaw`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L112)
-2. [`AmountGivenRaw` is upscaled](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L230C14-L230C33)
-3. [`AmountGivenScaled18`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L332) is forwarded to the pool.
+2. [`AmountGivenRaw` is upscaled](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L318)
+3. [`AmountGivenScaled18`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L251) is forwarded to the pool.
 4. Rates are undone before returning either `amountIn` or `amountOut`
 :::
 
@@ -93,9 +89,9 @@ Rate scaling technically is used on every `swap`, `addLiqudity` & `removeLiquidi
 
 The term `liveBalances` is used internally to refer to balances that have been:
 
-1. [Decimal scaled](./decimal-scaling) - Upscaled to 18 decimals
-2. [Rate scaled](./rate-scaling) - Adjusted for token rates
-3. [Yield fee](./yield-fee) removed - Had yield fees deducted.
+1. [Decimal scaled](/concepts/vault/features/token-scaling.html#decimal-scaling) - Upscaled to 18 decimals
+2. [Rate scaled](/concepts/vault/features/token-scaling.html#rate-scaling) - Adjusted for token rates
+3. [Yield fee](/concepts/vault/features/yield-fee.html) removed - Had yield fees deducted.
 
 Any token balances sent to the pool will always be in live balance form. This ensures consistency across all tokens and removes the burden
 of token scaling from the pools logic.
