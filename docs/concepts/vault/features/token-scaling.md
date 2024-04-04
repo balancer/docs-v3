@@ -62,8 +62,6 @@ To facilitate the adoption of yield bearing liquidity, Balancer abstracts the co
 ### What is a token rate
 The classical example of a token with a rate is Lido's [wstETH](https://help.lido.fi/en/articles/5231836-what-is-lido-s-wsteth). As [stETH](https://help.lido.fi/en/articles/5230610-what-is-steth) accrues value from staking rewards, the exchange rate of wstETH -> stETH grows over time.
 
-TODO: something about LVR mitigation as a result of applying token rates, possibly a link to a dedicated page
-
 ### How does the Balancer Vault utilize token rates
 
 TODO: scaling done in vault to standardize approach, no longer handled in the pool. allow fo simplicity in pool
