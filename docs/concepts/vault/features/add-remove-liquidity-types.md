@@ -5,7 +5,7 @@ title: Add/Remove liquidity types
 
 # Add/Remove liquidity types
 
-Balancer protocol leverages the [Liquidity invariant approximation](concepts/vault/liquidity-invariant-approximation.html) to provide a generalized solution for add and remove liquidity operations.
+Balancer protocol leverages the [Liquidity invariant approximation](/concepts/vault/features/liquidity-invariant-approximation.html) to provide a generalized solution for add and remove liquidity operations.
 This enables the Vault to implement complex `unbalanced` and `singleAsset` liquidity operations that all custom AMMs built on Balancer support by default.
 
 The Vault's [`addLiquidity`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultMain.sol#L60-L72) and [`removeLiquidity`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultMain.sol#L78-L91) functions accept a `kind` argument that identifies the type of operation to be performed. As each `kind` has slightly different requirements, the argument impacts
@@ -17,12 +17,14 @@ If you're an integrator looking to implement add or remove liquidity for an exis
 
 ```solidity
 enum AddLiquidityKind {
+    PROPORTIONAL,
     UNBALANCED,
     SINGLE_TOKEN_EXACT_OUT,
     CUSTOM
 }
 ```
 
+- `AddLiquidityKind.PROPORTIONAL` - Add liquidity in proportional amounts and receive exact amount of BPT out.
 - `AddLiquidityKind.UNBALANCED` - Add liquidity to a pool with exact amounts of any pool token, avoiding unnecessary dust in the user's wallet.
 - `AddLiquidityKind.SINGLE_TOKEN_EXACT_OUT` - Add liquidity to a pool with a single token and receive an exact amount of BPT out.
 - `AddLiquidityKind.CUSTOM` - For AMMs with a use case not covered by the built-in functions, custom allows the pool to implement an add liquidity operation whose requirements are defined by the pool.

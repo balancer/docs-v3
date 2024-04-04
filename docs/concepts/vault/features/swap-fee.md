@@ -22,8 +22,6 @@ If users prefer not to have the swap fee of a pool controlled by Balancer govern
 
 It's crucial to remember that there is a limit to the static swap fee percentage. It can be set to any value between 0 and 10%, but no higher.
 
-TODO: Once this feature is live verify which function determines if governance/custom addr has authorisation & if zero address defaults to governance. 
-
 ## Swap fees by pool type.
 Different types of pools can have varying minimum and maximum swap fees. These variations are determined by the mathematical security properties and specific product requirements. The table below provides the specific minimum and maximum swap fees for each pool type.
 
@@ -31,11 +29,9 @@ Different types of pools can have varying minimum and maximum swap fees. These v
 | ----------    |---                |---  |
 | Weighted Pool | 0.0001%           | 10% |
 | Stable Pool   | 0%                | 10% |
-| Buffer Pool   | 0%                | 0%  |
-| Boosted Pool  | 0%                | 10% |
 
 ## Dynamic swap fee
-Liquidity pools can be set up to use dynamic swap fees. This setting is determined when the pool is registered with the Vault. Instead of getting the swap fee from the [pool's configuration](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L33), the Vault invokes the `getDynamicSwapFee(SwapInfo calldata info)` function on the pool contract. This function returns the swap fee percentage. It's important to note that even when a pool is set to use dynamic swap fees, it still maintains a static swap fee. However, this static fee is not utilized.
+Liquidity pools can be set up to use dynamic swap fees. This setting is determined when the pool is registered with the Vault. Instead of getting the swap fee from the [pool's configuration](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L33), the Vault uses the `_getSwapFeePercentage(PoolConfig memory config)` to fetch the swap fee from the pool. This function returns the swap fee percentage. It's important to note that even when a pool is set to use dynamic swap fees, it still maintains a static swap fee. However, this static fee is not utilized.
 
 :::info
 The capability to compute dynamic swap fee percentages opens up new and creative ways to calculate fees. For example, the fees can be adjusted depending on the swap's direction or configured to maintain a token's pegged value.
