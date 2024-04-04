@@ -8,7 +8,7 @@ order: 4
 Working with fixed-point math in Solidity presents a unique set of challenges that developers must navigate to ensure accurate and secure smart contract functionality.
 
 In an effort to abstract this complexity, the Vault manages decimal and rate scaling internally, scaling all token balances and input values prior to being sent to the [Pool](/concepts/pools).
-By doing this, we ensure consistency of rounding direction across all [Custom Pool](/concepts/pools/CustomPool.html) implementations, removing a significant
+By doing this, we ensure consistency of rounding direction across all [Custom Pool](/concepts/overview/build-a-custom-amm.html) implementations, removing a significant
 amount of complexity from the pool and allowing it to focus primarily on it's invariant implementation.
 
 ## Decimal scaling
@@ -25,7 +25,7 @@ tokenDecimalDiffs[i] = uint8(18) - IERC20Metadata(address(token)).decimals();
 A token with 6 decimals (USDC) would have a `tokenDecimalDiff = 18 - 6 = 12`, and a token with 18 decimals (WETH) would have a `tokenDecimalDiff = 18 - 18 = 0`.
 
 ### Scaling factors
-The `tokenDecimalDiffs` are then used to calculate the decimal `scalingFactors` for each token. This implementation can be found in the [PoolConfigLib](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/lib/PoolConfigLib.sol#L211-L227).
+The `tokenDecimalDiffs` are then used to calculate the decimal `scalingFactors` for each token. This implementation can be found in the [PoolConfigLib](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/lib/PoolConfigLib.sol#L214-L230).
 
 ```solidity
 function getDecimalScalingFactors(
@@ -50,7 +50,7 @@ function getDecimalScalingFactors(
 ### References
 To review the scaling implementations, refer to [ScalingHelpers.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/solidity-utils/contracts/helpers/ScalingHelpers.sol).
 
-You can review the logic flow of [swap](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L185), [addLiquidity](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L462) and [removeLiquidity](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L639)
+You can review the logic flow of [swap](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L174), [addLiquidity](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L469) and [removeLiquidity](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L699)
 to better understand how the vault manages token scaling.
 
 ## Rate scaling
