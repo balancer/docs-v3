@@ -64,8 +64,6 @@ The classical example of a token with a rate is Lido's [wstETH](https://help.lid
 
 ### How does the Balancer Vault utilize token rates
 
-TODO: scaling done in vault to standardize approach, no longer handled in the pool. allow fo simplicity in pool
-
 Besides [decimal scaling](#decimal-scaling) a tokens rate is taken into account in Balancer under in the following scenarios:
 - price computation as part of Stable & boosted pools
 - Yield fee computation when tokens with a rate are part of pools
