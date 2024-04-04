@@ -9,9 +9,9 @@ Transient accounting shifts the validation of accurate token accounting to the s
 
 Upon activation of the transient state, the handler contract is given permissions to certain Vault functions. This is managed by the Vault maintaining a list of handlers authorized to call these functions. The Vault then returns execution control back to the handler through a callback. The handler is now authorized to call:
 
-- `wire`: Sends tokens from the Vault to a recipient.
+- `sendTo`: Sends tokens from the Vault to a recipient.
 - `settle`: Balances the changes for a token.
-- `retrieve`: Collects tokens from a sender.
+- `takeFrom`: Collects tokens from a sender.
 - `swap`: Exchanges one type of token for another.
 - `addLiquidity`: Adds one or more tokens to a liquidity pool.
 - `removeLiquidity`: Removes one or more tokens from a liquidity pool.
@@ -19,32 +19,28 @@ Upon activation of the transient state, the handler contract is given permission
 ## Key concepts
 
 ### 1. Enabling transient state
-The transient state is activated when the `transient` modifier is used during the invocation of the Vault. Initially, the current caller is added to the `_handlers` list. As the transient state is enabled, the Vault hands back control to the caller through a callback, which allows all the previously mentioned functions to be called. 
+The transient state is activated when the `transient` modifier is used during the invocation of the Vault. Initially, the current caller is added to the `_lockers` list. As the transient state is enabled, the Vault hands back control to the caller through a callback, which allows all the previously mentioned functions to be called. 
 
-After the operations within the callback are completed, the transient state is expected to be closed. This means all `handlers`, except for the last one, are removed from the `_handlers` list. The final `handler` can only be removed if all the credit and debt accumulated to each individual handler during the callback execution is settled, which is indicated by `_nonzeroDeltaCount` being zero.
+After the operations within the callback are completed, the transient state is expected to be closed. This means all `lockers`, except for the last one, are removed from the `_lockers` list. The final `locker` can only be removed if all the credit and debt accumulated to each individual handler during the callback execution is settled, which is indicated by `_nonzeroDeltaCount` being zero.
 
 ```solidity
 modifier transient() {
-    // Add the current handler to the list
-    _handlers.push(msg.sender);
+    // Add the current locker to the list
+    _lockers().tPush(msg.sender);
 
     // The caller does everything here and has to settle all outstanding balances
     _;
 
-    // Check if it's the last handler
-    if (_handlers.length == 1) {
+    // Check if it's the last locker
+    if (_lockers().tLength() == 1) {
         // Ensure all balances are settled
-        if (_nonzeroDeltaCount != 0) revert BalanceNotSettled();
-
-        // Reset the handlers list
-        delete _handlers;
+        if (_nonzeroDeltaCount().tload() != 0) revert BalanceNotSettled();
 
         // Reset the counter
-        delete _nonzeroDeltaCount;
-    } else {
-        // If it's not the last handler, simply remove it from the list
-        _handlers.pop();
+        _nonzeroDeltaCount().tstore(0);
     }
+    // Remove locker from the list (applies to the last one too, which resets the array)
+    _lockers().tPop();
 }
 ```
 
