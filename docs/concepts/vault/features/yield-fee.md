@@ -48,6 +48,6 @@ function _computeYieldProtocolFeesDue(
 The `feeAmountRaw` represents the final computed yield fee value. Here, 'Raw' signifies that the [rate scaling](./token-scaling.md#rate-scaling) has been reversed, as indicated by the `toRawUndoRateRoundDown` expression.
 
 :::info
-to check if a token in a liquidity pool is subject to yield fees, you need to listen to the `PoolCreated` event of the pool creation transaction. The percentage of yield fees charged by the vault can be read via `vault.getYieldFeePercentage()`. 
+to check if a token in a liquidity pool is subject to yield fees, you need to listen to the `PoolRegistered` event of the pool creation transaction. The percentage of yield fees charged by the vault can be read via `vault.getYieldFeePercentage()`. 
 :::
 
