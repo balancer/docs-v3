@@ -30,7 +30,3 @@ Transient Accounting allows complex Vault operations to be queryable. To perform
 The vault enforces that any call to `quote` is performed as a `staticcall` made in an offchain `eth_call`. Inside of the `quote` context,
 the Router is allowed to perform any set of complex actions without settling debt.
 
-
-## Trusted Routers
-
-A Trusted Router has access to the allowances users have granted the Vault. This allows for a reduction in the number of token transfers for each operation from user -> Router -> Vault to user -> Vault. While any smart contract can work as a Router and settle debt via `vault.settle`, Trusted Routers can settle debt via `vault.retrieve`.
