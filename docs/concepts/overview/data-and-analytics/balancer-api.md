@@ -1,4 +1,8 @@
-# Introduction - Balancer Pools API
+---
+title: Balancer API
+order: 3
+---
+# Balancer API
 
 **Alpha Release, use with caution, there may be breaking changes**
 

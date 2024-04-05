@@ -1,9 +1,8 @@
 ---
-order: 0
-title: Overview
+title: Subgraph
+order: 1
 ---
-
-# Subgraphs
+# Balancer Subgraph
 
 The Balancer Subgraph indexes data on the Balancer smart contracts with a GraphQL interface. It updates data in response to function calls and contract events to maintain data.
 

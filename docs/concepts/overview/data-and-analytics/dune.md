@@ -1,7 +1,8 @@
 ---
-order: 0
-title: Overview
+title: Dune Dashboards
+order: 2
 ---
+# Dune Dashboards
 
 # Overview
 
