@@ -12,9 +12,9 @@ Balancer Pool Tokens are dynamic in nature, meaning their value can fluctuate ba
 
 The BalancerPoolToken contract adheres to the ERC20 token standard by incorporating the necessary methods and properties. **However, it does not directly manage the state of the token. Instead, it delegates these responsibilities to the Vault contract, which is an instance of [ERC20MultiToken](../vault/features/erc20-multi-token.md).** This design choice centralizes the accounting and management of tokens, facilitating atomic updates to critical pool states.
 
-Here's how the `BalancerPoolToken` contract achieves this:
+Here's how the [`BalancerPoolToken`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol) contract achieves this:
 
-Inheritance: The `BalancerPoolToken` contract also inherits from `IERC20`, `IERC20Metadata` and `IERC20Permit`. This means it has all the methods and properties required by the ERC20 standard.
+Inheritance: The [`BalancerPoolToken`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol) contract also inherits from `IERC20`, `IERC20Metadata` and `IERC20Permit`. This means it has all the methods and properties required by the ERC20 standard.
 
 - Delegation: The BalancerPoolToken contract doesn't manage the token state itself. Instead, it delegates this responsibility to the Vault contract. For example, the totalSupply, balanceOf, transfer, allowance, approve, and transferFrom methods all call the corresponding methods on the Vault contract.
 
