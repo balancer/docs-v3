@@ -21,15 +21,15 @@ features:
   - title: Basics
     icon: /images/quick-link-basics.svg
     details: Learn how Balancer works under the hood
-    link: /guides
+    link: /concepts/overview/architecture.html
   - title: Partner Onboarding
     icon: /images/quick-link-boosted.svg
     details: Looking to deploy liquidity on Balancer? Find everything you need to know here.
-    link: /concepts/pools/boosted.html
+    link: /concepts/overview/partner-onboarding.html
   - title: Data and Analytics
     icon: /images/quick-link-lbp.svg
     details: All things data
-    link: /concepts/pools/liquidity-bootstrapping.html
+    link: concepts/overview/data-and-analytics.html
 
 footer:
 ---
