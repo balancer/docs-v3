@@ -29,7 +29,7 @@ features:
   - title: Data and Analytics
     icon: /images/quick-link-lbp.svg
     details: All things data
-    link: concepts/overview/data-and-analytics.html
+    link: /concepts/overview/data-and-analytics/overview.html
 
 footer:
 ---
