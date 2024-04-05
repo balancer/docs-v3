@@ -1,19 +1,8 @@
 ---
-order: 4
-title: Batch Router Deployments & ABI
+order: 2
+title: Batch Router
 ---
-
-// TODO - Update before launch
-
-## Deployments
-
-| Network  | Address                                      |
-|----------|----------------------------------------------|
-| Sepolia  | TODO  |
-| Mainnet  | TODO                                         |
-
-
-## ABI
+# Batch Router ABI
 
 ```json
 [

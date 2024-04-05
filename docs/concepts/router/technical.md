@@ -26,7 +26,7 @@ Every user interaction going through the Router follows the same pattern of exec
 
 ## Router Queries
 
-[Transient Accounting]() allows complex Vault operations to be queryable. To perform a query, the Router calls `quote` on the Vault.
+Transient Accounting allows complex Vault operations to be queryable. To perform a query, the Router calls `quote` on the Vault.
 The vault enforces that any call to `quote` is performed as a `staticcall` made in an offchain `eth_call`. Inside of the `quote` context,
 the Router is allowed to perform any set of complex actions without settling debt.
 
