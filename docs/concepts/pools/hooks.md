@@ -15,7 +15,7 @@ Hooks introduce a new approach to managing a pool's execution logic. They are de
 - Sell or Buy limits
 
 
-A hook is a codeblock that implements arbitrary logic in a pool or external contract. Whenever a pool is registered in the Vault, part of the [`PoolConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L26-L37) stores this information. A set of [8 different pool hooks](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L9-L18) are available to be implemented, depending on what part of the execution flow the additional logic is needed. All hooks are expected to return a `boolean` type of either `true` on success or `false` on failure. The available hooks are:
+A hook is a codeblock that implements arbitrary logic in a pool or external contract. Whenever a pool is registered in the Vault, part of the [`PoolConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L26-L37) stores this information. A set of [different pool hooks](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L9-L18) are available to be implemented, depending on what part of the execution flow the additional logic is needed. All hooks (except `computeFee`) are expected to return a `boolean` type of either `true` on success or `false` on failure. The available hooks are:
 
 - `onBeforeInitialize`
 - `onAfterInitialize`
@@ -25,7 +25,6 @@ A hook is a codeblock that implements arbitrary logic in a pool or external cont
 - `onAfterRemoveLiquidity`
 - `onBeforeSwap`
 - `onAfterSwap`
-- [`computeFee`](/concepts/pools/dynamic-swap-fees.html)
 
 :::info hooks & reentrancy
 It is possible to reenter the Vault as part of a hook execution as only the respective internal function like `_swap`, `_addLiquidity` & `_removeLiquidity` are reentrancy protected.
@@ -34,6 +33,12 @@ It is possible to reenter the Vault as part of a hook execution as only the resp
 :::info Creation
 Balancer provides a `WeightedPoolWithHooksFactory` which as part of pool creation take the hooks bytecode and deploys the hooks as well as pool contract.
 :::
+
+## Dynamic swap fee hook
+Besides the 'before' and 'after' hooks, pools can also implement a - [`computeFee`](/concepts/pools/dynamic-swap-fees.html) hook to allow for dynamic fee computation.
+```solidity
+function computeFee(PoolData memory poolData, SwapLocals memory vars) external view returns (uint256);
+```
 
 ## Hook architecture
 Various choices for hook implementations are possible. Either:
