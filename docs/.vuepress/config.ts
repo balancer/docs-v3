@@ -21,7 +21,7 @@ export default defineUserConfig({
   locales: {
     '/': {
       lang: 'en-US',
-      title: 'Balancer V3',
+      title: 'Balancer',
       description: 'Learn, integrate, and build on a programmable AMM',
     },
   },
