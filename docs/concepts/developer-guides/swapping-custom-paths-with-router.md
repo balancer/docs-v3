@@ -272,8 +272,8 @@ function swapSingleTokenExactIn(
 #### Javascript Without SDK
 
 **Resources**:
-* [Router ABI](../router/abi-deployments-balancerRouter.md#abi)
-* [Router deployment addresses](../router/abi-deployments-balancerRouter.md#deployments)
+* [Router ABI](../../reference/contracts/abi/README.md)
+* [Router deployment addresses](../../reference/contracts)
 
 ::: code-tabs#shell
 @tab Viem
@@ -454,8 +454,8 @@ struct SwapPathExactAmountIn {
 #### Javascript
 
 **Resources**:
-* [Batch Router ABI](../router/abi-deployments-batchRouter.md#abi)
-* [Batch Router deployment addresses](../router/abi-deployments-batchRouter.md#deployments)
+* [Batch Router ABI](../../reference/contracts/abi/README.md)
+* [Batch Router deployment addresses](../../reference/contracts)
 
 ::: code-tabs#shell
 @tab Viem
