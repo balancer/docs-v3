@@ -3,6 +3,11 @@ order: 0
 title: Overview
 ---
 # Router Onchain API
+
+::: info
+Interactions with Balancer via the Router require either interaction with the `Router` or `BatchRouter`. The `BatchRouter` handles batch swaps & batch queries. Placing batch functionality in a separate contract was required due to the bytecode size limit of the EVM.
+:::
+
 The Router is the recommended entrypoint for user operations. It provides functions to both query and execute `swap`, `addLiquidity` and `removeLiquidity` operations against the Balancer vault.
 [Transient Accounting](/concepts/vault/features/transient-accounting.html) enables a simple query system that ensures query functions will always return the exact same outcome as their state-changing counterpart.
 
