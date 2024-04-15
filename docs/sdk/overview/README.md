@@ -10,7 +10,7 @@ The Balancer SDK is a Typescript/Javascript library for interfacing with the Bal
 
 [![npm version](https://img.shields.io/npm/v/@balancer/sdk/latest.svg)](https://www.npmjs.com/package/@balancer/sdk/v/latest)
 
-Smart Order Router functionality is accessed via the Balancer API. Find details in the [API Section](../../reference/API/README.md).
+Smart Order Router functionality is accessed via the Balancer API. Find details in the [API Section](../../concepts/overview/data-and-analytics/balancer-api.md).
 
 
 ## Installation
