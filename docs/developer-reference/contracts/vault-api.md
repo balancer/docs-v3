@@ -1,6 +1,6 @@
 ---
 order: 1
-title: Onchain API
+title: Vault API
 ---
 
 # The Vault

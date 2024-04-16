@@ -1,5 +1,5 @@
 ---
-order: 50
+order: 0
 title: Build a custom AMM on Balancer
 ---
 

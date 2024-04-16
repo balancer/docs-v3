@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 1
 title: Create a custom AMM with a novel invariant
 ---
 

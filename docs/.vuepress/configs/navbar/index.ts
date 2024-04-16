@@ -2,58 +2,61 @@ import type { NavbarConfig } from '@vuepress/theme-default';
 
 export const navbar: NavbarConfig = [
   {
-    text: 'Concepts',
-    link: '/',
+    text: 'Build An AMM',
+    link: '/build-a-custom-amm/build-a-custom-amm',
   },
   {
-    text: 'SDK',
-    link: '/sdk/overview',
+    text: 'Integration Guides',
+    link: '/integration-guides/overview',
   },
   {
-    text: 'Reference',
+    text: 'Dev Ref',
     children: [
       {
-        text: 'Contracts',
-        link: '/reference/contracts',
+        text: 'SDK',
         children: [
           {
-            text: 'Deployment Addresses',
-            link: '/reference/contracts',
+            text: 'Overview',
+            link: '/developer-reference/sdk/',
           },
-          {
-            text: 'Authorizer Permissions',
-            link: '/reference/authorizer',
-          },
-          {
-            text: 'APIs',
-            link: '/reference/contracts/api/readme.md',
-          },
+          '/developer-reference/sdk/API',
+        ],
+      },
+      {
+        text: 'Contracts',
+        children: [
           {
             text: 'ABIs',
-            link: '/reference/contracts/abi/readme.md',
+            link: '/developer-reference/contracts/abi',
           },
-          '/reference/contracts/security',
-          '/reference/contracts/error-codes',
+          {
+            text: 'Deployment Addresses',
+            link: '/developer-reference/contracts/deployment-addresses/mainnet.md',
+          },
+          '/developer-reference/contracts/router-api',
+          '/developer-reference/contracts/batch-router-api',
+          '/developer-reference/contracts/vault-api',
+          '/developer-reference/contracts/error-codes',
+          '/developer-reference/contracts/security',
         ],
       },
       {
-        text: 'Math',
-        children: [
-          '/reference/math/weighted-math',
-          '/reference/math/stable-math',
-          '/reference/math/linear-math',
-          '/reference/math/impermanent-loss',
-        ],
-      },
-      {
-        text: 'veBAL & Gauges',
-        children: [
-          '/reference/vebal-and-gauges/apr-calculation',
-          '/reference/vebal-and-gauges/gauges',
-          '/reference/vebal-and-gauges/vebal',
-        ],
+        text: 'Authorizer',
+        link: '/developer-reference/authorizer',
       },
     ],
+  },
+  {
+    text: 'Concepts',
+    link: '/concepts/overview/basics',
+  },
+  {
+    text: 'Partner Onboarding',
+    link: '/partner-onboarding/overview',
+  },
+  {
+    text: 'Data & Analytics',
+    link: '/data-and-analytics/overview',
   },
   {
     text: 'Tools',
