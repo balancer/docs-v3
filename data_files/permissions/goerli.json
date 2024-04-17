@@ -274,6 +274,19 @@
    {
       "Fx": "killGauge()",
       "Contract": "LiquidityGaugeV5",
+      "Deployment": "20220325-mainnet-gauge-factory",
+      "Authorized_Caller_Addresses": [
+         "0xE0a171587b1Cae546E069A943EDa96916F5EE977",
+         "0x3b1836C09fdAe0A7C2848F99B2584aEBD6A36876"
+      ],
+      "Authorized_Caller_Names": [
+         "UNDEF",
+         "UNDEF"
+      ]
+   },
+   {
+      "Fx": "killGauge()",
+      "Contract": "LiquidityGaugeV5",
       "Deployment": "20220822-mainnet-gauge-factory-v2",
       "Authorized_Caller_Addresses": [
          "0xE0a171587b1Cae546E069A943EDa96916F5EE977",
@@ -299,8 +312,8 @@
    },
    {
       "Fx": "killGauge()",
-      "Contract": "LiquidityGaugeV5",
-      "Deployment": "20220325-mainnet-gauge-factory",
+      "Contract": "SingleRecipientGauge",
+      "Deployment": "20230215-single-recipient-gauge-factory-v2",
       "Authorized_Caller_Addresses": [
          "0xE0a171587b1Cae546E069A943EDa96916F5EE977",
          "0x3b1836C09fdAe0A7C2848F99B2584aEBD6A36876"
@@ -311,15 +324,13 @@
       ]
    },
    {
-      "Fx": "killGauge()",
-      "Contract": "SingleRecipientGauge",
-      "Deployment": "20230215-single-recipient-gauge-factory-v2",
+      "Fx": "set_reward_distributor(address,address)",
+      "Contract": "LiquidityGaugeV5",
+      "Deployment": "20220325-mainnet-gauge-factory",
       "Authorized_Caller_Addresses": [
-         "0xE0a171587b1Cae546E069A943EDa96916F5EE977",
-         "0x3b1836C09fdAe0A7C2848F99B2584aEBD6A36876"
+         "0xE0a171587b1Cae546E069A943EDa96916F5EE977"
       ],
       "Authorized_Caller_Names": [
-         "UNDEF",
          "UNDEF"
       ]
    },
@@ -357,11 +368,11 @@
       ]
    },
    {
-      "Fx": "set_reward_distributor(address,address)",
+      "Fx": "unkillGauge()",
       "Contract": "LiquidityGaugeV5",
       "Deployment": "20220325-mainnet-gauge-factory",
       "Authorized_Caller_Addresses": [
-         "0xE0a171587b1Cae546E069A943EDa96916F5EE977"
+         "0x3b1836C09fdAe0A7C2848F99B2584aEBD6A36876"
       ],
       "Authorized_Caller_Names": [
          "UNDEF"
@@ -369,8 +380,8 @@
    },
    {
       "Fx": "unkillGauge()",
-      "Contract": "LiquidityGaugeV5",
-      "Deployment": "20220325-mainnet-gauge-factory",
+      "Contract": "ChildChainGauge",
+      "Deployment": "20230316-child-chain-gauge-factory-v2",
       "Authorized_Caller_Addresses": [
          "0x3b1836C09fdAe0A7C2848F99B2584aEBD6A36876"
       ],
@@ -393,17 +404,6 @@
       "Fx": "unkillGauge()",
       "Contract": "LiquidityGaugeV5",
       "Deployment": "20220822-mainnet-gauge-factory-v2",
-      "Authorized_Caller_Addresses": [
-         "0x3b1836C09fdAe0A7C2848F99B2584aEBD6A36876"
-      ],
-      "Authorized_Caller_Names": [
-         "UNDEF"
-      ]
-   },
-   {
-      "Fx": "unkillGauge()",
-      "Contract": "ChildChainGauge",
-      "Deployment": "20230316-child-chain-gauge-factory-v2",
       "Authorized_Caller_Addresses": [
          "0x3b1836C09fdAe0A7C2848F99B2584aEBD6A36876"
       ],
