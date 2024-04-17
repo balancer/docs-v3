@@ -18,7 +18,7 @@ features:
     icon: /images/quick-link-contracts.svg
     details: Deployment addresses, ABIs, APIs, and more
     link: /developer-reference/sdk
-  - title: Concepts
+  - title: Balancer Explained
     icon: /images/quick-link-basics.svg
     details: Learn how Balancer works under the hood
     link: /concepts/overview/architecture.html

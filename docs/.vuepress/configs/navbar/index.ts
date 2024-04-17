@@ -14,7 +14,7 @@ export const navbar: NavbarConfig = [
     link: '/developer-reference/overview',
   },
   {
-    text: 'Concepts',
+    text: 'Balancer Explained',
     link: '/concepts/overview/basics',
   },
   {
