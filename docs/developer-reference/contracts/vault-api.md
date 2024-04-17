@@ -193,6 +193,9 @@ This function retrieves the reserve of a given token.
 ## Pool registration
 
 ### registerPool
+:::info
+The Vault enforces `TokenConfig` is sorted by the token address when passing it to the `registerPool` function.
+:::
 
 ```solidity
 /**

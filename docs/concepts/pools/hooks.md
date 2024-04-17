@@ -14,6 +14,7 @@ Hooks introduce a new approach to managing a pool's execution logic. They are de
 - Automatic Gauge locking
 - Sell or Buy limits
 
+## Hook requirements
 
 A hook is a codeblock that implements arbitrary logic in a pool or external contract. In order to use hooks as part of a pool's operations two steps need to be done.
 
