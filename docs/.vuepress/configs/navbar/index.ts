@@ -11,40 +11,7 @@ export const navbar: NavbarConfig = [
   },
   {
     text: 'Dev Ref',
-    children: [
-      {
-        text: 'SDK',
-        children: [
-          {
-            text: 'Overview',
-            link: '/developer-reference/sdk/',
-          },
-          '/developer-reference/sdk/API',
-        ],
-      },
-      {
-        text: 'Contracts',
-        children: [
-          {
-            text: 'ABIs',
-            link: '/developer-reference/contracts/abi',
-          },
-          {
-            text: 'Deployment Addresses',
-            link: '/developer-reference/contracts/deployment-addresses/mainnet.md',
-          },
-          '/developer-reference/contracts/router-api',
-          '/developer-reference/contracts/batch-router-api',
-          '/developer-reference/contracts/vault-api',
-          '/developer-reference/contracts/error-codes',
-          '/developer-reference/contracts/security',
-        ],
-      },
-      {
-        text: 'Authorizer',
-        link: '/developer-reference/authorizer',
-      },
-    ],
+    link: '/developer-reference/overview',
   },
   {
     text: 'Concepts',
