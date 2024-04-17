@@ -6,14 +6,14 @@ heroImage: /images/backgrounds/main.svg
 homeImage: /images/hero-circles.png
 
 features:
-  - title: Build a custom AMM
-    icon: /images/quick-link-guides.svg
-    details: Build your own AMM or extend an existing pool type with hooks
-    link: /build-a-custom-amm/build-a-custom-amm
   - title: Integration Guides
     icon: /images/quick-link-integrate.svg
     details: Useful guides for common actions such as adding/removing liquidity and making swaps using the SDK.
     link: /integration-guides/overview
+  - title: Build a custom AMM
+    icon: /images/quick-link-guides.svg
+    details: Build your own AMM or extend an existing pool type with hooks
+    link: /build-a-custom-amm/build-a-custom-amm
   - title: Developer References
     icon: /images/quick-link-contracts.svg
     details: Deployment addresses, ABIs, APIs, and more

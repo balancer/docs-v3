@@ -2,12 +2,12 @@ import type { NavbarConfig } from '@vuepress/theme-default';
 
 export const navbar: NavbarConfig = [
   {
-    text: 'Build An AMM',
-    link: '/build-a-custom-amm/build-a-custom-amm',
-  },
-  {
     text: 'Integration Guides',
     link: '/integration-guides/overview',
+  },
+  {
+    text: 'Build An AMM',
+    link: '/build-a-custom-amm/build-a-custom-amm',
   },
   {
     text: 'Dev Ref',
