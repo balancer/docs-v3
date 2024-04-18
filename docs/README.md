@@ -10,15 +10,15 @@ features:
   - title: Integration Guides
     icon: /images/quick-link-integrate.svg
     details: Useful guides for common actions such as adding/removing liquidity and making swaps using the SDK.
-    link: /integration-guides/overview
+    link: /integration-guides/README.md
   - title: Build a custom AMM
     icon: /images/quick-link-guides.svg
     details: Build your own AMM or extend an existing pool type with hooks
-    link: /build-a-custom-amm/build-a-custom-amm
+    link: /build-a-custom-amm/README.md
   - title: Developer References
     icon: /images/quick-link-contracts.svg
     details: Deployment addresses, ABIs, APIs, and more
-    link: /developer-reference/sdk
+    link: /developer-reference/README.md
   - title: Balancer Explained
     icon: /images/quick-link-basics.svg
     details: Learn how Balancer works under the hood
@@ -26,11 +26,11 @@ features:
   - title: Partner Onboarding
     icon: /images/quick-link-boosted.svg
     details: Looking to deploy liquidity on Balancer? Find everything you need to know here.
-    link: /partner-onboarding/overview
+    link: /partner-onboarding/README.md
   - title: Data and Analytics
     icon: /images/quick-link-lbp.svg
     details: All things data
-    link: /data-and-analytics/overview
+    link: /data-and-analytics/README.md
 
 footer:
 ---
