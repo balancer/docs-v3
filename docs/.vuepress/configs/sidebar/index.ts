@@ -117,5 +117,5 @@ export const sidebar: SidebarConfig = {
   '/integration-guides': side('docs/integration-guides/', ''),
   '/tools': side('docs/tools/', ''),
   '/developer-reference/': side('docs/developer-reference/', ''),
-  '/': side('docs/', ''),
+  // '/': side('docs/', ''),
 };

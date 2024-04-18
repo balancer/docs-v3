@@ -1,6 +1,7 @@
 ---
 home: true
 title: Home
+sidebar: none
 heroText: Balancer V3 Docs
 heroImage: /images/backgrounds/main.svg
 homeImage: /images/hero-circles.png
