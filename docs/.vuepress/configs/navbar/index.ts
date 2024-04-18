@@ -3,15 +3,15 @@ import type { NavbarConfig } from '@vuepress/theme-default';
 export const navbar: NavbarConfig = [
   {
     text: 'Integration Guides',
-    link: '/integration-guides/overview',
+    link: '/integration-guides/README.md',
   },
   {
     text: 'Build An AMM',
-    link: '/build-a-custom-amm/build-a-custom-amm',
+    link: '/build-a-custom-amm/README.md',
   },
   {
     text: 'Dev Ref',
-    link: '/developer-reference/overview',
+    link: '/developer-reference/README.md',
   },
   {
     text: 'Balancer Explained',
@@ -19,11 +19,11 @@ export const navbar: NavbarConfig = [
   },
   {
     text: 'Partner Onboarding',
-    link: '/partner-onboarding/overview',
+    link: '/partner-onboarding/README.md',
   },
   {
     text: 'Data & Analytics',
-    link: '/data-and-analytics/overview',
+    link: '/data-and-analytics/README.md',
   },
   {
     text: 'Tools',
