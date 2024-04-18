@@ -67,17 +67,22 @@ const getChildren = (parent_path, dir, recursive = true) => {
  * @returns {Array.<String|Object>} - Recursion level
  */
 const side = (baseDir, relativeDir = '', currentLevel = 1) => {
+  const directories = getDirectories(join(baseDir, relativeDir));
+
+  // If we only have one sub directory the full sidebar should always be shown
+  const collapsible =
+    currentLevel === 1 && directories.length === 1 ? false : true;
+
   const fileLinks = getChildren(baseDir, relativeDir, currentLevel > 2);
   if (currentLevel <= 2) {
-    getDirectories(join(baseDir, relativeDir)).forEach(subDir => {
+    directories.forEach(subDir => {
       const children = side(
         baseDir,
         join(relativeDir, subDir),
         currentLevel + 1
       );
 
-      let insertPosition =
-        getDirectories(join(baseDir, relativeDir)).length + fileLinks.length;
+      let insertPosition = directories.length + fileLinks.length;
 
       if (children.length > 0) {
         const orderPath = join(baseDir, relativeDir, subDir, '.order');
@@ -89,7 +94,7 @@ const side = (baseDir, relativeDir = '', currentLevel = 1) => {
         fileLinks.splice(insertPosition, 0, {
           text: getName(subDir),
           order: insertPosition,
-          collapsible: true,
+          collapsible,
           children,
         });
       }
