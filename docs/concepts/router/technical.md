@@ -24,9 +24,3 @@ Every user interaction going through the Router follows the same pattern of exec
 2. The Router executes a hook function (ie: `swapSingleTokenHook`) which calls the Vault's primitives (ie: `swap`). These operations add debt or credit to the handler's tab with the Vault. 
 3. To finalize the user operation, the Router needs to settle outstanding debt which the Vault attributed to the Router during the execution of `swap`. If debt & credit is not settled, the transaction will revert. This step closes out the tab opened with the Vault in step 1.
 
-## Router Queries
-
-Transient Accounting allows complex Vault operations to be queryable. To perform a query, the Router calls `quote` on the Vault.
-The vault enforces that any call to `quote` is performed as a `staticcall` made in an offchain `eth_call`. Inside of the `quote` context,
-the Router is allowed to perform any set of complex actions without settling debt.
-
