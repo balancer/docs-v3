@@ -33,8 +33,9 @@ const itemClass = computed(() => ({
   collapsible: item.value.collapsible,
 }));
 
+// If the item is not collapsible it should be a single folder so we want it open by default
 const isOpenDefault = computed(() =>
-  depth.value === 0 || isActive.value ? true : false
+  !item.value.collapsible || isActive.value ? true : false
 );
 const [isOpen, toggleIsOpen] = useToggle(isOpenDefault.value);
 const onClick = (e: Event): void => {

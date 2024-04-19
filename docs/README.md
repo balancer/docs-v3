@@ -1,35 +1,36 @@
 ---
 home: true
 title: Home
+sidebar: none
 heroText: Balancer V3 Docs
 heroImage: /images/backgrounds/main.svg
 homeImage: /images/hero-circles.png
 
 features:
+  - title: Integration Guides
+    icon: /images/quick-link-integrate.svg
+    details: Useful guides for common actions such as adding/removing liquidity and making swaps using the SDK.
+    link: /integration-guides/README.md
   - title: Build a custom AMM
     icon: /images/quick-link-guides.svg
     details: Build your own AMM or extend an existing pool type with hooks
-    link: /concepts/overview/build-a-custom-amm
-  - title: Integrate
-    icon: /images/quick-link-integrate.svg
-    details: Add or remove liquidity, swap from one token to another, or jump into the SDK and API.
-    link: /concepts/overview/integrate
-  - title: Smart Contracts
+    link: /build-a-custom-amm/README.md
+  - title: Developer References
     icon: /images/quick-link-contracts.svg
-    details: Deployment addresses, ABIs, helpful walkthroughs, and more
-    link: /reference/contracts/deployment-addresses/mainnet.html
-  - title: Basics
+    details: Deployment addresses, ABIs, APIs, and more
+    link: /developer-reference/README.md
+  - title: Balancer Explained
     icon: /images/quick-link-basics.svg
     details: Learn how Balancer works under the hood
-    link: /concepts/overview/architecture.html
+    link: /concepts/core-concepts/introduction.md
   - title: Partner Onboarding
     icon: /images/quick-link-boosted.svg
     details: Looking to deploy liquidity on Balancer? Find everything you need to know here.
-    link: /concepts/overview/partner-onboarding.html
+    link: /partner-onboarding/README.md
   - title: Data and Analytics
     icon: /images/quick-link-lbp.svg
     details: All things data
-    link: /concepts/overview/data-and-analytics/overview.html
+    link: /data-and-analytics/README.md
 
 footer:
 ---

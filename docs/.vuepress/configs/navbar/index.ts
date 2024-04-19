@@ -2,58 +2,28 @@ import type { NavbarConfig } from '@vuepress/theme-default';
 
 export const navbar: NavbarConfig = [
   {
-    text: 'Concepts',
-    link: '/',
+    text: 'Integration Guides',
+    link: '/integration-guides/README.md',
   },
   {
-    text: 'SDK',
-    link: '/sdk/overview',
+    text: 'Build An AMM',
+    link: '/build-a-custom-amm/README.md',
   },
   {
-    text: 'Reference',
-    children: [
-      {
-        text: 'Contracts',
-        link: '/reference/contracts',
-        children: [
-          {
-            text: 'Deployment Addresses',
-            link: '/reference/contracts',
-          },
-          {
-            text: 'Authorizer Permissions',
-            link: '/reference/authorizer',
-          },
-          {
-            text: 'APIs',
-            link: '/reference/contracts/api/readme.md',
-          },
-          {
-            text: 'ABIs',
-            link: '/reference/contracts/abi/readme.md',
-          },
-          '/reference/contracts/security',
-          '/reference/contracts/error-codes',
-        ],
-      },
-      {
-        text: 'Math',
-        children: [
-          '/reference/math/weighted-math',
-          '/reference/math/stable-math',
-          '/reference/math/linear-math',
-          '/reference/math/impermanent-loss',
-        ],
-      },
-      {
-        text: 'veBAL & Gauges',
-        children: [
-          '/reference/vebal-and-gauges/apr-calculation',
-          '/reference/vebal-and-gauges/gauges',
-          '/reference/vebal-and-gauges/vebal',
-        ],
-      },
-    ],
+    text: 'Dev Ref',
+    link: '/developer-reference/README.md',
+  },
+  {
+    text: 'Balancer Explained',
+    link: '/concepts/core-concepts/introduction.md',
+  },
+  {
+    text: 'Partner Onboarding',
+    link: '/partner-onboarding/README.md',
+  },
+  {
+    text: 'Data & Analytics',
+    link: '/data-and-analytics/README.md',
   },
   {
     text: 'Tools',

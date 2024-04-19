@@ -9,7 +9,7 @@ Interactions with Balancer via the Router require either interaction with the `R
 :::
 
 The Router is the recommended entrypoint for user operations. It provides functions to both query and execute `swap`, `addLiquidity` and `removeLiquidity` operations against the Balancer vault.
-[Transient Accounting](/concepts/vault/features/transient-accounting.html) enables a simple query system that ensures query functions will always return the exact same outcome as their state-changing counterpart.
+[Transient Accounting](/concepts/vault/transient-accounting.html) enables a simple query system that ensures query functions will always return the exact same outcome as their state-changing counterpart.
 
 Because routers are stateless and do not hold token balances, they can be replaced safely and trustlessly, if necessary. These docs will always reference the latest version of the Balancer Router. 
 
@@ -20,8 +20,8 @@ governance has the ability to revoke the **Trusted** designation, disabling vaul
 
 ## API
 The onchain APIs to work can be found here:
-- [Router API](./onchain-api/router-api.md)
-- [Batch Router API](./onchain-api/batch-router-api.md)
+- [Router API](../../developer-reference/contracts/router-api.md)
+- [Batch Router API](../../developer-reference/contracts/batch-router-api.md)
 
 ## Code
 
