@@ -71,15 +71,15 @@ contract ConstantPricePool is IBasePool, BalancerPoolToken {
 ::: info What does Scaled18 mean?
 Internally, Balancer protocol scales all tokens to 18 decimals to minimize the potential for errors that can occur when
 comparing tokens with different decimals numbers (ie: WETH/USDC). `Scaled18` is a suffix used to signify values has already been scaled.
-**By default, ALL values provided to the pool will always be `Scaled18`.** Refer to [Decimal scaling](/concepts/vault/features/token-scaling.html#pool-registration) for more information.
+**By default, ALL values provided to the pool will always be `Scaled18`.** Refer to [Decimal scaling](/concepts/vault/token-scaling.html#pool-registration) for more information.
 :::
 
 ::: info What does Live refer to in balancesLiveScaled18?
-They keyword `Live` denote balances that have been scaled by their respective `IRateProvider` and have any pending yield fee removed. Refer to [Live Balances](/concepts/vault/features/token-scaling.html#live-balances) for more information.
+They keyword `Live` denote balances that have been scaled by their respective `IRateProvider` and have any pending yield fee removed. Refer to [Live Balances](/concepts/vault/token-scaling.html#live-balances) for more information.
 :::
 
 ::: info How are add and remove liquidity operations implemented?
-Balancer protocol leverages a novel approximation, termed the [Liquidity invariant approximation](/concepts/vault/features/liquidity-invariant-approximation.html), to provide a generalized solution for liquidity operations.
+Balancer protocol leverages a novel approximation, termed the [Liquidity invariant approximation](/concepts/vault/liquidity-invariant-approximation.html), to provide a generalized solution for liquidity operations.
 By implementing `computeInvariant` and `computeBalance`, your custom AMM will immediately support all Balancer liquidity operations: `unbalanced`, `proportional` and `singleAsset`.
 :::
 
@@ -158,7 +158,7 @@ The approach taken by Balancer Labs is to define a [NewPoolParams](https://githu
 
 ## Swap fees
 
-The charging of swap fees is managed entirely by the Balancer vault. The pool is only responsible for declaring the `swapFeePercentage` for any given swap or unbalanced liquidity operation. For more information, see [Swap fees](http://localhost:8080/concepts/vault/features/swap-fee.html).
+The charging of swap fees is managed entirely by the Balancer vault. The pool is only responsible for declaring the `swapFeePercentage` for any given swap or unbalanced liquidity operation. For more information, see [Swap fees](http://localhost:8080/concepts/vault/swap-fee.html).
 
 ::: info Do I need to take swap fees into account when implementing onSwap?
 No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swap, the amount in (`request.amountGivenScaled18`) will already have the swap fee removed before `onSwap` is called.
@@ -166,7 +166,7 @@ No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swa
 
 Balancer supports two types of swap fees:
 
-- **Static swap fee**: Defined on `vault.registerPool()` and managed via calls to `vault.setStaticSwapFeePercentage()`. For more information, see [Swap fee](/concepts/vault/features/swap-fee.html).
+- **Static swap fee**: Defined on `vault.registerPool()` and managed via calls to `vault.setStaticSwapFeePercentage()`. For more information, see [Swap fee](/concepts/vault/swap-fee.html).
 - **Dynamic swap fee**: Allows a pool to define a swap fee percentage per operation. A pool flags that it supports dynamic fees on `vault.registerPool()`. For more information, see [Dynamic swap fees](/concepts/pools/dynamic-swap-fees.html).
 
 ## Hooks
@@ -177,7 +177,7 @@ Hooks allow a pool to execute a piece of code immediately `before` or `after` mo
 Hooks allow a pool to reenter the vault within the context of a pool operation. While `onSwap`, `computeInvariant` and `computeBalance` must be executed within a reentrancy guard, the vault is architected such that hooks operate outside of this requirement.
 
 ## Add / Remove liquidity 
-The implementation of `computeInvariant` and `computeBalance` allows a pool to support ALL [Add/Remove liquidity types](/concepts/vault/features/add-remove-liquidity-types.html).
+The implementation of `computeInvariant` and `computeBalance` allows a pool to support ALL [Add/Remove liquidity types](/concepts/vault/add-remove-liquidity-types.html).
 For instances where your custom AMM has additional requirements for add/remove liquidity operations, Balancer provides support for `AddLiquidityKind.CUSTOM` and `RemoveLiquidityKind.CUSTOM`.
 An example custom liquidity operation can be found in [Cron Finance's](https://docs.cronfi.com/twamm/) TWAMM implementation on Balancer V2, specifically when the pool [registers long term orders](https://github.com/Cron-Finance/v1-twamm/blob/main/contracts/twault/CronV1Pool.sol#L438).
 

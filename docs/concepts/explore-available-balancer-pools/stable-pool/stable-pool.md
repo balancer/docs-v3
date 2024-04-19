@@ -1,5 +1,5 @@
 ---
-order: 2
+order: 0
 title: Stable Pool
 references:
   - details: Stable Math
@@ -10,7 +10,7 @@ references:
 
 ## Overview
 
-Stable Pools are designed for assets that are either expected to consistently swap at near parity, or at a known exchange rate. Stable Pools use [Stable Math](/reference/math/stable-math.md) (based on StableSwap, popularized by Curve) which allows for swaps of significant size before encountering substantial price impact, vastly increasing capital efficiency for like-kind and correlated-kind swaps.
+Stable Pools are designed for assets that are either expected to consistently swap at near parity, or at a known exchange rate. Stable Pools use [Stable Math](./stable-math.md) (based on StableSwap, popularized by Curve) which allows for swaps of significant size before encountering substantial price impact, vastly increasing capital efficiency for like-kind and correlated-kind swaps.
 
 ### Ideal For
 

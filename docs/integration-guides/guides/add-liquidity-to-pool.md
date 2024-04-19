@@ -14,8 +14,8 @@ _This guide is for adding liquidity to Balancer V3. If you're looking to add liq
 The core concepts of adding liquidity are the same for any programming language or framework:
 * The sender must approve the Vault (not the Router) for each token they wish to add to the pool
 * Token amount inputs/outputs are always in the raw token scale, e.g. `1 USDC` should be sent as `1000000` because it has 6 decimals
-* Transactions are always sent to the [Router](../router/overview.md)
-* In exchange for providing liquidity the sender will receive [Balancer Pool Tokens](../pools/balancer-pool-token.md) (BPTs) which represents their share of the pool and can be used to remove liquidity at any time
+* Transactions are always sent to the [Router](../../concepts/router/overview.md)
+* In exchange for providing liquidity the sender will receive [Balancer Pool Tokens](../../concepts/core-concepts/balancer-pool-tokens.md) (BPTs) which represents their share of the pool and can be used to remove liquidity at any time
 
 The Router interface for `addLiquidityUnbalanced` is:
 ```solidity
@@ -160,13 +160,13 @@ To see the full query used to fetch pool state refer to the code [here](https://
 
 ### Queries and safely setting slippage limits
 
-[Router queries](../router/technical.md#router-queries) allow for simulation of operations without execution. In this example, when the `query` function is called: 
+[Router queries](../../concepts/router/queries.md) allow for simulation of operations without execution. In this example, when the `query` function is called: 
 
 ```typescript
 const queryOutput = await addLiquidity.query(addLiquidityInput, poolState);
 // queryOutput.bptOut
 ```
-The Routers [queryAddLiquidityUnbalanced](../router/overview.md#queryaddliquidityunbalanced) function is used to find the amount of BPT that would be received, `bptOut`.
+The Routers [queryAddLiquidityUnbalanced](../../developer-reference/contracts/router-api.md#queryaddliquidityunbalanced) function is used to find the amount of BPT that would be received, `bptOut`.
 
 In the next step `buildCall` uses the `bptOut` and the user defined `slippage` to calculate the `minBptAmountOut`:
 ```typescript
@@ -210,11 +210,11 @@ It also returns the `minBptOut` amount which can be useful to display/validation
 
 The following Viem and Ethers snippets demonstrate how to perform an add liquidity unbalanced operation. To achieve this, we use two Router functions:
 
-* [`addLiquidityUnbalanced`](../router/overview.md#addliquidityunbalanced) - Add liquidity to a pool, unbalanced.
-* [`queryAddLiquidityUnbalanced`](../router/overview.md#queryaddliquidityunbalanced) - The [router query](../router/technical.md#router-queries) used to simulate an add liquidity unbalanced operation. It returns the exact amount of BPT that would be received.
+* [`addLiquidityUnbalanced`](../../developer-reference/contracts/router-api.md#addliquidityunbalanced) - Add liquidity to a pool, unbalanced.
+* [`queryAddLiquidityUnbalanced`](../../developer-reference/contracts/router-api.md#queryaddliquidityunbalanced) - The [router query](../../concepts/router/queries.md) used to simulate an add liquidity unbalanced operation. It returns the exact amount of BPT that would be received.
 
 **Resources**:
-* [Router ABI](../../reference/contracts/abi/README.md)
+* [Router ABI](../../developer-reference/contracts/router-api.md)
 * [Router deployment addresses](../../reference/contracts)
 
 ::: code-tabs#shell

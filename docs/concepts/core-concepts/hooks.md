@@ -1,11 +1,11 @@
 ---
-order: 5
+order: 2
 title: Hooks
 ---
 # Hooks
 
 :::info Get Started
-To get started building your own hook check out the [guide](../developer-guides/extend-existing-pool-type-using-hooks.md).
+To get started building your own hook check out the [guide](../../build-a-custom-amm/build-an-amm/extend-existing-pool-type-using-hooks.md).
 :::
 
 Hooks introduce a new approach to managing a pool's execution logic. They are designed to enhance pool operations and allow developers to tailor pool behavior to their specific use cases. Hooks can execute actions during pool operation and also compute a dynamic swap fee. Potential applications for pool hooks include:

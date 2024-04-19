@@ -3,6 +3,10 @@ title: Overview
 order: 0
 ---
 
+::: info
+The Vault should not be interacted with directly. [Routers](../router/overview.md) serve as the entry point for all user actions.
+:::
+
 # The Vault
 
 The Vault is the core of the Balancer protocol; it is a smart contract that holds and manages all tokens in each Balancer pool.

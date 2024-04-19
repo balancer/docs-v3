@@ -22,7 +22,7 @@ features:
   - title: Balancer Explained
     icon: /images/quick-link-basics.svg
     details: Learn how Balancer works under the hood
-    link: /concepts/overview/architecture.html
+    link: /concepts/core-concepts/introduction.md
   - title: Partner Onboarding
     icon: /images/quick-link-boosted.svg
     details: Looking to deploy liquidity on Balancer? Find everything you need to know here.

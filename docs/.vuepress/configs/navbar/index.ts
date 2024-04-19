@@ -15,7 +15,7 @@ export const navbar: NavbarConfig = [
   },
   {
     text: 'Balancer Explained',
-    link: '/concepts/overview/basics',
+    link: '/concepts/core-concepts/introduction.md',
   },
   {
     text: 'Partner Onboarding',

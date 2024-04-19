@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 3
 title: Dynamic swap fees
 ---
 # Dynamic swap fee

@@ -1,5 +1,5 @@
 ---
-order: 1
+order: 0
 title: Weighted Pool
 references:
   - details: Weighted Math
@@ -10,7 +10,7 @@ references:
 
 ## Overview
 
-Weighted Pools are an extension of the classical $x * y = k$ AMM pools popularized by Uniswap v1. Weighted Pools use [Weighted Math](/reference/math/weighted-math.md), which makes them great for general cases, including tokens that don't necessarily have any price correlation (ex. DAI/WETH). Unlike pools in other AMMs that only provide 50/50 weightings, Balancer Weighted Pools enable users to build pools with more than two tokens and custom weightings, such as pools with 80/20 or 60/20/20 weightings.
+Weighted Pools are an extension of the classical $x * y = k$ AMM pools popularized by Uniswap v1. Weighted Pools use [Weighted Math](./weighted-math.md), which makes them great for general cases, including tokens that don't necessarily have any price correlation (ex. DAI/WETH). Unlike pools in other AMMs that only provide 50/50 weightings, Balancer Weighted Pools enable users to build pools with more than two tokens and custom weightings, such as pools with 80/20 or 60/20/20 weightings.
 
 ::: chart Weighted Pool
 
@@ -53,6 +53,6 @@ For example if a user wants to provide liquidity for WBTC and WETH, they can cho
 
 ### Impermanent Loss
 
-[Impermanent Loss](../../../reference/math/impermanent-loss.md) is the difference in value between holding a set of assets and providing liquidity for those same assets.
+[Impermanent Loss](./impermanent-loss.md) is the difference in value between holding a set of assets and providing liquidity for those same assets.
 
 For pools that heavily weight one token over another, there is far less impermanent loss, but this doesn't come for free; very asymmetric pools do have higher slippage when making swaps due to the fact that one side has much less liquidity. 80/20 pools have emerged as a happy medium when balancing liquidity an Impermanent Loss mitigation.

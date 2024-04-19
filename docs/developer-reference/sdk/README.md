@@ -10,7 +10,7 @@ The Balancer SDK is a Typescript/Javascript library for interfacing with the Bal
 
 [![npm version](https://img.shields.io/npm/v/@balancer/sdk/latest.svg)](https://www.npmjs.com/package/@balancer/sdk/v/latest)
 
-Smart Order Router functionality is accessed via the Balancer API. Find details in the [API Section](../../concepts/overview/data-and-analytics/balancer-api.md).
+Smart Order Router functionality is accessed via the Balancer API. Find details in the [API Section](../../data-and-analytics/data-and-analytics/balancer-api.md).
 
 
 ## Installation
@@ -38,6 +38,6 @@ npm install @balancer/sdk
 
 ## Guides & Examples
 
-For detailed guides explaining how to use the SDK for common actions please see [Developer Guides](../../concepts/developer-guides/add-liquidity-to-pool.md).
+For detailed guides explaining how to use the SDK for common actions please see [Developer Guides](../../integration-guides/guides/add-liquidity-to-pool.md).
 
 There are also detailed examples that run against a local fork in the [SDK repo](https://github.com/balancer/b-sdk/tree/main/examples).

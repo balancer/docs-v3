@@ -154,7 +154,7 @@ By default the API will return the swap that gives the best result from either V
 
 ### Queries and safely setting slippage limits
 
-[Router queries](../router/technical.md#router-queries) allow for simulation of operations without execution. In this example, when the `query` function is called: 
+[Router queries](../../concepts/router/queries.md) allow for simulation of operations without execution. In this example, when the `query` function is called: 
 
 ```typescript
 const updated = await swap.query(RPC_URL) as ExactInQueryOutput;

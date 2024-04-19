@@ -12,10 +12,10 @@ _This guide is for removing liquidity to Balancer V3. If you're looking to remov
 ## Core Concepts
 
 The core concepts of removing liquidity are the same for any programming language or framework:
-* When removing liquidity the user sends [Balancer Pool Tokens](../pools/balancer-pool-token.md) (BPTs), and will receive pool tokens
-* Unlike standard ERC20s, the vault has control over the supply of BPT, so there is no need for the sender to make approvals when sending BPTs. For more info see: [Balancer Pool Token](../pools/balancer-pool-token.md)
+* When removing liquidity the user sends [Balancer Pool Tokens](../../concepts/core-concepts/balancer-pool-tokens.md) (BPTs), and will receive pool tokens
+* Unlike standard ERC20s, the vault has control over the supply of BPT, so there is no need for the sender to make approvals when sending BPTs. For more info see: [Balancer Pool Token](../../concepts/core-concepts/balancer-pool-tokens.md)
 * Token amount inputs/outputs are always in the raw token scale, e.g. `1 USDC` should be sent as `1000000` because it has 6 decimals
-* Transactions are always sent to the [Router](../router/overview.md)
+* Transactions are always sent to the [Router](../../concepts/router/overview.md)
 
 The Router interface for `removeLiquidityProportional` is:
 ```solidity
@@ -170,13 +170,13 @@ To see the full query used to fetch pool state refer to the code [here](https://
 
 ### Queries and safely setting slippage limits
 
-[Router queries](../router/technical.md#router-queries) allow for simulation of operations without execution. In this example, when the `query` function is called: 
+[Router queries](../../concepts/router/queries.md) allow for simulation of operations without execution. In this example, when the `query` function is called: 
 
 ```typescript
 const queryOutput = await removeLiquidity.query(removeLiquidityInput, poolState);
 // queryOutput.amountsOut
 ```
-The Routers [queryRemoveLiquidityUnbalanced](../router/overview.md#queryremoveliquidityproportional) function is used to find the amount of pool tokens that would be received, `amountsOut`.
+The Routers [queryRemoveLiquidityUnbalanced](../../developer-reference/contracts/router-api.md#queryremoveliquidityproportional) function is used to find the amount of pool tokens that would be received, `amountsOut`.
 
 In the next step `buildCall` uses the `amountsOut` and the user defined `slippage` to calculate the `minAmountsOut`:
 ```typescript
@@ -220,11 +220,11 @@ It also returns the `minAmountsOut` amounts which can be useful to display/valid
 
 The following Viem and Ethers snippets demonstrate how to perform a remove liquidity proportional operation. To achieve this, we use two Router functions:
 
-* [`removeLiquidityProportional`](../router/overview.md#removeliquidityproportional) - Remove liquidity from a pool in proportional amounts.
-* [`queryRemoveLiquidityProportional`](../router/overview.md#queryremoveliquidityproportional) - The [router query](../router/technical.md#router-queries) used to simulate a remove liquidity unbalanced operation. It returns the exact amounts of tokens that would be received.
+* [`removeLiquidityProportional`](../../developer-reference/contracts/router-api.md#removeliquidityproportional) - Remove liquidity from a pool in proportional amounts.
+* [`queryRemoveLiquidityProportional`](../../developer-reference/contracts/router-api.md#queryremoveliquidityproportional) - The [router query](../../concepts/router/queries.md) used to simulate a remove liquidity unbalanced operation. It returns the exact amounts of tokens that would be received.
 
 **Resources**:
-* [Router ABI](../../reference/contracts/abi/README.md)
+* [Router ABI](../../developer-reference/contracts/abi/router.md)
 * [Router deployment addresses](../../reference/contracts)
 
 ::: code-tabs#shell

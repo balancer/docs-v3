@@ -1,7 +1,8 @@
 ---
-order: 3
-title: Balancer Pool Token Implementation
+order: 4
+title: Balancer Pool Tokens (BPT)
 ---
+
 # Balancer Pool Token Implementation
 
 Balancer Pool Tokens are tokens that represent ownership or shares in a Balancer pool. When users add liquidity to a Balancer pool by depositing tokens, they receive corresponding Balancer Pool Tokens in return. These tokens represent their proportional share of the liquidity pool.
@@ -10,7 +11,7 @@ Balancer Pool Tokens are dynamic in nature, meaning their value can fluctuate ba
 
 ## BalancerPoolToken Contract
 
-The BalancerPoolToken contract adheres to the ERC20 token standard by incorporating the necessary methods and properties. **However, it does not directly manage the state of the token. Instead, it delegates these responsibilities to the Vault contract, which is an instance of [ERC20MultiToken](../vault/features/erc20-multi-token.md).** This design choice centralizes the accounting and management of tokens, facilitating atomic updates to critical pool states.
+The BalancerPoolToken contract adheres to the ERC20 token standard by incorporating the necessary methods and properties. **However, it does not directly manage the state of the token. Instead, it delegates these responsibilities to the Vault contract, which is an instance of [ERC20MultiToken](../vault/erc20-multi-token.md).** This design choice centralizes the accounting and management of tokens, facilitating atomic updates to critical pool states.
 
 Here's how the [`BalancerPoolToken`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol) contract achieves this:
 
@@ -27,3 +28,4 @@ By doing this, the BalancerPoolToken contract ensures that Balancer Pool Tokens 
 ## Composability
 
 As BPTs adhere to the ERC20 standard, they can seamlessly integrate as pool tokens in other pools. For instance, the BPT of a boosted pool comprising DAI, USDC, and USDT can be paired with tokens from new projects. This composability ensures the maintenance of deep and capital-efficient stable liquidity, while simultaneously creating efficient swap paths for the project token.
+
