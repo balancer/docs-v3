@@ -84,6 +84,7 @@ Rate scaling technically is used on every `swap`, `addLiqudity` & `removeLiquidi
 3. [`AmountGivenScaled18`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L251) is forwarded to the pool.
 4. Rates are undone before returning either `amountIn` or `amountOut`
 :::
+You can read more on the [Rate Providers page](/concepts/core-concepts/rate-providers.html).
 
 ## Live balances
 
