@@ -23,6 +23,6 @@ add https://github.com/balancer/balancer-v3-monorepo/issues/494
 
 You can collect the accrued creator fees by calling `collectPoolCreatorFees`.
 
-::: Looking to track the amount of developer fees accrued already?
+::: info Looking to track the amount of developer fees accrued already?
 You can read who the pool creator is by  calling `getPoolCreator(address pool)` and the amount of creator fees already accrued by calling `getPoolCreatorFees(address pool, IERC20 token)`.
 :::
