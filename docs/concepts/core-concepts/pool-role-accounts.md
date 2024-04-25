@@ -5,7 +5,7 @@ title: Pool Role accounts
 
 # Pool Role permissions
 
-Pool management involves setting certain parameters such as `staticSwapFee` and `poolCreatorFee`. Pools can additionally be paused or unpaused. Balancer manages these permissions with `PoolRoleAccounts` and an additional internally managed `onlyOwner` [setting](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L269). `onlyOwner` in this context means if permissions for that function will additionally be delegated to Balancer governance or not. `PoolRoleAccounts` are immutable and are passed as a parameter during pool registration.
+Managing a pool requires the user to initially set certain parameters such as `staticSwapFee` and `poolCreatorFee` during the pool registration process. Additionally, pools can be set to a paused or unpaused state. Balancer governs these permissions using `PoolRoleAccounts` and an internally managed `onlyOwner` setting. In this context, [`onlyOwner`]((https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L269)) determines whether permissions for that function will be additionally delegated to Balancer governance or not. It's important to note that `PoolRoleAccounts` are immutable and must be defined by the user at the time of pool registration.
 
 ```solidity
 struct PoolRoleAccounts {
