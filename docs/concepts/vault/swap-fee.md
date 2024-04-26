@@ -3,7 +3,7 @@ title: Swap Fee
 order: 8
 ---
 # Swap fee
-A swap fee is charged for each swap & unbalanced join and unbalanced exit pool operations on the non proportional amounts. When a pool is registered, the initial swap fee is passed as a parameter and stored as part of [the pool's configuration](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L33). The swap fee is always charged in the token going out of the Vault.
+A swap fee is charged for each swap & unbalanced join and unbalanced exit pool operations on the non proportional amounts. When a pool is registered, the initial swap fee is passed as a parameter and stored as part of [the pool's configuration](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L30). The swap fee is always charged in the token going out of the Vault.
 
 :::info
 Let's imagine a liquidity pool that maintains an equal balance of DAI and USDC, known as a 50/50 pool. A user decides to add liquidity to this pool, but does so in an unbalanced manner: they contribute 15 DAI and 10 USDC.
@@ -31,7 +31,15 @@ Different types of pools can have varying minimum and maximum swap fees. These v
 | Stable Pool   | 0%                | 10% |
 
 ## Dynamic swap fee
-Liquidity pools can be set up to use dynamic swap fees. This setting is determined when the pool is registered with the Vault. Instead of getting the swap fee from the [pool's configuration](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L33), the Vault uses the `_getSwapFeePercentage(PoolConfig memory config)` to fetch the swap fee from the pool. This function returns the swap fee percentage. It's important to note that even when a pool is set to use dynamic swap fees, it still maintains a static swap fee. However, this static fee is not utilized.
+Liquidity pools can be set up to use dynamic swap fees. This setting is determined when the pool is registered with the Vault. If a pool has dynamic swap fee is passed as a boolean value in the `PoolRegistrationParams`. When registering a pool with dynamic swap fee, your `PoolRegistrationParams` should include the entry:
+```solidity
+PoolRegistrationParams({
+    //...
+    hasDynamicSwapFee: true,
+    //...
+})
+```
+Instead of getting the swap fee from the [pool's configuration](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L33), the Vault uses the `_getSwapFeePercentage(PoolConfig memory config)` to fetch the swap fee from the pool. This function returns the swap fee percentage. It's important to note that even when a pool is set to use dynamic swap fees, it still maintains a static swap fee. However, this static fee is not utilized.
 
 :::info
 The capability to compute dynamic swap fee percentages opens up new and creative ways to calculate fees. For example, the fees can be adjusted depending on the swap's direction or configured to maintain a token's pegged value.
