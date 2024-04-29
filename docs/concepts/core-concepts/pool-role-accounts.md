@@ -1,11 +1,11 @@
 ---
 order: 7
-title: Pool Role accounts
+title: Pool Role Accounts
 ---
 
-# Pool Role permissions
+# Pool Role Permissions
 
-Managing a pool requires the user to initially set certain parameters such as `staticSwapFee` and `poolCreatorFee` during the pool registration process. Additionally, pools can be set to a paused or unpaused state. Balancer governs these permissions using `PoolRoleAccounts` and an internally managed `onlyOwner` setting. In this context, [`onlyOwner`]((https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L269)) determines whether permissions for that function will be additionally delegated to Balancer governance or not. It's important to note that `PoolRoleAccounts` are immutable and must be defined by the user at the time of pool registration.
+During pool registration `PoolRoleAccounts` are immutably set. These addresses have permission to change certain pool settings:
 
 ```solidity
 struct PoolRoleAccounts {
@@ -15,20 +15,12 @@ struct PoolRoleAccounts {
 }
 ```
 
-The table below outlines the permissions for each function and if it can additionally be delegated to Balancer governance. Functions marked with `onlyOwner:false` will, by default, also allow Balancer governance to call them. For functions marked with `onlyOwner:true`, if an address that is not the zero address is passed, only the passed address will have permission to call the function.
+* pauseManager: Can see Pool paused/unpaused. When a pool is paused all state-changing operations will revert, and putting the pool in recovery mode (if not already done) becomes permissionless
+* swapFeeManager: Set static swap fees for a pool
+* poolCreator: Set the [pool creator fee](./pool-creator-fee.md)
 
-| Function                      | onlyOwner | example Address passed   | also delegated to governance          |
-| --------                      | --------  | --------                 | --------                              |
-| pausePool                     | false     | address(0xexample)       | yes                                   |
-| unpausePool                   | false     | address(0xexample)       | yes                                   |
-| unpausePool                   | false     | address(0)               | yes                                   |
-| setStaticSwapFeePercentage    | true      | address(0xexample)       | no                                    |
-| setStaticSwapFeePercentage    | true      | address(0)               | yes                                   |
-| setPoolCreatorFeePercentage   | true      | address(0xexample)       | no                                    |
+Passing the zero address grants Balancer Governance permission by default.
 
-<style scoped>
-table {
-    display: table;
-    width: 100%;
-}
-</style>
+::: info Pause Permission
+Balancer Governance is always granted pauseManager permission as well as any user configure address.
+:::

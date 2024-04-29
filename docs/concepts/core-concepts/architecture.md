@@ -5,14 +5,19 @@ order: 1
 
 # Architecture
 
-The Balancer protocol architecture is based on three main components, which serve a unique purpose in making Balancer flexible while drastically reducing complexity of pool code. Each liquidity pool is a separate contract but token balances are tracked at the Vault level. 
+## Core Components
 
-- Router: Entrypoint for user operations with simple interfaces
-- Vault: Handle liquidity operations and accounting
-- Pool: Expose pool math via invariant calculations
+The Balancer protocol architecture comprises three primary components, each strategically designed to enhance flexibility and minimize the intricacies involved in constructing pools. By distributing responsibilities across these components, Balancer simplifies pool development, empowering builders to focus on innovation rather than grappling with complex code.
 
-## Overview
-The diagram shows the core components that make up Balancer Protocol and the transaction flow through the primary system components.
+- Router: Serves as the user's gateway to the protocol, offering straightforward interfaces for executing operations.
+- Vault: Centralizes liquidity operations and manages accounting, streamlining the handling of token balances across multiple pools.
+- Pool: Exposes precise pool mathematics through invariant calculations, enabling developers to harness powerful functionalities without delving into intricate details.
+
+This design philosophy ensures that building pools on Balancer is intuitive and efficient, with the vault shouldering the burden of complexity, allowing pool creators to unleash their creativity without being encumbered by technical intricacies.
+
+## Transaction Flow
+
+The following diagram illustrates the usage of each component during a transaction.
 
 ![Router Vault interaction](/images/architecture-1.png)
 
