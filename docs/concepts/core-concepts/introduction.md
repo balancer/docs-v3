@@ -19,20 +19,6 @@ Balancer Pools are smart contracts that define how traders can swap between toke
 Balancer has already developed, audited and deployed a variety of pool types showcasing diverse functionalities. These pools are readily accessible for existing use cases without requiring permission, and the accompanying code serves as a valuable resource for custom pool development. For more details see the [Exploring Available Balancer Pools](../explore-available-balancer-pools/) section.
 
 
-## Who uses Balancer?
-
-Balancer is an incredibly useful tool for a diverse set of actors in the Defi space.
-
-Swappers can swap between any two ERC20 tokens. This can be done through the [Balancer Dapp](https://app.balancer.fi/#/ethereum/swap) or aggregators like [1inch](https://app.1inch.io), [Matcha](https://www.matcha.xyz), or [Paraswap](https://app.paraswap.io).
-
-Liquidity Providers (LPs) can add liquidity to pools to earn swap fees, liquidity incentives, and other forms of yield
-
-- Passive LPs can utilize boosted pools to earn on top of their already compounding Aave tokens
-
-Arbitrageurs can swap against pools using things like batch swaps and flash loans
-
-BAL Token holders can lock their token into veBAL and participate in the governance of evolving the Balancer protocol
-
 ## Helpful Articles to Learn More
 
 - [What are automated market makers?](https://chain.link/education-hub/what-is-an-automated-market-maker-amm)
