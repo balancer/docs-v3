@@ -217,7 +217,7 @@ if (swap.vaultVersion === 2) {
 
 The output of the `buildCall` function provides all that is needed to submit the swap transaction:
 * `to` - the address the transaction should be sent to
-* `call` - the encoded call data
+* `callData` - the encoded call data
 * `value` - the native asset value to be sent
 
 It also returns the `minAmountOut` amount which can be useful to display/validation purposes before the transaction is sent.

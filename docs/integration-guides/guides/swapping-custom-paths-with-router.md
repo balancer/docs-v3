@@ -221,7 +221,7 @@ public applyTo(amount: bigint, direction: 1 | -1 = 1): bigint {
 
 The output of the `buildCall` function provides all that is needed to submit the Swap transaction:
 * `to` - the address of the Router
-* `call` - the encoded call data
+* `callData` - the encoded call data
 * `value` - the native asset value to be sent
 
 It also returns the `minAmountOut` amount which can be useful to display/validation purposes before the transaction is sent.

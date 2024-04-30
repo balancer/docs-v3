@@ -112,7 +112,7 @@ console.log(`Min BPT Out: ${call.minBptOut.amount.toString()}`);
 
 const hash = await client.sendTransaction({
     account: userAccount,
-    data: call.call,
+    data: call.callData,
     to: call.to,
     value: call.value,
 });
@@ -201,7 +201,7 @@ public applyTo(amount: bigint, direction: 1 | -1 = 1): bigint {
 
 The output of the `buildCall` function provides all that is needed to submit the addLiquidity transaction:
 * `to` - the address of the Router
-* `call` - the encoded call data
+* `callData` - the encoded call data
 * `value` - the native asset value to be sent
 
 It also returns the `minBptOut` amount which can be useful to display/validation purposes before the transaction is sent.
