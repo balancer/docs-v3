@@ -43,7 +43,7 @@ The following diagram illustrates the usage of each component during a transacti
 
 3. With the lock open, the Vault calls back into the Router. For example, in the case of a swap action, the Vault calls the Router's specific action hook implementation, such as `swapSingleTokenHook`, and passes the initial function payload from step 1 back to the Router to continue the regular transaction flow.
 
-4. Once the Router has established a lock with the Vault, it gains authorization to invoke the Vault's functions that require the caller' to be in the _lockers list. This mechanism guarantees the accurate allocation of debt and credit. The inputs from step 1 are passed to the Vault's core functions, such as swap.
+4. Once the Router has established a lock with the Vault, it gains authorization to invoke the Vault's functions that require the caller' to be in the `_lockers` list. This mechanism guarantees the accurate allocation of debt and credit. The inputs from step 1 are passed to the Vault's core functions, such as swap.
 
 5. Each primitive operation performed on the Vault triggers the execution of either the `computeInvariant` or `computeBalance` functions in the pool. These functions calculate the tokens that need to be deposited into or withdrawn from the Vault. The outcomes of these calculations are attributed to the Router as either debt or credit, which must be settled at a later stage. Additionally, the required amount of Balancer Pool Tokens (BPT) is minted or burned accordingly.
 
