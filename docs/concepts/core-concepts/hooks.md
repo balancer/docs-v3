@@ -37,7 +37,7 @@ PoolHooks({
 })
 ```
 
-Whenever a pool is registered in the Vault, part of the [`PoolConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L26-L37) stores the information which hooks are enabled.
+Whenever a pool is registered in the Vault, part of the [`PoolConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L26-L37) stores the information which hooks are enabled. This decision is immutable and cannot change after the pool is created.
 
 :::info
 If an entry of the `PoolHooks` is passed as false, the Vault will not call the respective hook function on the pool contract.
@@ -62,7 +62,11 @@ It is possible to reenter the Vault as part of a hook execution as only the resp
 :::
 
 :::info Creation
-Balancer provides a `WeightedPoolWithHooksFactory`. During pool creation, this factory takes the hooks' bytecode and deploys both the hooks and the pool contract.
+Balancer provides a `WeightedPoolWithHooksFactory` & `StablePoolFactoryWithHooks`. During pool creation, this factory takes the hooks' bytecode and deploys both the hooks and the pool contract.
+:::
+
+:::info data passed to hooks
+The Vault calls a pool's hooks and passes data. The passed data for each individual hook is available in the [Pool hooks API](/developer-reference/contracts/hooks-api.html) section.
 :::
 
 ## Dynamic swap fee hook
