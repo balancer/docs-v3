@@ -3,18 +3,11 @@ order: 1
 title: Technical description
 ---
 
-# Router
-A smart contract is required to facilitate user interactions with Balancer due to the hook execution flow in the Vault. Balancer provides these smart contracts in the form of trusted Routers. It is important to note that any third party can create custom Routers to interact with the Vault. **These Routers offer the suggested API to facilitate user operations & queries**. The Router functionality developed by Balancer Labs cannot be extended but new smart contracts in the form of Routers can be developed.
-
 :::info
 This section is a technical explainer of how the Router works. If you are looking to integrate with the Router, take a look at the [API docs](./overview.md).
 :::
 
-## Router design
-
-The Router is engineered to have a close interaction with the Balancer Vault and is the suggested way of interacting as it acts as the primary interface for common user interactions and makes interacting with Balancer easier. It provides simplified function signatures, including names and parameter types, which contribute to concise function naming. The Router is capable of aggregating complex user interactions and exposing them through single functions.
-
-### Sequence Diagram
+## Example Transaction Flow
 The Router and Vault interact in a back and forth manner to achieve the intended outcome of liquidity or query operations.
 ![Router Vault interaction](/images/router-vault.png)
 

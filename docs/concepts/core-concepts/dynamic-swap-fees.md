@@ -1,6 +1,6 @@
 ---
 order: 3
-title: Dynamic swap fees
+title: Dynamic Swap Fees
 ---
 # Dynamic swap fee
 :::info Work in progress

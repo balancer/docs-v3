@@ -2,7 +2,7 @@
 
 ## Overview
 
-Performing queries allows anyone to know the result of an operation by performing a static call before executing a transaction. This makes results from operations more accessible and simpler to fetch. Each query performs the same calculations as their state-changing counterpart. Meaning for example, the outcome of `querySwapSingleTokenExactIn` and `swapSingleTokenExactIn` is identical as the Vault & pool do the identical calculations. All state changing liquidity operations are available as queries. This includes:
+Queries provide the ability to simulate an operation and find its result without executing a transaction. [Balancer Routers](./overview.md#balancer-routers) provide a query for all state changing liquidity operations. An example of how this is useful can be seen when [setting slippage limits](../../integration-guides/guides/add-liquidity-to-pool.md#queries-and-safely-setting-slippage-limits).
 
 ## Router queries
 The detailed Router API description can be found in the [Router API section](/concepts/router/onchain-api/router-api.html).
