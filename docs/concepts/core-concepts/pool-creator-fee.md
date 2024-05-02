@@ -18,7 +18,7 @@ add https://github.com/balancer/balancer-v3-monorepo/issues/478
 add https://github.com/balancer/balancer-v3-monorepo/issues/494
 :::
 
-The Creator is setting by configuring the `poolCreator` address during pool registration.
+The Creator is setting this address by configuring the `poolCreator` address during pool registration, which cannot be changed afterwards.
 
 ### Collecting Fees
 
@@ -36,4 +36,8 @@ You can read who the pool creator is by  calling `getPoolCreator(address pool)` 
 
 Developers must carefully balance their decisions regarding the creator fee, as increasing this fee reduces the portion of swap fees allocated to Liquidity Providers. While higher creator fees may increase revenue for the creator, they can also diminish incentives for Liquidity Providers to participate, potentially resulting in reduced liquidity and overall fee generation within the pool.
 
-Furthermore, if developer fees are not applied to joins/exits, those fees are added to the pool instead, making joins/exits no more advantageous than a swap.
+The pool creator can set the `poolCreatorFeePercentage` by calling:
+```solidity
+function setPoolCreatorFeePercentage(address pool, uint256 poolCreatorFeePercentage) external;
+```
+The maximum `poolCreatorFeePercentage` is 100% (`100e18`) and minimum 0%.
