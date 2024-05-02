@@ -32,4 +32,4 @@ Balancer has developed, audited and deployed Router contracts with the goal of p
 
 Additionally both Routers expose [Query Functions](./queries.md) providing the ability to query the result of an operation using the latest onchain state.
 
-Latest deployment of the Routers can be found in the [deployments section](/reference/contracts/).
+Latest deployment of the Routers can be found in the [deployments section](/developer-reference/contracts/deployment-addresses/mainnet.html).
