@@ -7,3 +7,5 @@ title: Partner onboarding
 :::info
 This page is currently work in progress.
 :::
+
+<PartnerOnboarding/>
