@@ -16,5 +16,5 @@ necessary organic flow to compete effectively.
 Our aim is to simplify the development process and facilitate the creation of novel AMMs with minimal friction.
 
 When building a custom AMM on Balancer, there are two paths that can be taken:
-- [Create a custom AMM with a novel invariant](/concepts/developer-guides/create-custom-amm-with-novel-invariant.html)
-- [Extend an existing pool type using hooks](/concepts/developer-guides/extend-existing-pool-type-using-hooks.html)
+- [Create a custom AMM with a novel invariant](/build-a-custom-amm/build-an-amm/create-custom-amm-with-novel-invariant.html)
+- [Extend an existing pool type using hooks](/build-a-custom-amm/build-an-amm/extend-existing-pool-type-using-hooks.html)
