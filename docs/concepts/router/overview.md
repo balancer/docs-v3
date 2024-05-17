@@ -20,12 +20,13 @@ In essence, Routers play a pivotal role in abstracting complexity, enhancing use
 
 Balancer has developed, audited and deployed Router contracts with the goal of providing simplified, easy to use functions for common liquidity actions. These Routers also serve as a useful reference for other Router implementations.
 
-**Balancer Router**:
+### Balancer Router
+
 - Most common user actions, initialize/add/remove/swap
 - [API](../../developer-reference/contracts/router-api.md)
 - [Code](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Router.sol)
 
-**Batch Router**:
+### Batch Router
 - Batch swaps
 - [API](../../developer-reference/contracts/batch-router-api.md)
 - [Code](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BatchRouter.sol)
