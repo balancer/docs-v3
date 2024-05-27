@@ -1,6 +1,6 @@
 <template>
   <div class="deployment-container">
-    <h3>Balancer Deployments</h3>
+    <h2>Balancer Deployments</h2>
     <div class="docs-cards deployments-table">
       <div v-for="deployment in deployments" :key="deployment.title" class="tools-row">
         <DocsCard
@@ -23,13 +23,13 @@ const deployments = [
   {
     title: 'Balancer v2',
     icon: '/images/logo-balancer-white-512x512.svg',
-    details: 'Partner Onboarding docs and FAQ for v2',
+    details: 'Onboarding documentation and FAQ for Balancer v2',
     link: '/partner-onboarding/v2/v2-base.html',
   },
   {
     title: 'Balancer v3',
     icon: '/images/logo-balancer-white-512x512.svg',
-    details: 'Partner Onboarding docs and FAQ for v3',
+    details: 'Onboarding documentation and FAQ for Balancer v3',
     link: '/partner-onboarding/v3/v3-base.html',
   },
   // Add more Core Tools as needed
