@@ -1,4 +1,10 @@
-
+---
+home: true
+title: Yield Bearing Thesis
+heroText: Yield Bearing Thesis
+heroImage: /images/yieldThesis.png
+homeImage: /images/yieldThesis.png
+---
 
 # The Yield Bearing Hub (Balancer v2)
 :::info

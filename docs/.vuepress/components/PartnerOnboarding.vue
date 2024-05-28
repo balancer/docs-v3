@@ -1,14 +1,17 @@
 <template>
   <div class="deployment-container">
-    <h2>Balancer Deployments</h2>
     <div class="docs-cards deployments-table">
-      <div v-for="deployment in deployments" :key="deployment.title" class="tools-row">
+      <div
+        v-for="deployment in deployments"
+        :key="deployment.title"
+        class="tools-row"
+      >
         <DocsCard
-            :title="deployment.title"
-            :icon="deployment.icon"
-            :link="deployment.link"
-            :details="deployment.details"
-            :target="_getLinkTarget(deployment.link)"
+          :title="deployment.title"
+          :icon="deployment.icon"
+          :link="deployment.link"
+          :details="deployment.details"
+          :target="_getLinkTarget(deployment.link)"
         />
       </div>
     </div>
@@ -37,12 +40,12 @@ const deployments = [
 
 // Function to check if a link is external
 function isExternalLink(link) {
-return link.startsWith('http://') || link.startsWith('https://');
+  return link.startsWith('http://') || link.startsWith('https://');
 }
 
 // Function to get the target attribute for the link
 function _getLinkTarget(link) {
-return isExternalLink(link) ? '_blank' : '_self';
+  return isExternalLink(link) ? '_blank' : '_self';
 }
 </script>
 

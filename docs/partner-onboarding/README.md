@@ -1,7 +1,4 @@
----
-order: 60
-title: Partner onboarding
----
+
 
 # Partner Onboarding
 :::info
@@ -22,6 +19,11 @@ Balancer Technology as 3 unique (and powerful) PMFs:
 2. [Governance Tokenomics](./ve8020.md) - #ve8020 revolutionises governance positions
 3. [BuildOnBalancer](./buildonbalancer.md) - Vault architecture streamlining AMM innovation
 
+#### Match your Business Needs to our Products
+Use this helper tool to identify the best suitable product for your needs. Explore potenital use-cases and read up on success stories
+<DecisionTree />
 
-
+## Balancer Deployments
+Are you looking for deployment-specific information? Balancer v2 and v3 offer different technological advancements in the AMM sector
+that you can leverage. Choose a deployment type to explore options
 <PartnerOnboarding />
