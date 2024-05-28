@@ -8,7 +8,7 @@
           {{ option.text }}
         </button>
       </div>
-      <p class="step-result" v-if="currentStep.result">{{ currentStep.result }}</p>
+      <p class="step-result" v-if="currentStep.result" v-html="currentStep.result"></p>
       <button class="reset-button" v-if="isResult" @click="reset">Restart</button>
     </div>
   </div>
