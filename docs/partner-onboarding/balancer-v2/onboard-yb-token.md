@@ -1,5 +1,5 @@
 ---
-title: Onboard your yield-bearing asset
+title: Yield-bearing asset Onboarding
 order: 1
 ---
 

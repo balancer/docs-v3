@@ -39,7 +39,9 @@ To summarize: core pools participate in the ecosystem flywheel by being entitled
 
 
 ## Onboarding Guides
-- [YB Token Onboarding](onboard-yb-token.html)
+- [YB Token Onboarding](onboard-yb-token.md)
+- [Rate Provider Onboarding](rate-providers.md)
+- [Gauge Onboarding](gauge-onboarding.md)
 
 ## Helpful Resources to Learn More
 

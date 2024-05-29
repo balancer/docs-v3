@@ -6,8 +6,7 @@ order: 0
 # Partner Onboarding
 :::info
 <p> This onboarding documentation provides partners with all the information they need to onboard into the Balancer 
-Ecosystem deployments.<br> 
-It details Balancer’s unique PMFs, answers FAQs and provides step-by-step guides for ecosystem integrations. </p>
+Ecosystem deployments. It details Balancer’s unique PMFs, answers FAQs and provides step-by-step guides for ecosystem integrations. </p>
 :::
 
 ## Overview
@@ -23,7 +22,7 @@ Balancer Technology as 3 unique (and powerful) PMFs:
 3. [Governance Tokenomics](product-showcases/ve8020.md) - #ve8020 revolutionises governance positions
 
 ### High-Level Overview of Onboarding Process
-Onboarding onto Balancer requires several steps depending what part of our AMM technology you want to leverage. Certain components can be interacted with
+Onboarding onto Balancer requires several steps depending on what part of our AMM technology you want to leverage. Certain components can be interacted with
 in a self-service manner while others need assistance from core contributors to the DAO. Use our Balancer Tech Product Wizard to guide you towards the best solution matching your needs or explore our product showcases to learn more about us.
 
 #### Match your Business Needs to our Products
