@@ -75,18 +75,18 @@ export const partnerDecisionTreeConfig: Step[] = [
     id: 'resultD',
     title: 'Governance Tokenomics',
     result:
-      'A 80/20 pool based on <a href="/partner-onboarding/ve8020.html" target="_blank" rel="noopener noreferrer">governance tokenomics</a> might be the best fit for you!',
+      'A 80/20 pool based on <a href="/partner-onboarding/onboarding-overview/product-showcases/ve8020.html" target="_blank" rel="noopener noreferrer">governance tokenomics</a> might be the best fit for you!',
   },
   {
     id: 'resultE',
     title: 'Pools with Hooks',
     result:
-      'A Balancer v3 pool with custom hook logic sounds like a perfect fit for your needs. Explore hooks now!',
+      'A Balancer v3 pool with <a href="/concepts/core-concepts/hooks.html" target="_blank" rel="noopener noreferrer">custom hook</a> logic sounds like a perfect fit for your needs. Explore hooks now!',
   },
   {
     id: 'resultF',
     title: 'CowAMM liquidity pool',
     result:
-      'A CowAMM liquidity tool based on their custom implementation based on Balancer might be best suited for your needs',
+      'A CowAMM liquidity pool based on their custom implementation based on Balancer might be best suited for your needs',
   },
 ];

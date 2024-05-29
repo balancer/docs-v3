@@ -36,3 +36,6 @@ n order to ensure Balancer DAO longevity and incentive efficiency is optimised, 
 An average of the percentage of total revenue a pool contributed during the most recent two protocol fee distribution periods. This factor is bounded by 1 to 100 and is multiplied by the overall factor.
 
 ## Resources
+- [Gauge Setup Instructions](https://forum.balancer.fi/t/instructions-overview/2674)
+- [Balancer Forum: Gauge Proposals](https://forum.balancer.fi/c/vebal/13)
+- [Rate Provider Registry](https://github.com/balancer/code-review/tree/main/rate-providers)
