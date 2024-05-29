@@ -26,7 +26,7 @@ features:
   - title: Partner Onboarding
     icon: /images/quick-link-boosted.svg
     details: Looking to deploy liquidity on Balancer? Find everything you need to know here.
-    link: /partner-onboarding/README.md
+    link: /partner-onboarding/onboarding-overview/introduction.md
   - title: Data and Analytics
     icon: /images/quick-link-lbp.svg
     details: All things data

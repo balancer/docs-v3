@@ -27,13 +27,13 @@ const deployments = [
     title: 'Balancer v2',
     icon: '/images/logo-balancer-white-512x512.svg',
     details: 'Onboarding documentation and FAQ for Balancer v2',
-    link: '/partner-onboarding/v2/v2-base.html',
+    link: '/partner-onboarding/balancer-v2/v2-overview.html',
   },
   {
     title: 'Balancer v3',
     icon: '/images/logo-balancer-white-512x512.svg',
     details: 'Onboarding documentation and FAQ for Balancer v3',
-    link: '/partner-onboarding/v3/v3-base.html',
+    link: '/partner-onboarding/balancer-v3/v3-overview.html',
   },
   // Add more Core Tools as needed
 ];
