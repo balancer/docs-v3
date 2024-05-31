@@ -2,7 +2,7 @@ html.dark {
   // brand colors
   --c-brand: #805AD5;
   --c-brand-light: #0EA5E9;
-  --c-brand-hover-accent: rgba(254, 213, 51, 1);
+  --c-brand-hover-accent: rgba(0, 211, 149, 100);
 
   // background colors
   --c-bg: #31373F; // equivalent to background.level0
@@ -14,7 +14,7 @@ html.dark {
   --c-text-light: #A0AEC0; // equivalent to text.secondary
   --c-text-lighter: #909BAD; // equivalent to text.secondaryAlpha50
   --c-text-lightest: #728097; // equivalent to text.secondaryGradient
-  --c-text-code: #f08d49;
+  --c-text-code: #00d395;
 
   // link colors
   --c-link: #7F6AE8; // equivalent to text.link
@@ -25,7 +25,7 @@ html.dark {
   --c-border-dark: #4C5561; // equivalent to border.base
 
   --c-docs-card-border: #4C5561; // equivalent to border.base
-  --c-docs-card-shadow: 0px 2px 4px 0px rgba(139, 92, 246, 0.2); // equivalent to shadow.md
+  --c-docs-card-shadow: 12px 12px 12px -6px rgba(0, 0, 0, 0.10), 6px 6px 6px -3px rgba(0, 0, 0, 0.06), 3px 3px 3px -1.5px rgba(0, 0, 0, 0.06), 1px 1px 1px -0.5px rgba(0, 0, 0, 0.06); // equivalent to shadow.md
 
   --c-sidebar-heading: #fff;
 
@@ -51,6 +51,6 @@ html.dark {
   --t-transition: 0.3s all ease-in-out; // equivalent to transition.default
 
   // box shadow vars
-  --box-shadow-standard: 0px 2px 5px 0px rgba(78, 0, 255, 0.3), 0px 1px 2px 0px rgba(255, 255, 255, 0.2); // use equivalent values from theme
-  --box-shadow-large: 0px 20px 40px 0px rgba(139, 92, 246, 0.1); // use equivalent values from theme
+  --box-shadow-standard: 12px 12px 12px -6px rgba(0, 0, 0, 0.10), 6px 6px 6px -3px rgba(0, 0, 0, 0.06), 3px 3px 3px -1.5px rgba(0, 0, 0, 0.06), 1px 1px 1px -0.5px rgba(0, 0, 0, 0.06), 0px 0px 0px 1px rgba(0, 0, 0, 0.02); // use equivalent values from theme
+  --box-shadow-large: 0px 20px 40px -12px rgba(0, 0, 0, 0.10), 6px 6px 6px -3px rgba(0, 0, 0, 0.06), 3px 3px 3px -1.5px rgba(0, 0, 0, 0.06), 1px 1px 1px -0.5px rgba(0, 0, 0, 0.06), 0px 0px 0px 1px rgba(0, 0, 0, 0.02); // use equivalent values from theme
 }

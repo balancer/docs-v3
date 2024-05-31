@@ -1,56 +1,56 @@
 :root {
   // brand colors
-  --c-brand: #805AD5;
-  --c-brand-light: #2563EB;
-  --c-brand-hover-accent: #805AD5;
+  --c-brand: #805AD5; // primary.600
+  --c-brand-light: #2554ff; // primary.700
+  --c-brand-hover-accent: rgba(0, 211, 149, 100); // green.500
 
   // background colors
-  --c-bg: #ffffff;
-  --c-bg-light: #F8FAFC;
-  --c-bg-lighter: #EAF0F6;
+  --c-bg: #EBE8E0; // background.level0
+  --c-bg-light: #EFEDE6; // background.level1
+  --c-bg-lighter: #F5F3EF; // background.level2
   --c-bg-navbar: var(--c-bg);
   --c-bg-sidebar: var(--c-bg);
   --c-bg-arrow: #cccccc;
 
   // text colors
-  --c-text: #2c3e50;
-  --c-text-accent: var(--c-brand);
-  --c-text-light: #3a5169;
-  --c-text-lighter: #4e6e8e;
-  --c-text-lightest: #6a8bad;
-  --c-text-quote: #999999;
+  --c-text: #2c3e50; // text.primary
+  --c-text-accent: var(--c-brand); // text.link
+  --c-text-light: #3a5169; // text.secondary
+  --c-text-lighter: #4e6e8e; // text.secondaryAlpha50
+  --c-text-lightest: #6a8bad; // text.secondaryGradient
+  --c-text-quote: #999999; // text.quote
   --c-text-code: #f08d49;
 
   --c-sidebar-heading: #141414;
 
   // link colors
-  --c-link: var(--c-brand);
-  --c-link-secondary: var(--c-text-lighter);
+  --c-link: var(--c-brand); // text.link
+  --c-link-secondary: var(--c-text-lighter); // text.secondaryAlpha50
 
   // border colors
-  --c-border: #eaecef;
-  --c-border-dark: #dfe2e5;
+  --c-border: #eaecef; // border.base
+  --c-border-dark: #dfe2e5; // border.subduedZen
 
-  --c-docs-card-border: #eaecef;
-  --c-docs-card-shadow: 0px 1px 2px rgba(2, 8, 20, 0.06), 0px 2px 8px rgba(2, 8, 20, 0.08);
+  --c-docs-card-border: #eaecef; // border.base
+  --c-docs-card-shadow: -0.5px -0.5px 0px 0px #FFF, 6px 6px 6px -3px rgba(73, 53, 29, 0.06), 3px 3px 3px -1.5px rgba(73, 53, 29, 0.06), 1px 1px 1px -0.5px rgba(73, 53, 29, 0.06), 0px 0px 0px 1px rgba(73, 53, 29, 0.02); // box-shadow
 
   // custom container colors
-  --c-tip: #42b983;
+  --c-tip: #00d395; // green.500
   --c-tip-bg: var(--c-bg-light);
   --c-tip-title: var(--c-text);
   --c-tip-text: var(--c-text);
   --c-tip-text-accent: var(--c-text-accent);
-  --c-warning: #e7c000;
-  --c-warning-bg: #fffae3;
-  --c-warning-title: #ad9000;
-  --c-warning-text: #746000;
+  --c-warning: #e7c000; // warning
+  --c-warning-bg: #fffae3; // warning.bg
+  --c-warning-title: #ad9000; // warning.title
+  --c-warning-text: #746000; // warning.text
   --c-warning-text-accent: var(--c-text);
-  --c-danger: #cc0000;
-  --c-danger-bg: #ffe0e0;
-  --c-danger-title: #990000;
-  --c-danger-text: #660000;
+  --c-danger: #cc0000; // danger
+  --c-danger-bg: #ffe0e0; // danger.bg
+  --c-danger-title: #990000; // danger.title
+  --c-danger-text: #660000; // danger.text
   --c-danger-text-accent: var(--c-text);
-  --c-details-bg: #eeeeee;
+  --c-details-bg: #eeeeee; // details.bg
 
   // badge component colors
   --c-badge-tip: var(--c-tip);
@@ -61,9 +61,9 @@
   --c-social-icon-bg: #ccc;
 
   // transition vars
-  --t-color: 0.3s ease;
-  --t-transform: 0.3s ease;
-  --t-transition: 0.2s all ease-out;
+  --t-color: 0.3s ease; // transition.fast
+  --t-transform: 0.3s ease; // transition.fast
+  --t-transition: 0.2s all ease-out; // transition.default
 
   // code blocks vars
   --code-bg-color: #282c34;
@@ -72,8 +72,7 @@
   --code-ln-wrapper-width: 3.5rem;
 
   // font vars
-  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   --font-family-code: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 
   // layout vars
@@ -92,8 +91,8 @@
   --dropdown-icon-gap: 0.688rem;
 
   // box shadow vars
-  --box-shadow-standard: 0px 4px 6px -1px rgba(0, 0, 0, 0.05), 0px 2px 4px -1px rgba(0, 0, 0, 0.05);  
-  --box-shadow-large: 0px 20px 40px -12px rgb(0 0 0 / 10%);
+  --box-shadow-standard: -0.5px -0.5px 0px 0px #FFF, 6px 6px 6px -3px rgba(73, 53, 29, 0.06), 3px 3px 3px -1.5px rgba(73, 53, 29, 0.06), 1px 1px 1px -0.5px rgba(73, 53, 29, 0.06), 0px 0px 0px 1px rgba(73, 53, 29, 0.02);
+  --box-shadow-large: 0px 20px 40px -12px #FFF, 6px 6px 6px -3px rgba(73, 53, 29, 0.06), 3px 3px 3px -1.5px rgba(73, 53, 29, 0.06), 1px 1px 1px -0.5px rgba(73, 53, 29, 0.06), 0px 0px 0px 1px rgba(73, 53, 29, 0.02);
 }
 
 // plugin-back-to-top
