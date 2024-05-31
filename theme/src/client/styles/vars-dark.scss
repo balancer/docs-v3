@@ -5,27 +5,27 @@ html.dark {
   --c-brand-hover-accent: rgba(254, 213, 51, 1);
 
   // background colors
-  --c-bg: #0F172A;
-  --c-bg-light: #1E293B;
-  --c-bg-lighter: #334155;
+  --c-bg: #31373F; // equivalent to background.level0
+  --c-bg-light: #383E47; // equivalent to background.level1
+  --c-bg-lighter: #3F4650; // equivalent to background.level2
 
   // text colors
-  --c-text: #eee;
-  --c-text-light: #96a7b7;
-  --c-text-lighter: #8b9eb0;
-  --c-text-lightest: #8094a8;
+  --c-text: #E5D3BE; // equivalent to text.primary
+  --c-text-light: #A0AEC0; // equivalent to text.secondary
+  --c-text-lighter: #909BAD; // equivalent to text.secondaryAlpha50
+  --c-text-lightest: #728097; // equivalent to text.secondaryGradient
   --c-text-code: #f08d49;
 
   // link colors
-  --c-link: #D6A46F;
+  --c-link: #7F6AE8; // equivalent to text.link
   --c-link-secondary: var(--c-text-lightest);
 
   // border colors
-  --c-border: #3e4c5a;
-  --c-border-dark: #34404c;
+  --c-border: #4C5561; // equivalent to border.base
+  --c-border-dark: #4C5561; // equivalent to border.base
 
-  --c-docs-card-border: #374151;
-  --c-docs-card-shadow: 0px 2px 4px 0px rgba(139, 92, 246, 0.2);
+  --c-docs-card-border: #4C5561; // equivalent to border.base
+  --c-docs-card-shadow: 0px 2px 4px 0px rgba(139, 92, 246, 0.2); // equivalent to shadow.md
 
   --c-sidebar-heading: #fff;
 
@@ -47,13 +47,10 @@ html.dark {
   --c-social-icon-fill: #0f172a;
   --c-social-icon-bg: #fff;
 
-    // transition vars
-    --t-transition: 0.2s all ease-out;
+  // transition vars
+  --t-transition: 0.3s all ease-in-out; // equivalent to transition.default
 
-    // box shadow vars
-    --box-shadow-standard: 0px 2px 5px 0px rgba(78, 0, 255, 0.3), 0px 1px 2px 0px rgba(255, 255, 255, 0.2);
-    --box-shadow-large: 0px 20px 40px 0px rgba(139, 92, 246, 0.1);
+  // box shadow vars
+  --box-shadow-standard: 0px 2px 5px 0px rgba(78, 0, 255, 0.3), 0px 1px 2px 0px rgba(255, 255, 255, 0.2); // use equivalent values from theme
+  --box-shadow-large: 0px 20px 40px 0px rgba(139, 92, 246, 0.1); // use equivalent values from theme
 }
-
-
-
