@@ -90,16 +90,5 @@ Whenever the Vault fetches the swap fee, it checks if the pool has dynamic swap 
 function computeFee(PoolData memory poolData, SwapLocals memory vars) external view returns (uint256);
 ```
 
-## Hook Choice
-
-There are two approaches to utilise hooks. Either as a developer, you:
-
-### Choose to extend an existing pool type with Hooks.
-Balancer offers various factories, such as `WeightedPoolFactoryWithHooks` and `StablePoolFactoryWithHooks`, that extend existing Pool Types with hooks. To use this approach, you need to pass the hooks' bytecode into the factory's create function. This approach follows a proxy behavior pattern, where the pool contract calls the hook contract. You can find more information in [this guide](/concepts/developer-guides/extend-existing-pool-type-using-hooks.html).
-
-### Implement hooks as part of a custom pool
-
-If you are looking for a more flexible way of utilizing hooks, you can take a look at the [custom pool guide](/concepts/developer-guides/create-custom-amm-with-novel-invariant.html).
-
 
 
