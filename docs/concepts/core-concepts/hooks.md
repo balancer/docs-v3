@@ -47,7 +47,7 @@ If an entry of the `PoolHooks` is passed as false, the Vault will not call the r
 ## Hook implementation
 
 
-A set of [different pool hooks](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IPoolHooks.sol) are available to be implemented, depending on what part of the execution flow the additional logic is needed. All hooks (except `computeFee`) are expected to return a `boolean` type of either `true` on success or `false` on failure. The available hooks are:
+A set of [different pool hooks](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IPoolHooks.sol) are available to be implemented, depending on what part of the execution flow the additional logic is needed. All hooks are expected to return a `boolean` type of either `true` on success or `false` on failure. The available hooks are:
 
 - `onBeforeInitialize`
 - `onAfterInitialize`
@@ -57,6 +57,7 @@ A set of [different pool hooks](https://github.com/balancer/balancer-v3-monorepo
 - `onAfterRemoveLiquidity`
 - `onBeforeSwap`
 - `onAfterSwap`
+- `onComputeDynamicSwapFee`
 
 :::info hooks & reentrancy
 It is possible to reenter the Vault as part of a hook execution as only the respective internal function like `_swap`, `_addLiquidity` & `_removeLiquidity` are reentrancy protected.
