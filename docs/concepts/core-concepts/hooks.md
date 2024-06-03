@@ -8,7 +8,7 @@ title: Hooks
 To get started building your own hook check out the [guide](../../build-a-custom-amm/build-an-amm/extend-existing-pool-type-using-hooks.md).
 :::
 
-Hooks introduce a framework to extend existing pool types at various key points throughout the pool’s lifecycle. They are designed to enhance pool operations and allow developers to tailor pool behavior to their specific use cases. Hooks can execute actions during pool operation and also compute a dynamic swap fee. Potential applications for hooks include:
+Hooks introduce a framework to extend existing pool types at various key points throughout the pool’s lifecycle. Hooks can execute actions during pool operation and also compute a dynamic swap fee. Potential applications for hooks include:
 - LVR (Loss versus Rebalancing) reduction 
 - Dynamic Fees
 - Automatic Gauge locking
