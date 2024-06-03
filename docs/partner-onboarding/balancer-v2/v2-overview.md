@@ -9,39 +9,46 @@ liquidity in the liquid stakig token (LST) and liquid restaking token (LRT) sect
 
 Balancer Technology provides decentralised infrastructure for DAOs, which enables efficient scaling of Yield Bearing assets, creating advanced Governance positions, and developing customised pool types. In addition, the Balancer ecosystem facilitates the streamlined scaling of liquidity for DAOs through core pool incentive flywheels and its network of liquidity enhancing protocols.
 
-One of Balancers most interesting value propositions is the core pool framework
-where token emissions are aligned with pool performance. Read further below to learn more about the core value propositions of Balancer v2
+### Onboaring Steps
+Onboarding to Balancer v2's tech stack involves various steps depending on the specific needs. In general the onboarding journey consists of following steps:
 
-### Balancer v2's Core Pool Framework
-The core pool framework was designed by Balancer contributors to align token emissions with pool performance in terms of fees collected. At Balancer, fees are collected for swaps and for yield on yield bearing tokens (see [here](https://docs.balancer.fi/concepts/governance/protocol-fees.html#governable-protocol-fees)). Core Pools are pools that have all protocols fees redirected back into the same pool that generated them to initiate a sustainable incentive flywheel.
+1. Choosing and launching your pool
+2. Providing initial liqudity
+3. Receive BAL rewards through Balancer's gauge system
+4. Thinking about incentive markets
 
-A pool can become a core pool if the following condition is met:
+#### Choosing and Launching A Pool
+Balancer v2 offers a wide variety of exciting pool types. The following table provides a rough overview of examples and use cases
 
-- The pool contains at least 50% yield bearing tokens that Balancer earns protocol fees on
-- The pool has been voted in by governance as such and has a gauge rewards can be streamed to
+| Pool Type                  | Use-Cases                                                                                                                             | Examples                                                                                                                                      |
+|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| Composable Table Pool      | Provision of highly correlated asset liquidity                                                                                        | [wstETH:WETH pool](https://app.balancer.fi/#/ethereum/pool/0x93d199263632a4ef4bb438f1feb99e57b4b5f0bd0000000000000000000005c2) on mainnet     |
+| Weighted Pools incl. 80/20 | Creation of pools with any weight distribution with up to 8 tokens.                                                                   | [BAL:WETH 80:20 pool](https://app.balancer.fi/#/ethereum/pool/0x93d199263632a4ef4bb438f1feb99e57b4b5f0bd0000000000000000000005c2)             |
+| Gyroscope E-CLPs           | Specialized pools with [customized liquidity curves](https://docs.gyro.finance/gyroscope-protocol/readme)                             | [USDC:GYD Stable Pool](https://app.balancer.fi/#/ethereum/pool/0xc2aa60465bffa1a88f5ba471a59ca0435c3ec5c100020000000000000000062c) on mainnet |
+| Managed pools              | Specialized pools dynamic pool weights. See [Kassandra Finance](https://app.kassandra.finance/) for an example implemenation use-case | [Example index fund](https://app.kassandra.finance/pool/1370xc22bb237a5b8b7260190cb9e4998a9901a68af6f000100000000000000000d8d) on Avalanche   |
 
-Fees collected by a core pool are tracked and processed every 2 weeks. All tokens are swapped to USDC and then distributed. The reasons for this bi-weekly schedule are two-fold:
+On Balancer v2, most projects choose to utilize our highly efficient Composable Stable Pool technology. This allows to deploy deep liquidity while guaranteeing correct trades through [rate provider](./rate-providers.md) technology. Furthermore, by harnessing our [vault architecture](../../concepts/vault/README.md) design, pools benefit from direct trading routes, aggregator integration and deep liquidity.
 
-- cooldown of 10 days after veBAL votes have been placed
-- Bi-weekly voting schedule on the yield aggregator Aura which directs incentives through locked veBAL in their protocol via votes from vlAURA holders
+#### Providing initial liquidity
+Depending on the pool type, you can bootstrap liquidity directly through our UI or our community tooling:
+- For weighted pools, use the [pool creation UI](https://app.balancer.fi/#/ethereum/pool/create) from the Balancer v2 front-end
+- For Composable Stable pools, use the [community pool creator tool](https://pool-creator.web.app/)
+  - If you are considering to deploy liquidity with a yield-bearing asset, consult our [yield-bearing token onboarding guide](./onboard-yb-token.md)
+- For E-CLP liquidity pools, consult with [Gyroscope](https://app.gyro.finance/) to set up your customized E-CLP
 
-The collected fees are then split up in the following way:
-
-- 50% are distributed as core pool incentives, meaning fees earned are placed as voting incentives on secondary voting markets. The goal is that pools with lots of fees earned shall receive more BAL (and AURA) emissions by encouraging stakeholders to vote for those gauges
-- 32.5% of all these fees are distributed to veBAL and vlAURA holders as part of our revenue share model
-- 17.5% of fees collected are paid out to the DAO. These funds are mostly used to fund service providers to advance the protocol
-
-Note: swap fees that have been collected from non-core pools will be recycled and distributed to core pools providing an additional boost in voting incentive sizing and therefore BAL emissions.
-
-To summarize: core pools participate in the ecosystem flywheel by being entitled to more token emissions and participating in the success of the protocol in a unique way.
-![Core Pool Framework](/images/corePoolFramework.png)
+#### Receive BAL rewards through Balancer's gauge system
+If your project intends to receive BAL rewards, consult our [Gauge Onboarding](gauge-onboarding.md) guide guiding you through any further steps needed.
+::: tip
+Are you interested in receiving core pool status? Read [here](./core-pools.md)
+:::
 
 
 
 ## Onboarding Guides
-- [YB Token Onboarding](onboard-yb-token.md)
+- [Yield-bearing Token Onboarding](onboard-yb-token.md)
 - [Rate Provider Onboarding](rate-providers.md)
 - [Gauge Onboarding](gauge-onboarding.md)
+- [Core Pool Framework](core-pools.md)
 
 ## Helpful Resources to Learn More
 

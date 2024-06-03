@@ -1,11 +1,11 @@
 ---
 order: 1
-title: Yield Bearing Thesis
+title: LST / LRT Liquidity
 heroText: Yield Bearing Thesis
 heroImage: /images/yieldThesis.png
 ---
 
-# The Yield Bearing Hub
+# Hosting of Liquid staking and restaking tokens
 
 :::info
 Balancer is the most attuned decentralised financial technology layer to host yield-bearing assets. Yield-bearing tokens
