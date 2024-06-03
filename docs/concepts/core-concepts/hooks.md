@@ -33,7 +33,8 @@ PoolHooks({
     shouldCallBeforeAddLiquidity: false,
     shouldCallAfterAddLiquidity: false,
     shouldCallBeforeRemoveLiquidity: false,
-    shouldCallAfterRemoveLiquidity: false
+    shouldCallAfterRemoveLiquidity: false,
+    shouldCallComputeDynamicSwapFee: false
 })
 ```
 
@@ -70,24 +71,29 @@ The Vault calls a pool's hooks and passes data. The passed data for each individ
 :::
 
 ## Dynamic swap fee hook
-Besides the 'before' and 'after' hooks, pools can also implement a - [`computeFee`](/concepts/pools/dynamic-swap-fees.html) hook to allow for dynamic fee computation. Similar to the hooks mentioned above the dynamic swap fee hook needs to be:
-1. registered during the pool registration process.
-2. implemented as part of the pools code.
+Besides the 'before' and 'after' hooks, pools can also implement a - [`onComputeDynamicSwapFee`](/concepts/pools/dynamic-swap-fees.html) hook to allow for dynamic fee computation. For a hook to support a dynamic fee, it needs to: Similar to the hooks mentioned above the dynamic swap fee hook needs to be:
+1. Set the value of `shouldCallComputeDynamicSwapFee` to `true` in the hook's `getHookConfig` implementation.
+2. Implement `onComputeDynamicSwapFee`.
 
 ### Dynamic Swap fee Hook registration
-During pool registration, a boolean value is passed to indicate whether the pool has a dynamic swap fee.
+In the implementation of `getHooksConfig`, the hook should return `true` for `shouldCallComputeDynamicSwapFee`.
+
 ```solidity
-function registerPool(
-    ...
-    bool hasDynamicSwapFee
-) external;
+function hooksConfig() external pure override returns (HooksConfig memory) {
+    return HooksConfig({
+        ...
+        shouldCallComputeDynamicSwapFee: true
+    });
+}
 ```
 
 ### Dynamic Swap fee Hook implementation
-Whenever the Vault fetches the swap fee, it checks if the pool has dynamic swap fee and if so, it calls into the pools `computeFee` function. Otherwise it reads the `PoolConfig.staticSwapFeePercentage`.
+Whenever the Vault fetches the swap fee, it checks if the hook has a dynamic swap fee. If it does, it calls into the hook's `onComputeDynamicSwapFee` function. Otherwise it reads the `PoolConfig.staticSwapFeePercentage`.
 
 ```solidity
-function computeFee(PoolData memory poolData, SwapLocals memory vars) external view returns (uint256);
+function onComputeDynamicSwapFee(
+    IBasePool.PoolSwapParams calldata params
+) external view returns (bool success, uint256 dynamicSwapFee);
 ```
 
 
