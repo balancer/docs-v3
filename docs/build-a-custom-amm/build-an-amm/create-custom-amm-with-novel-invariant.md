@@ -35,7 +35,7 @@ contract ConstantPricePool is IBasePool, BalancerPoolToken {
      * @return amountCalculatedScaled18 Calculated amount for the swap
      */
     function onSwap(SwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
-        amountCalculatedScaled18 = request.amountGivenScaled18;
+        amountCalculatedScaled18 = params.amountGivenScaled18;
     }
     
     /**
@@ -133,7 +133,7 @@ When swapping tokens, our constant `K` must remain unchanged. Since our two-toke
 the amount entering the pool will always equal the amount leaving the pool:
 ```solidity
 function onSwap(SwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
-    amountCalculatedScaled18 = request.amountGivenScaled18;
+    amountCalculatedScaled18 = params.amountGivenScaled18;
 }
 ```
 
@@ -161,7 +161,7 @@ The approach taken by Balancer Labs is to define a [NewPoolParams](https://githu
 The charging of swap fees is managed entirely by the Balancer vault. The pool is only responsible for declaring the `swapFeePercentage` for any given swap or unbalanced liquidity operation. For more information, see [Swap fees](http://localhost:8080/concepts/vault/swap-fee.html).
 
 ::: info Do I need to take swap fees into account when implementing onSwap?
-No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swap, the amount in (`request.amountGivenScaled18`) will already have the swap fee removed before `onSwap` is called.
+No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swap, the amount in (`params.amountGivenScaled18`) will already have the swap fee removed before `onSwap` is called.
 :::
 
 Balancer supports two types of swap fees:
