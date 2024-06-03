@@ -1,9 +1,9 @@
 ---
 title: Yield-bearing Asset Onboarding
-order: 1
+order: 2
 ---
 
-# Onboard your yield-bearing Asset to Balancer v2
+# Onboard your Yield-bearing Asset to Balancer v2 (incl. Core Pool Status)
 
 ::: tip
 Balancer contributors are happy to help during the onboarding process. Feel free to reach out to us on our discord!

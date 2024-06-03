@@ -15,7 +15,7 @@ Onboarding to Balancer v2's tech stack involves various steps depending on the s
 1. Choosing and launching your pool
 2. Providing initial liqudity
 3. Receive BAL rewards through Balancer's gauge system
-4. Thinking about incentive markets
+4. Voting Incentive Markets
 
 #### Choosing and Launching A Pool
 Balancer v2 offers a wide variety of exciting pool types. The following table provides a rough overview of examples and use cases
@@ -36,13 +36,23 @@ Depending on the pool type, you can bootstrap liquidity directly through our UI 
   - If you are considering to deploy liquidity with a yield-bearing asset, consult our [yield-bearing token onboarding guide](./onboard-yb-token.md)
 - For E-CLP liquidity pools, consult with [Gyroscope](https://app.gyro.finance/) to set up your customized E-CLP
 
+##### Token Whitelisting
+
+Whitelist your token by doing a Pull-Request [here](https://github.com/balancer/tokenlists) (Balancer contributors can
+assist)
+
+1. Provide token images and store png files with the token address like `0xba100000625a3754423978a60c9317c58a424e3D.png`
+2. Update `tokenlists/balancer/tokens` and the corresponding network typescript file by adding your token address (
+   e.g. `tokenlists/balancer/tokens/arbitrum/0x…`)
+
 #### Receive BAL rewards through Balancer's gauge system
 If your project intends to receive BAL rewards, consult our [Gauge Onboarding](gauge-onboarding.md) guide guiding you through any further steps needed.
 ::: tip
 Are you interested in receiving core pool status? Read [here](./core-pools.md)
 :::
 
-
+#### Voting Incentive Markets
+Balancer v2's tokenomics around veBAL encourage partaking in various voting incentive markets to attract BAL token rewards to certain gauges. These voting markets are operated by independent entities and leveraging these markets is absolutely not mandatory. The [core pool framework](./core-pools.md) guarantees that a fraction of protocol fees are distributed on voting markets without any further action from a partner. There are, of course, also other methods on how to participate, please consult the [voting market ](./voting-markets.md) section for more details.
 
 ## Onboarding Guides
 - [Yield-bearing Token Onboarding](onboard-yb-token.md)
@@ -50,8 +60,4 @@ Are you interested in receiving core pool status? Read [here](./core-pools.md)
 - [Gauge Onboarding](gauge-onboarding.md)
 - [Core Pool Framework](core-pools.md)
 
-## Helpful Resources to Learn More
 
-- [BIP-19: Incentivize Core Pools & L2 Usage](https://forum.balancer.fi/t/bip-19-incentivize-core-pools-l2-usage/3329)
-- [Core Pools Dashboard](https://balancer.defilytica.com/#/corePools)
-- [Protocol Fee Dune Dashboard](https://dune.com/balancer/protocol-fees)

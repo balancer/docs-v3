@@ -5,7 +5,7 @@ heroText: Yield Bearing Thesis
 heroImage: /images/yieldThesis.png
 ---
 
-# Hosting of Liquid staking and restaking tokens
+# Hosting of Liquid Staking and Restaking Tokens
 
 :::info
 Balancer is the most attuned decentralised financial technology layer to host yield-bearing assets. Yield-bearing tokens

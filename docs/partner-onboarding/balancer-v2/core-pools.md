@@ -1,6 +1,6 @@
 ---
 title: Core Pool Framework
-order: 4
+order: 1
 ---
 
 # Balancer v2's Core Pool Framework
@@ -9,7 +9,9 @@ The core pool framework was designed by Balancer contributors to align token emi
 A pool can become a core pool if the following condition is met:
 
 - The pool contains at least 50% yield bearing tokens that Balancer earns protocol fees on
+- The pool meets all technical requirements as described [here](./onboard-yb-token.md)
 - The pool has been voted in by governance as such and has a gauge rewards can be streamed to
+
 
 Fees collected by a core pool are tracked and processed every 2 weeks. All tokens are swapped to USDC and then distributed. The reasons for this bi-weekly schedule are two-fold:
 
@@ -22,7 +24,15 @@ The collected fees are then split up in the following way:
 - 32.5% of all these fees are distributed to veBAL and vlAURA holders as part of our revenue share model
 - 17.5% of fees collected are paid out to the DAO. These funds are mostly used to fund service providers to advance the protocol
 
-Note: swap fees that have been collected from non-core pools will be recycled and distributed to core pools providing an additional boost in voting incentive sizing and therefore BAL emissions.
+
+::: info
+Swap fees that have been collected from non-core pools will be recycled and distributed to core pools providing an additional boost in voting incentive sizing and therefore BAL emissions.
+:::
 
 To summarize: core pools participate in the ecosystem flywheel by being entitled to more token emissions and participating in the success of the protocol in a unique way.
 ![Core Pool Framework](/images/corePoolFramework.png)
+
+## Helpful Resources to Learn More
+- [BIP-19: Incentivize Core Pools & L2 Usage](https://forum.balancer.fi/t/bip-19-incentivize-core-pools-l2-usage/3329)
+- [Core Pools Dashboard](https://balancer.defilytica.com/#/corePools)
+- [Protocol Fee Dune Dashboard](https://dune.com/balancer/protocol-fees)
