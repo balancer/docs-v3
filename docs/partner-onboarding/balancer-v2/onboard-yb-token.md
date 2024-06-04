@@ -3,7 +3,7 @@ title: Yield-bearing Asset Onboarding
 order: 2
 ---
 
-# Onboard your Yield-bearing Asset to Balancer v2 (incl. Core Pool Status)
+# Onboard your Yield-bearing Asset to Balancer v2
 
 ::: tip
 Balancer contributors are happy to help during the onboarding process. Feel free to reach out to us on our discord!
@@ -23,7 +23,9 @@ Whitelist your token by doing a Pull-Request [here](https://github.com/balancer/
    e.g. `tokenlists/balancer/tokens/arbitrum/0x…`)
 
 ## Rate Provider
-
+::: tip
+Consult our [rate provider onboarding FAQ](./rate-providers.md) for more details
+:::
 Given you want to onboard a yield-bearing asset stable pair with a stable pool, it is required that you provide a vetted
 in rate provider upon pool creation.
 For security reasons and to make sure your rate provider adheres to
@@ -32,9 +34,8 @@ Balancer’s standards, please initiate a rate provider review [here](https://gi
 ::: info
 Depending on the complexit of your rate provider, reviews usually take up to 1-2 weeks for Balancer labs to complete.
 Consult the [issue board](https://github.com/balancer/code-review/issues) for the review status
-
-Consult our [rate provider onboarding FAQ](./rate-providers.md) for more details
 :::
+
 
 A registry of already reviewed providers can be
 found [here](https://github.com/balancer/code-review/tree/main/rate-providers)

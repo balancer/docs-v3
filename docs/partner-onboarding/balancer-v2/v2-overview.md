@@ -56,6 +56,9 @@ Are you interested in receiving core pool status? Read [here](./core-pools.md)
 #### Voting Incentive Markets
 Balancer v2's tokenomics around veBAL encourage partaking in various voting incentive markets to attract BAL token rewards to certain gauges. These voting markets are operated by independent entities and leveraging these markets is absolutely not mandatory. The [core pool framework](./core-pools.md) guarantees that a fraction of protocol fees are distributed on voting markets without any further action from a partner. There are, of course, also other methods on how to participate, please consult the [voting market ](./voting-markets.md) section for more details.
 
+#### Placing Direct Incentives
+It is possible to stream direct incentives to Balancer staking gauges. Several options exist. Consult our [direct incentives docs](./direct-incentives.md) for more details.
+
 ## Onboarding Guides
 - [Yield-bearing Token Onboarding](onboard-yb-token.md)
 - [Rate Provider Onboarding](rate-providers.md)

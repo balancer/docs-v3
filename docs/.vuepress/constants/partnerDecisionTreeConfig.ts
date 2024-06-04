@@ -35,6 +35,10 @@ export const partnerDecisionTreeConfig: Step[] = [
         text: 'Providing liquidity for LVR protection',
         nextStep: 'resultF',
       },
+      {
+        text: 'Deployment of stable coin liquidity',
+        nextStep: 'step2',
+      },
     ],
   },
   {
@@ -54,10 +58,26 @@ export const partnerDecisionTreeConfig: Step[] = [
     ],
   },
   {
+    id: 'step2',
+    title: 'Step 2',
+    question:
+      'What feature do you need for hosting your stable coin liquidity?',
+    options: [
+      {
+        text: 'Maximizing token utilization with additional yield generation of stable coins',
+        nextStep: 'resultG',
+      },
+      {
+        text: 'Customized invariant for highly efficient trading',
+        nextStep: 'resultH',
+      },
+    ],
+  },
+  {
     id: 'resultA',
     title: 'Composable Stable Pools',
     result:
-      'A <a href="https://docs.balancer.fi/concepts/pools/composable-stable.html#composable-stable-pools" target="_blank" rel="noopener noreferrer">composable stable pool</a> with a rate provider setup',
+      'A <a href="https://docs.balancer.fi/concepts/pools/composable-stable.html#composable-stable-pools" target="_blank" rel="noopener noreferrer">composable stable pool</a> with a rate provider setup will best suit your needs. Consult <a href="/partner-onboarding/balancer-v2/onboard-yb-token.html" target="_blank" rel="noopener noreferrer">our v2 onboarding guide</a> for more details.',
   },
   {
     id: 'resultB',
@@ -75,7 +95,7 @@ export const partnerDecisionTreeConfig: Step[] = [
     id: 'resultD',
     title: 'Governance Tokenomics',
     result:
-      'A 80/20 pool based on <a href="/partner-onboarding/onboarding-overview/product-showcases/ve8020.html" target="_blank" rel="noopener noreferrer">governance tokenomics</a> might be the best fit for you!',
+      'A 80/20 pool based on <a href="/partner-onboarding/onboarding-overview/products/ve8020.html" target="_blank" rel="noopener noreferrer">governance tokenomics</a> might be the best fit for you!',
   },
   {
     id: 'resultE',
@@ -88,5 +108,17 @@ export const partnerDecisionTreeConfig: Step[] = [
     title: 'CowAMM liquidity pool',
     result:
       'A CowAMM liquidity pool based on their custom implementation based on Balancer might be best suited for your needs',
+  },
+  {
+    id: 'resultG',
+    title: 'Boosted Pools',
+    result:
+      'A <a href="/partner-onboarding/onboarding-overview/products/boostedpools.html" target="_blank" rel="noopener noreferrer">boosted pool</a>  on Balancer v3 will guarantee additional yield generation and high utilization rates of stable coin pairings',
+  },
+  {
+    id: 'resultH',
+    title: 'Gyroscope E-CLPs',
+    result:
+        '<a href="https://app.gyro.finance/" target="_blank" rel="noopener noreferrer">Gyroscopes</a> elliptical concentrated liquidity pools offer the best trading efficiency for highly correlated assets with customized trading curves.',
   },
 ];

@@ -1,7 +1,6 @@
 ---
 order: 0
 title: Boosted Pools
-heroImage: /images/balancerv3Banner.png
 ---
 ### Boosted Pools
 Balancer V3 will introduce an evolution of boosted pools that maximize the utilization of all of the underlying pool liquidity into lending markets to optimize yield. Unlike traditional Boosted Pools, … pools deposit 100% of all liquidity into yield-generating strategies to optimize capital efficiency. Additionally, with the integration of all-new buffers, users can seamlessly swap between base assets (e.g. USDC and DAI) while LPs reap the benefits of pools holding 100% YB tokens (e.g. waUSDC and waDAI). Buffers are not pools and contain very simple and limited logic adjacent to the vault, avoiding possible security issues like the recent Boosted Pool incident.

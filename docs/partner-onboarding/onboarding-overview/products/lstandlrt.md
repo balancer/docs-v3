@@ -2,7 +2,6 @@
 order: 1
 title: LST / LRT Liquidity
 heroText: Yield Bearing Thesis
-heroImage: /images/yieldThesis.png
 ---
 
 # Hosting of Liquid Staking and Restaking Tokens
@@ -28,6 +27,7 @@ This is achieved by utilizing three core components:
 
 Do you want to onboard your yield-bearing token to Balancer and leverage its core advantages? You have several options on how to onboard your liquidity and to which deployment:
 - [Go here](/partner-onboarding/balancer-v2/onboard-yb-token) if you want to onboard your liquidity to Balancer v2 and take part of the core pool flywheel.
+- Explore [Gyroscope pools](https://app.gyro.finance/) for highly customized trading curves
 
 # Resources
 If you want to learn more about these concepts in more detail, follow these in-depth articles for more information
