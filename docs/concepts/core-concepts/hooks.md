@@ -14,40 +14,9 @@ Hooks introduce a framework to extend existing pool types at various key points 
 - Automatic Gauge locking
 - Sell or Buy limits
 
-## Hook requirements
+## Hook Contracts
 
-A hook is a codeblock that implements arbitrary logic in a pool or external contract. In order to use hooks as part of a pool's operations two steps need to be done.
-
-1. The hook needs to be registered as part of the pool registration process.
-2. The hook function needs to be implemented as part of the pools code.
-
-## Hook registration
-
-As part of the [pool registration](https://github.com/balancer/balancer-v3-monorepo/blob/c83f20770c21b8f470af0a64c6368e57439e3a5b/pkg/interfaces/contracts/vault/IVaultExtension.sol#L84) a `PoolHooks` struct containing booleans needs to be passed. If you want a pool to execute the `onBeforeSwap` and `onAfterSwap` hook, you need to pass the following data as part of the pool registration:
-```solidity
-PoolHooks({
-    shouldCallBeforeInitialize: false,
-    shouldCallAfterInitialize: false,
-    shouldCallBeforeSwap: true,
-    shouldCallAfterSwap: true,
-    shouldCallBeforeAddLiquidity: false,
-    shouldCallAfterAddLiquidity: false,
-    shouldCallBeforeRemoveLiquidity: false,
-    shouldCallAfterRemoveLiquidity: false,
-    shouldCallComputeDynamicSwapFee: false
-})
-```
-
-Whenever a pool is registered in the Vault, part of the [`PoolConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L26-L37) stores the information which hooks are enabled. This decision is immutable and cannot change after the pool is created.
-
-:::info
-If an entry of the `PoolHooks` is passed as false, the Vault will not call the respective hook function on the pool contract.
-:::
-
-## Hook implementation
-
-
-A set of [different pool hooks](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IPoolHooks.sol) are available to be implemented, depending on what part of the execution flow the additional logic is needed. All hooks are expected to return a `boolean` type of either `true` on success or `false` on failure. The available hooks are:
+Hooks are implemented as standalone contracts that can have their own internal logic and state. One hook contract can facilitate many pools (and pool types). The hook system is flexible and allows developers to implement custom logic at the following points of the pool lifecycle:
 
 - `onBeforeInitialize`
 - `onAfterInitialize`
@@ -59,43 +28,78 @@ A set of [different pool hooks](https://github.com/balancer/balancer-v3-monorepo
 - `onAfterSwap`
 - `onComputeDynamicSwapFee`
 
+Each Hook contract must implement the `getHooksConfig` function which returns a `HooksConfig` indicating which hooks are supported:
+
+```solidity
+struct HooksConfig {
+    bool shouldCallBeforeInitialize;
+    bool shouldCallAfterInitialize;
+    bool shouldCallComputeDynamicSwapFee;
+    bool shouldCallBeforeSwap;
+    bool shouldCallAfterSwap;
+    bool shouldCallBeforeAddLiquidity;
+    bool shouldCallAfterAddLiquidity;
+    bool shouldCallBeforeRemoveLiquidity;
+    bool shouldCallAfterRemoveLiquidity;
+    address hooksContract;
+}
+```
+
 :::info hooks & reentrancy
 It is possible to reenter the Vault as part of a hook execution as only the respective internal function like `_swap`, `_addLiquidity` & `_removeLiquidity` are reentrancy protected.
-:::
-
-:::info Creation
-Balancer provides a `WeightedPoolWithHooksFactory` & `StablePoolFactoryWithHooks`. During pool creation, this factory takes the hooks' bytecode and deploys both the hooks and the pool contract.
 :::
 
 :::info data passed to hooks
 The Vault calls a pool's hooks and passes data. The passed data for each individual hook is available in the [Pool hooks API](/developer-reference/contracts/hooks-api.html) section.
 :::
 
-## Dynamic swap fee hook
-Besides the 'before' and 'after' hooks, pools can also implement a - [`onComputeDynamicSwapFee`](/concepts/pools/dynamic-swap-fees.html) hook to allow for dynamic fee computation. For a hook to support a dynamic fee, it needs to: Similar to the hooks mentioned above the dynamic swap fee hook needs to be:
-1. Set the value of `shouldCallComputeDynamicSwapFee` to `true` in the hook's `getHookConfig` implementation.
-2. Implement `onComputeDynamicSwapFee`.
+## How Pools & Hooks Are Connected
 
-### Dynamic Swap fee Hook registration
-In the implementation of `getHooksConfig`, the hook should return `true` for `shouldCallComputeDynamicSwapFee`.
+When a new pool is registered a hook contract address can be passed to "link" the pool and the hook (for no hook use the zero address). This configuration is immutable and cannot change after the pool is registered.
 
 ```solidity
-function hooksConfig() external pure override returns (HooksConfig memory) {
-    return HooksConfig({
-        ...
-        shouldCallComputeDynamicSwapFee: true
-    });
-}
+function registerPool(
+    address pool,
+    ...
+    address poolHooksContract,
+) external;
 ```
 
-### Dynamic Swap fee Hook implementation
-Whenever the Vault fetches the swap fee, it checks if the hook has a dynamic swap fee. If it does, it calls into the hook's `onComputeDynamicSwapFee` function. Otherwise it reads the `PoolConfig.staticSwapFeePercentage`.
+During registration the Vault calls `getHooksConfig` to determine which hooks are supported and stores it to a pool/hook mapping:
 
 ```solidity
+mapping(address => HooksConfig) internal _hooksConfig;
+```
+
+## Dynamic Swap Fee Hook
+
+The Dynamic Swap Fee Hook enables hook developers to adjust pool fees for various strategic purposes, e.g. market volatility.
+
+If the Dynamic Swap Fee Hook is enabled the Hook must implement the `onComputeDynamicSwapFee` function to compute the swap fee:
+
+```solidity
+/**
+ * @notice Called before `onBeforeSwap` if the pool has dynamic fees.
+ * @param params Swap parameters (see IBasePool.PoolSwapParams for struct definition)
+ * @return success True if the pool wishes to proceed with settlement
+ * @return dynamicSwapFee Value of the swap fee
+ */
 function onComputeDynamicSwapFee(
     IBasePool.PoolSwapParams calldata params
 ) external view returns (bool success, uint256 dynamicSwapFee);
 ```
 
+Note that the function has access to the swap parameters which can be used as part of the fee computation:
+```solidity
+struct PoolSwapParams {
+    SwapKind kind;
+    uint256 amountGivenScaled18;
+    uint256[] balancesScaled18;
+    uint256 indexIn;
+    uint256 indexOut;
+    address router;
+    bytes userData;
+}
+```
 
-
+Now, whenever the Vault fetches the swap fee it will use the returned `dynamicSwapFee` value.
