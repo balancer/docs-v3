@@ -1,7 +1,7 @@
 html.dark {
   // brand colors
-  --c-brand: #805AD5;
-  --c-brand-light: #0EA5E9;
+  --c-brand: #b3aef5;
+  --c-brand-light: rgba(109, 173, 249, 100);
   --c-brand-hover-accent: rgba(0, 211, 149, 100);
 
   // background colors
@@ -14,10 +14,10 @@ html.dark {
   --c-text-light: #A0AEC0; // equivalent to text.secondary
   --c-text-lighter: #909BAD; // equivalent to text.secondaryAlpha50
   --c-text-lightest: #728097; // equivalent to text.secondaryGradient
-  --c-text-code: #00d395;
+  --c-text-code: #f08d49;
 
   // link colors
-  --c-link: #7F6AE8; // equivalent to text.link
+  --c-link: #b3aef5; // equivalent to text.link
   --c-link-secondary: var(--c-text-lightest);
 
   // border colors
@@ -25,12 +25,22 @@ html.dark {
   --c-border-dark: #4C5561; // equivalent to border.base
 
   --c-docs-card-border: #4C5561; // equivalent to border.base
-  --c-docs-card-shadow: 12px 12px 12px -6px rgba(0, 0, 0, 0.10), 6px 6px 6px -3px rgba(0, 0, 0, 0.06), 3px 3px 3px -1.5px rgba(0, 0, 0, 0.06), 1px 1px 1px -0.5px rgba(0, 0, 0, 0.06); // equivalent to shadow.md
+  --c-docs-card-shadow: 12px 12px 12px -6px rgba(0, 0, 0, 0.10), 6px 6px 6px -3px rgba(0, 0, 0, 0.06), 3px 3px 3px -1.5px rgba(0, 0, 0, 0.06), 1px 1px 1px -0.5px rgba(0, 0, 0, 0.06), 0px 0px 0px 1px rgba(0, 0, 0, 0.02); // equivalent to shadow.md
 
   --c-sidebar-heading: #fff;
 
+  // Table colors
+  --table-bg: rgba(49, 55, 63, 0.8);
+  --table-bg-alt: rgba(51, 65, 85, 0.8);
+  --table-text: #728097;
+  --table-border: rgba(62, 76, 90, 0.8);
+
+  // Table header colors
+  --table-header-bg: rgba(51, 65, 85, 0.9);
+  --table-header-text: #A0AEC0;
+
   // custom container colors
-  --c-tip: #318a62;
+  --c-tip: #00674e;
   --c-warning: #ceab00;
   --c-warning-bg: #7e755b;
   --c-warning-title: #ceac03;

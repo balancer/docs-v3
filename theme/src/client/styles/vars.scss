@@ -1,7 +1,7 @@
 :root {
   // brand colors
   --c-brand: #805AD5; // primary.600
-  --c-brand-light: #2554ff; // primary.700
+  --c-brand-light: rgba(109, 173, 249, 100);
   --c-brand-hover-accent: rgba(0, 211, 149, 100); // green.500
 
   // background colors
@@ -35,7 +35,7 @@
   --c-docs-card-shadow: -0.5px -0.5px 0px 0px #FFF, 6px 6px 6px -3px rgba(73, 53, 29, 0.06), 3px 3px 3px -1.5px rgba(73, 53, 29, 0.06), 1px 1px 1px -0.5px rgba(73, 53, 29, 0.06), 0px 0px 0px 1px rgba(73, 53, 29, 0.02); // box-shadow
 
   // custom container colors
-  --c-tip: #00d395; // green.500
+  --c-tip: #00674e; // green.800
   --c-tip-bg: var(--c-bg-light);
   --c-tip-title: var(--c-text);
   --c-tip-text: var(--c-text);
@@ -45,12 +45,22 @@
   --c-warning-title: #ad9000; // warning.title
   --c-warning-text: #746000; // warning.text
   --c-warning-text-accent: var(--c-text);
-  --c-danger: #cc0000; // danger
+  --c-danger: #ea6249; // danger
   --c-danger-bg: #ffe0e0; // danger.bg
   --c-danger-title: #990000; // danger.title
   --c-danger-text: #660000; // danger.text
   --c-danger-text-accent: var(--c-text);
   --c-details-bg: #eeeeee; // details.bg
+
+  // Table colors
+  --table-bg: #ffffff; // Background color for table
+  --table-bg-alt: #999999; // Alternate row background color
+  --table-text: #2c3e50; // Text color for table
+  --table-border: #eaecef; // Border color for table
+
+  // Table header colors
+  --table-header-bg: #f1f3f5; // Background color for table header
+  --table-header-text: #2c3e50; // Text color for table header
 
   // badge component colors
   --c-badge-tip: var(--c-tip);

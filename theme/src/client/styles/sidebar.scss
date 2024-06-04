@@ -242,6 +242,10 @@ a.sidebar-item {
   }
 }
 
+a.sidebar-heading + .sidebar-item-children .sidebar-item:not(.sidebar-heading):not(.collapsible).active {
+  background: rgba(49, 55, 63, 0.15);
+  color: rgba(0, 211, 149, 100);
+}
 
 .dark {
   a.sidebar-heading + .sidebar-item-children .sidebar-item:not(.sidebar-heading):not(.collapsible).active {
