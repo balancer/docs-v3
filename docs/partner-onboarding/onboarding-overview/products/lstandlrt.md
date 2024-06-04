@@ -20,9 +20,9 @@ For a full overview of Balancer’s Yield Bearing Thesis, please read the follow
 To date, most of DeFi uses outdated infrastructure to manage assets that have an internal yield-generating mechanism. More specifically, almost all AMMs that host a LST or staked stablecoin utilise logic that amplifies Loss Versus Rebalancing (LVR). 
 Balancer Pools use novel technology to make sure that LVR is reduced while optimal results are guaranteed for liquidity providers (LPs) and traders by optimizing trade routes and exchange rates between YB assets.
 This is achieved by utilizing three core components:
-1. Rate provider technology
-2. [Core Pool Dynamcis](/partner-onboarding/balancer-v2/v2-overview.html#balancer-v2-s-core-pool-framework)
-3. 100% boosted pools
+1. [Rate provider](../../balancer-v2/rate-providers.md) technology
+2. [Core Pool Dynamcis](../../balancer-v2/core-pools.md)
+3. [100% boosted pools](../products/boostedpools.md)
 
 ## Yield-Bearing Token Onboarding
 

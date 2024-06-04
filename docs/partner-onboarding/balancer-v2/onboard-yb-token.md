@@ -16,8 +16,7 @@ Balancer v2.
 
 ## Token Whitelisting
 
-Whitelist your token by doing a Pull-Request [here](https://github.com/balancer/tokenlists) (Balancer contributors can
-assist)
+Whitelist your token by doing a Pull-Request [here](https://github.com/balancer/tokenlists). This is needed to fully enable trading of your token on our platform.
 
 1. Provide token images and store png files with the token address like `0xba100000625a3754423978a60c9317c58a424e3D.png`
 2. Update `tokenlists/balancer/tokens` and the corresponding network typescript file by adding your token address (
@@ -63,8 +62,8 @@ deployments.
 
 ## BAL Rewards and Gauges
 
-If you want to receive BAL rewards, set up a proper root gauge on the network your pool was deployed and apply for a
-gauge (contributors will assist here):
+If you want to receive BAL rewards, set up a proper root gauge on the network your pool was deployed and [apply for a
+gauge](./gauge-onboarding.md)
 
 #### Create a gauge
 
@@ -77,6 +76,8 @@ Depending on the network you want to create a gauge, several steps are needed to
 rewards. In essence following steps need to be performed in terms of gauge creation
 
 ### Apply for receiving BAL rewards through Balancer governance
+
+For more details, consult our [gauge onboarding guide](./gauge-onboarding.md). The timeline to onboard a gauge is as follows:
 
 1. Post a proposal based on the gauge
    proposal [instruction set](https://forum.balancer.fi/t/instructions-overview/2674/2)
