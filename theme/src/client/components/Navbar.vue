@@ -9,6 +9,7 @@ import GithubIcon from './icons/brands/GithubIcon.vue';
 import SearchBar from './SearchBar.vue';
 import { computed, onMounted, ref } from 'vue';
 import { useThemeLocaleData } from '../composables/index.js';
+import SearchIcon from './icons/SearchIcon.vue';
 
 defineEmits(['toggle-sidebar']);
 
@@ -19,6 +20,8 @@ const navbar = ref<HTMLElement | null>(null);
 const navbarBrand = ref<HTMLElement | null>(null);
 
 const linksWrapperMaxWidth = ref(0);
+const isSearchBarVisible = ref(false);
+
 const linksWrapperStyle = computed(() => {
   if (!linksWrapperMaxWidth.value) {
     return {};
@@ -30,9 +33,7 @@ const linksWrapperStyle = computed(() => {
 
 // avoid overlapping of long title and long navbar links
 onMounted(() => {
-  // TODO: migrate to css var
-  // refer to _variables.scss
-  const MOBILE_DESKTOP_BREAKPOINT = 719;
+  const MOBILE_DESKTOP_BREAKPOINT = 1380;
   const navbarHorizontalPadding =
     getCssValue(navbar.value, 'paddingLeft') +
     getCssValue(navbar.value, 'paddingRight');
@@ -52,13 +53,16 @@ onMounted(() => {
 });
 
 function getCssValue(el: HTMLElement | null, property: string): number {
-  // NOTE: Known bug, will return 'auto' if style value is 'auto'
   const val = el?.ownerDocument?.defaultView?.getComputedStyle(el, null)?.[
     property
   ];
   const num = Number.parseInt(val, 10);
   return Number.isNaN(num) ? 0 : num;
 }
+
+const toggleSearchBar = () => {
+  isSearchBarVisible.value = !isSearchBarVisible.value;
+};
 </script>
 
 <template>
@@ -74,23 +78,27 @@ function getCssValue(el: HTMLElement | null, property: string): number {
       <NavbarItems class="can-hide" />
       <slot name="after" />
     </div>
-    <div class="navbar-items-right" :style="linksWrapperStyle">
-      <SearchBar v-if="!frontmatter.home" />
+
+    <div class="navbar-items-right">
+      <div v-if="isSearchBarVisible" class="search-bar-container">
+        <SearchBar v-if="!frontmatter.home" />
+      </div>
+      <a v-if="!frontmatter.home" class="social-btn" @click="toggleSearchBar">
+        <SearchIcon />
+      </a>
       <div class="dark-mode-container">
         <ToggleColorModeButton v-if="themeLocale.colorModeSwitch" />
       </div>
-      <a class="social-btn" href="https://discord.balancer.fi/" target="_blank"
-        ><DiscordIcon
-      /></a>
-      <a
-        class="social-btn"
-        href="https://github.com/balancer/"
-        target="_blank"
-        ><GithubIcon
-      /></a>
+      <a class="social-btn" href="https://discord.balancer.fi/" target="_blank">
+        <DiscordIcon />
+      </a>
+      <a class="social-btn" href="https://github.com/balancer/" target="_blank">
+        <GithubIcon />
+      </a>
     </div>
   </header>
 </template>
+
 
 <style lang="scss" scoped>
 .social-btn {

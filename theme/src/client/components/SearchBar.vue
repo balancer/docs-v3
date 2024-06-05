@@ -40,6 +40,7 @@ onMounted(() => {
   </form>
 </template>
 
+
 <style>
 .search-input-wrapper .search-icon.search {
   z-index: 5;
