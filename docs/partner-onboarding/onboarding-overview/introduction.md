@@ -6,57 +6,48 @@ order: 0
 # Partner Onboarding
 
 :::info
-<p> This onboarding documentation provides partners with all the information they need to onboard into the Balancer 
-Ecosystem deployments. It details Balancer’s unique products, answers FAQs and provides step-by-step guides for ecosystem integrations. </p>
+From product details to step-by-step integration guides, this documentation provides partners with everything they need to onboard into the Balancer Ecosystem.
 :::
 
 ## Overview
 
 ### Balancer Technology
 
-Balancer provides partners with a simplified hub to optimise yield bearing liquidity, build powerful governance
-tokenomics and streamline AMM innovation. From a vastly simplified developer experience, 100% boosted pools, LST base
-pairings, and pool hooks, Balancer V3 ushers in DeFi 3.0. 
+With a vastly simplified developer experience, 100% boosted pools, LST base pairings, and customizable pool hooks, Balancer v3 provides partners with a streamlined hub to optimize yield-bearing liquidity, build robust governance tokenomics, and streamline AMM innovation. 
 
 ::: tip
-Want to better understand what Balancer is? Go [here](../../concepts/core-concepts/introduction.md)
+Want to learn more about Balancer? Click [here](../../concepts/core-concepts/introduction.md)
 :::
 
 ### Unique AMM Designs & Products
 
 Balancer Technology provides innovative AMM designs such as
 
-1. [Boosted pool](./products/boostedpools.md) technology to leverage token utilization.
-2. [Yield-Bearing liquidity pools](products/lstandlrt.md) - the most efficient LP tech for liquid-staking token (LST) &
-   yield-bearing (YB) stablecoins
-3. [ve8020 / Governance Tokenomics](products/ve8020.md) - #ve8020 revolutionises governance positions for DAOs
-4. [Stable Pools](products/stablecoinliquidity.md) - provisioning of correlated assets utilizing
-   novel technology like Gyro-stable pools
+1. **[Boosted Pools](./products/boostedpools.md)**: Leverage token utilization for optimal yield.
+2. **[Yield-Bearing liquidity pools](products/lstandlrt.md)**: Optimised LP tech for liquid-staking tokens (LST) and yield-bearing stablecoins.
+3. **[ve8020 / Governance Tokenomics](products/ve8020.md)**: Enhanced liquidity dynamics and aligned incentive structures for governance positions.
+4. **[Stable Pools](products/stablecoinliquidity.md)**: Advanced technology for highly correlated stableassets, such as Gyro-stable pools.
 
 ## High-Level Overview of Onboarding Process
 
-Onboarding onto Balancer requires several steps depending on what part of our AMM technology you want to leverage.
-Certain components can be interacted with in a self-service manner while others need assistance from core contributors
-to the DAO. 
+Onboarding into Balancer varies depending on the AMM technology you want to use. Some components are simple and straightforward to use, while others may require expert assistance from our core contributors.
 
-Learn more about onboarding journeys or use our Balancer Tech Product Wizard to guide you towards the best solution matching your needs or explore our product showcases
+Learn more about our onboarding journey, use the Balancer Tech Product Wizard to find the best solution for your needs, or check out our product case studies  below.
+
 
 ### Onboarding Journey
-In general, onboarding of your asset onto Balancer can be divided up into following tasks
-- Choosing a pool type that best fits your use-case needs
-- Identify potential customized pool logic through Balancer v3's [hooks](../../concepts/core-concepts/hooks.md)
-- Participate in Balancer governance and [apply for a gauge](../balancer-v2/gauge-onboarding.md) to receive BAL rewards
+Onboarding your asset onto Balancer involves three main steps:
+- **Choose a Pool Type**: Select the pool type that best fits your use case.
+- **Customize Pool Logic**: Utilize Balancer v3's [hooks](../../concepts/core-concepts/hooks.md) for tailored functionality. 
+- **Engage in Governance**: [Apply for a gauge](../balancer-v2/gauge-onboarding.md) to receive BAL rewards for your pool.
 
-### Match your Business Needs to our Products
+### Find the Right Product for Your Needs
 
-Use this helper tool to identify the best suitable product for your needs. Explore potential use-cases and read up on
-success stories
+Use our Product Wizard to discover the best solutions for your business. Explore use cases and read success stories.
 <DecisionTree />
 
 ## Balancer Deployments
 
-Are you looking for deployment-specific information? Balancer v2 and v3 offer different technological advancements in
-the AMM sector
-that you can leverage. Choose a deployment type to explore options and next steps.
+Looking for deployment-specific information? Choose a specific deployment type below to explore various options and next steps.
 <PartnerOnboarding />
 

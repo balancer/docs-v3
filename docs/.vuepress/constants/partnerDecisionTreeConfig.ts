@@ -14,29 +14,29 @@ export interface Step {
 export const partnerDecisionTreeConfig: Step[] = [
   {
     id: 'start',
-    title: 'Balancer Tech Product Wizard 🧙‍♂️',
+    title: 'Balancer Product Wizard 🧙‍♂️',
     question:
-      'What describes best your current product needs / primary use-case?',
+      'What best describes your current product needs or primary use-case?',
     options: [
       {
-        text: 'Deployment of correlated / yield-bearing asset liquidity',
+        text: 'Correlated / Yield-Bearing Asset Liquidity',
         nextStep: 'step1',
       },
       {
-        text: 'Hosting of primary liquidity for governance tokens',
+        text: 'Optimised Liquidity for Governance Tokens',
         nextStep: 'resultD',
       },
-      { text: 'Hosting of an index-fund like product', nextStep: 'resultC' },
+      { text: 'Index-Fund Like Products', nextStep: 'resultC' },
       {
-        text: 'Building pools with custom execution logic',
+        text: 'Customised Pool Logic',
         nextStep: 'resultE',
       },
       {
-        text: 'Providing liquidity for LVR protection',
+        text: 'Liquidity for LVR Protection',
         nextStep: 'resultF',
       },
       {
-        text: 'Deployment of stable coin liquidity',
+        text: 'Stable Coin Liquidity',
         nextStep: 'step2',
       },
     ],
