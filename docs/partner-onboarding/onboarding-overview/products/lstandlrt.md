@@ -5,29 +5,27 @@ heroText: Yield Bearing Thesis
 ---
 
 # Hosting of Liquid Staking and Restaking Tokens
-
-:::info
 Balancer is the most attuned decentralised financial technology layer to host yield-bearing assets. Yield-bearing tokens
 such as LSTs and interest-bearing stablecoins offer an additional layer of efficiency compared to their vanilla
-counterparts. These tokenised assets allow users to gain exposure to both onchain and offchain interest rates,
-compounded within a single token. This notion page serves as an information hub that explains why, it details
-Balancer’s unique YB PMFs, and also links to case studies and additional resources for partner integrations.
-For a full overview of Balancer’s Yield Bearing Thesis, please read the following article.
-:::
-
-## DeFi Challenges with Yield Bearing Asset Liquidity
-To date, most of DeFi uses outdated infrastructure to manage assets that have an internal yield-generating mechanism. More specifically, almost all AMMs that host a LST or staked stablecoin utilise logic that amplifies Loss Versus Rebalancing (LVR). 
-Balancer Pools use novel technology to make sure that LVR is reduced while optimal results are guaranteed for liquidity providers (LPs) and traders by optimizing trade routes and exchange rates between YB assets.
+counterparts. These tokenised assets allow users to gain exposure to both on-chain and off-chain interest rates,
+compounded within a single token. Compared to traditional AMM design, Balancer uses a variety of new concepts to leverage yield-bearing token liquidity while offering optimal results to liquidity providers (LPs) and traders by optimizing trade routes and exchange rates between assets.
 This is achieved by utilizing three core components:
 1. [Rate provider](../../balancer-v2/rate-providers.md) technology
 2. [Core Pool Dynamcis](../../balancer-v2/core-pools.md)
-3. [100% boosted pools](../products/boostedpools.md)
+3. [Boosted pools](../products/boostedpools.md)
+
+#### Rate provider technology
+By utilizing [rate provider](../../balancer-v2/rate-providers.md) technology, Balancer guarantees optimal swaps for traders by quoting an on-chain rate of the yield-bearing asset. As a result a trader gets the most up-to-date quote and trading amount when routed through Balancer while LPs get more trading volume by optimizing and rebalancing the token composition in stableswap pools.
+#### Revenue Share Model: Core Pool Dynamics
+To align token emissions with asset performance, Balancer governance introduced the [core pool framework](../../balancer-v2/core-pools.md). In short, if a pool consists of at least 50% yield-bearing assets it qualifies for receiving a share of the fees that the DAO collects on secondary layers such as voting markets which then increase token emissions to pools.
+#### Boosted Pools
+With Balancer v3, you have the opportunity to combine your yield-bearing asset with boosted pool tokens to maximize yield for liquidity providers. Balancers [vault architecture](../../../concepts/vault/) guarantees deep liquidity out of the box. This is an optional but additional attractive feature that can be leveraged when onboarding your token to Balancer.
 
 ## Yield-Bearing Token Onboarding
 
-Do you want to onboard your yield-bearing token to Balancer and leverage its core advantages? You have several options on how to onboard your liquidity and to which deployment:
+Do you want to onboard your yield-bearing token to Balancer and leverage its core advantages? You have several options on how to onboard your liquidity depending on which Balancer deployment you like to choose:
 - [Go here](/partner-onboarding/balancer-v2/onboard-yb-token) if you want to onboard your liquidity to Balancer v2 and take part of the core pool flywheel.
-- Explore [Gyroscope pools](https://app.gyro.finance/) for highly customized trading curves
+- Explore [Gyroscope pools](https://app.gyro.finance/) for highly customized trading curves utilizing Balancer v2 at its core
 
 # Resources
 If you want to learn more about these concepts in more detail, follow these in-depth articles for more information

@@ -14,7 +14,7 @@ Onboarding to Balancer v2's tech stack involves various steps depending on the s
 
 1. Choosing and launching your pool
 2. Providing initial liqudity
-3. Receive BAL rewards through Balancer's gauge system
+3. Onboard to Balancer's gauge system
 4. Voting Incentive Markets
 
 #### Choosing and Launching A Pool
@@ -27,7 +27,7 @@ Balancer v2 offers a wide variety of exciting pool types. The following table pr
 | Gyroscope E-CLPs           | Specialized pools with [customized liquidity curves](https://docs.gyro.finance/gyroscope-protocol/readme)                                  | [USDC:GYD Stable Pool](https://app.balancer.fi/#/ethereum/pool/0xc2aa60465bffa1a88f5ba471a59ca0435c3ec5c100020000000000000000062c) on mainnet |
 | Managed pools              | Specialized pools with dynamic pool weights. See [Kassandra Finance](https://app.kassandra.finance/) for an example implemenation use-case | [Example index fund](https://app.kassandra.finance/pool/1370xc22bb237a5b8b7260190cb9e4998a9901a68af6f000100000000000000000d8d) on Avalanche   |
 
-- On Balancer v2, most projects choose to utilize our highly efficient Composable Stable Pool technology. This allows to deploy deep liquidity while guaranteeing correct trades through [rate provider](./rate-providers.md) technology. Furthermore, by harnessing our [vault architecture](../../concepts/vault/README.md) design, pools benefit from direct trading routes, aggregator integration and deep liquidity.
+- On Balancer v2, many projects choose to utilize our highly efficient Composable Stable Pool technology. This allows to deploy deep liquidity while guaranteeing correct trades through [rate provider](./rate-providers.md) technology. Furthermore, by harnessing our [vault architecture](../../concepts/vault/README.md) design, pools benefit from direct trading routes, aggregator integration and deep liquidity.
 - Our flexible weighted pool design allows for innovative pool design, letting you choose between any target weights and up to 8 token pools opening up the possibility to host governance token liquidity or build exciting index-fund like products.
 - Gyroscopes E-CLPs leverage custom trading curves for even higher utilization rates and efficiency
 - Managed pools are experimental products. Although certain solutions exist, their support is limited.
@@ -47,17 +47,26 @@ Whitelist your token by doing a Pull-Request [here](https://github.com/balancer/
 2. Update `tokenlists/balancer/tokens` and the corresponding network typescript file by adding your token address (
    e.g. `tokenlists/balancer/tokens/arbitrum/0x…`)
 
-#### Receive BAL rewards through Balancer's gauge system
-If your project intends to receive BAL rewards, consult our [Gauge Onboarding](gauge-onboarding.md) guide guiding you through any further steps needed.
+#### Onboard to Balancer's gauge system
+If your project intends to receive BAL rewards, consult our [Gauge Onboarding](gauge-onboarding.md) docs guiding you through any further steps needed.
 ::: tip
 Are you interested in receiving core pool status? Read [here](./core-pools.md)
 :::
+Balancer's gauge system enables you to receive token rewards on your pool by providing a contract where Balancer [BPTs](../../concepts/core-concepts/balancer-pool-tokens.md) can be staked. To receive BAL rewards in particular, a gauge needs to [receive votes from veBAL](https://app.balancer.fi/#/ethereum/vebal) holders. Additionally, several other layers exist where emissions can be placed to a gauge such as:
+1. [vlAURA](https://app.aura.finance/#/1/lock) votes from AURA finance
+2. Direct Incentives on Balancer Gauges
+3. Direct incentives on AURA Finance Gauges
+4. Voting incentive Markets
+
+Points 2 and 4 are explained in more detail further below.
+
+#### Placing Direct Incentives
+It is possible to stream direct incentives to Balancer staking gauges. Several options exist. Consult our [direct incentives docs](./direct-incentives.md) for more details.
 
 #### Voting Incentive Markets
 Balancer v2's tokenomics around veBAL encourage partaking in various voting incentive markets to attract BAL token rewards to certain gauges. These voting markets are operated by independent entities and leveraging these markets is absolutely not mandatory. The [core pool framework](./core-pools.md) guarantees that a fraction of protocol fees are distributed on voting markets without any further action from a partner. There are, of course, also other methods on how to participate, please consult the [voting market ](./voting-markets.md) section for more details.
 
-#### Placing Direct Incentives
-It is possible to stream direct incentives to Balancer staking gauges. Several options exist. Consult our [direct incentives docs](./direct-incentives.md) for more details.
+
 
 ## Onboarding Guides
 - [Yield-bearing Token Onboarding](onboard-yb-token.md)

@@ -24,7 +24,7 @@ The primary use-case of a rate provider is the deployment of liquidity in a comp
 
 ### What are the steps needed to set up a rate provider with Balancer?
 1. Build a rate provider based on the above mentioned requirements and consult the Balancer RP registry
-2. Make a [pull request](https://github.com/balancer/code-review/pulls) against the RP Registry
+2. Make an [issue](https://github.com/balancer/code-review/issues/new?assignees=mkflow27&labels=request&projects=&template=review-request.yml) against the RP Registry to start the code review process
 3. Wait for the review to finish (takes approx. 1-2 weeks depending on the backlog)
 4. Implement any needed changes that are required to pass the review
 5. Upon merge the rate provider is vetted and a composable stable pool can be set up with the newly implemented rate provider set.
