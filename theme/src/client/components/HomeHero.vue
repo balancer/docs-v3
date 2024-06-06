@@ -63,15 +63,18 @@ const actions = computed(() => {
     type,
   }));
 });
+
+const headerColor = computed(() => (isDarkMode.value ? '#E5D3BE' : '#2c3e50'));
+const taglineColor = computed(() => (isDarkMode.value ? '#A0AEC0' : '#3a5169'));
 </script>
 
 <template>
   <header class="home-hero" :style="heroStyle">
-    <h1 v-if="heroText" id="main-title">
+    <h1 v-if="heroText" id="main-title" :style="{ color: headerColor }">
       {{ heroText }}
     </h1>
 
-    <p v-if="tagline" class="description">
+    <p v-if="tagline" class="description" :style="{ color: taglineColor }">
       {{ tagline }}
     </p>
 
