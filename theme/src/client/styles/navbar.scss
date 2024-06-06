@@ -36,7 +36,7 @@
     display: flex;
     align-items: center;
     height: 100%;
-    padding-left: 7rem;
+    padding-left: 2rem;
     white-space: nowrap;
     font-size: 0.9rem;
   }
@@ -62,7 +62,7 @@
     margin: 0 3px;
     transition: var(--t-transition);
   }
-  
+
   .social-icon:hover {
     transform-origin: center;
     transform: scale(1.1);
@@ -139,18 +139,18 @@
           right: 4px solid transparent;
           top: 6px solid var(--c-brand-hover-accent);
         }
-      }     
+      }
       &.right {
         border: {
           top: 4px solid transparent;
           bottom: 4px solid transparent;
           left: 6px solid var(--c-brand);
         }
-      }       
+      }
     }
-    &:hover::before, &:focus::before {        
+    &:hover::before, &:focus::before {
       border-top: 3px solid var(--c-brand-hover-accent);
-    }    
+    }
   }
 
   a {
@@ -162,11 +162,11 @@
     height: 100%;
 
     &:hover, &:focus {
-      color: var(--c-brand-hover-accent);      
+      color: var(--c-brand-hover-accent);
     }
     &.router-link-active {
-      color: var(--c-text);      
-    }    
+      color: var(--c-text);
+    }
   }
   .navbar-item:has(.router-link-active) {
     .arrow.down {
@@ -208,11 +208,11 @@
       transition: var(--t-transition);
       font-weight: 600;
       &:hover, &:focus {
-        position: relative;        
-        color: var(--c-brand-hover-accent);        
+        position: relative;
+        color: var(--c-brand-hover-accent);
       }
       &.router-link-active {
-        color: var(--c-brand-light);        
+        color: var(--c-brand-light);
       }
     }
   }
@@ -234,14 +234,14 @@
           border-bottom: none;
         }
       }
-      &:hover::before, &:focus::before {        
+      &:hover::before, &:focus::before {
         border-top: none;
-      }       
+      }
     }
 
     .navbar-item:has(.router-link-active)::before {
-      border-top: none; 
-    }    
+      border-top: none;
+    }
 
     a {
       &:hover,
@@ -297,17 +297,17 @@
   margin-left: 1rem;
   border: 0;
   background: var(--c-bg-light);
-  color: var(--c-text);  
+  color: var(--c-text);
   border-radius: 8px;
   box-shadow: var(--box-shadow-standard);
   cursor: pointer;
   transition: var(--t-transition);
   &:hover {
-    background: var(--c-bg-lighter); 
+    background: var(--c-bg-lighter);
     box-shadow: none;
     .icon {
       transform-origin: center;
-      transform: scale(1.1);      
+      transform: scale(1.1);
     }
   }
   .icon {
