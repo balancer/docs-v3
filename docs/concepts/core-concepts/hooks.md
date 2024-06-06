@@ -18,6 +18,7 @@ Hooks introduce a framework to extend existing pool types at various key points 
 
 Hooks are implemented as standalone contracts that can have their own internal logic and state. One hook contract can facilitate many pools (and pool types). The hook system is flexible and allows developers to implement custom logic at the following points of the pool lifecycle:
 
+- `onRegister`
 - `onBeforeInitialize`
 - `onAfterInitialize`
 - `onBeforeAddLiquidity`
