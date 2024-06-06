@@ -30,7 +30,7 @@ Balancer Technology provides innovative AMM designs such as
 2. [Yield-Bearing liquidity pools](products/lstandlrt.md) - the most efficient LP tech for liquid-staking token (LST) &
    yield-bearing (YB) stablecoins
 3. [ve8020 / Governance Tokenomics](products/ve8020.md) - #ve8020 revolutionises governance positions for DAOs
-4. [Stable Pools](products/stablecoinliquidity.md) - provisioning of highly correlated stable pool positions utilizing
+4. [Stable Pools](products/stablecoinliquidity.md) - provisioning of correlated assets utilizing
    novel technology like Gyro-stable pools
 
 ## High-Level Overview of Onboarding Process
