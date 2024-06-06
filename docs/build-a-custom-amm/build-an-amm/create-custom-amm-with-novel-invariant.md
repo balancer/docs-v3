@@ -23,11 +23,87 @@ To expedite the development process, Balancer provides two contracts to inherit 
 
 Both `IBasePool` and `BalancerPoolToken` are used across all core Balancer pools, even those implemented by Balancer Labs (ie: [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L18)).
 
-Below, we present a naive implementation of a two token `ConstantPricePool` (X + Y = K) as a reference for walking through the required functions necessary to implement a custom AMM on Balancer protocol: 
+Below, we present a naive implementation of a two token `ConstantProductPool` & `ConstantPricePool` utilising (X * Y = K) & (X + Y = K) as a reference for walking through the required functions necessary to implement a custom AMM on Balancer protocol:
+
+::: code-tabs#shell
+@tab Constant Product Pool
+
+```solidity
+contract ConstantProductPool is IBasePool, BalancerPoolToken {
+    using FixedPoint for uint256;
+
+    constructor(
+        IVault vault,
+        string memory name,
+        string memory symbol)
+    BalancerPoolToken(vault, name, symbol) {}
+
+    /**
+     * @notice Execute a swap in the pool.
+     * @param params Swap parameters
+     * @return amountCalculatedScaled18 Calculated amount for the swap
+     */
+    function onSwap(SwapParams calldata params)
+        external
+        view
+        returns (uint256 amountCalculatedScaled18)
+    {
+        amountCalculatedScaled18 = params.balancesScaled18[params.indexOut] * params.amountGivenScaled18 / 
+        (params.balancesScaled18[params.indexIn] + params.amountGivenScaled18 );
+    }
+
+    /**
+     * @notice Computes and returns the pool's invariant.
+     * @dev This function computes the invariant based on current balances
+     * @param balancesLiveScaled18 Array of current pool balances for each token in the pool, scaled to 18 decimals
+     * @return invariant The calculated invariant of the pool, represented as a uint256
+     */
+    function computeInvariant(uint256[] memory balancesLiveScaled18)
+        public
+        view
+        returns (uint256 invariant)
+    {
+        // expected to work with 2 tokens only
+        invariant = FixedPoint.ONE;
+        for (uint256 i = 0; i < balancesLiveScaled18.length; ++i) {
+            invariant = invariant.mulDown(balancesLiveScaled18[i]);
+        }
+        // scale the invariant to 1e18
+        invariant = _sqrt(invariant) * 1e9;
+
+    }
+
+    /**
+     * @dev Computes the new balance of a token after an operation, given the invariant growth ratio and all other
+     * balances.
+     * @param balancesLiveScaled18 Current live balances (adjusted for decimals, rates, etc.)
+     * @param tokenInIndex The index of the token we're computing the balance for, in token registration order
+     * @param invariantRatio The ratio of the new invariant (after an operation) to the old
+     * @return newBalance The new balance of the selected token, after the operation
+     */
+    function computeBalance(
+        uint256[] memory balancesLiveScaled18,
+        uint256 tokenInIndex,
+        uint256 invariantRatio
+    ) external view returns (uint256 newBalance) {
+        uint256 otherTokenIndex = tokenInIndex == 0 ? 1 : 0;
+
+        uint256 newInvariant = computeInvariant(balancesLiveScaled18).mulDown(invariantRatio);
+
+        newBalance = (newInvariant * newInvariant / balancesLiveScaled18[otherTokenIndex]);
+    }
+}
+```
+
+@tab Constant Sum Pool
 
 ```solidity
 contract ConstantPricePool is IBasePool, BalancerPoolToken {
-    constructor(IVault vault, string name, string symbol) BalancerPoolToken(vault, name, symbol) {}
+    constructor(
+        IVault vault,
+        string memory name,
+        string memory symbol)
+    BalancerPoolToken(vault, name, symbol) {}
     
     /**
      * @notice Execute a swap in the pool.
@@ -68,6 +144,9 @@ contract ConstantPricePool is IBasePool, BalancerPoolToken {
 }
 ```
 
+:::
+
+
 ::: info What does Scaled18 mean?
 Internally, Balancer protocol scales all tokens to 18 decimals to minimize the potential for errors that can occur when
 comparing tokens with different decimals numbers (ie: WETH/USDC). `Scaled18` is a suffix used to signify values has already been scaled.
@@ -88,12 +167,34 @@ By implementing `computeInvariant` and `computeBalance`, your custom AMM will im
 Custom AMMs built on Balancer protocol are defined primarily by their invariant. Broadly speaking, an invariant is a mathematical function that defines
 how the AMM exchanges one asset for another. A few widely known invariants include [Constant Product (X * Y = K)](https://docs.uniswap.org/contracts/v2/concepts/protocol-overview/how-uniswap-works) and [Stableswap](https://berkeley-defi.github.io/assets/material/StableSwap.pdf).
 
-Our two-token `ConstantPricePool` uses the constant sum invariant, or `X + Y = K`. To implement `computeInvariant`, we simply add the balances of the two tokens:
+Our two-token `ConstantPricePool` uses the constant sum invariant, or `X + Y = K`. To implement `computeInvariant`, we simply add the balances of the two tokens. For the `ConstantProductPool` the invariant calculation is the square root of the product of balances. This ensures invariant growth proportional to liquidity growth.
+
+::: code-tabs#shell
+@tab Constant Product Pool
+```solidity
+function computeInvariant(uint256[] memory balancesLiveScaled18)
+    public
+    view
+    returns (uint256 invariant)
+{
+    // expected to work with 2 tokens only
+    invariant = FixedPoint.ONE;
+    for (uint256 i = 0; i < balancesLiveScaled18.length; ++i) {
+        invariant = invariant.mulDown(balancesLiveScaled18[i]);
+    }
+    // scale the invariant to 1e18
+    invariant = _sqrt(invariant) * 1e9;
+
+}
+```solidity
+
+@tab Constant Sum Pool
 ```solidity
 function computeInvariant(uint256[] memory balancesLiveScaled18) external view returns (uint256 invariant) {
     invariant = balancesLiveScaled18[0] + balancesLiveScaled18[1];
 }
 ```
+:::
 
 For additional references, refer to the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L73-L75) and [Stable Pool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-stable/contracts/StablePool.sol#L94-L99) implementations.
 
@@ -102,7 +203,25 @@ For additional references, refer to the [WeightedPool](https://github.com/balanc
 `computeBalance` returns the new balance of a pool token necessary to achieve an invariant change. It is essentially the inverse of the pool's invariant. The `invariantRatio` is the ratio of the new invariant (after an operation) to the old.
 `computeBalance` is used for liquidity operations where the token amount in/out is unknown, specifically [`AddLiquidityKind.SINGLE_TOKEN_EXACT_OUT`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L582-L594) and [`RemoveLiquidityKind.SINGLE_TOKEN_EXACT_IN`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L788-L800).
 
-Our two-token `ConstantPricePool` implements `computeBalance` as:
+You can see the implementations of the `ConstantProductPool` and `ConstantPricePool` below:
+
+::: code-tabs#shell
+@tab Constant Product Pool
+```solidity
+function computeBalance(
+    uint256[] memory balancesLiveScaled18,
+    uint256 tokenInIndex,
+    uint256 invariantRatio
+) external view returns (uint256 newBalance) {
+    uint256 otherTokenIndex = tokenInIndex == 0 ? 1 : 0;
+
+    uint256 newInvariant = computeInvariant(balancesLiveScaled18).mulDown(invariantRatio);
+
+    newBalance = (newInvariant * newInvariant / balancesLiveScaled18[otherTokenIndex]);
+}
+```
+
+@tab Constant Sum Pool
 ```solidity
 function computeBalance(
     uint256[] memory balancesLiveScaled18,
@@ -114,6 +233,11 @@ function computeBalance(
     newBalance = (balancesLiveScaled18[tokenInIndex] + invariant.mulDown(invariantRatio)) - invariant;
 }
 ```
+:::
+
+::: info A note on invariantRatio
+The `invariantRatio` refers to the new BPT supply over the total BPT supply and is calculated within the `BasePoolMath.sol` via `newSupply.divUp(totalSupply)`.
+:::
 
 For additional references, refer to the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L78-L89) and [StablePool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-stable/contracts/StablePool.sol#L101-L116) implementations.
 
@@ -131,11 +255,28 @@ The `minAmountOut` or `maxAmountIn` are enforced by the [vault](https://github.c
 
 When swapping tokens, our constant `K` must remain unchanged. Since our two-token `ConstantPricePool` uses the constant sum invariant (`X + Y = K`),
 the amount entering the pool will always equal the amount leaving the pool:
+
+::: code-tabs#shell
+@tab Constant Product Pool
+```solidity
+function onSwap(SwapParams calldata params)
+    external
+    view
+    returns (uint256 amountCalculatedScaled18)
+{
+    amountCalculatedScaled18 = params.balancesScaled18[params.indexOut] * params.amountGivenScaled18 / 
+    (params.balancesScaled18[params.indexIn] + params.amountGivenScaled18 );
+}
+```
+
+@tab Constant Sum Pool
 ```solidity
 function onSwap(SwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
     amountCalculatedScaled18 = params.amountGivenScaled18;
 }
 ```
+:::
+
 
 The `SwapParams` struct definition can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol#L59-L67).
 
@@ -171,7 +312,7 @@ Balancer supports two types of swap fees:
 
 ## Hooks
 
-Hooks allow a pool to execute a piece of code immediately `before` or `after` most pool operations. For example, the `afterSwap` hook is called immediately after `onSwap` and could be used to implement a Back trade. For a detailed understanding, see [Hooks](/concepts/pools/hooks.html)
+Hooks allow a pool to execute a piece of code immediately `before` or `after` most pool operations. For example, the `afterSwap` hook is called immediately after `onSwap` and could be used to implement a Back trade. For a detailed understanding, see [Hooks](/concepts/core-concepts/hooks.html)
 
 ### Vault reentrancy
 Hooks allow a pool to reenter the vault within the context of a pool operation. While `onSwap`, `computeInvariant` and `computeBalance` must be executed within a reentrancy guard, the vault is architected such that hooks operate outside of this requirement.
@@ -203,25 +344,23 @@ For your AMM to support remove liquidity custom, it must:
 
 ### Remove support for built in liquidity operations
 
-There may be instances where your AMM should not support specific built-in liquidity operations. In such instances, the suggested strategy is to implement `onBeforeAddLiquidity` and/or `onBeforeRemoveLiquidity` and explicitly revert for any unsupported liquidity operations.
+There may be instances where your AMM should not support specific built-in liquidity operations. If certain operations should be enabled in your custom pool is defined in `LiquidityManagement`. You can choose to:
+
+- disable unbalanced liquidity add and removals
+- enable add liquidity custom
+- enable remove liquidity custom
+
+To achieve this, the respective entry in the `LiquidityManagement` struct needs to be set.
 
 ```solidity
-function onBeforeAddLiquidity(
-    address sender,
-    AddLiquidityKind kind,
-    uint256[] memory maxAmountsInScaled18,
-    uint256 minBptAmountOut,
-    uint256[] memory balancesScaled18,
-    bytes memory userData
-) external returns (bool success) {
-    
-    if (kind == AddLiquidityKind.UNBALANCED) {
-        revert UnsupportedLiquidityKind();
-    }
-    
-    return true;
+struct LiquidityManagement {
+    bool disableUnbalancedLiquidity;
+    bool enableAddLiquidityCustom;
+    bool enableRemoveLiquidityCustom;
 }
 ```
+These settings get passed into the [pool registration](/developer-reference/contracts/vault-api.html#registerpool) flow.
+
 
 ## Deploy your pool
 
@@ -233,6 +372,7 @@ When deploying your pool, there are three required steps that must be taken, in 
 
 Creating pools via a factory contract is the suggested approach, however not mandatory. Balancer's off-chain infrastructure uses the `factory` address as a means to identify the `type` of pool, which is important for integration into the UI, SDK, external aggregators, etc.
 
+<!---
 ### Balancer UI Support
 
 :::info
@@ -250,3 +390,4 @@ an explanation on the steps required to be supported by the swap UI will follow
 :::info
 an explanation on the steps required for aggregator support will follow.
 :::
+-->
