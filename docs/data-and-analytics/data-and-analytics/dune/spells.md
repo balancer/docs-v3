@@ -46,7 +46,7 @@ To do so, you can create pull requests to Dune's spellbook or reach out to Balan
 
 ## 1, 7 and 30 day volume on Balancer
 
-```dunesql
+```sql
 SELECT 
     SUM(amount_usd)/1e6 AS "Volume on Balancer"
     , 1 AS rn 
@@ -73,7 +73,7 @@ ORDER BY rn ASC
 
 ## All swaps on the last 24 hours
 
-```dunesql
+```sql
 SELECT 
     block_date
     , tx_hash
@@ -93,7 +93,7 @@ ORDER BY 1 ASC
 
 ## Daily TVL by Blockchain
 
-```dunesql
+```sql
 SELECT 
     blockchain
     , CAST(day AS TIMESTAMP) AS day
@@ -105,7 +105,7 @@ ORDER BY 2 DESC, 3 DESC
 
 ## Current TVL by pool, from highest to lowest
 
-```dunesql
+```sql
 SELECT 
     blockchain
     , pool_id
@@ -119,7 +119,7 @@ ORDER BY 4 DESC
 
 ## Daily Liquidity Utilization
 
-```dunesql
+```sql
 WITH 
     swaps AS (
         SELECT
