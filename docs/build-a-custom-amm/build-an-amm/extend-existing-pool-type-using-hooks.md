@@ -109,8 +109,23 @@ contract VeBALFeeDiscountHook is IHooks {
 }
 ```
 
+# Walkthrough of the development stages:
+
+## Determining Hook intent.
+A Hooks contract can serve multiple purposes and differ in implementation complexity. You need to determine which of the liquidity operations need to be enhanced with an either `before` or `after` hook. Once you have determined that, implement this behavior as part of the `getHookFlags()` function.
+
+## Set Hooks access control. 
+Since hooks are standalone contracts, anyone can use them. It it suggested to validate the deployer of the pool or any other pool specific params during the `onRegister` hook. If the pool is deployed from a factory, the `factory` param is the factory address, if not it is the deployer eoa. 
+
 ::: info
-
 remember, as outlined in the [Router section](/concepts/router/overview.html#routers), a Router can be any contract, so this Hook contract should ensure that whenever it calls the Router it is considered "trusted".
-
 :::
+
+The Vault calls `onComputeDynamicSwapFee` and forwards the `router` address. The Balancer Router stores the `msg.sender` and the Vault forwards it. However, this is only true for the routers developed by Balancer Labs.
+
+This verification is implemented as part of the `onlyTrustedRouter` which means the result from `IRouter(params.router).getSender()` can be trusted.
+
+Otherwise the measure of the `user`'s veBAL balance can be spoofed. 
+
+## Implement hook logic.
+To measure the `users` veBAL balance, we read from the trusted router the current sender via `getSender()` and check the user's veBAL balance. If the user owns any veBAL, he has to pay a 0.1% swapFee.
