@@ -72,6 +72,32 @@ During registration the Vault calls `getHooksConfig` to determine which hooks ar
 mapping(address => HooksConfig) internal _hooksConfig;
 ```
 
+## Hook Deltas - using hooks to change `amountCalculated`.
+
+Remember that pool liquidity operations like `swap`, `addLiquidity` and `removeLiquidity` signal to the Vault the entries on the credit & debt tab. These entries can either be calculated as part of custom pool implementations or hooks. Both have the capability to determine the amount of credit & debt the vault adds to the tab.
+
+The reason hooks also have this capability is to change `amountCalculated` of already existing pool types from established factories.
+
+::: info
+Hooks can change the `amountCalculated` for liquidity operations but cannot change `amountGiven`. 
+:::
+
+A detailed view of what a `after` hook for a given liquidity operation can change is displayed below:
+
+| Operation                            | Unchanged                |  Can be changed     |
+| --------                             |    -------               |  -------            |
+| addLiquidityProportional             | uint256[] amountsIn      | exactBptAmountOut   |
+| addLiquidityUnbalanced               | uint256[] exactAmountsIn | bptAmountOut        |
+| addLiquiditySingleTokenExactOut      | uint256 amountIn         | exactBptAmountOut   |
+| addLiquidityCustom                   | *not supported*          | *not supported*     |
+| removeLiquidityProportional          | uint256 exactBptAmountIn | uint256[] amountsOut|
+| removeLiquiditySingleTokenExactIn    | uint256 exactBptAmountIn | uint256 amountOut   |
+| removeLiquiditySingleTokenExactOut   | uint256 exactAmountOut   | uint256 bptAmountIn |
+| removeLiquidityCustom                | *not supported*          | *not supported*     |
+| swapSingleTokenExactIn               | uint256 exactAmountIn    | uint256 amountOut   |
+| swapSingleTokenExactOut              | uint256 exactAmountOut   | uint256 amountIn    |
+
+
 ## Dynamic Swap Fee Hook
 
 The Dynamic Swap Fee Hook enables hook developers to adjust pool fees for various strategic purposes, e.g. market volatility.
