@@ -32,10 +32,14 @@ contract VeBALFeeDiscountHook is IHooks {
     address public allowedFactory;
     IVeBAL public veBAL;
 
-    constructor(address _allowedFactory, address _veBal) {
+    // trusted Routers
+    mapping(address => bool) public trustedRouters;
+
+    constructor(address _allowedFactory, address _veBal, address _router) {
         // verify that this hook can only be used by pools created from `_allowedFactory`
         allowedFactory = _allowedFactory;
         veBAL = IVeBAL(_veBal);
+        trustedRouters[_router] = true;
     }
 
     // Define which hooks this pool supports. It is necessary to implement as the Vault checks these settings
@@ -81,9 +85,12 @@ contract VeBALFeeDiscountHook is IHooks {
      * @return dynamicSwapFee Value of the swap fee
      * @dev sets swapFee to 0.1% for veBAL holders
      */
-    function onComputeDynamicSwapFee(
+    function onComputeDynamicSwapFee (
         IBasePool.PoolSwapParams calldata params
-    ) external view returns (bool success, uint256 dynamicSwapFee) {
+    ) external view onlyTrustedRouter(params.router) returns (bool success, uint256 dynamicSwapFee) {
+        // as part of a next merge, `staticSwapFeePercentage` will be availabe
+        // meaning, as 50% discount on the current staticSwapFeePercentage can be
+        // applied
         // 10% fee by default
         dynamicSwapFee = 10e16;
         address user = IRouter(params.router).getSender();
@@ -222,6 +229,11 @@ contract VeBALFeeDiscountHook is IHooks {
         uint256 amountCalculatedScaled18
     ) external returns (bool success) {
         return false;
+    }
+
+    modifier onlyTrustedRouter(address router) {
+        require(trustedRouters[router], "Router not trusted");
+        _;
     }
 }
 ```
