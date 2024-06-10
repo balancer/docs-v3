@@ -46,6 +46,8 @@ struct HooksConfig {
 }
 ```
 
+
+
 :::info hooks & reentrancy
 It is possible to reenter the Vault as part of a hook execution as only the respective internal function like `_swap`, `_addLiquidity` & `_removeLiquidity` are reentrancy protected.
 :::
@@ -57,6 +59,10 @@ The Vault calls a pool's hooks and passes data. The passed data for each individ
 ## How Pools & Hooks Are Connected
 
 When a new pool is registered a hook contract address can be passed to "link" the pool and the hook (for no hook use the zero address). This configuration is immutable and cannot change after the pool is registered.
+
+![Vault-Pool-Hooks relation](/images/hooks.png)
+
+The architecture shows that a hooks contract is a standalone contract, which can be used my multiple pools of the same type (WeightedPools) but also multiple pools of different pool types (WeightedPools, StablePools). It is up to the developer to determine if a hook is supposed to work with a pool by implementing the `onRegister` function in the hook and validate the pool factory (which is the account that created the pool).
 
 ```solidity
 function registerPool(
@@ -72,6 +78,10 @@ During registration the Vault calls `getHooksConfig` to determine which hooks ar
 mapping(address => HooksConfig) internal _hooksConfig;
 ```
 
+::: info
+Remember that a Hooks contract can work with multiple pools. If you do not properly implement the `onRegister` function of the Hooks contract, anyone can use the hook.
+:::
+
 ## Hook Deltas - using hooks to change `amountCalculated`.
 
 Remember that pool liquidity operations like `swap`, `addLiquidity` and `removeLiquidity` signal to the Vault the entries on the credit & debt tab. These entries can either be calculated as part of custom pool implementations or hooks. Both have the capability to determine the amount of credit & debt the vault adds to the tab.
@@ -82,9 +92,9 @@ The reason hooks also have this capability is to change `amountCalculated` of al
 Hooks can change the `amountCalculated` for liquidity operations but cannot change `amountGiven`. 
 :::
 
-A detailed view of what a `after` hook for a given liquidity operation can change is displayed below:
+A detailed view of what an `after` hook for a given liquidity operation can change is displayed below:
 
-| Operation                            | Unchanged                |  Can be changed     |
+| Operation                            | Hook cannot change       | Hook _can_ change     |
 | --------                             |    -------               |  -------            |
 | addLiquidityProportional             | uint256[] amountsIn      | exactBptAmountOut   |
 | addLiquidityUnbalanced               | uint256[] exactAmountsIn | bptAmountOut        |
@@ -130,3 +140,21 @@ struct PoolSwapParams {
 ```
 
 Now, whenever the Vault fetches the swap fee it will use the returned `dynamicSwapFee` value.
+
+
+<style scoped>
+table {
+    display: table;
+    width: 100%;
+}
+table th:first-of-type, td:first-of-type {
+    width: 30%;
+}
+table th:nth-of-type(2) {
+    width: 40%;
+}
+td {
+    max-width: 0;
+    overflow: hidden;
+}
+</style>
