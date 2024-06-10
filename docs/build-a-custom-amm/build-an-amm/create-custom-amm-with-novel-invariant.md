@@ -308,11 +308,10 @@ No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swa
 Balancer supports two types of swap fees:
 
 - **Static swap fee**: Defined on `vault.registerPool()` and managed via calls to `vault.setStaticSwapFeePercentage()`. For more information, see [Swap fee](/concepts/vault/swap-fee.html).
-- **Dynamic swap fee**: Allows a pool to define a swap fee percentage per operation. A pool flags that it supports dynamic fees on `vault.registerPool()`. For more information, see [Dynamic swap fees](/concepts/pools/dynamic-swap-fees.html).
+- **Dynamic swap fee**: are managed by a **Hooks** contract. If a swap with a pool uses the dynamic swap fee is determined on pool registration. A Hook flags that it supports dynamic fees on `vault.registerPool()`. For more information, see [Dynamic swap fees](/concepts/pools/dynamic-swap-fees.html).
 
 ## Hooks
-
-Hooks allow a pool to execute a piece of code immediately `before` or `after` most pool operations. For example, the `afterSwap` hook is called immediately after `onSwap` and could be used to implement a Back trade. For a detailed understanding, see [Hooks](/concepts/core-concepts/hooks.html)
+Hooks as standalone contracts are not part of a custom pool's implementation. However they can be combined with custom pools. For a detailed understanding, see [Hooks](/concepts/core-concepts/hooks.html).
 
 ### Vault reentrancy
 Hooks allow a pool to reenter the vault within the context of a pool operation. While `onSwap`, `computeInvariant` and `computeBalance` must be executed within a reentrancy guard, the vault is architected such that hooks operate outside of this requirement.
