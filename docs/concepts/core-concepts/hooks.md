@@ -29,10 +29,18 @@ Hooks are implemented as standalone contracts that can have their own internal l
 - `onAfterSwap`
 - `onComputeDynamicSwapFee`
 
-Each Hook contract must implement the `getHooksConfig` function which returns a `HooksConfig` indicating which hooks are supported:
+
+Each Hook contract must implement the `getHookFlags` function which returns a `HookFlags` and & `onRegister`indicating which hooks are supported:
+```solidity
+/**
+    * @notice Returns flags informing which hooks are implemented in the contract.
+    * @return hookFlags Flags indicating which hooks the contract supports
+    */
+function getHookFlags() external returns (HookFlags memory hookFlags);
+```
 
 ```solidity
-struct HooksConfig {
+struct HookFlags {
     bool shouldCallBeforeInitialize;
     bool shouldCallAfterInitialize;
     bool shouldCallComputeDynamicSwapFee;
@@ -42,9 +50,9 @@ struct HooksConfig {
     bool shouldCallAfterAddLiquidity;
     bool shouldCallBeforeRemoveLiquidity;
     bool shouldCallAfterRemoveLiquidity;
-    address hooksContract;
 }
 ```
+This decision is final and cannot be changed for a pool, once it is registered as the information which pool uses which hook is stored in the Vault and set during pool registration. During pool registration, the Vault calls into the Hooks contract and [retrieves](https://github.com/balancer/balancer-v3-monorepo/blob/49553c0546121f7725e0b024b240d6e722f02538/pkg/vault/contracts/VaultExtension.sol#L198) the `HookFlags`. 
 
 
 
@@ -62,7 +70,7 @@ When a new pool is registered a hook contract address can be passed to "link" th
 
 ![Vault-Pool-Hooks relation](/images/hooks.png)
 
-The architecture shows that a hooks contract is a standalone contract, which can be used my multiple pools of the same type (WeightedPools) but also multiple pools of different pool types (WeightedPools, StablePools). It is up to the developer to determine if a hook is supposed to work with a pool by implementing the `onRegister` function in the hook and validate the pool factory (which is the account that created the pool).
+The architecture shows that a hooks contract is a standalone contract, which can be used my multiple pools of the same type (WeightedPools) but also multiple pools of different pool types (WeightedPools, StablePools). The address of the hook is passed to the pool registration.
 
 ```solidity
 function registerPool(
@@ -72,21 +80,24 @@ function registerPool(
 ) external;
 ```
 
-During registration the Vault calls `getHooksConfig` to determine which hooks are supported and stores it to a pool/hook mapping:
+::: info
+If you want your Hooks contract to be used, you must implement `onRegister` as the Vault calls it during the [pool registration](https://github.com/balancer/balancer-v3-monorepo/blob/49553c0546121f7725e0b024b240d6e722f02538/pkg/vault/contracts/VaultExtension.sol#L184). The intention of `onRegister` is for the developer to verify if the pool should be allowed to use the hooks contract.
+:::
+
+Afterwards the pool is linked to the hook via the below `_hooksConfig` mapping.
 
 ```solidity
 mapping(address => HooksConfig) internal _hooksConfig;
 ```
 
-::: info
-Remember that a Hooks contract can work with multiple pools. If you do not properly implement the `onRegister` function of the Hooks contract, anyone can use the hook.
-:::
 
 ## Hook Deltas - using hooks to change `amountCalculated`.
 
-Remember that pool liquidity operations like `swap`, `addLiquidity` and `removeLiquidity` signal to the Vault the entries on the credit & debt tab. These entries can either be calculated as part of custom pool implementations or hooks. Both have the capability to determine the amount of credit & debt the vault adds to the tab.
+Remember that pool liquidity operations like `swap`, `addLiquidity` and `removeLiquidity` signal to the Vault the entries on the credit & debt tab. These entries can either be calculated as part of custom pool implementations or pools in combination with hooks. Both have the capability to determine the amount of credit & debt the vault adds to the tab.
 
-The reason hooks also have this capability is to change `amountCalculated` of already existing pool types from established factories.
+The reason hooks also have this capability is to change `amountCalculated` of already existing pool types from established factories. This allows for more fine grained pool tuning capabilities. 
+![Vault-Pool-Hooks relation](/images/hook-delta.png)
+
 
 ::: info
 Hooks can change the `amountCalculated` for liquidity operations but cannot change `amountGiven`. 
@@ -108,38 +119,8 @@ A detailed view of what an `after` hook for a given liquidity operation can chan
 | swapSingleTokenExactOut              | uint256 exactAmountOut   | uint256 amountIn    |
 
 
-## Dynamic Swap Fee Hook
-
-The Dynamic Swap Fee Hook enables hook developers to adjust pool fees for various strategic purposes, e.g. market volatility.
-
-If the Dynamic Swap Fee Hook is enabled the Hook must implement the `onComputeDynamicSwapFee` function to compute the swap fee:
-
-```solidity
-/**
- * @notice Called before `onBeforeSwap` if the pool has dynamic fees.
- * @param params Swap parameters (see IBasePool.PoolSwapParams for struct definition)
- * @return success True if the pool wishes to proceed with settlement
- * @return dynamicSwapFee Value of the swap fee
- */
-function onComputeDynamicSwapFee(
-    IBasePool.PoolSwapParams calldata params
-) external view returns (bool success, uint256 dynamicSwapFee);
-```
-
-Note that the function has access to the swap parameters which can be used as part of the fee computation:
-```solidity
-struct PoolSwapParams {
-    SwapKind kind;
-    uint256 amountGivenScaled18;
-    uint256[] balancesScaled18;
-    uint256 indexIn;
-    uint256 indexOut;
-    address router;
-    bytes userData;
-}
-```
-
-Now, whenever the Vault fetches the swap fee it will use the returned `dynamicSwapFee` value.
+## Hook examples
+If you want to get started with developing your own hooks contract, check out the [developing a hooks contract](/build-a-custom-amm/build-an-amm/extend-existing-pool-type-using-hooks.html) page. Various hook examples are shown there. Additionally the monorepo displays more ideas on how to approach hook development.
 
 
 <style scoped>
