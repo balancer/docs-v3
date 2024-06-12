@@ -24,22 +24,22 @@ const features = computed(() => {
     {
       title: 'Basics',
       details: 'Learn how Balancer works under the hood',
-      link: '/concepts/overview/basics',
+      link: '/concepts/core-concepts/introduction.html',
     },
     {
       title: 'Integrate',
       details: 'Jump into the SDK, APIs, and ways to integrate Balancer',
-      link: '/sdk/overview',
+      link: '/developer-reference/sdk/',
     },
     {
       title: 'Smart Contracts',
-      details: 'Deployment addresses, ABIs, helpful walthroughs, and more',
+      details: 'Deployment addresses, ABIs, helpful walkthroughs, and more',
       link: '/reference/contracts/deployment-addresses/mainnet.html',
     },
     {
       title: 'Dev Guides',
       details: 'Follow along helpful guides with example code',
-      link: '/guides',
+      link: '/integration-guides/',
     },
   ];
 });

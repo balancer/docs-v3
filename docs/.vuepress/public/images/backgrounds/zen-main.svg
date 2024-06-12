@@ -1,0 +1,31 @@
+<svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <filter id="noise" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="24" numOctaves="42" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer>
+                <feFuncA type="discrete" tableValues="1 0" />
+            </feComponentTransfer>
+        </filter>
+    </defs>
+    <rect width="100%" height="100%" fill="#2c3e50" filter="url(#noise)" opacity="0.03"/>
+    <!-- Shadows for organic feel -->
+    <defs>
+        <filter id="shadow" x="-10%" y="-10%" width="140%" height="140%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="0.2" result="blur"/>
+            <feOffset in="blur" dx="0.25" dy="0.25" result="offsetBlur"/>
+            <feMerge>
+                <feMergeNode in="offsetBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    <!-- Concentric circles to mimic the sand lines with shadows -->
+    <path d="M50 50 m-45, 0 a 45,22.5 0 1,0 90,0 a 45,22.5 0 1,0 -90,0" fill="none" stroke="#EBE8E0" stroke-width="0.1" opacity="0.4" filter="url(#shadow)"/>
+    <path d="M50 50 m-42.5, 0 a 42.5,21.25 0 1,0 85,0 a 42.5,21.25 0 1,0 -85,0" fill="none" stroke="#EBE8E0" stroke-width="0.1" opacity="0.35" filter="url(#shadow)"/>
+    <path d="M50 50 m-40, 0 a 40,20 0 1,0 80,0 a 40,20 0 1,0 -80,0" fill="none" stroke="#EBE8E0" stroke-width="0.1" opacity="0.25" filter="url(#shadow)"/>
+    <path d="M50 50 m-37.5, 0 a 37.5,18.75 0 1,0 75,0 a 37.5,18.75 0 1,0 -75,0" fill="none" stroke="#EBE8E0" stroke-width="0.1" opacity="0.3" filter="url(#shadow)"/>
+    <path d="M50 50 m-35, 0 a 35,17.5 0 1,0 70,0 a 35,17.5 0 1,0 -70,0" fill="none" stroke="#EBE8E0" stroke-width="0.1" opacity="0.25" filter="url(#shadow)"/>
+    <path d="M50 50 m-32.5, 0 a 32.5,16.25 0 1,0 65,0 a 32.5,16.25 0 1,0 -65,0" fill="none" stroke="#EBE8E0" stroke-width="0.1" opacity="0.2" filter="url(#shadow)"/>
+    <path d="M50 50 m-30, 0 a 30,15 0 1,0 60,0 a 30,15 0 1,0 -60,0" fill="none" stroke="#EBE8E0" stroke-width="0.1" opacity="0.25" filter="url(#shadow)"/>
+</svg>

@@ -52,7 +52,7 @@
 }
 
 .right-anchor {
-  
+
   .right-anchor-container {
     padding-left: 1rem;
     border-left: 1px solid var(--c-border);
@@ -102,8 +102,8 @@
 
   a.right-anchor-heading.active {
     font-weight: 700;
-  }  
-  
+  }
+
 
   a.active {
     color: var(--c-brand-light);
@@ -224,9 +224,9 @@
         background: #F3F0FF;
         color: var(--c-text-accent);
         min-height: 40px;
-        transition: 0.2s all ease-out;  
-        padding: 0.25rem 0 0.25rem 1.25rem;    
-        height: 36px;  
+        transition: 0.2s all ease-out;
+        padding: 0.25rem 0 0.25rem 1.25rem;
+        height: 36px;
         display: flex;
         align-items: center;
       }
@@ -242,11 +242,15 @@ a.sidebar-item {
   }
 }
 
+a.sidebar-heading + .sidebar-item-children .sidebar-item:not(.sidebar-heading):not(.collapsible).active {
+  background: rgba(49, 55, 63, 0.15);
+  color: rgba(0, 211, 149, 100);
+}
 
 .dark {
   a.sidebar-heading + .sidebar-item-children .sidebar-item:not(.sidebar-heading):not(.collapsible).active {
     background: rgba(37, 99, 235, 0.15);
-    color: rgba(251, 191, 36, 1);    
+    color: rgba(0, 211, 149, 100);
   }
 }
 

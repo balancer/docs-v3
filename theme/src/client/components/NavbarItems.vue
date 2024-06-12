@@ -4,19 +4,11 @@ import NavbarDropdown from '@theme/NavbarDropdown.vue';
 import { useRouteLocale, useSiteLocaleData } from '@vuepress/client';
 import { isLinkHttp, isString } from '@vuepress/shared';
 import { computed, onMounted, ref } from 'vue';
-import type { ComputedRef } from 'vue';
 import { useRouter } from 'vue-router';
-import type {
-  NavbarGroup,
-  NavbarItem,
-  ResolvedNavbarItem,
-} from '../../shared/index.js';
+import type { ComputedRef } from 'vue';
 import { useNavLink, useThemeLocaleData } from '../composables/index.js';
 import { resolveRepoType } from '../utils/index.js';
 
-/**
- * Get navbar config of select language dropdown
- */
 const useNavbarSelectLanguage = (): ComputedRef<ResolvedNavbarItem[]> => {
   const router = useRouter();
   const routeLocale = useRouteLocale();
@@ -25,7 +17,6 @@ const useNavbarSelectLanguage = (): ComputedRef<ResolvedNavbarItem[]> => {
 
   return computed<ResolvedNavbarItem[]>(() => {
     const localePaths = Object.keys(siteLocale.value.locales);
-    // do not display language selection dropdown if there is only one language
     if (localePaths.length < 2) {
       return [];
     }
@@ -36,34 +27,27 @@ const useNavbarSelectLanguage = (): ComputedRef<ResolvedNavbarItem[]> => {
     const languageDropdown: ResolvedNavbarItem = {
       text: themeLocale.value.selectLanguageText ?? 'unknown language',
       ariaLabel:
-        themeLocale.value.selectLanguageAriaLabel ??
-        themeLocale.value.selectLanguageText ??
-        'unknown language',
+          themeLocale.value.selectLanguageAriaLabel ??
+          themeLocale.value.selectLanguageText ??
+          'unknown language',
       children: localePaths.map(targetLocalePath => {
-        // target locale config of this language link
         const targetSiteLocale =
-          siteLocale.value.locales?.[targetLocalePath] ?? {};
+            siteLocale.value.locales?.[targetLocalePath] ?? {};
         const targetThemeLocale =
-          themeLocale.value.locales?.[targetLocalePath] ?? {};
+            themeLocale.value.locales?.[targetLocalePath] ?? {};
         const targetLang = `${targetSiteLocale.lang}`;
 
         const text = targetThemeLocale.selectLanguageName ?? targetLang;
         let link;
 
         if (targetLang === siteLocale.value.lang) {
-          // if the target language is current language
-          // stay at current link
           link = currentFullPath;
         } else {
-          // if the target language is not current language
-          // try to link to the corresponding page of current page
-          // or fallback to homepage
           const targetLocalePage = currentPath.replace(
-            routeLocale.value,
-            targetLocalePath
+              routeLocale.value,
+              targetLocalePath
           );
           if (router.getRoutes().some(item => item.path === targetLocalePage)) {
-            // try to keep current hash across languages
             link = `${targetLocalePage}${currentHash}`;
           } else {
             link = targetThemeLocale.home ?? targetLocalePath;
@@ -82,7 +66,7 @@ const useNavbarSelectLanguage = (): ComputedRef<ResolvedNavbarItem[]> => {
 };
 
 const resolveNavbarItem = (
-  item: NavbarItem | NavbarGroup | string
+    item: NavbarItem | NavbarGroup | string
 ): ResolvedNavbarItem => {
   if (isString(item)) {
     return useNavLink(item);
@@ -99,11 +83,12 @@ const resolveNavbarItem = (
 const useNavbarConfig = (): ComputedRef<ResolvedNavbarItem[]> => {
   const themeLocale = useThemeLocaleData();
   return computed(() =>
-    (themeLocale.value.navbar || []).map(resolveNavbarItem)
+      (themeLocale.value.navbar || []).map(resolveNavbarItem)
   );
 };
 
 const isMobile = ref(false);
+const showMore = ref(false);
 const navbarConfig = useNavbarConfig();
 const navbarSelectLanguage = useNavbarSelectLanguage();
 const navbarLinks = computed(() => [
@@ -111,32 +96,98 @@ const navbarLinks = computed(() => [
   ...navbarSelectLanguage.value,
 ]);
 
-// avoid overlapping of long title and long navbar links
-onMounted(() => {
-  const MOBILE_DESKTOP_BREAKPOINT = 719;
+const displayedLinks = ref(navbarLinks.value);
+const hiddenLinks = ref<ResolvedNavbarItem[]>([]);
 
-  const handleMobile = (): void => {
-    if (window.innerWidth < MOBILE_DESKTOP_BREAKPOINT) {
-      isMobile.value = true;
-    } else {
-      isMobile.value = false;
-    }
-  };
-  handleMobile();
-  window.addEventListener('resize', handleMobile, false);
-  window.addEventListener('orientationchange', handleMobile, false);
+const handleLinksVisibility = () => {
+  const MOBILE_DESKTOP_BREAKPOINT = 1380;
+
+  if (window.innerWidth < MOBILE_DESKTOP_BREAKPOINT) {
+    isMobile.value = true;
+
+    // Hide some items if needed
+    const visibleCount = 3; // Number of items to show before the "more" button
+    displayedLinks.value = navbarLinks.value.slice(0, visibleCount);
+    hiddenLinks.value = navbarLinks.value.slice(visibleCount);
+  } else {
+    isMobile.value = false;
+    displayedLinks.value = navbarLinks.value;
+    hiddenLinks.value = [];
+  }
+};
+
+onMounted(() => {
+  handleLinksVisibility();
+  window.addEventListener('resize', handleLinksVisibility, false);
+  window.addEventListener('orientationchange', handleLinksVisibility, false);
 });
 </script>
 
+
 <template>
   <nav v-if="navbarLinks.length" class="navbar-items">
-    <div v-for="item in navbarLinks" :key="item.text" class="navbar-item">
+    <div v-for="item in displayedLinks" :key="item.text" class="navbar-item">
       <NavbarDropdown
-        v-if="item.children"
-        :item="item"
-        :class="isMobile ? 'mobile' : ''"
+          v-if="item.children"
+          :item="item"
+          :class="isMobile ? 'mobile' : ''"
       />
       <AutoLink v-else :item="item" />
     </div>
+    <div v-if="hiddenLinks.length" class="navbar-item more-dropdown">
+      <button @click="showMore = !showMore">...</button>
+      <div v-if="showMore" class="dropdown-content">
+        <div v-for="item in hiddenLinks" :key="item.text">
+          <NavbarDropdown
+              v-if="item.children"
+              :item="item"
+              :class="isMobile ? 'mobile' : ''"
+          />
+          <AutoLink v-else :item="item" />
+        </div>
+      </div>
+    </div>
   </nav>
 </template>
+
+
+<style scoped>
+.navbar-items {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-item {
+  margin-right: 1rem;
+}
+
+.more-dropdown {
+  position: relative;
+}
+
+.more-dropdown button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+}
+
+.dropdown-content {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--c-bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 0.5rem;
+  z-index: 1000;
+}
+
+@media (max-width: 1380px) {
+  .navbar-items {
+    flex-wrap: wrap;
+  }
+}
+</style>
+

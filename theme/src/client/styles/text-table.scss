@@ -1,0 +1,60 @@
+@import 'vars-dark.scss';
+@import 'vars.scss';
+
+html.dark {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--table-bg);
+    color: var(--table-text);
+  }
+
+  th,
+  td {
+    border: 1px solid var(--table-border);
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-text);
+  }
+
+  tr:nth-child(even) {
+    background-color: var(--table-bg-alt);
+  }
+
+  tr:hover {
+    background-color: var(--c-bg-lighter); // or any color for hover effect
+  }
+}
+
+html {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--c-bg);
+    color: var(--c-text);
+  }
+
+  th,
+  td {
+    border: 1px solid var(--c-border);
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: var(--c-bg-lighter);
+    color: var(--c-text);
+  }
+
+  tr:nth-child(even) {
+    background-color: var(--c-bg-light);
+  }
+
+  tr:hover {
+    background-color: var(--c-bg-lighter); // or any color for hover effect
+  }
+}
