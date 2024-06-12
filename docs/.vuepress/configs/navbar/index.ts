@@ -19,7 +19,7 @@ export const navbar: NavbarConfig = [
   },
   {
     text: 'Partner Onboarding',
-    link: '/partner-onboarding/README.md',
+    link: '/partner-onboarding/onboarding-overview/introduction.md',
   },
   {
     text: 'Data & Analytics',
