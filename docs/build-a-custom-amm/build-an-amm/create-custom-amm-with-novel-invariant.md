@@ -11,7 +11,7 @@ AMMs built on Balancer inherit the security of the Balancer vault, and benefit f
 Balancer V3 was re-built from the ground up with developer experience as a core focus.
 Development teams can now focus on their product innovation without having to build an entire AMM.
 
-_This section is for developers looking to build a new custom pool type with a novel invariant. If you are looking to extend an existing pool type with hooks, start [here](/concepts/pools/custom-pools/hooks.html)._
+_This section is for developers looking to build a new custom pool type with a novel invariant. If you are looking to extend an existing pool type with hooks, start [here](/build-a-custom-amm/build-an-amm/extend-existing-pool-type-using-hooks.html)._
 
 ## Build your custom AMM
 
@@ -19,7 +19,7 @@ At a high level, creating a custom AMM on Balancer protocol involves the impleme
 To expedite the development process, Balancer provides two contracts to inherit from:
 
 - [IBasePool.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol) - This interface defines the required functions that every Balancer pool must implement
-- [BalancerPoolToken.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol) - This contract implements the [ERC20MultiToken](/concepts/vault/multitoken.html) standard that enables your pool contract to be ERC20 compliant while delegating BPT accounting to the vault. For more information, refer to [BalancerPoolToken](/concepts/pools/balancer-pool-token.html).
+- [BalancerPoolToken.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol) - This contract implements the [ERC20MultiToken](/concepts/vault/erc20-multi-token.html) standard that enables your pool contract to be ERC20 compliant while delegating BPT accounting to the vault. For more information, refer to [BalancerPoolToken](/concepts/core-concepts/balancer-pool-tokens.html).
 
 Both `IBasePool` and `BalancerPoolToken` are used across all core Balancer pools, even those implemented by Balancer Labs (ie: [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L18)).
 
@@ -196,7 +196,16 @@ function computeInvariant(uint256[] memory balancesLiveScaled18) external view r
 ```
 :::
 
+
+
 For additional references, refer to the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L73-L75) and [Stable Pool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-stable/contracts/StablePool.sol#L94-L99) implementations.
+
+::: info application context on computeBalance
+In the context of `computeBalance` the invariant is used as a measure of liquidity. What you need to consider when implementing all possible liquidity operations on the pool is that:
+- bptAmountOut for an unbalanced add liquidity operation should equal bptAmountOut for a proportional add liquidity in the case that `exactAmountsIn` for the unbalanced add are equal to the `amountsIn` for the same bptAmountOut for both addLiquidity scenarios. `AddLiquidityProportional` does not call into the custom pool it instead calculates BptAmountOut within the [BasePoolMath.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/solidity-utils/contracts/math/BasePoolMath.sol#L33-L40) whereas `addLiquidityUnbalanced` calls the custom pool's `computeInvariant`. 
+- the amountIn for an exactBptAmountOut in an `addLiquiditySingleTokenExactOut` should equal the amountIn for an unbalanced addLiquidity when the bptAmountOut is expected to be the same for both operations. `addLiquiditySingleTokenExactOut` uses `computeBalance` whereas `addLiquidityUnbalanced` uses `computeInvariant`.
+These are important consideration to ensure that LPs get the same share of the pool's liquidity when adding liquidity. In a Uniswap V2 Pair adding liquidity not in proportional amounts get's [penalized](https://github.com/Uniswap/v2-core/blob/master/contracts/UniswapV2Pair.sol#L123), which you can also implement in a custom pool, as long as you accurately handle the bullet points outlined above.
+:::
 
 ### Compute Balance
 
@@ -243,7 +252,7 @@ For additional references, refer to the [WeightedPool](https://github.com/balanc
 
 ### On Swap
 
-Although the outcome of `onSwap` could be determined using `calcInvariant` and `calcBalance`, it is highly likely that there is a more gas-efficient strategy.
+Although the outcome of `onSwap` could be determined using `computeInvariant` and `computeBalance`, it is highly likely that there is a more gas-efficient strategy.
 `onSwap` is provided as a means to facilitate lower cost swaps.
 
 Balancer protocol supports two types of swaps:
@@ -259,7 +268,7 @@ the amount entering the pool will always equal the amount leaving the pool:
 ::: code-tabs#shell
 @tab Constant Product Pool
 ```solidity
-function onSwap(SwapParams calldata params)
+function onSwap(PoolSwapParams calldata params)
     external
     view
     returns (uint256 amountCalculatedScaled18)
@@ -271,14 +280,14 @@ function onSwap(SwapParams calldata params)
 
 @tab Constant Sum Pool
 ```solidity
-function onSwap(SwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
+function onSwap(PoolSwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
     amountCalculatedScaled18 = params.amountGivenScaled18;
 }
 ```
 :::
 
 
-The `SwapParams` struct definition can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol#L59-L67).
+The `PoolSwapParams` struct definition can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol#L59-L67).
 
 For additional references, refer to the [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L100-L126) and [StablePool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-stable/contracts/StablePool.sol#L118-L146) implementations.
 
@@ -308,7 +317,7 @@ No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swa
 Balancer supports two types of swap fees:
 
 - **Static swap fee**: Defined on `vault.registerPool()` and managed via calls to `vault.setStaticSwapFeePercentage()`. For more information, see [Swap fee](/concepts/vault/swap-fee.html).
-- **Dynamic swap fee**: are managed by a **Hooks** contract. If a swap with a pool uses the dynamic swap fee is determined on pool registration. A Hook flags that it supports dynamic fees on `vault.registerPool()`. For more information, see [Dynamic swap fees](/concepts/pools/dynamic-swap-fees.html).
+- **Dynamic swap fee**: are managed by a **Hooks** contract. If a swap with a pool uses the dynamic swap fee is determined on pool registration. A Hook flags that it supports dynamic fees on `vault.registerPool()`. For more information, see [Dynamic swap fees](/concepts/vault/swap-fee.html#dynamic-swap-fee).
 
 ## Hooks
 Hooks as standalone contracts are not part of a custom pool's implementation. However they can be combined with custom pools. For a detailed understanding, see [Hooks](/concepts/core-concepts/hooks.html).
@@ -366,7 +375,7 @@ These settings get passed into the [pool registration](/developer-reference/cont
 When deploying your pool, there are three required steps that must be taken, in order:
 
 1. Deploy the pool contract to the desired network, ensuring that the correct `vault` is provided. The address of the deployed contract will be needed in step `2` and `3`. Offical deployments can be found [here](/reference/contracts/).
-2. Call [`vault.registerPool()`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#). Register will identify the pool with the vault and allow you to define token config, hook support, pause windows, and custom liquidity operation support.
+2. Call [`vault.registerPool()`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L77). Register will identify the pool with the vault and allow you to define token config, hook support, pause windows, and custom liquidity operation support.
 3. Call [`vault.initialize()`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L110). Initialize will perform any pool specific setup and seed the pool with initial liquidity, enabling swaps and normal liquidity operations.
 
 Creating pools via a factory contract is the suggested approach, however not mandatory. Balancer's off-chain infrastructure uses the `factory` address as a means to identify the `type` of pool, which is important for integration into the UI, SDK, external aggregators, etc.
