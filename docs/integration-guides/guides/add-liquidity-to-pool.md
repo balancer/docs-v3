@@ -5,7 +5,7 @@ title: Add liquidity to a pool
 
 # Add liquidity to a pool
 
-This guide demonstrates how to add liquidity to a pool. We will use the `addLiquidityUnbalanced` method, since it allows exact amounts of any pool token to be added to a pool, avoiding unnecessary dust in the user's wallet. See the [Router API](../router/overview.html) for other supported add methods.
+This guide demonstrates how to add liquidity to a pool. We will use the `addLiquidityUnbalanced` method, since it allows exact amounts of any pool token to be added to a pool, avoiding unnecessary dust in the user's wallet. See the [Router API](/developer-reference/contracts/router-api.html) for other supported add methods.
 
 _This guide is for adding liquidity to Balancer V3. If you're looking to add liquidity to a Balancer V2 pool, start [here](https://docs.balancer.fi/guides/builders/join-pool.html)._
 
@@ -20,14 +20,14 @@ The core concepts of adding liquidity are the same for any programming language 
 The Router interface for `addLiquidityUnbalanced` is:
 ```solidity
 /**
-* @notice Adds with arbitrary token amounts in to a pool.
-* @param pool Address of the liquidity pool
-* @param exactAmountsIn Exact amounts of tokens to be added, sorted in alphanumeric order
-* @param minBptAmountOut Minimum amount of pool tokens to be received
-* @param wethIsEth If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens
-* @param userData Additional (optional) data required for adding liquidity
-* @return bptAmountOut Actual amount of pool tokens received
-*/
+  * @notice Adds with arbitrary token amounts in to a pool.
+  * @param pool Address of the liquidity pool
+  * @param exactAmountsIn Exact amounts of tokens to be added, sorted in token registration order
+  * @param minBptAmountOut Minimum amount of pool tokens to be received
+  * @param wethIsEth If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens
+  * @param userData Additional (optional) data required for adding liquidity
+  * @return bptAmountOut Actual amount of pool tokens received
+  */
 function addLiquidityUnbalanced(
     address pool,
     uint256[] memory exactAmountsIn,

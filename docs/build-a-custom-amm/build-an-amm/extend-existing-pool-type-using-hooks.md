@@ -1,25 +1,29 @@
 ---
 order: 2
-title: Extend an Existing Pool Type Using Hooks
+title: Extend an existing pool type using hooks
 ---
 
-# Extend an Existing Pool Type Using Hooks
+# Extend an existing pool type using hooks
 
-_This section is for developers looking to extend an existing pool type with custom hooks. If you are looking to create a custom AMM with a novel invariant, start [here](/build-a-custom-amm/build-an-amm/create-custom-amm-with-novel-invariant.html)._
 
-Hooks introduce a new framework for extending the functionality of existing pool types at key points throughout their lifecycle. By enabling actions during pool operation and facilitating dynamic swap fee computation, hooks offer unprecedented control over pool behavior. This innovative concept empowers developers to craft tailored pool behaviors, catering to specific use cases and enhancing operations with greater flexibility and control.
+Balancer protocol provides developers with a modular architecture that enables the rapid development of custom AMMs.
+
+AMMs built on Balancer inherit the security of the Balancer vault, and benefit from a streamlined development process. Balancer V3 was re-built from the ground up with developer experience as a core focus.
+Development teams can now focus on their product innovation without having to build an entire AMM.
+
+_This section is for developers looking to extend an existing pool type with custom hooks, to optimize pool performance. If you are looking to create a custom AMM with a novel invariant, start [here](/build-a-custom-amm/build-an-amm/create-custom-amm-with-novel-invariant.html)._
+
+# Create your custom hook
 
 ::: info
 Before you start with this walkthrough, consider reading through a more [technical section on hooks](/concepts/core-concepts/hooks.html#hook-contracts) and take a look at the [Hooks API](/developer-reference/contracts/hooks-api.html).
 :::
 
-## Creating a Dynamic Swap Fee Hook Contract
+On a high level, creating a hooks contract requires telling the Vault which hooks a given pool should use (happens as part of pool registration) and implementing the logic for the hook contracts behavior. 
 
-A hooks contract should implement the [IHooks.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IHooks.sol) interface, which provides the blueprint for defining and enabling hooks. At a high level this interface entails:
-* Configuration: Specifying the supported hooks, allowing the Vault to determine which hooks are implemented.
-* Hooks functionality: Comprising the logic for each configured hook, dictating the actions to be executed when a specific hook is triggered.
+Balancer provides the [IHooks.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IHooks.sol) to inherit from which defines the required functions to implement and provides the necessary structs to handle data.
 
-Below, we present a naive implementation of a swap-fee discount hook contract giving any veBAL holder a reduced swap fee:
+Below, we present a naive implementation of a swap-fee discount Hook contract. The intention is that every veBAL holder has reduced swap fees on every swap, allowing him to get better prices for swaps. 
 
 ```solidity
 contract VeBALFeeDiscountHook is IHooks {
@@ -105,79 +109,21 @@ contract VeBALFeeDiscountHook is IHooks {
 }
 ```
 
-### Setting Hook Configuration
+## getHookFlags.
+As outlined in the [hooks section](http://localhost:8080/concepts/core-concepts/hooks.html#hook-contracts) a definition of which hooks this hooks contract supports must be made. For this particular case, the decision is on the implementation of `onComputeDynamicSwapFee` to return a different swap fee, depending on the users veBAL balance.
 
-```solidity
-function getHookFlags() external returns (HookFlags memory hookFlags) {
-    return
-        HookFlags({
-            shouldCallBeforeInitialize: false,
-            shouldCallAfterInitialize: false,
-            shouldCallComputeDynamicSwapFee: true,
-            shouldCallBeforeSwap: false,
-            shouldCallAfterSwap: false,
-            shouldCallBeforeAddLiquidity: false,
-            shouldCallAfterAddLiquidity: false,
-            shouldCallBeforeRemoveLiquidity: false,
-            shouldCallAfterRemoveLiquidity: false
-        });
-}
-```
+## Set Hooks access control. 
+Since hooks are standalone contracts, anyone can use them. It it suggested to validate the deployer of the pool or any other pool specific params during the `onRegister` hook. If the pool is deployed from a factory, the `factory` param is the factory address, if not it is the deployer eoa. 
 
-The `getHookFlags` function returns a `HookFlags` struct, which indicates the implemented hooks in the contract. When a pool is registered, the Vault calls this function to store the configuration. In this example, the `shouldCallComputeDynamicSwapFee` flag is set to true, indicating that the contract is configured to calculate the dynamic swap fee.
+::: info
+remember, as outlined in the [Router section](/concepts/router/overview.html#routers), a Router can be any contract, so this Hook contract should ensure that whenever it calls the Router it is considered "trusted".
+:::
 
-### Hook Registration
+The Vault calls `onComputeDynamicSwapFee` and forwards the `router` address. The Balancer Router stores the `msg.sender` and the Vault forwards it. However, this is only true for the routers developed by Balancer Labs.
 
-```solidity
-function onRegister(
-    address factory,
-    address pool,
-    TokenConfig[] memory tokenConfig,
-    LiquidityManagement calldata liquidityManagement
-) external returns (bool) {
-    return factory == allowedFactory;
-}
-```
+This verification is implemented as part of the `onlyTrustedRouter` which means the result from `IRouter(params.router).getSender()` can be trusted.
 
-The `onRegister` function enables developers to implement custom validation logic to ensure the registration is valid. When a new pool is registered, a hook address can be provided to "link" the pool and the hook. At this stage, the onRegister function is invoked by the Vault, and it must return true for the registration to be successful. If the validation fails, the function should return false, preventing the registration from being completed.
+Otherwise the measure of the `user`'s veBAL balance can be spoofed. 
 
-In this example we validate that the `factory` param forwarded from the Vault matches the `allowedFactory` set during the hook deployment.
-
-### Implementing the Swap Fee Logic
-
-```solidity
-function onComputeDynamicSwapFee (
-    IBasePool.PoolSwapParams calldata params
-) external view onlyTrustedRouter(params.router) returns (bool success, uint256 dynamicSwapFee) {
-    dynamicSwapFee = 10e16;
-    address user = IRouter(params.router).getSender();
-
-    if (veBAL.balanceOf(user) > 0) {
-        dynamicSwapFee = 10e14;
-    }
-    return (true, dynamicSwapFee);
-}
-```
-
-Now we can implement the logic in the `onComputeDynamicSwapFee` function, which the Vault calls to retrieve the swap fee value. In our example, any veBal holder enjoys a 0.1% swap fee, instead of the default 10%. However, there are some nuances to consider in this implementation.
-
-To obtain the user's veBAL balance, we need the sender's address, which we can retrieve by calling `getSender()` on the router. This relies on the router returning the correct address, so it's crucial to ensure the router is "trusted" (any contract can act as a [Router](/concepts/router/overview.html#routers)). In our example we passed a trusted `_router` address which is saved during the hook deployment:
-
-```solidity
-mapping(address => bool) public trustedRouters;
-
-constructor(..., address _router) {
-    ...
-    trustedRouters[_router] = true;
-}
-```
-
-this is then used in the `onlyTrustedRouter` modifier to verify the `params.router` which is forwarded by the Vault:
-
-```solidity
-modifier onlyTrustedRouter(address router) {
-    require(trustedRouters[router], "Router not trusted");
-    _;
-}
-```
-
+## Implement hook logic.
+To measure the `users` veBAL balance, we read from the trusted router the current sender via `getSender()` and check the user's veBAL balance. If the user owns any veBAL, he has to pay a 0.1% swapFee.
