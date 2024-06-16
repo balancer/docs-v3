@@ -56,25 +56,18 @@ struct PoolData {
 }
 ```
 
-Each time a `swap`, `addLiquidity` or `removeLiquidity` operation is performed, the token's rate is read to guarantee accurate results. The `tokenRates` from `PoolData` are internally updated through the `_updateTokenRatesInPoolData` function, which is utilized by all `swap`, `addLiquidity`, and `removeLiquidity` operations. As mentioned in [token scaling](/concepts/vault/token-scaling.html), data from the external Rate Provider contract is read and stored.
+Each time a `swap`, `addLiquidity` or `removeLiquidity` operation is performed, the token's rate is read to guarantee accurate results. The `tokenRates` from `PoolData` are internally updated through the `updateTokenRate` function, which is utilized by all `swap`, `addLiquidity`, and `removeLiquidity` operations. As mentioned in [token scaling](/concepts/vault/token-scaling.html), data from the external Rate Provider contract is read and stored.
 
 ```solidity
-function _updateTokenRatesInPoolData(PoolData memory poolData) internal view {
-    uint256 numTokens = poolData.tokenConfig.length;
+function updateTokenRate(PoolData memory poolData, uint256 tokenIndex) internal view {
+    TokenType tokenType = poolData.tokenConfig[tokenIndex].tokenType;
 
-    // Initialize arrays to store tokens based on the number of tokens in the pool.
-    poolData.tokenRates = new uint256[](numTokens);
-
-    for (uint256 i = 0; i < numTokens; ++i) {
-        TokenType tokenType = poolData.tokenConfig[i].tokenType;
-
-        if (tokenType == TokenType.STANDARD) {
-            poolData.tokenRates[i] = FixedPoint.ONE;
-        } else if (tokenType == TokenType.WITH_RATE) {
-            poolData.tokenRates[i] = poolData.tokenConfig[i].rateProvider.getRate();
-        } else {
-            revert InvalidTokenConfiguration();
-        }
+    if (tokenType == TokenType.STANDARD) {
+        poolData.tokenRates[tokenIndex] = FixedPoint.ONE;
+    } else if (tokenType == TokenType.WITH_RATE) {
+        poolData.tokenRates[tokenIndex] = poolData.tokenConfig[tokenIndex].rateProvider.getRate();
+    } else {
+        revert IVaultErrors.InvalidTokenConfiguration();
     }
 }
 ```
