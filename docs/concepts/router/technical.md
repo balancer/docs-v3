@@ -11,9 +11,9 @@ This section is a technical explainer of how the Router works. If you are lookin
 The Router and Vault interact in a back and forth manner to achieve the intended outcome of liquidity or query operations.
 ![Router Vault interaction](/images/router-vault.png)
 
-Every user interaction going through the Router follows the same pattern of execution flow. The elegance of `lock` wrapping the transaction in a Vault context is further explained in the [transient accounting](../vault/transient-accounting.md) section
+Every user interaction going through the Router follows the same pattern of execution flow. The elegance of `unlock` wrapping the transaction in a Vault context is further explained in the [transient accounting](../vault/transient-accounting.md) section
 
-1. The Router calls `lock` on the Vault, allowing access to protected state-changing functions that perform token [accounting](../vault/transient-accounting.md) by triggering the `transient` modifier. This pushes the current caller on a list of `_lockers` where only one handler is allowed to interact at any given moment to ensure no operations are overlapping. You can think of this step as the Router opening a tab with the Vault and any operation on the Vault will attribute to that tab.
-2. The Router executes a hook function (ie: `swapSingleTokenHook`) which calls the Vault's primitives (ie: `swap`). These operations add debt or credit to the handler's tab with the Vault. 
-3. To finalize the user operation, the Router needs to settle outstanding debt which the Vault attributed to the Router during the execution of `swap`. If debt & credit is not settled, the transaction will revert. This step closes out the tab opened with the Vault in step 1.
+1. The Router calls `unlock` on the Vault, allowing access to protected state-changing functions that perform token [accounting](../vault/transient-accounting.md) by triggering the `transient` modifier. You can think of this step as the Router opening a tab with the Vault and any operation on the Vault will attribute to that tab.
+2. The Router executes a hook function (ie: `swapSingleTokenHook`) which calls the Vault's primitives (ie: `swap`). These operations add debt or credit tab the Vault manages. 
+3. To finalize the user operation, the outstanding debts & credits need to be settled, which was accrued during `swap`. In the case of the Balancer Router, the Router is the account settling the debt. If debt & credit is not settled, the transaction will revert. This step closes out the tab opened with the Vault in step 1.
 

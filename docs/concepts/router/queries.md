@@ -28,7 +28,7 @@ The detailed Router API description can be found in the [Batch Router API sectio
 
 ## Complex queries
 
-The Router and Batch Router are primarily used as entrypoints for standard queries. However, Balancer's design allows for a more flexible querying mechanism. Any Vault operation that includes a `withLocker` modifier can be queried natively. This is facilitated through a `quote` mechanism.
+The Router and Batch Router are primarily used as entrypoints for standard queries. However, Balancer's design allows for a more flexible querying mechanism. Any Vault operation that includes a `onlyWhenUnlocked` modifier can be queried natively. This is facilitated through a `quote` mechanism.
 
 The concept of Transient Accounting enables the querying of complex Vault operations. To execute a query, the Router invokes the `quote` function on the Vault.
 
