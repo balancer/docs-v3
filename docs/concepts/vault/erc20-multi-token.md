@@ -46,11 +46,11 @@ function _approve(address token, address owner, address spender, uint256 amount)
 ## Where is the public interface?
 
 You'll notice that [ERC20MultiToken.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/token/ERC20MultiToken.sol) contains only internal functions.
-You can find the public interface defined in [IVaultExtension.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L160-L223) and implemented in [VaultExtension.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L425-L461).
-To ensure that the state changing public interface is always delegate-called by the vault, each function has the [onlyVault](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L65-L69) modifier, and uses `msg.sender` as the pool address argument.
+You can find the public interface defined in [IVaultExtension.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L160-L223) and implemented in [VaultExtension.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol).
+To ensure that the state changing public interface is always delegate-called by the vault, each function has the [onlyVaultDelegateCall](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L75) modifier.
 
 ```solidity
-function approve(address owner, address spender, uint256 amount) external onlyVault returns (bool) {
+function approve(address owner, address spender, uint256 amount) external onlyVaultDelegateCall returns (bool) {
     _approve(msg.sender, owner, spender, amount);
     return true;
 }
@@ -59,5 +59,5 @@ function approve(address owner, address spender, uint256 amount) external onlyVa
 ## How is ERC20 compliance achieved?
 
 ERC20MultiToken leverages the relationship between the Balancer vault and it's pools to ensure that all pool tokens (BPT) are fully ERC20 compliant.
-For a detailed discussion on how this is achieved, refer to the [BalancerPoolToken](/concepts/pools/Balancer-Pool-Token.html) section in the docs, or go directly to the
+For a detailed discussion on how this is achieved, refer to the [BalancerPoolToken](/concepts/core-concepts/balancer-pool-tokens.html) section in the docs, or go directly to the
 implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol).
