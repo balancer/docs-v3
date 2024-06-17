@@ -5,9 +5,9 @@ order: 1
 
 # Transient accounting
 
-Transient accounting shifts the validation of accurate token accounting to the start and conclusion of a Vault interaction. This is achieved by initiating a transient state that monitors the debt and credit associated with the handler. This transient state guarantees the atomic execution of operations within it and confirms the proper settlement of all debt and credit at the end of the execution, prior to exiting the transient state.
+Transient accounting shifts the validation of accurate token accounting to the start and conclusion of a Vault interaction. This is achieved by initiating a transient state that monitors the debt and credit created during vault interactions. This transient state guarantees the atomic execution of operations within it and confirms the proper settlement of all debt and credit at the end of the execution, prior to exiting the transient state.
 
-Upon activation of the transient state, the handler contract is given permissions to certain Vault functions. This is managed by the Vault maintaining a list of handlers authorized to call these functions. The Vault then returns execution control back to the handler through a hook. The handler is now authorized to call:
+Upon activation of the transient state, the vault is unlocked and permissions to to certain Vault functions are opened up. The Vault then returns execution control back to the Router through a hook. Anyone is now authorized to call:
 
 - `sendTo`: Sends tokens from the Vault to a recipient.
 - `settle`: Balances the changes for a token.
@@ -15,61 +15,63 @@ Upon activation of the transient state, the handler contract is given permission
 - `swap`: Exchanges one type of token for another.
 - `addLiquidity`: Adds one or more tokens to a liquidity pool.
 - `removeLiquidity`: Removes one or more tokens from a liquidity pool.
+- `erc4626BufferWrapOrUnwrap`: Wraps/unwraps tokens based on provided parameters
+- `addLiquidityToBuffer`: Adds liquidity to a yield-bearing token buffer
+- `removeLiquidityFromBuffer`: Removes liquidity from a yield-bearing token buffer
+- `initialize`: Initialize a liquidity pool.
+- `removeLiquidityRecovery`: Removes liquidity proportionally, burning an exact pool token amount.
 
 ## Key concepts
 
 ### 1. Enabling transient state
-The transient state is activated when the `transient` modifier is used during the invocation of the Vault. Initially, the current caller is added to the `_lockers` list. As the transient state is enabled, the Vault hands back control to the caller through a hook, which allows all the previously mentioned functions to be called. 
+The transient state is activated when the `transient` modifier is used during the unlocking of the Vault. As the transient state is enabled, the Vault hands back control to the caller through a hook, which allows all the previously mentioned functions to be called. 
 
-After the operations within the hook are completed, the transient state is expected to be closed. This means all `lockers`, except for the last one, are removed from the `_lockers` list. The final `locker` can only be removed if all the credit and debt accumulated to each individual handler during the hook execution is settled, which is indicated by `_nonzeroDeltaCount` being zero.
+After the operations within the hook are completed, the transient state is expected to be closed. The transaction can only succeed if all the credit and debt accumulated during the hook execution is settled, which is indicated by `_nonZeroDeltaCount()` being zero.
 
 ```solidity
 modifier transient() {
-    // Add the current locker to the list
-    _lockers().tPush(msg.sender);
+    bool isUnlockedBefore = _isUnlocked().tload();
+
+    if (isUnlockedBefore == false) {
+        _isUnlocked().tstore(true);
+    }
 
     // The caller does everything here and has to settle all outstanding balances
     _;
 
-    // Check if it's the last locker
-    if (_lockers().tLength() == 1) {
-        // Ensure all balances are settled
-        if (_nonzeroDeltaCount().tload() != 0) revert BalanceNotSettled();
+    if (isUnlockedBefore == false) {
+        if (_nonZeroDeltaCount().tload() != 0) {
+            revert BalanceNotSettled();
+        }
 
-        // Reset the counter
-        _nonzeroDeltaCount().tstore(0);
+        _isUnlocked().tstore(false);
     }
-    // Remove locker from the list (applies to the last one too, which resets the array)
-    _lockers().tPop();
 }
 ```
 
 ### 2. Debt or credit tracking
 
-All of the functions listed above either accrue debt (`_takeDebt`) or supply credit (`_supplyCredit`) as part of their implementation. The amount of debt taken or credit supplied is stored in an internal mapping of `_tokenDeltas`. 
+The majority of functions listed above either accrue debt (`_takeDebt`) or supply credit (`_supplyCredit`) as part of their implementation. The amount of debt taken or credit supplied is stored in an internal `TokenDeltaMappingSlotType` type. 
 
 ```solidity
 /**
- * @notice Represents the token due/owed to each handler.
- * @dev Must all net to zero when the last handler is released.
-*/
-mapping(address => mapping(IERC20 => int256)) internal _tokenDeltas;
+ * @notice Retrieves the token delta for a specific user and token.
+ * @dev This function allows reading the value from the `_tokenDeltas` mapping.
+ * @param token The token for which the delta is being fetched
+ * @return The delta of the specified token for the specified user
+ */
+function getTokenDelta(IERC20 token) external view returns (int256);
 ```
 
-Each time debt is taken or credit is supplied for a given token, the `_tokenDeltas` mapping is updated to the net changes. If the net changes for a token & handler combination zero out the internal `_nonzeroDeltaCount` is decremented whereas a non zero net change increments the `_nonzeroDeltaCount`. 
+Each time debt is taken or credit is supplied for a given token, the token deltas is updated to the net changes. If the net changes for a token zero out the internal `_nonZeroDeltaCount()` is decremented whereas a non zero net change increments the `_nonZeroDeltaCount()`. 
 
 ```solidity
-function _accountDelta(IERC20 token, int256 delta, address handler) internal {
+function _accountDelta(IERC20 token, int256 delta) internal {
     // If the delta is zero, there's nothing to account for.
     if (delta == 0) return;
 
-    // Ensure that the handler specified is indeed the caller.
-    if (handler != msg.sender) {
-        revert WrongHandler(handler, msg.sender);
-    }
-
-    // Get the current recorded delta for this token and handler.
-    int256 current = _tokenDeltas[handler][token];
+    // Get the current recorded delta for this token.
+    int256 current = _tokenDeltas().tGet(token);
 
     // Calculate the new delta after accounting for the change.
     int256 next = current + delta;
@@ -78,17 +80,17 @@ function _accountDelta(IERC20 token, int256 delta, address handler) internal {
         // If the resultant delta becomes zero after this operation,
         // decrease the count of non-zero deltas.
         if (next == 0) {
-            _nonzeroDeltaCount--;
+            _nonZeroDeltaCount().tDecrement();
         }
         // If there was no previous delta (i.e., it was zero) and now we have one,
         // increase the count of non-zero deltas.
         else if (current == 0) {
-            _nonzeroDeltaCount++;
+            _nonZeroDeltaCount().tIncrement();
         }
     }
 
-    // Update the delta for this token and handler.
-    _tokenDeltas[handler][token] = next;
+    // Update the delta for this token.
+    _tokenDeltas().tSet(token, next);
 }
 ```
-This transient accounting approach starts tracking token balances at the beginning of an operation (when opening a tab) and stops at the end (when closing the tab), providing full flexibility for any token amount changes in between. This eliminates the need for additional balance management elsewhere, allowing for a clear separation between token accounting and execution logic. Before closing the temporary state, the only requirement is to ensure that `_nonzeroDeltaCount` equals 0.
+This transient accounting approach starts tracking token balances at the beginning of an operation (when opening a tab) and stops at the end (when closing the tab), providing full flexibility for any token amount changes in between. This eliminates the need for additional balance management elsewhere, allowing for a clear separation between token accounting and execution logic. Before closing the temporary state, the only requirement is to ensure that `_nonZeroDeltaCount()` equals 0.
