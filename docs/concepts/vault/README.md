@@ -19,14 +19,15 @@ plugged directly into Balancer's existing liquidity instead of needing to build 
 In v3, the vault more formally defines the requirements of a pool contract, shifting core design patterns out of the pool and into the vault.
 The result is pool contracts that are compact and much easier to reason about.
 
-- [On-chain API](./onchain-api.html)
+- [On-chain API](/developer-reference/contracts/vault-api.html)
 - Features
-  - [Transient accounting](./features/transient.html)
-  - [ERC20MultiToken](./features/erc20-multi-token.html)
-  - [Token types](./features/token-types.html)
-  - [Decimal scaling](./features/decimal-scaling.html)
-  - [Rate scaling](./features/rate-scaling.html)
-  - [Yield fee](./features/yield-fee.html)
-  - [Swap fee](./features/swap-fee.html)
-  - [Live balances](./features/live-balances.html)
+  - [Transient accounting](/concepts/vault/transient-accounting.html)
+  - [ERC20MultiToken](/concepts/vault/erc20-multi-token.html)
+  - [Liquidity Buffers](/concepts/vault/buffer.html)
+  - [Token types](/concepts/vault/token-types.html)
+  - [Decimal scaling](/concepts/vault/token-scaling.html#decimal-scaling)
+  - [Rate scaling](/concepts/vault/token-scaling.html#rate-scaling)
+  - [Yield fee](/concepts/vault/yield-fee.html)
+  - [Swap fee](/concepts/vault/swap-fee.html)
+  - [Live balances](/concepts/vault/token-scaling.html#live-balances)
   - [Liquidity invariant approximation](./features/liquidity-invariant-approximation.html)
