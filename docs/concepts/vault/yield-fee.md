@@ -20,7 +20,13 @@ Yield fees are charged on every state changing Vault interaction if:
 Yield fees are computed by taking the difference in `currentLiveBalance` and `lastLiveBalance` and multiplying it by the `aggregateYieldFeePercentage`. The `aggregateYieldFeePercentage` is set by protocol governance and is defined in the [`ProtocolFeeController`](https://github.com/balancer/balancer-v3-monorepo/blob/10079235a0fec9cf52c53cf6f231b615fa297ab2/pkg/vault/contracts/ProtocolFeeController.sol#L61). Note the use of live balances which is described [here](./token-scaling.md#live-balances).
 
 :::info What does `aggregate` mean?
-
+The Vault stores accrued fees per pool per token in a _aggregateFeeAmounts[pool][token] mapping. The `bytes32` slot holds both yield fee and swap fees accrued for this pool.
+```solidity
+// Pool -> (Token -> fee): aggregate protocol swap/yield fees accumulated in the Vault for harvest.
+// Reusing PackedTokenBalance to save bytecode (despite differing semantics).
+// It's arbitrary which is which: we define raw=swap; derived=yield
+mapping(address => mapping(IERC20 => bytes32)) internal _aggregateFeeAmounts;
+```
 :::
 
 ```solidity
@@ -57,6 +63,6 @@ function _computeYieldFeesDue(
 The `aggregateYieldFeeAmountRaw` represents the final computed yield fee value. Here, 'Raw' signifies that the [rate scaling](./token-scaling.md#rate-scaling) has been reversed, as indicated by the `toRawUndoRateRoundDown` expression.
 
 :::info
-to check if a token in a liquidity pool is subject to yield fees, you need to listen to the `PoolRegistered` event of the pool creation transaction. The percentage of yield fees charged by the vault can be read via `vault.getYieldFeePercentage()`. 
+to check if a token in a liquidity pool is subject to yield fees, you can call `vault.getPoolTokenInfo(address pool)`. The percentage of yield fees charged by the vault for a given pool can be read via `protocolFeeController.getPoolProtocolYieldFeeInfo(address pool)`. 
 :::
 
