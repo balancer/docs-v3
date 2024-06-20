@@ -23,7 +23,7 @@ To expedite the development process, Balancer provides two contracts to inherit 
 
 Both `IBasePool` and `BalancerPoolToken` are used across all core Balancer pools, even those implemented by Balancer Labs (ie: [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L18)).
 
-Below, we present a naive implementation of a two token `ConstantProductPool` & `ConstantPricePool` utilising (X * Y = K) & (X + Y = K) as a reference for walking through the required functions necessary to implement a custom AMM on Balancer protocol:
+Below, we present a naive implementation of a two token `ConstantProductPool` & `ConstantSumPool` utilising (X * Y = K) & (X + Y = K) as a reference for walking through the required functions necessary to implement a custom AMM on Balancer protocol:
 
 ::: code-tabs#shell
 @tab Constant Product Pool
@@ -43,7 +43,7 @@ contract ConstantProductPool is IBasePool, BalancerPoolToken {
      * @param params Swap parameters
      * @return amountCalculatedScaled18 Calculated amount for the swap
      */
-    function onSwap(SwapParams calldata params)
+    function onSwap(PoolSwapParams calldata params)
         external
         view
         returns (uint256 amountCalculatedScaled18)
@@ -98,7 +98,7 @@ contract ConstantProductPool is IBasePool, BalancerPoolToken {
 @tab Constant Sum Pool
 
 ```solidity
-contract ConstantPricePool is IBasePool, BalancerPoolToken {
+contract ConstantSumPool is IBasePool, BalancerPoolToken {
     constructor(
         IVault vault,
         string memory name,
@@ -110,7 +110,7 @@ contract ConstantPricePool is IBasePool, BalancerPoolToken {
      * @param params Swap parameters
      * @return amountCalculatedScaled18 Calculated amount for the swap
      */
-    function onSwap(SwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
+    function onSwap(PoolSwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
         amountCalculatedScaled18 = params.amountGivenScaled18;
     }
     
@@ -167,7 +167,7 @@ By implementing `computeInvariant` and `computeBalance`, your custom AMM will im
 Custom AMMs built on Balancer protocol are defined primarily by their invariant. Broadly speaking, an invariant is a mathematical function that defines
 how the AMM exchanges one asset for another. A few widely known invariants include [Constant Product (X * Y = K)](https://docs.uniswap.org/contracts/v2/concepts/protocol-overview/how-uniswap-works) and [Stableswap](https://berkeley-defi.github.io/assets/material/StableSwap.pdf).
 
-Our two-token `ConstantPricePool` uses the constant sum invariant, or `X + Y = K`. To implement `computeInvariant`, we simply add the balances of the two tokens. For the `ConstantProductPool` the invariant calculation is the square root of the product of balances. This ensures invariant growth proportional to liquidity growth.
+Our two-token `ConstantSumPool` uses the constant sum invariant, or `X + Y = K`. To implement `computeInvariant`, we simply add the balances of the two tokens. For the `ConstantProductPool` the invariant calculation is the square root of the product of balances. This ensures invariant growth proportional to liquidity growth.
 
 ::: code-tabs#shell
 @tab Constant Product Pool
@@ -212,7 +212,7 @@ These are important consideration to ensure that LPs get the same share of the p
 `computeBalance` returns the new balance of a pool token necessary to achieve an invariant change. It is essentially the inverse of the pool's invariant. The `invariantRatio` is the ratio of the new invariant (after an operation) to the old.
 `computeBalance` is used for liquidity operations where the token amount in/out is unknown, specifically [`AddLiquidityKind.SINGLE_TOKEN_EXACT_OUT`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L582-L594) and [`RemoveLiquidityKind.SINGLE_TOKEN_EXACT_IN`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L788-L800).
 
-You can see the implementations of the `ConstantProductPool` and `ConstantPricePool` below:
+You can see the implementations of the `ConstantProductPool` and `ConstantSumPool` below:
 
 ::: code-tabs#shell
 @tab Constant Product Pool
@@ -262,7 +262,7 @@ Balancer protocol supports two types of swaps:
 
 The `minAmountOut` or `maxAmountIn` are enforced by the [vault](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L368-L381) .
 
-When swapping tokens, our constant `K` must remain unchanged. Since our two-token `ConstantPricePool` uses the constant sum invariant (`X + Y = K`),
+When swapping tokens, our constant `K` must remain unchanged. Since our two-token `ConstantSumPool` uses the constant sum invariant (`X + Y = K`),
 the amount entering the pool will always equal the amount leaving the pool:
 
 ::: code-tabs#shell
@@ -333,7 +333,7 @@ An example custom liquidity operation can be found in [Cron Finance's](https://d
 When adding support for custom liquidity operations, it's recommended that your pool contract implement [IPoolLiquidity](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IPoolLiquidity.sol)
 
 ```solidity
-contract ConstantPricePool is IBasePool, IPoolLiquidity, BalancerPoolToken {
+contract ConstantSumPool is IBasePool, IPoolLiquidity, BalancerPoolToken {
     ...
 }
 ```
