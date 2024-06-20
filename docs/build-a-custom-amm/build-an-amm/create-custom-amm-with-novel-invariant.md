@@ -15,7 +15,7 @@ _This section is for developers looking to build a new custom pool type with a n
 
 ## Build your custom AMM
 
-At a high level, creating a custom AMM on Balancer protocol involves the implementation of only three functions `onSwap`, `computeInvariant` and `computeBalance`.
+At a high level, creating a custom AMM on Balancer protocol involves the implementation of five functions `onSwap`, `computeInvariant` and `computeBalance` as well as `getMaximumSwapFeePercentage` and `getMinimumSwapFeePercentage`.
 To expedite the development process, Balancer provides two contracts to inherit from:
 
 - [IBasePool.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol) - This interface defines the required functions that every Balancer pool must implement
@@ -31,6 +31,9 @@ Below, we present a naive implementation of a two token `ConstantProductPool` & 
 ```solidity
 contract ConstantProductPool is IBasePool, BalancerPoolToken {
     using FixedPoint for uint256;
+
+    uint256 private constant _MIN_SWAP_FEE_PERCENTAGE = 0;
+    uint256 private constant _MAX_SWAP_FEE_PERCENTAGE = 0.1e18; // 10%
 
     constructor(
         IVault vault,
@@ -92,6 +95,16 @@ contract ConstantProductPool is IBasePool, BalancerPoolToken {
 
         newBalance = (newInvariant * newInvariant / balancesLiveScaled18[otherTokenIndex]);
     }
+
+    /// @return minimumSwapFeePercentage The minimum swap fee percentage for a pool
+    function getMinimumSwapFeePercentage() external view returns (uint256) {
+        return _MIN_SWAP_FEE_PERCENTAGE;
+    }
+
+    /// @return maximumSwapFeePercentage The maximum swap fee percentage for a pool
+    function getMaximumSwapFeePercentage() external view returns (uint256) {
+        return _MAX_SWAP_FEE_PERCENTAGE;
+    }
 }
 ```
 
@@ -99,6 +112,10 @@ contract ConstantProductPool is IBasePool, BalancerPoolToken {
 
 ```solidity
 contract ConstantSumPool is IBasePool, BalancerPoolToken {
+
+    uint256 private constant _MIN_SWAP_FEE_PERCENTAGE = 0;
+    uint256 private constant _MAX_SWAP_FEE_PERCENTAGE = 0.1e18; // 10%
+
     constructor(
         IVault vault,
         string memory name,
@@ -140,6 +157,16 @@ contract ConstantSumPool is IBasePool, BalancerPoolToken {
         uint256 invariant = computeInvariant(balancesLiveScaled18);
         
         newBalance = (balancesLiveScaled18[tokenInIndex] + invariant.mulDown(invariantRatio)) - invariant;
+    }
+
+    /// @return minimumSwapFeePercentage The minimum swap fee percentage for a pool
+    function getMinimumSwapFeePercentage() external view returns (uint256) {
+        return _MIN_SWAP_FEE_PERCENTAGE;
+    }
+
+    /// @return maximumSwapFeePercentage The maximum swap fee percentage for a pool
+    function getMaximumSwapFeePercentage() external view returns (uint256) {
+        return _MAX_SWAP_FEE_PERCENTAGE;
     }
 }
 ```
@@ -308,7 +335,7 @@ The approach taken by Balancer Labs is to define a [NewPoolParams](https://githu
 
 ## Swap fees
 
-The charging of swap fees is managed entirely by the Balancer vault. The pool is only responsible for declaring the `swapFeePercentage` for any given swap or unbalanced liquidity operation. For more information, see [Swap fees](http://localhost:8080/concepts/vault/swap-fee.html).
+The charging of swap fees is managed entirely by the Balancer vault. The pool is only responsible for declaring the `swapFeePercentage` for any given swap or unbalanced liquidity operation on registration as well as declaring an minimum and maximum swap fee percentage. For more information, see [Swap fees](http://localhost:8080/concepts/vault/swap-fee.html).
 
 ::: info Do I need to take swap fees into account when implementing onSwap?
 No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swap, the amount in (`params.amountGivenScaled18`) will already have the swap fee removed before `onSwap` is called.
