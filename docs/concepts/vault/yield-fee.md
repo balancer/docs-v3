@@ -17,15 +17,19 @@ Yield fees are charged on every state changing Vault interaction if:
 - a token is configured as a [WITH_RATE](token-types.md#tokens-with-external-rates-with_rate) type with `paysYieldFees` set to `true`
 - yield has accrued since the last fee computation
 
-Yield fees are computed by taking the difference in `currentLiveBalance` and `lastLiveBalance` and multiplying it by the `yieldFeePercentage`. The `yieldFeePercentage` is set by protocol governance and is global for all pools. Note the use of live balances which is described [here](./token-scaling.md#live-balances)
+Yield fees are computed by taking the difference in `currentLiveBalance` and `lastLiveBalance` and multiplying it by the `aggregateYieldFeePercentage`. The `aggregateYieldFeePercentage` is set by protocol governance and is defined in the [`ProtocolFeeController`](https://github.com/balancer/balancer-v3-monorepo/blob/10079235a0fec9cf52c53cf6f231b615fa297ab2/pkg/vault/contracts/ProtocolFeeController.sol#L61). Note the use of live balances which is described [here](./token-scaling.md#live-balances).
+
+:::info What does `aggregate` mean?
+
+:::
 
 ```solidity
-function _computeYieldProtocolFeesDue(
+function _computeYieldFeesDue(
     PoolData memory poolData,
     uint256 lastLiveBalance,
     uint256 tokenIndex,
-    uint256 yieldFeePercentage
-) internal pure returns (uint256 feeAmountRaw) {
+    uint256 aggregateYieldFeePercentage
+) internal pure returns (uint256 aggregateYieldFeeAmountRaw) {
     uint256 currentLiveBalance = poolData.balancesLiveScaled18[tokenIndex];
 
     // Do not charge fees if rates go down. If the rate were to go up, down, and back up again, protocol fees
@@ -36,9 +40,13 @@ function _computeYieldProtocolFeesDue(
     if (currentLiveBalance > lastLiveBalance) {
         unchecked {
             // Magnitudes checked above, so it's safe to do unchecked math here.
-            uint256 liveBalanceDiff = currentLiveBalance - lastLiveBalance;
+            uint256 aggregateYieldFeeAmountScaled18 = (currentLiveBalance - lastLiveBalance).mulUp(
+                aggregateYieldFeePercentage
+            );
 
-            feeAmountRaw = liveBalanceDiff.mulDown(yieldFeePercentage).toRawUndoRateRoundDown(
+            // A pool is subject to yield fees if poolSubjectToYieldFees is true, meaning that
+            // `protocolYieldFeePercentage > 0`. So, we don't need to check this again in here, saving some gas.
+            aggregateYieldFeeAmountRaw = aggregateYieldFeeAmountScaled18.toRawUndoRateRoundDown(
                 poolData.decimalScalingFactors[tokenIndex],
                 poolData.tokenRates[tokenIndex]
             );
@@ -46,7 +54,7 @@ function _computeYieldProtocolFeesDue(
     }
 }
 ```
-The `feeAmountRaw` represents the final computed yield fee value. Here, 'Raw' signifies that the [rate scaling](./token-scaling.md#rate-scaling) has been reversed, as indicated by the `toRawUndoRateRoundDown` expression.
+The `aggregateYieldFeeAmountRaw` represents the final computed yield fee value. Here, 'Raw' signifies that the [rate scaling](./token-scaling.md#rate-scaling) has been reversed, as indicated by the `toRawUndoRateRoundDown` expression.
 
 :::info
 to check if a token in a liquidity pool is subject to yield fees, you need to listen to the `PoolRegistered` event of the pool creation transaction. The percentage of yield fees charged by the vault can be read via `vault.getYieldFeePercentage()`. 
