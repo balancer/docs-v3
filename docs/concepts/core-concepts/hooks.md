@@ -56,11 +56,11 @@ This decision is final and cannot be changed for a pool, once it is registered a
 
 
 
-:::info hooks & reentrancy
+:::info Hooks & reentrancy
 It is possible to reenter the Vault as part of a hook execution as only the respective internal function like `_swap`, `_addLiquidity` & `_removeLiquidity` are reentrancy protected.
 :::
 
-:::info data passed to hooks
+:::info Data passed to hooks
 The Vault calls a pool's hooks and passes data. The passed data for each individual hook is available in the [Pool hooks API](/developer-reference/contracts/hooks-api.html) section.
 :::
 
