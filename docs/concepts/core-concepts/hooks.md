@@ -29,6 +29,7 @@ Hooks are implemented as standalone contracts that can have their own internal l
 - `onAfterSwap`
 - `onComputeDynamicSwapFee`
 
+Refer to the [Pool hooks API](/developer-reference/contracts/hooks-api.html) page for full function references.
 
 Each Hook contract must implement the `getHookFlags` function which returns a `HookFlags` and & `onRegister`indicating which hooks are supported:
 ```solidity
@@ -54,14 +55,8 @@ struct HookFlags {
 ```
 This decision is final and cannot be changed for a pool, once it is registered as the information which pool uses which hook is stored in the Vault and set during pool registration. During pool registration, the Vault calls into the Hooks contract and [retrieves](https://github.com/balancer/balancer-v3-monorepo/blob/49553c0546121f7725e0b024b240d6e722f02538/pkg/vault/contracts/VaultExtension.sol#L198) the `HookFlags`. 
 
-
-
 :::info Hooks & reentrancy
 It is possible to reenter the Vault as part of a hook execution as only the respective internal function like `_swap`, `_addLiquidity` & `_removeLiquidity` are reentrancy protected.
-:::
-
-:::info Data passed to hooks
-The Vault calls a pool's hooks and passes data. The passed data for each individual hook is available in the [Pool hooks API](/developer-reference/contracts/hooks-api.html) section.
 :::
 
 ## How Pools & Hooks Are Connected
