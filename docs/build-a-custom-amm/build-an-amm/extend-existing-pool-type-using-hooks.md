@@ -79,21 +79,18 @@ contract VeBALFeeDiscountHook is IHooks {
      * @param params Swap parameters (see IBasePool.PoolSwapParams for struct definition)
      * @return success True if the pool wishes to proceed with settlement
      * @return dynamicSwapFee Value of the swap fee
-     * @dev sets swapFee to 0.1% for veBAL holders
+     * @dev Gives a 50% discount for veBAL holders
      */
     function onComputeDynamicSwapFee (
-        IBasePool.PoolSwapParams calldata params
+        IBasePool.PoolSwapParams calldata params,
+        uint256 staticSwapFeePercentage
     ) external view onlyTrustedRouter(params.router) returns (bool success, uint256 dynamicSwapFee) {
-        // as part of a next merge, `staticSwapFeePercentage` will be availabe
-        // meaning, as 50% discount on the current staticSwapFeePercentage can be
-        // applied
-        // 10% fee by default
-        dynamicSwapFee = 10e16;
+        dynamicSwapFee = staticSwapFeePercentage;
         address user = IRouter(params.router).getSender();
 
         if (veBAL.balanceOf(user) > 0) {
-            // 0.1% fee for veBAL holders
-            dynamicSwapFee = 10e14;
+            // 50% discount for veBAL holders
+            dynamicSwapFee = dynamicSwapFee / 2;
         }
         return (true, dynamicSwapFee);
     }
