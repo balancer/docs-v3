@@ -41,6 +41,7 @@ function getHookFlags() external returns (HookFlags memory hookFlags);
 
 ```solidity
 struct HookFlags {
+    bool enableHookAdjustedAmounts;
     bool shouldCallBeforeInitialize;
     bool shouldCallAfterInitialize;
     bool shouldCallComputeDynamicSwapFee;
@@ -95,12 +96,16 @@ mapping(address => HooksConfig) internal _hooksConfig;
 
 Remember that pool liquidity operations like `swap`, `addLiquidity` and `removeLiquidity` signal to the Vault the entries on the credit & debt tab. These entries can either be calculated as part of custom pool implementations or pools in combination with hooks. Both have the capability to determine the amount of credit & debt the vault adds to the tab.
 
-The reason hooks also have this capability is to change `amountCalculated` of already existing pool types from established factories. This allows for more fine grained pool tuning capabilities. 
+The reason hooks also have this capability is to change `amountCalculated` of already existing pool types from established factories. This allows for more fine grained pool tuning capabilities as part of the `after` hooks. 
 ![Vault-Pool-Hooks relation](/images/hook-delta.png)
 
 
 ::: info
-Hooks can change the `amountCalculated` for liquidity operations but cannot change `amountGiven`. 
+When `enableHookAdjustedAmounts == true`, hooks are able to modify the result of a liquidity or swap
+operation by implementing an after hook. For simplicity, the vault only supports modifying the
+calculated part of the operation. As such, when a hook supports adjusted amounts, it can not support
+unbalanced liquidity operations as this would introduce instances where the amount calculated is the
+input amount (`EXACT_OUT`).
 :::
 
 A detailed view of what an `after` hook for a given liquidity operation can change is displayed below:
@@ -108,12 +113,12 @@ A detailed view of what an `after` hook for a given liquidity operation can chan
 | Operation                            | Hook cannot change       | Hook _can_ change     |
 | --------                             |    -------               |  -------            |
 | addLiquidityProportional             | uint256[] amountsIn      | exactBptAmountOut   |
-| addLiquidityUnbalanced               | uint256[] exactAmountsIn | bptAmountOut        |
-| addLiquiditySingleTokenExactOut      | uint256 amountIn         | exactBptAmountOut   |
+| addLiquidityUnbalanced               | *not supported*          | *not supported*     |
+| addLiquiditySingleTokenExactOut      | *not supported*          | *not supported*     |
 | addLiquidityCustom                   | *not supported*          | *not supported*     |
 | removeLiquidityProportional          | uint256 exactBptAmountIn | uint256[] amountsOut|
-| removeLiquiditySingleTokenExactIn    | uint256 exactBptAmountIn | uint256 amountOut   |
-| removeLiquiditySingleTokenExactOut   | uint256 exactAmountOut   | uint256 bptAmountIn |
+| removeLiquiditySingleTokenExactIn    | *not supported*          | *not supported*     |
+| removeLiquiditySingleTokenExactOut   | *not supported*          | *not supported*     |
 | removeLiquidityCustom                | *not supported*          | *not supported*     |
 | swapSingleTokenExactIn               | uint256 exactAmountIn    | uint256 amountOut   |
 | swapSingleTokenExactOut              | uint256 exactAmountOut   | uint256 amountIn    |
