@@ -43,6 +43,7 @@ contract VeBALFeeDiscountHook is IHooks {
     function getHookFlags() external returns (HookFlags memory hookFlags) {
         return
             HookFlags({
+                enableHookAdjustedAmounts: false,
                 shouldCallBeforeInitialize: false,
                 shouldCallAfterInitialize: false,
                 shouldCallComputeDynamicSwapFee: true,
@@ -108,6 +109,7 @@ contract VeBALFeeDiscountHook is IHooks {
 function getHookFlags() external returns (HookFlags memory hookFlags) {
     return
         HookFlags({
+            enableHookAdjustedAmounts: false,
             shouldCallBeforeInitialize: false,
             shouldCallAfterInitialize: false,
             shouldCallComputeDynamicSwapFee: true,
