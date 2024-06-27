@@ -407,6 +407,10 @@ When deploying your pool, there are three required steps that must be taken, in 
 
 Creating pools via a factory contract is the suggested approach, however not mandatory. Balancer's off-chain infrastructure uses the `factory` address as a means to identify the `type` of pool, which is important for integration into the UI, SDK, external aggregators, etc.
 
+## Testing your pool
+
+Depending on the combination of liquidity operations you allow for your pool you need to ensure the correct amount of BPT get's minted whenever a user adds/removes liquidity unbalanced (which calls into `computeInvariant`) and proportional adds/removes (which does not call into the pool and solely relies on [BasePoolMath.sol](https://github.com/balancer/balancer-v3-monorepo/blob/4864599800adc88d6a53f0a5b71c8352eac2f3a1/pkg/solidity-utils/contracts/math/BasePoolMath.sol#L7)). Let's say your pool has reserves of [100, 100] and an `addLiquidityProportional([50,50])` gets the user 100 BPT in return, if the user were to `addLiquidityUnbalanced([50,50])` you must ensure that the amount of BPT that gets minted is the same as in the `addLiquidityProportional([50,50])` operation. Consider also reading through [liquidity invariant approximation](/concepts/vault/liquidity-invariant-approximation.html) to get more context on various combination of pool operations.
+
 <!---
 ### Balancer UI Support
 
