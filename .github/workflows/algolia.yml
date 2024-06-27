@@ -3,7 +3,7 @@ name: Algolia Indexer
 on:
   push:
     branches:
-      - main
+      - docs-v3
 
 jobs:
   algolia_indexer:
