@@ -12,7 +12,7 @@ jobs:
       APPLICATION_ID: ${{ secrets.ALGOLIA_APP_ID }}
       API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
       INDEX_NAME: 'v3-docs'
-      CONFIG: '{ "index_name": "v3-docs", "start_urls": ["https://docs-v3.balancer.fi/"], "selectors": { "lvl0": "#app header h1", "lvl1": ".page h1", "lvl2": ".page h2", "lvl3": ".page h3", "lvl4": ".page h4", "lvl5": ".page h5", "text": ".page p, .page li, .page td" }}'
+      CONFIG: '{ "index_name": "v3-docs", "start_urls": ["https://docs-v3.balancer.fi/"], "selectors": { "lvl0": "#app header h1", "lvl1": ".page h1", "lvl2": ".page h2", "lvl3": ".page h3", "lvl4": ".page h4", "lvl5": ".page h5", "text": ".page .row theme-default-content col div p, .page li, .page td" }}'
     name: Index Algolia
     steps:
       - name: Algolia Docsearch Action
