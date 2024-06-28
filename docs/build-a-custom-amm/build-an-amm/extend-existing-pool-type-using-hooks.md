@@ -15,90 +15,64 @@ Before you start with this walkthrough, consider reading through the [technical 
 
 ## Creating a Dynamic Swap Fee Hook Contract
 
-A hooks contract should implement the [IHooks.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IHooks.sol) interface, which provides the blueprint for defining and enabling hooks. At a high level this interface entails:
-* **Configuration**: Specifying the supported hooks, allowing the Vault to determine which hooks are implemented.
-* **Hooks functionality**: Comprising the logic for each configured hook, dictating the actions to be executed when a specific hook is triggered.
+A hooks contract should inherit the [BaseHooks.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BasePoolHooks.sol) abstract contract, which provides a minimal implementation for a hooks contract. At a high level this contract includes:
+* **Base implementation**: A complete implementation of the [IHooks.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IHooks.sol) interface, with each implemented function returning false.
+* **Configuration**: A virtual function `getHookFlags` that must be implemented by your hooks contract, defining which hooks your contract supports.
 
 Below, we present a naive implementation of a swap-fee discount hook contract giving any veBAL holder a reduced swap fee:
 
 ```solidity
-contract VeBALFeeDiscountHook is IHooks {
+contract VeBALFeeDiscountHook is BaseHooks {
+    // only pools from the allowedFactory are able to register and use this hook
+    address private immutable _allowedFactory;
+    // only calls from a trusted routers are allowed to call this hook, because the hook relies on the getSender
+    // implementation to work properly
+    address private immutable _trustedRouter;
+    IERC20 private immutable _veBAL;
 
-    // allowlist the weighted pool factory on mainnet to work with this hook
-    address public allowedFactory;
-    IVeBAL public veBAL;
-
-    // trusted Routers
-    mapping(address => bool) public trustedRouters;
-
-    constructor(address _allowedFactory, address _veBal, address _router) {
-        // verify that this hook can only be used by pools created from `_allowedFactory`
-        allowedFactory = _allowedFactory;
-        veBAL = IVeBAL(_veBal);
-        trustedRouters[_router] = true;
+    constructor(IVault vault, address allowedFactory, address veBAL, address trustedRouter) BasePoolHooks(vault) {
+        _allowedFactory = allowedFactory;
+        _trustedRouter = trustedRouter;
+        _veBAL = IERC20(veBAL);
     }
 
-    // Define which hooks this pool supports. It is necessary to implement as the Vault checks these settings
-    // and stores them in the pool configuration upon `registerPool`.
-    function getHookFlags() external returns (HookFlags memory hookFlags) {
-        return
-            HookFlags({
-                enableHookAdjustedAmounts: false,
-                shouldCallBeforeInitialize: false,
-                shouldCallAfterInitialize: false,
-                shouldCallComputeDynamicSwapFee: true,
-                shouldCallBeforeSwap: false,
-                shouldCallAfterSwap: false,
-                shouldCallBeforeAddLiquidity: false,
-                shouldCallAfterAddLiquidity: false,
-                shouldCallBeforeRemoveLiquidity: false,
-                shouldCallAfterRemoveLiquidity: false
-            });
+    /// @inheritdoc IHooks
+    function getHookFlags() external pure override returns (IHooks.HookFlags memory hookFlags) {
+        hookFlags.shouldCallComputeDynamicSwapFee = true;
     }
 
-    /**
-     * @notice Hook to be executed when pool is registered. If it returns false, the registration
-     * is reverted.
-     * @dev Vault address can be accessed with msg.sender.
-     * @param factory Address of the pool factory
-     * @param pool Address of the pool
-     * @param tokenConfig An array of descriptors for the tokens the pool will manage
-     * @param liquidityManagement Liquidity management flags with implemented methods
-     * @return success True if the hook allowed the registration, false otherwise
-     */
+    /// @inheritdoc IHooks
     function onRegister(
         address factory,
         address pool,
-        TokenConfig[] memory tokenConfig,
-        LiquidityManagement calldata liquidityManagement
-    ) external returns (bool) {
-        return factory == allowedFactory;
+        TokenConfig[] memory,
+        LiquidityManagement calldata
+    ) external view override returns (bool) {
+        // This hook implements a restrictive approach, where we check if the factory is an allowed factory and if
+        // the pool was created by the allowed factory. Since we only use onComputeDynamicSwapFee, this might be an
+        // overkill in real applications because the pool math doesn't play a role in the discount calculation.
+        return factory == _allowedFactory && IBasePoolFactory(factory).isPoolFromFactory(pool);
     }
 
-    /**
-     * @notice Called before `onBeforeSwap` if the pool has dynamic fees.
-     * @param params Swap parameters (see IBasePool.PoolSwapParams for struct definition)
-     * @return success True if the pool wishes to proceed with settlement
-     * @return dynamicSwapFee Value of the swap fee
-     * @dev Gives a 50% discount for veBAL holders
-     */
-    function onComputeDynamicSwapFee (
+    /// @inheritdoc IHooks
+    function onComputeDynamicSwapFee(
         IBasePool.PoolSwapParams calldata params,
         uint256 staticSwapFeePercentage
-    ) external view onlyTrustedRouter(params.router) returns (bool success, uint256 dynamicSwapFee) {
-        dynamicSwapFee = staticSwapFeePercentage;
-        address user = IRouter(params.router).getSender();
-
-        if (veBAL.balanceOf(user) > 0) {
-            // 50% discount for veBAL holders
-            dynamicSwapFee = dynamicSwapFee / 2;
+    ) external view override returns (bool, uint256) {
+        // If the router is not trusted, does not apply the veBAL discount because getSender() may be manipulated by a
+        // malicious router.
+        if (params.router != _trustedRouter) {
+            return (true, staticSwapFeePercentage);
         }
-        return (true, dynamicSwapFee);
-    }
 
-    modifier onlyTrustedRouter(address router) {
-        require(trustedRouters[router], "Router not trusted");
-        _;
+        address user = IRouterCommon(params.router).getSender();
+
+        // If user has veBAL, apply a 50% discount to the current fee (divides fees by 2)
+        if (_veBAL.balanceOf(user) > 0) {
+            return (true, staticSwapFeePercentage / 2);
+        }
+
+        return (true, staticSwapFeePercentage);
     }
 }
 ```
@@ -106,20 +80,9 @@ contract VeBALFeeDiscountHook is IHooks {
 ### Setting Hook Configuration
 
 ```solidity
-function getHookFlags() external returns (HookFlags memory hookFlags) {
-    return
-        HookFlags({
-            enableHookAdjustedAmounts: false,
-            shouldCallBeforeInitialize: false,
-            shouldCallAfterInitialize: false,
-            shouldCallComputeDynamicSwapFee: true,
-            shouldCallBeforeSwap: false,
-            shouldCallAfterSwap: false,
-            shouldCallBeforeAddLiquidity: false,
-            shouldCallAfterAddLiquidity: false,
-            shouldCallBeforeRemoveLiquidity: false,
-            shouldCallAfterRemoveLiquidity: false
-        });
+function getHookFlags() external pure override returns (IHooks.HookFlags memory hookFlags) {
+    // all flags default to false
+    hookFlags.shouldCallComputeDynamicSwapFee = true;
 }
 ```
 
@@ -131,10 +94,10 @@ The `getHookFlags` function returns a `HookFlags` struct, which indicates the im
 function onRegister(
     address factory,
     address pool,
-    TokenConfig[] memory tokenConfig,
-    LiquidityManagement calldata liquidityManagement
-) external returns (bool) {
-    return factory == allowedFactory;
+    TokenConfig[] memory,
+    LiquidityManagement calldata
+) external view override returns (bool) {
+    return factory == _allowedFactory && IBasePoolFactory(factory).isPoolFromFactory(pool);
 }
 ```
 
@@ -145,37 +108,28 @@ In this example we validate that the `factory` param forwarded from the Vault ma
 ### Implementing the Swap Fee Logic
 
 ```solidity
-function onComputeDynamicSwapFee (
-    IBasePool.PoolSwapParams calldata params
-) external view onlyTrustedRouter(params.router) returns (bool success, uint256 dynamicSwapFee) {
-    dynamicSwapFee = 10e16;
-    address user = IRouter(params.router).getSender();
-
-    if (veBAL.balanceOf(user) > 0) {
-        dynamicSwapFee = 10e14;
+function onComputeDynamicSwapFee(
+    IBasePool.PoolSwapParams calldata params,
+    uint256 staticSwapFeePercentage
+) external view override returns (bool, uint256) {
+    // If the router is not trusted, does not apply the veBAL discount because getSender() may be manipulated by a
+    // malicious router.
+    if (params.router != _trustedRouter) {
+        return (true, staticSwapFeePercentage);
     }
-    return (true, dynamicSwapFee);
+
+    address user = IRouterCommon(params.router).getSender();
+
+    // If user has veBAL, apply a 50% discount to the current fee (divides fees by 2)
+    if (_veBAL.balanceOf(user) > 0) {
+        return (true, staticSwapFeePercentage / 2);
+    }
+
+    return (true, staticSwapFeePercentage);
 }
 ```
 
 Now we can implement the logic in the `onComputeDynamicSwapFee` function, which the Vault calls to retrieve the swap fee value. In our example, any veBal holder enjoys a 0.1% swap fee, instead of the default 10%. However, there are some nuances to consider in this implementation.
 
-To obtain the user's veBAL balance, we need the sender's address, which we can retrieve by calling `getSender()` on the router. This relies on the router returning the correct address, so it's crucial to ensure the router is "trusted" (any contract can act as a [Router](/concepts/router/overview.html#routers)). In our example we passed a trusted `_router` address which is saved during the hook deployment:
+To obtain the user's veBAL balance, we need the sender's address, which we can retrieve by calling `getSender()` on the router. This relies on the router returning the correct address, so it's crucial to ensure the router is "trusted" (any contract can act as a [Router](/concepts/router/overview.html#routers)). In our example we passed a trusted `_router` address which is saved during the hook deployment
 
-```solidity
-mapping(address => bool) public trustedRouters;
-
-constructor(..., address _router) {
-    ...
-    trustedRouters[_router] = true;
-}
-```
-
-this is then used in the `onlyTrustedRouter` modifier to verify the `params.router` which is forwarded by the Vault:
-
-```solidity
-modifier onlyTrustedRouter(address router) {
-    require(trustedRouters[router], "Router not trusted");
-    _;
-}
-```
