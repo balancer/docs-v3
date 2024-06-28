@@ -33,37 +33,18 @@ Queries are organised around these main domains: Further documentation is availa
       address
       name
     }
-    displayTokens {
-      ...on GqlPoolTokenDisplay {
-        symbol
-      }
+    poolTokens {
+      address
+      symbol
+      balance
+      hasNestedPool
     }
     dynamicData {
       totalLiquidity
-      apr {
-        swapApr
-        nativeRewardApr {
-          ...on GqlPoolAprTotal {
-            total
-          }
-        }
-        thirdPartyApr {
-          ...on GqlPoolAprTotal {
-            total
-          }
-        }
-        items {
-          title
-          apr {
-            ...on GqlPoolAprRange {
-              min
-              max
-            }
-            ...on GqlPoolAprTotal {
-              total
-            }
-          }
-        }
+      aprItems {
+        title
+        type
+        apr
       }
     }
   }
