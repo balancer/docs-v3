@@ -10,7 +10,7 @@ _This section is for developers looking to extend an existing pool type with cus
 Hooks introduce a new framework for extending the functionality of existing pool types at key points throughout their lifecycle. By enabling actions during pool operations and facilitating dynamic swap fee computation, hooks offer unprecedented control over pool behavior. This innovative concept empowers developers to craft tailored pool behaviors, catering to specific use cases and enhancing operations with greater flexibility and control.
 
 ::: info
-Before you start with this walkthrough, consider reading through a more [technical section on hooks](/concepts/core-concepts/hooks.html#hook-contracts) and take a look at the [Hooks API](/developer-reference/contracts/hooks-api.html).
+Before you start with this walkthrough, consider reading through the [technical section on hooks](/concepts/core-concepts/hooks.html#hook-contracts) and take a look at the [Hooks API](/developer-reference/contracts/hooks-api.html).
 :::
 
 ## Creating a Dynamic Swap Fee Hook Contract
