@@ -16,8 +16,8 @@ Before you start with this walkthrough, consider reading through the [technical 
 ## Creating a Dynamic Swap Fee Hook Contract
 
 A hooks contract should implement the [IHooks.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IHooks.sol) interface, which provides the blueprint for defining and enabling hooks. At a high level this interface entails:
-* Configuration: Specifying the supported hooks, allowing the Vault to determine which hooks are implemented.
-* Hooks functionality: Comprising the logic for each configured hook, dictating the actions to be executed when a specific hook is triggered.
+* **Configuration**: Specifying the supported hooks, allowing the Vault to determine which hooks are implemented.
+* **Hooks functionality**: Comprising the logic for each configured hook, dictating the actions to be executed when a specific hook is triggered.
 
 Below, we present a naive implementation of a swap-fee discount hook contract giving any veBAL holder a reduced swap fee:
 
