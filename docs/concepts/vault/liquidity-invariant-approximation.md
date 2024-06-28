@@ -3,16 +3,16 @@ title: Liquidity invariant approximation
 order: 10
 ---
 
-# Liquidity invariant approximation
+# Liquidity Invariant Approximation
 
-Adding and removing liquidity are considered liquidity operations in the context of this page. A Balancer pool allows to not only add & remove liquidity proportional but also in unbalanced ways. An unbalanced add or remove liquidity can also be considered to be a combination of proportional add or remove liquidity plus a swap. The vault must handle both scenarios with the same outcome for users & LPs to ensure a fair settlement system.
+Adding and removing liquidity are considered liquidity operations in the context of this page. A Balancer pool allows to not only add & remove liquidity proportionally but also in unbalanced ways. An unbalanced add or remove liquidity can also be considered to be a combination of proportional add or remove liquidity plus a swap. The vault must handle both scenarios with the same outcome for users & LPs to ensure a fair settlement system.
 
 ## Theory
 
 Liquidity operations that are disproportionate allow for indirect swaps. This scenario must have the same outcome than swaps & proportional liquidity operations combined. This means:
 
 - Swap fees for indirect swaps must not be lower than those for direct swaps
-- BPT amounts are properly minted to the users of an indirect swap and a user of a proportional liquidity operation and a swap.
+- BPT amounts are properly minted to the users of an indirect swap and a user of a proportional liquidity operation and a swap
 - The compared users having the same net token balances after the respective operation
 
 ## Examples
