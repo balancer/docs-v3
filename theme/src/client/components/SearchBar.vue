@@ -16,9 +16,9 @@ onMounted(() => {
   ]).then(([docsearch]) => {
     docsearch = docsearch.default;
     docsearch({
-      appId: 'Q107DW7NMM',
-      apiKey: 'c611e593d4e81a8c6efde877c69c9d7f',
-      indexName: 'dev_balancer',
+      appId: 'BHJFZH2L5I',
+      apiKey: 'fc280a2048eb40eff54b4d5e7fa04fa4',
+      indexName: 'v3-docs',
       inputSelector: '#algolia-search-input',
       handleSelected: (input, event, suggestion) => {
         const { pathname, hash } = new URL(suggestion.url);
