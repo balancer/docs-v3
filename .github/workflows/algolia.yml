@@ -3,7 +3,7 @@ name: Algolia Indexer
 on:
   push:
     branches:
-      - update-algolia
+      - v3-outline
 
 jobs:
   algolia_indexer:
@@ -11,9 +11,9 @@ jobs:
     env:
       APPLICATION_ID: ${{ secrets.ALGOLIA_APP_ID }}
       API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
-      INDEX_NAME: 'Test'
+      INDEX_NAME: 'v3-docs'
       # TODO: Rework indexing
-      CONFIG: '{ "index_name": "Test",
+      CONFIG: '{ "index_name": "v3-docs",
                   "start_urls": [
                     "https://docs-v3.balancer.fi/",
                     "https://docs-v3.balancer.fi/integration-guides/",
