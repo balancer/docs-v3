@@ -16,14 +16,14 @@ Whenever swap fees or yield fees are charged within the Balancer Protocol they a
 
 ## Enabling the pool creator fee.
 
-The pool creator sets the `poolCreator` address during pool registration, which cannot be changed afterwards. by default both the pool creator swap fee percentage and the pool creator yield fee percentage start at 0% and can be set later.
+The pool creator sets the `poolCreator` address during pool registration, which cannot be changed afterwards. By default, both the pool creator swap fee percentage and the pool creator yield fee percentage start at 0% and can be set later.
 ::: info
-If you are not sure yet how high or when you are looking to collect pool creator fee, you can pass an address as the `poolCreator` and increase the percentage at a later stage.
+If you are not yet sure when you want to start collecting a pool creator fee, or how high it should be, you can defer this decision until later, as long as you pass `poolCreator` address on pool registration.
 :::
 
 ### Collecting Fees
 
-The accrued creator fees can only be claimed by the `poolCreator` as the function to claim `withdrawPoolCreatorFees` is permissioned.
+The accrued creator fees can only be claimed by the `poolCreator`, as the function to claim `withdrawPoolCreatorFees` is permissioned.
 
 ```solidity
 /**
@@ -34,10 +34,10 @@ The accrued creator fees can only be claimed by the `poolCreator` as the functio
     */
 function withdrawPoolCreatorFees(address pool, address recipient) external;
 ```
-This collects the whole amount of accrued creator fees. It is not possible to claim only creator swap fees or only creator yield fees.
+This collects the entire amount of accrued creator fees. It is not possible to claim creator swap or yield fees separately.
 ### Tracking accrued fees
 
-The aggregate (sum of pool creator swap fee and pool creator yield fee) can be fetched from the [ProtocolFeeCollector.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/ProtocolFeeController.sol)
+The aggregate pool creator fees (sum of pool creator swap and yield fees) can be fetched from the [ProtocolFeeCollector.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/ProtocolFeeController.sol)
 ```solidity
 /**
  * @notice Returns the amount of each pool token allocated to the pool creator for withdrawal.
@@ -50,8 +50,8 @@ function getAggregatePoolCreatorFeeAmounts(address pool) external view returns (
 
 ### Setting The Fee Appropriately
 
-Developers must carefully balance their decisions regarding the creator fee, as increasing this fee reduces the portion of swap & yield fees allocated to Liquidity Providers. While higher creator fees may increase revenue for the creator, they can also diminish incentives for Liquidity Providers to participate, potentially resulting in reduced liquidity and overall fee generation within the pool.
+Developers must carefully consider their decisions regarding the creator fee, as increasing this fee reduces the portion of swap & yield fees allocated to Liquidity Providers. While higher creator fees may increase revenue for the creator, they can also diminish incentives for Liquidity Providers to participate, potentially resulting in reduced liquidity and overall fee generation within the pool.
 
-The pool creator can set the fees by calling the [`ProtocolFeeController`'s](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/ProtocolFeeController.sol) `setPoolCreatorYieldFeePercentage` &  `setPoolCreatorSwapFeePercentage` by calling:
+The pool creator can set the fees by calling the [`ProtocolFeeController`'s](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/ProtocolFeeController.sol) `setPoolCreatorYieldFeePercentage` &  `setPoolCreatorSwapFeePercentage`.
 
-The maximum `poolCreatorFeePercentage` for both types is 100% (`100e18`) and minimum 0%. 
+The maximum `poolCreatorFeePercentage` for both types is 100% (`100e18`). Note that this percentage is net protocol fees, which are paid first. As described above, a 100% fee would leave nothing for LPs.
