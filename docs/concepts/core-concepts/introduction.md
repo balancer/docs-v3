@@ -6,7 +6,7 @@ order: 0
 
 # Introduction
 
-Welcome to the Balancer Explained section, where we delve deep into the intricate design and operation of Balancer V3. This section is tailored for those who crave a comprehensive understanding of the protocol's architecture, mechanics, and underlying principles. Whether you're curious about the inner workings or looking to grasp the finer details, you're in the right place.
+Welcome to the Balancer Explained section, where we delve deep into the design and operation of Balancer v3. This section is perfect for anyone who wants a comprehensive understanding of the protocol's architecture, mechanics, and underlying principles. Whether you're curious about the inner workings or looking to grasp the finer details, you've come to the right place.
 
 If you're eager to jump into development and start building with Balancer, we've got you covered as well! Check out our [Integration Guides](../../integration-guides/README.md) for step-by-step instructions, explore the [Building An AMM](../../build-a-custom-amm/README.md) section for creating your own automated market maker, or consult the [Developer Reference](../../developer-reference/README.md) docs for comprehensive technical details.
 
