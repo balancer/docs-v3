@@ -45,7 +45,7 @@ The aggregate pool creator fees (sum of pool creator swap and yield fees) can be
  * @param pool The pool on which fees were collected
  * @param feeAmounts The total amounts of each token that are available for withdrawal, in token registration order
  */
-function getAggregatePoolCreatorFeeAmounts(address pool) external view returns (uint256[] memory feeAmounts);
+function getPoolCreatorFeeAmounts(address pool) external view returns (uint256[] memory feeAmounts);
 ```
 
 ### Setting The Fee Appropriately
