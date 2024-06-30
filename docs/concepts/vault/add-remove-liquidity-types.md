@@ -20,6 +20,7 @@ enum AddLiquidityKind {
     PROPORTIONAL,
     UNBALANCED,
     SINGLE_TOKEN_EXACT_OUT,
+    DONATION,
     CUSTOM
 }
 ```
@@ -27,7 +28,10 @@ enum AddLiquidityKind {
 - `AddLiquidityKind.PROPORTIONAL` - Add liquidity in proportional amounts and receive exact amount of BPT out.
 - `AddLiquidityKind.UNBALANCED` - Add liquidity to a pool with exact amounts of any pool token, avoiding unnecessary dust in the user's wallet.
 - `AddLiquidityKind.SINGLE_TOKEN_EXACT_OUT` - Add liquidity to a pool with a single token and receive an exact amount of BPT out.
+- `AddLiquidityKind.DONATION` - Add liquidity without receiving any BPT.
 - `AddLiquidityKind.CUSTOM` - For AMMs with a use case not covered by the built-in functions, custom allows the pool to implement an add liquidity operation whose requirements are defined by the pool.
+
+Note that DONATION is only useful for narrow use cases, such as LVR reduction, and must be explicitly enabled on pool registration. It also precludes nesting the pool (i.e., using the BPT in other Balancer pools, or relying on the rate for anything external), as the BPT rates of pools that allow donation can be trivially manipulated. It is supported on standard Balancer pools (Weighted and Stable), but if you use it, be aware of the security implications, and make sure you know what you're doing!
 
 ## Remove liquidity
 
