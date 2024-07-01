@@ -2,7 +2,7 @@
   // brand colors
   --c-brand: #805AD5; // primary.600
   --c-brand-light: rgba(109, 173, 249, 100);
-  --c-brand-hover-accent: rgba(0, 211, 149, 100); // green.500
+  --c-brand-hover-accent: #00a474; // green600
 
   // background colors
   --c-bg: #EBE8E0; // background.level0
@@ -102,7 +102,8 @@
 
   // box shadow vars
   --box-shadow-standard: -0.5px -0.5px 0px 0px #FFF, 6px 6px 6px -3px rgba(73, 53, 29, 0.06), 3px 3px 3px -1.5px rgba(73, 53, 29, 0.06), 1px 1px 1px -0.5px rgba(73, 53, 29, 0.06), 0px 0px 0px 1px rgba(73, 53, 29, 0.02);
-  --box-shadow-large: 0px 20px 40px -12px #FFF, 6px 6px 6px -3px rgba(73, 53, 29, 0.06), 3px 3px 3px -1.5px rgba(73, 53, 29, 0.06), 1px 1px 1px -0.5px rgba(73, 53, 29, 0.06), 0px 0px 0px 1px rgba(73, 53, 29, 0.02);
+  --box-shadow-large: 0px 0px 0px 1px #49351D05, 1px 1px 1px -0.5px #49351D0F, 3px 3px 3px -1.5px #49351D0F, 6px 6px 6px -3px #49351D0F, 12px 12px 12px -6px #49351D0F, -0.5px -1px 0px 0px #FFFFFF;
+  --box-shadow-small: -0.5px -0.5px 0px 0px #FFF, 6px 6px 6px -3px rgba(73, 53, 29, 0.06), 3px 3px 3px -1.5px rgba(73, 53, 29, 0.06), 1px 1px 1px -0.5px rgba(73, 53, 29, 0.06), 0px 0px 0px 1px rgba(73, 53, 29, 0.02);
 }
 
 // plugin-back-to-top

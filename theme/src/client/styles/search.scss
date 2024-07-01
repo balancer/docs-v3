@@ -17,9 +17,9 @@ $active-color: rgba(0, 211, 149, 100);
     font-weight: normal;
     height: 38px;
     color: $input-color;
-    background-color: $input-background;
+    background-color: #fff;
     border: 1px solid $input-background;
-    border-radius: 0.35rem;
+    border-radius: 0.5rem;
     transition: border-color 0.15s ease-in-out;
     &:focus {
       background-color: lighten($input-background, 25%);

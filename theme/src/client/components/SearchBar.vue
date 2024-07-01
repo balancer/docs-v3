@@ -49,7 +49,7 @@ onMounted(() => {
 .home .search-box {
   width: 100%;
   max-width: var(--search-box-max-width);
-  margin: 40px auto;
+  margin: 20px auto 50px;
 }
 
 .home .search-input-wrapper .search-icon.search {
@@ -60,6 +60,7 @@ onMounted(() => {
 .home .search-input-wrapper .search-icon.shortcut {
   height: 45px;
   width: 30px;
+  z-index: 1;
 }
 
 .home .search-input-wrapper .search-icon.shortcut::after {
