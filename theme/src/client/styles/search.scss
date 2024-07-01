@@ -5,6 +5,13 @@ $input-background: #EFEDE6;
 $icon-color: darken($input-background, 50%);
 $active-color: rgba(0, 211, 149, 100);
 
+
+@media (min-width: $MQNarrow) {
+  .home .search-box {
+    margin: 20px auto 50px;
+  }
+}
+
 .search-input-wrapper {
   position: relative;
 
