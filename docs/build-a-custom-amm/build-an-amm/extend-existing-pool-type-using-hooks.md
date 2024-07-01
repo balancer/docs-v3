@@ -15,7 +15,7 @@ Before you start with this walkthrough, consider reading through the [technical 
 
 ## Creating a Dynamic Swap Fee Hook Contract
 
-A hooks contract should inherit the [BaseHooks.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BasePoolHooks.sol) abstract contract, which provides a minimal implementation for a hooks contract. At a high level this contract includes:
+A hooks contract should inherit the [BaseHooks.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BaseHooks.sol) abstract contract, which provides a minimal implementation for a hooks contract. At a high level this contract includes:
 * **Base implementation**: A complete implementation of the [IHooks.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IHooks.sol) interface, with each implemented function returning false.
 * **Configuration**: A virtual function `getHookFlags` that must be implemented by your hooks contract, defining which hooks your contract supports.
 
@@ -101,7 +101,7 @@ function onRegister(
 }
 ```
 
-The `onRegister` function enables developers to implement custom validation logic to ensure the registration is valid. When a new pool is registered, a hook address can be provided to "link" the pool and the hook. At this stage, the onRegister function is invoked by the Vault, and it must return true for the registration to be successful. If the validation fails, the function should return false, preventing the registration from being completed.
+The `onRegister` function enables developers to implement custom validation logic to ensure the registration is valid. When a new pool is registered, a hook address can be provided to "link" the pool and the hook. At this stage, the `onRegister` function is invoked by the Vault, and it must return true for the registration to be successful. If the validation fails, the function should return false, preventing the registration from being completed.
 
 In this example we validate that the `factory` param forwarded from the Vault matches the `allowedFactory` set during the hook deployment.
 
@@ -129,7 +129,7 @@ function onComputeDynamicSwapFee(
 }
 ```
 
-Now we can implement the logic in the `onComputeDynamicSwapFee` function, which the Vault calls to retrieve the swap fee value. In our example, any veBal holder enjoys a 0.1% swap fee, instead of the default 10%. However, there are some nuances to consider in this implementation.
+Now we can implement the logic in the `onComputeDynamicSwapFee` function, which the Vault calls to retrieve the swap fee value. In our example, any veBal holder enjoys a 50% swap fee discount, instead of the default static swap fee. However, there are some nuances to consider in this implementation.
 
-To obtain the user's veBAL balance, we need the sender's address, which we can retrieve by calling `getSender()` on the router. This relies on the router returning the correct address, so it's crucial to ensure the router is "trusted" (any contract can act as a [Router](/concepts/router/overview.html#routers)). In our example we passed a trusted `_router` address which is saved during the hook deployment
+To obtain the user's veBAL balance, we need the sender's address, which we can retrieve by calling `getSender()` on the router. This relies on the router returning the correct address, so it's crucial to ensure the router is "trusted" (any contract can act as a [Router](/concepts/router/overview.html#routers)). In our example we passed a trusted `_router` address which is saved during the hook deployment.
 
