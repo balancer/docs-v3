@@ -37,8 +37,8 @@ export default defineUserConfig({
 
   // configure default theme
   theme: balancerTheme({
-    logo: '/images/logo-light.svg',
-    logoDark: '/images/logo-dark.svg',
+    logo: '/images/logo-balancer-v3-docs.svg',
+    logoDark: '/images/logo-balancer-v3-docs-dark.svg',
     repo: 'balancer/docs-v3',
     docsBranch: 'v3-outline',
     docsDir: 'docs',
