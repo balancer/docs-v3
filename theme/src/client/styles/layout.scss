@@ -24,9 +24,9 @@ html {
   right: 0;
   height: var(--navbar-height);
   box-sizing: border-box;
-  border-bottom: 1px solid var(--c-border);
   background-color: var(--c-bg-navbar);
   transition: background-color var(--t-color), border-color var(--t-color);
+  box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.1);
 }
 
 .right-anchor {
