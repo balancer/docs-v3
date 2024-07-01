@@ -77,7 +77,7 @@ On pool [register](https://github.com/balancer/balancer-v3-monorepo/blob/main/pk
 To define a token with a rate, specify the token type as  `TokenType.WITH_RATE`. Additionally, you must provide a `rateProvider` address that implements the [`IRateProvider`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IRateProvider.sol) interface. Refer to [Token types](/concepts/vault/token-types.html) for a detailed explanation on each token type.
 
 ### Rate scaling usage
-Rate scaling is used on every `swap`, `addLiqudity` and `removeLiquidity` operation. If the token was registered as `TokenType.WITH_RATE`, an external call to the Rate Provider is made via `getRate`. If the `TokenType.STANDARD` was selected, the rate is always `1e18`. These rates are used to upscale the `amountGiven` in the Vault primitives.
+Rate scaling is used on every `swap`, `addLiquidity` and `removeLiquidity` operation. If the token was registered as `TokenType.WITH_RATE`, an external call to the Rate Provider is made via `getRate`. If the `TokenType.STANDARD` was selected, the rate is always `1e18`. These rates are used to upscale the `amountGiven` in the Vault primitives.
 :::info
 1. With a swap, the known token amount is given in native decimals as [`amountGivenRaw`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L183)
 2. [`AmountGivenRaw` is upscaled](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/Vault.sol#L303-L320)

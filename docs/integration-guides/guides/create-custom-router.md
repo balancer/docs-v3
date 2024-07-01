@@ -12,8 +12,8 @@ A custom Router is a smart contract which interacts with the Balancer Vault and 
 - DeFi projects looking to provide liquidity on Balancer in custom proportions across multiple pools with more granular control metrics as part of the liquidity provisioning
 - DeFi projects looking to enhance the liquidity mining experience for LPs by introducing a better staking & migration flow.
 
-The main work custom routers in the outlined examples above have in commin is that:
-- They utilize multiple Vault interactions based on the required usecase
+The main work custom routers in the outlined examples above have in common is that:
+- They utilize multiple Vault interactions based on the required use-case
 - They add additional control flows & external interactions to the Router smart contract for granular liquidity operations
 
 ## Usage
@@ -45,7 +45,7 @@ interface IMockLiquidityGauge {
  * @title MigrationRouter
  * @notice Router for migrating liquidity from one pool to another and staking the new BPT
  * @dev This contract utilizes proportional remove liquidity and unbalanced add liquidity to ensure
- * accrued credit on withdrawl is perfectly canceled out via debt accrued on the add liquidity operation, ensuring no
+ * accrued credit on withdrawal is perfectly canceled out via debt accrued on the add liquidity operation, ensuring no
  * ERC20 Tokens (Except the BPT) need to be transferred.
  */
 contract MigrationRouter {

@@ -195,7 +195,7 @@ Internally, the SDK subtracts 1% from the query output, as shown in `Slippage.ap
 /**
  * Applies slippage to an amount in a given direction
  *
- * @param amount amout to apply slippage to
+ * @param amount amount to apply slippage to
  * @param direction +1 adds the slippage to the amount, and -1 will remove the slippage from the amount
  * @returns
  */

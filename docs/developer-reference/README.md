@@ -4,7 +4,7 @@ order: 0
 ---
 # Developer Reference
 
-For the most common usecases the APIs of interest will be the [Router](./contracts/router-api.md) or the [BatchRouter](./contracts/batch-router-api.md).
+For the most common use cases the APIs of interest will be the [Router](./contracts/router-api.md) or the [BatchRouter](./contracts/batch-router-api.md).
 
 We also provide a [JS/TS SDK](./sdk/README.md) to assist with interacting with the Balancer Protocol.
 

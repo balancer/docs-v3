@@ -64,7 +64,7 @@ function removeLiquidityFromBuffer(
 
 
 ## Using a buffer to swap. 
-The swapper has the responsibility to decide whether a specific swap route should use Buffers by indicating if a given `pool` is a buffer. Rember: You can always use a buffer even it is does not have liquidity (instead it will simply wrap or unwrap). This is done by setting the boolean entry in the `SwapPathStep` struct.
+The swapper has the responsibility to decide whether a specific swap route should use Buffers by indicating if a given `pool` is a buffer. Remember: You can always use a buffer even it is does not have liquidity (instead it will simply wrap or unwrap). This is done by setting the boolean entry in the `SwapPathStep` struct.
 
 The `pool` param in this particular case is the wrapped Tokens entrypoint. Meaning the address where a user would call deposit in. In the case of Aave it would the waUSDC. 
 ``` solidity

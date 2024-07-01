@@ -401,7 +401,7 @@ These settings get passed into the [pool registration](/developer-reference/cont
 
 When deploying your pool, there are three required steps that must be taken, in order:
 
-1. Deploy the pool contract to the desired network, ensuring that the correct `vault` is provided. The address of the deployed contract will be needed in step `2` and `3`. Offical deployments can be found [here](/reference/contracts/).
+1. Deploy the pool contract to the desired network, ensuring that the correct `vault` is provided. The address of the deployed contract will be needed in step `2` and `3`. Official deployments can be found [here](/reference/contracts/).
 2. Call [`vault.registerPool()`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L77). Register will identify the pool with the vault and allow you to define token config, hook support, pause windows, and custom liquidity operation support.
 3. Call [`vault.initialize()`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L110). Initialize will perform any pool specific setup and seed the pool with initial liquidity, enabling swaps and normal liquidity operations.
 

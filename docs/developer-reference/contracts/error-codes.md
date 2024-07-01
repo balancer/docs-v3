@@ -142,8 +142,8 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 ## StableMath
 | Error                         | Comment                                         |
 | ----------------------------- | ----------------------------------------------- |
-| StableInvariantDidntConverge()| The iterations to calculate the invariant didn't converge |
-| StableGetBalanceDidntConverge()| The iterations to calculate the balance didn't converge |
+| StableInvariantDidNotConverge()| The iterations to calculate the invariant didn't converge |
+| StableGetBalanceDidNotConverge()| The iterations to calculate the balance didn't converge |
 
 ## Weighted 
 
