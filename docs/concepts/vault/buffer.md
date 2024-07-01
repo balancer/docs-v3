@@ -153,7 +153,7 @@ Balances of pool & buffers before the batchswap:
 
 ### Balances without enough buffer liquidity available in DAI - waDAI buffer
 
-Consider now an EXACT_IN trade of 60k DAI to USDC. The DAI - waDAI buffer does not have enough liquidity to support the trade from it's reserves, so it calls into the waDAI contract to wrap DAI to waDAI (amount) and additionally rebalances the buffer to balanced reserves.
+Consider now an EXACT_IN trade of 60k DAI to USDC. The DAI - waDAI buffer does not have enough liquidity to support the trade from its reserves, so it calls into the waDAI contract to wrap DAI to waDAI (amount) and additionally rebalances the buffer to balanced reserves.
 
 | DAIBufferBalance before Swap         | DAIBufferBalance after Swap                                              | waDAIBufferBalance before Swap         | waDAIBufferBalance after Swap |
 | --------                             | -----------------------------------------------------                    | --------                               | -  |
