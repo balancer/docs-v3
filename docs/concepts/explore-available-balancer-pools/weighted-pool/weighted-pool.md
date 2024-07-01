@@ -10,13 +10,16 @@ references:
 
 ## Overview
 
-Weighted Pools are an extension of the classical $x * y = k$ AMM pools popularized by Uniswap v1. Weighted Pools use [Weighted Math](./weighted-math.md), which makes them great for general cases, including tokens that don't necessarily have any price correlation (ex. DAI/WETH). Unlike pools in other AMMs that only provide 50/50 weightings, Balancer Weighted Pools enable users to build pools with more than two tokens and custom weightings, such as pools with 80/20 or 60/20/20 weightings.
+Weighted Pools are an extension of the classical $x * y = k$ AMM pools popularized by Uniswap v1. Weighted Pools use [Weighted Math](./weighted-math.md), which makes them great for general cases, including tokens that don't necessarily have any price correlation (ex. DAI/WETH). Unlike pools in other AMMs that only provide 50/50 weightings, Balancer Weighted Pools enable users to build pools with more than two tokens and custom weights, such as pools with 80/20 or 60/20/20 weights.
 
 ::: info info
-For performance reasons Balancer V3 weighted pools have constants defined, which are enforced during pool operation.
+For performance reasons, Balancer V3 pools are limited at the Vault level to 4 tokens.
+Weighted Pools have additional security constraints based on Weighted Math. (These are the same as in V2.)
+
 - The minimum token weight is 1%
-- The maximum tokens are 4
-- Swaps cannot be greater than 30% of pool balance
+- Weights must sum to 100%
+- Swaps amounts cannot exceed 30% of the token balance
+- The invariant cannot decrease below 70% or increase beyond 300% on liquidity operations
 :::
 
 ::: chart Weighted Pool
@@ -56,10 +59,10 @@ For performance reasons Balancer V3 weighted pools have constants defined, which
 
 Weighted Pools allow users to choose their levels of exposure to certain assets while still maintaining the ability to provide liquidity. The higher a token's weight in a pool, the less impermanent loss it will experience in the event of a price surge.
 
-For example if a user wants to provide liquidity for WBTC and WETH, they can choose the weight that most aligns with their strategy. A pool more heavily favoring WBTC implies they expect bigger gains for WBTC, while a pool more heavily favoring WETH implies bigger gains for WETH. An evenly balanced pool is a good choice for assets that are expected to remain proportional in value in the long run.
+For example, if a user wants to provide liquidity for WBTC and WETH, they can choose the weight that most aligns with their strategy. A pool more heavily favoring WBTC implies they expect bigger gains for WBTC, while a pool more heavily favoring WETH implies bigger gains for WETH. An evenly balanced pool is a good choice for assets whose value is expected to remain proportional in the long run.
 
 ### Impermanent Loss
 
 [Impermanent Loss](./impermanent-loss.md) is the difference in value between holding a set of assets and providing liquidity for those same assets.
 
-For pools that heavily weight one token over another, there is far less impermanent loss, but this doesn't come for free; very asymmetric pools do have higher slippage when making swaps due to the fact that one side has much less liquidity. 80/20 pools have emerged as a happy medium when balancing liquidity an Impermanent Loss mitigation.
+For pools that heavily weight one token over another, there is far less impermanent loss, but this doesn't come for free: very asymmetric pools do have higher slippage on swaps, due to the fact that one side has much less liquidity. 80/20 pools have emerged as a happy medium, combining optimistic liquidity provision with Impermanent Loss mitigation.
