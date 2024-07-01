@@ -22,7 +22,7 @@ table {
     min-width: 200px;
   }
   tbody tr:nth-child(odd) {
-    background-color: #d3d3d3;    
+    background-color: var(--c-bg-light);    
   }
 }
 
