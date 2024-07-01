@@ -15,6 +15,7 @@ The detailed Router API description can be found in the [Router API section](/co
 - `queryRemoveLiquiditySingleTokenExactOut`
 - `queryRemoveLiquidityCustom`
 - `queryRemoveLiquidityCustom`
+- `queryRemoveLiquidityRecovery`
 - `querySwapSingleTokenExactIn`
 - `querySwapSingleTokenExactOut`
 - `querySwapExactIn`
@@ -33,8 +34,8 @@ The Router and Batch Router are primarily used as entrypoints for standard queri
 ### Quote
 This is facilitated through a `quote` mechanism. The concept of Transient Accounting enables the querying of complex Vault operations. To execute a query, the Router invokes the `quote` function on the Vault.
 
-The Vault mandates that any invocation of quote is executed as a staticcall within an offchain eth_call (ensured by the `query` modifier). Within the quote context, the Router has the flexibility to carry out a series of complex actions without the need to settle any debt.
+The Vault requires that any invocation of `quote` be executed as a staticcall (ensured by the `query` modifier). Within the quote context, the Router has the flexibility to carry out a series of complex actions without the need to settle any debt.
 
 ### quoteAndRevert
 
-Since `quote` changes the Vault state some queries combination are not possible. For example if you wanted to quote `querySwapExactIn` for POOL_A but also `querySwapExactOut` for POOL_A in it's initial state you have to use `quoteAndRevert` where the call always reverts and returns the result in the revert reason.
+Since `quote` changes the Vault state some query combinations are not possible. For example, if you wanted to quote `querySwapExactIn` for POOL_A but also `querySwapExactOut` for POOL_A in its initial state, you would have to use `quoteAndRevert`. In this variant, the call always reverts and returns the result in the revert data (similar to the V2 mechanism).

@@ -13,7 +13,7 @@ The Balancer protocol architecture comprises three primary components, each stra
 - Vault: Centralizes liquidity operations and manages accounting, streamlining the handling of token balances across multiple pools.
 - Pool: Exposes precise pool mathematics through invariant calculations, enabling developers to harness powerful functionalities without delving into intricate details.
 
-This design philosophy ensures that building pools on Balancer is intuitive and efficient, with the vault shouldering the burden of complexity, allowing pool creators to unleash their creativity without being encumbered by technical intricacies.
+This design philosophy ensures that building pools on Balancer is intuitive and efficient, with the vault shouldering the burden of complexity, allowing pool creators to unleash their creativity without worrying about accounting details.
 
 ## Transaction Flow
 
@@ -29,9 +29,9 @@ The following diagram illustrates the usage of each component during a transacti
 
 4. Once the required token amounts have been calculated, these amounts are recorded as either credit or debt in the Vault.
 
-5. To maintain accurate accounting and ensure the Vault's token balances align with it's internal accounting, the Router's accrued credit and/or debt must be settled by the end the transaction.
+5. To maintain accurate accounting and ensure the Vault's token balances align with its internal accounting, the Router's accrued credit and/or debt must be settled by the end of the transaction.
 
-6. In the final step, the Vault verifies that the Router has correctly settled its accrued debts and credits. The transaction will only succeed if everything has been accurately settled; otherwise, it will be reverted.
+6. In the final step, the Vault verifies that the Router has correctly settled its accrued debts and credits. The transaction will only succeed if everything has been accurately settled; otherwise, it will revert.
 
 ## Detailed overview
 
@@ -39,18 +39,18 @@ The following diagram illustrates the usage of each component during a transacti
 
 1. The Balancer Router is the main interface for interacting with Balancer, providing a user-friendly way to access functions and simplify interactions with the Vault. Any smart contract can serve as a Router, tailored to the specific use case.
 
-2. The Router calls the Vault's `unlock` method and opens up the vault to record debt & credits based on liquidity operations. This allows operations on the Vault to be combined atomically and still ensure correct accounting.
+2. The Router calls the Vault's `unlock` method and opens up the vault to record debts & credits based on liquidity or swap operations. This allows operations on the Vault to be combined atomically and still ensure correct accounting.
 
 3. With the Vault unlocked, the Vault calls back into the Router. For example, in the case of a swap action, the Vault calls the Router's specific action hook implementation, such as `swapSingleTokenHook`, and passes the initial function payload from step 1 back to the Router to continue the regular transaction flow.
 
-4. Once the Router has unlocked the Vault, any address gains authorization to invoke the Vault's functions that require the Vault to be unlocked identifier by the `onlyWhenUnlocked` modifier. This mechanism guarantees the accurate allocation of debt and credit. The inputs from step 1 are passed to the Vault's core functions, such as swap.
+4. Once the Router has unlocked the Vault, any address may invoke Vault functions that require the Vault to be unlocked (i.e., those with the `onlyWhenUnlocked` modifier). This mechanism guarantees the accurate allocation of debt and credit.
 
-5. Each primitive operation performed on the Vault triggers the execution of either the `computeInvariant` or `computeBalance` functions in the pool. These functions calculate the tokens that need to be deposited into or withdrawn from the Vault. The outcomes of these calculations are attributed as either debt or credit, which must be settled at a later stage. Additionally, the required amount of Balancer Pool Tokens (BPT) is minted or burned accordingly.
+5. Each primitive operation performed on the Vault triggers the execution of either the `computeInvariant` or `computeBalance` function, defined by the pool. These functions calculate the tokens that need to be deposited into or withdrawn from the Vault. The outcome of these calculations is allocated to either debt or credit, which must be settled at a later stage. Additionally, the required amount of Balancer Pool Tokens (BPT) is minted or burned accordingly. (Note that for security reasons, BPT tokens do not participate in transient accounting.)
 
-6. Pools can be extended with standalone hooks contracts that can be leveraged at different stages of the pool's lifecycle. These hooks contracts can be called either before or after a pool operation, depending on how the pool is configured during deployment. By utilizing hooks, developers can customize and enhance the functionality of pools, enabling the integration of features like oracles or time-weighted average market maker capabilities.      
+6. Pools can be extended with standalone hook contracts that can be leveraged at different stages of the pool's lifecycle. These hook contracts can be called either before or after a pool operation, depending on how the pool is configured during deployment. Using hooks, developers can customize and enhance the functionality of pools, enabling the integration of features like oracles or time-weighted average market makers.
 
-- 4(*) After debt & credit has been recorded for and shared with the Router by the Vault, the execution flow is passed to the Router. This allows the Router to be aware of the amounts owed. It is important to mention that the Router contract has the ability to retrieve the current debt and credit owed to the Vault at any point during the execution by calling a specific function on the Vault.
+7. After debts & credits have been recorded by the Vault, the execution flow is passed to the Router. This allows the Router to be aware of the amounts owed. It is important to mention that the Router contract has the ability to retrieve the current debt and credit owed to the Vault at any point during the execution by calling a specific function on the Vault.
 
-7. The Router is responsible for settling the remaining debt and credit, which must be done for the transaction to succeed. If ETH or WETH is to be used in the transaction, the Router wraps or unwraps Ether as the final step.
+8. The Router is responsible for settling the remaining debt and credit, which must be done for the transaction to succeed. ETH can be deposited to or withdrawn from any pool containing WETH. If ETH is used in the transaction, the wrapping or unwrapping is done by the Router. (Note that the Vault itself never uses Ether; trying to send ETH to the Vault will revert.)
 
-8. The final step involves verifying that all credit and debt accrued during the operations has been settled. Once the verification is complete, the Vault is locked again. If all debt has been correctly settled, the transaction will succeed; otherwise, it will be reverted..
+9. The final step involves verifying that all credit and debt accrued during the operations has been settled. Once the verification is complete, the Vault is locked again. If all debt has been correctly settled, the transaction will succeed; otherwise, it will revert.
