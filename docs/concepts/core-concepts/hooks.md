@@ -31,7 +31,7 @@ Hooks are implemented as standalone contracts that can have their own internal l
 
 Refer to the [Pool hooks API](/developer-reference/contracts/hooks-api.html) page for full function references.
 
-Each Hook contract must implement the `getHookFlags` function which returns a `HookFlags` and & `onRegister`indicating which hooks are supported:
+Each Hook contract must implement the `getHookFlags` function which returns a `HookFlags` indicating which hooks are supported:
 ```solidity
 /**
     * @notice Returns flags informing which hooks are implemented in the contract.
@@ -54,15 +54,15 @@ struct HookFlags {
     bool shouldCallAfterRemoveLiquidity;
 }
 ```
-This decision is final and cannot be changed for a pool, once it is registered as the information which pool uses which hook is stored in the Vault and set during pool registration. During pool registration, the Vault calls into the Hooks contract and [retrieves](https://github.com/balancer/balancer-v3-monorepo/blob/49553c0546121f7725e0b024b240d6e722f02538/pkg/vault/contracts/VaultExtension.sol#L198) the `HookFlags`. 
+This decision is final and cannot be changed for a pool once it is registered, as each pool's hook configuration is stored in the Vault and set at pool registration time. During pool registration, the Vault calls into the Hooks contract and [retrieves](https://github.com/balancer/balancer-v3-monorepo/blob/49553c0546121f7725e0b024b240d6e722f02538/pkg/vault/contracts/VaultExtension.sol#L198) the `HookFlags`. 
 
 :::info Hooks & reentrancy
-It is possible to reenter the Vault as part of a hook execution as only the respective internal function like `_swap`, `_addLiquidity` & `_removeLiquidity` are reentrancy protected.
+It is possible to reenter the Vault as part of a hook execution, as only the internal functions for each operation are reentrancy protected (e.g., `_swap`, `_addLiquidity` & `_removeLiquidity`).
 :::
 
 ## How Pools & Hooks Are Connected
 
-When a new pool is registered a hook contract address can be passed to "link" the pool and the hook (for no hook use the zero address). This configuration is immutable and cannot change after the pool is registered.
+When a new pool is registered a hook contract address can be passed to "link" the pool and the hook (use the zero address if there is no hook). This configuration is immutable and cannot change after the pool is registered.
 
 ![Vault-Pool-Hooks relation](/images/hooks.png)
 
@@ -77,10 +77,10 @@ function registerPool(
 ```
 
 ::: info
-If you want your Hooks contract to be used, you must implement `onRegister` as the Vault calls it during the [pool registration](https://github.com/balancer/balancer-v3-monorepo/blob/49553c0546121f7725e0b024b240d6e722f02538/pkg/vault/contracts/VaultExtension.sol#L184). The intention of `onRegister` is for the developer to verify if the pool should be allowed to use the hooks contract.
+If you want your Hooks contract to be used, you must implement `onRegister` as the Vault calls it during the [pool registration](https://github.com/balancer/balancer-v3-monorepo/blob/49553c0546121f7725e0b024b240d6e722f02538/pkg/vault/contracts/VaultExtension.sol#L184). The intention of `onRegister` is for the developer to verify that the pool should be allowed to use the hooks contract.
 :::
 
-Afterwards the pool is linked to the hook via the below `_hooksConfig` mapping.
+Afterwards the pool is linked to the hook via the `_hooksConfig` mapping, shown below.
 
 ```solidity
 mapping(address => HooksConfig) internal _hooksConfig;
@@ -91,7 +91,7 @@ mapping(address => HooksConfig) internal _hooksConfig;
 
 Remember that pool liquidity operations like `swap`, `addLiquidity` and `removeLiquidity` signal to the Vault the entries on the credit & debt tab. These entries can either be calculated as part of custom pool implementations or pools in combination with hooks. Both have the capability to determine the amount of credit & debt the vault adds to the tab.
 
-The reason hooks also have this capability is to change `amountCalculated` of already existing pool types from established factories. This allows for more fine grained pool tuning capabilities as part of the `after` hooks. 
+The reason hooks also have this capability is to change `amountCalculated` for existing pool types from established factories. This allows for more fine-grained pool tuning capabilities in `after` hooks. 
 ![Vault-Pool-Hooks relation](/images/hook-delta.png)
 
 

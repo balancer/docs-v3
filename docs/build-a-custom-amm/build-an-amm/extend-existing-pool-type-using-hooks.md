@@ -129,7 +129,7 @@ function onComputeDynamicSwapFee(
 }
 ```
 
-Now we can implement the logic in the `onComputeDynamicSwapFee` function, which the Vault calls to retrieve the swap fee value. In our example, any veBal holder enjoys a 0.1% swap fee, instead of the default 10%. However, there are some nuances to consider in this implementation.
+Now we can implement the logic in the `onComputeDynamicSwapFee` function, which the Vault calls to retrieve the swap fee value. In our example, any veBal holder enjoys a 50% swap fee discount, instead of the default static swap fee. However, there are some nuances to consider in this implementation.
 
-To obtain the user's veBAL balance, we need the sender's address, which we can retrieve by calling `getSender()` on the router. This relies on the router returning the correct address, so it's crucial to ensure the router is "trusted" (any contract can act as a [Router](/concepts/router/overview.html#routers)). In our example we passed a trusted `_router` address, which is saved during the hook deployment
+To obtain the user's veBAL balance, we need the sender's address, which we can retrieve by calling `getSender()` on the router. This relies on the router returning the correct address, so it's crucial to ensure the router is "trusted" (any contract can act as a [Router](/concepts/router/overview.html#routers)). In our example we passed a trusted `_router` address, which is saved during the hook deployment.
 
