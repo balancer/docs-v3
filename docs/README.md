@@ -2,7 +2,7 @@
 home: true
 title: Home
 sidebar: none
-heroText: Balancer V3 Docs
+heroText: Balancer v3 Docs
 heroImage: /images/backgrounds/circles.svg
 heroImageDark: /images/backgrounds/zen-main.svg
 homeImage: /images/hero-circles.png

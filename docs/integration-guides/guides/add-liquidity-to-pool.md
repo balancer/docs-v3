@@ -7,7 +7,7 @@ title: Add liquidity to a pool
 
 This guide demonstrates how to add liquidity to a pool. We will use the `addLiquidityUnbalanced` method, since it allows exact amounts of any pool token to be added to a pool, avoiding unnecessary dust in the user's wallet. See the [Router API](/developer-reference/contracts/router-api.html) for other supported add methods.
 
-_This guide is for adding liquidity to Balancer V3. If you're looking to add liquidity to a Balancer V2 pool, start [here](https://docs.balancer.fi/guides/builders/join-pool.html)._
+_This guide is for adding liquidity to Balancer v3. If you're looking to add liquidity to a Balancer v2 pool, start [here](https://docs.balancer.fi/guides/builders/join-pool.html)._
 
 ## Core Concepts
 
@@ -63,7 +63,7 @@ import {
 const chainId = ChainId.MAINNET;
 const userAccount = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
 const rpcUrl = 'RPC_END_POINT'
-// Balancer V3 uses the pool address as the poolId.
+// Balancer v3 uses the pool address as the poolId.
 const pool = '0x1e5b830439fce7aa6b430ca31a9d4dd775294378';
 const amountsIn: InputAmount[] = [
   {

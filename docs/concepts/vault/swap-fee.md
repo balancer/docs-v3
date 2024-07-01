@@ -20,7 +20,7 @@ Users who have been granted authorization have the capability to set a fixed swa
 
 If users prefer not to have the swap fee of a pool controlled by Balancer governance (through the `Authorizer`), they can opt out by providing a non-zero address for the `swapManager`. This address could be a multi-sig or custom contract.
 
-Unlike in V2, V3 does not impose limits on the swap fee percentage at the Vault level. Rather, these limits are set at the pool level (0.0001% - 10% for standard Balancer Weighted and Stable pools.)
+Unlike in v2, v3 does not impose limits on the swap fee percentage at the Vault level. Rather, these limits are set at the pool level (0.0001% - 10% for standard Balancer Weighted and Stable pools.)
 
 ## Swap fees by pool type.
 Different types of pools can have varying minimum and maximum swap fees. These variations are determined by the mathematical security properties and specific product requirements. Maximum and minimum swap fees are set on a per pool basis implemented via the `ISwapFeePercentageBounds` interface, which is inherited by `IBasePool`:

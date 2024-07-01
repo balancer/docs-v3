@@ -7,7 +7,7 @@ title: Swapping with the Balancer Smart Order Router and SDK
 
 This guide showcases the capabilities of the Balancer Smart Order Router (SOR) accessible through the Balancer API, focusing on its ability to identify optimal swap paths for a given token pair. Subsequently, we explore the process of utilizing the SDK to seamlessly create and execute swap transactions.
 
-_This guide uses the Balancer API SOR which will find the best result using V2 and V3 liquidity. The SDK supports both._
+_This guide uses the Balancer API SOR which will find the best result using v2 and v3 liquidity. The SDK supports both._
 
 ```typescript
 import {
@@ -43,7 +43,7 @@ const deadline = 999999999999999999n; // Deadline for the swap, in this case inf
 const slippage = Slippage.fromPercentage("0.1"); // 0.1%
 const swapAmount = TokenAmount.fromHumanAmount(tokenIn, "1.2345678910");
 
-// API is used to fetch best swap paths from available liquidity across V2 & V3
+// API is used to fetch best swap paths from available liquidity across v2 & v3
 const balancerApi = new BalancerApi(
     "https://backend-v3-canary.beets-ftm-node.com/graphql",
     chainId
@@ -76,7 +76,7 @@ const updated = await swap.query(RPC_URL) as ExactInQueryOutput;
 console.log(`Updated amount: ${updated.expectedAmountOut}`);
 
 let buildInput: SwapBuildCallInput;
-// In V2 the sender/recipient can be set, in V3 it is always the msg.sender
+// In v2 the sender/recipient can be set, in v3 it is always the msg.sender
 if (swap.vaultVersion === 2) {
     buildInput = {
         slippage,
@@ -149,7 +149,7 @@ const sorPaths = await balancerApi.sorSwapPaths.fetchSorSwapPaths({
 To see the full query used to fetch pool state refer to the code [here](https://github.com/balancer/b-sdk/blob/main/src/data/providers/balancer-api/modules/sorSwapPaths/index.ts#L19).
 
 :::tip Liquidity Source
-By default the API will return the swap that gives the best result from either V2 or V3 liquidity. The version can be forced by setting the optional `fetchSorSwapPaths`, `useVaultVersion` input parameter.
+By default the API will return the swap that gives the best result from either v2 or v3 liquidity. The version can be forced by setting the optional `fetchSorSwapPaths`, `useVaultVersion` input parameter.
 :::
 
 ### Queries and safely setting slippage limits
@@ -186,12 +186,12 @@ public applyTo(amount: bigint, direction: 1 | -1 = 1): bigint {
 }
 ```
 
-::: tip V2 vs V3 differences
-In Balancer V2 the swap functions required the user to define the `sender` and `recipient` as part of the [FundManagement](https://docs.balancer.fi/reference/swaps/batch-swaps.html#fundmanagement-struct) parameter. In V3 this is no longer an option and the msg.sender is always the sender/recipient. `swap.vaultVersion` is used to correctly construct the parameters for the `buildCall` function:
+::: tip v2 vs v3 differences
+In Balancer v2 the swap functions required the user to define the `sender` and `recipient` as part of the [FundManagement](https://docs.balancer.fi/reference/swaps/batch-swaps.html#fundmanagement-struct) parameter. In v3 this is no longer an option and the msg.sender is always the sender/recipient. `swap.vaultVersion` is used to correctly construct the parameters for the `buildCall` function:
 
 ```typescript
 let buildInput: SwapBuildCallInput;
-// In V2 the sender/recipient can be set, in V3 it is always the msg.sender
+// In v2 the sender/recipient can be set, in v3 it is always the msg.sender
 if (swap.vaultVersion === 2) {
     buildInput = {
         slippage,

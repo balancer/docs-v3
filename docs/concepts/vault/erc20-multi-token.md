@@ -5,9 +5,9 @@ order: 2
 
 # ERC20MultiToken
 
-ERC20MultiToken was inspired by [ERC1155](https://docs.openzeppelin.com/contracts/3.x/erc1155), but customized for Balancer V3.
+ERC20MultiToken was inspired by [ERC1155](https://docs.openzeppelin.com/contracts/3.x/erc1155), but customized for Balancer v3.
 At a high level, it allows the [Balancer Vault](/concepts/vault) full control over Balancer Pool Token (BPT) accounting, enabling it to both mint and burn BPT directly.
-By centralizing both token and BPT accounting in the vault, Balancer V3 ensures atomic updates to critical pool state. In contrast to ERC1155, ERC20MultiToken allows
+By centralizing both token and BPT accounting in the vault, Balancer v3 ensures atomic updates to critical pool state. In contrast to ERC1155, ERC20MultiToken allows
 Balancer Pool Tokens to be fully ERC20-compliant, supporting composability.
 
 The full implementation of ERC20MultiToken can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/token/ERC20MultiToken.sol).

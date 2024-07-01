@@ -38,4 +38,4 @@ The Vault requires that any invocation of `quote` be executed as a staticcall (e
 
 ### quoteAndRevert
 
-Since `quote` changes the Vault state some query combinations are not possible. For example, if you wanted to quote `querySwapExactIn` for POOL_A but also `querySwapExactOut` for POOL_A in its initial state, you would have to use `quoteAndRevert`. In this variant, the call always reverts and returns the result in the revert data (similar to the V2 mechanism).
+Since `quote` changes the Vault state some query combinations are not possible. For example, if you wanted to quote `querySwapExactIn` for POOL_A but also `querySwapExactOut` for POOL_A in its initial state, you would have to use `quoteAndRevert`. In this variant, the call always reverts and returns the result in the revert data (similar to the v2 mechanism).

@@ -7,7 +7,7 @@ title: Remove liquidity from a pool
 
 This guide demonstrates how to remove liquidity from a pool. We will use the preferred function for removing liquidity, `removeLiquidityProportional`. Tokens are removed from the pool in proportional amounts, causing zero price impact and avoiding the swap fee charged when exiting non-proportional. Specifying an exactBptAmountIn ensures that the user will not be left with any dust. See the [Router API](../router/overview.html) for other supported remove methods.
 
-_This guide is for removing liquidity to Balancer V3. If you're looking to remove liquidity from a Balancer V2 pool, start [here](https://docs.balancer.fi/guides/builders/exit-pool.html)._
+_This guide is for removing liquidity to Balancer v3. If you're looking to remove liquidity from a Balancer v2 pool, start [here](https://docs.balancer.fi/guides/builders/exit-pool.html)._
 
 ## Core Concepts
 
@@ -64,7 +64,7 @@ import {
 const chainId = ChainId.MAINNET;
 const userAccount = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
 const rpcUrl = "RPC_END_POINT";
-// Balancer V3 uses the pool address as the poolId.
+// Balancer v3 uses the pool address as the poolId.
 const pool =
   "0x1e5b830439fce7aa6b430ca31a9d4dd775294378";
 const slippage = Slippage.fromPercentage("1"); // 1%

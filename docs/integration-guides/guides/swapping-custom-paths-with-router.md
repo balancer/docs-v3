@@ -9,7 +9,7 @@ This guide illustrates the process of executing swaps through the router once sw
 
 _To use the Balancer Smart Order Router to find efficient swap paths for a pair see [this guide](./swaps-with-sor-sdk.md)._
 
-_This guide is for Swapping on Balancer V3. If you're looking to Swap using Balancer V2, start [here](https://docs.balancer.fi/reference/swaps/batch-swaps.html)._
+_This guide is for Swapping on Balancer v3. If you're looking to Swap using Balancer v2, start [here](https://docs.balancer.fi/reference/swaps/batch-swaps.html)._
 
 ## Core Concepts
 
@@ -173,7 +173,7 @@ const swapInput = {
 };
 ```
 We can infer:
-* The swap is of the GivenIn type and is valid for Balancer V3 on Sepolia
+* The swap is of the GivenIn type and is valid for Balancer v3 on Sepolia
 * There is one path swapping:
   * token: `0xb19382073c7a0addbb56ac6af1808fa49e377b75` to `0xf04378a3ff97b3f979a46f91f9b2d5a1d2394773`
   * using pool: `0x1e5b830439fce7aa6b430ca31a9d4dd775294378`
