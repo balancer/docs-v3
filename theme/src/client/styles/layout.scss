@@ -179,9 +179,6 @@ html {
     padding-left: var(--sidebar-width-mobile);
   }
 
-  .home, .home-hero {
-    padding-left: var(--sidebar-width-mobile);
-  }
 }
 
 // wide mobile
@@ -197,9 +194,8 @@ html {
   }
 
   .home {
-    padding-left: 1rem;
+    padding-left: 0;
   }
-  
 
   .theme-container {
     &.sidebar-open {

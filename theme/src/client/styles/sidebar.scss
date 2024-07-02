@@ -97,7 +97,7 @@
 
   a:hover,
   a.active:hover {
-    color: var(--c-brand-hover-accent);
+    color: var(--c-brand);
   }
 
   a.right-anchor-heading.active {
@@ -106,7 +106,7 @@
 
 
   a.active {
-    color: var(--c-brand-light);
+    color: var(--c-brand-hover-accent);
     font-weight: 500;
   }
 

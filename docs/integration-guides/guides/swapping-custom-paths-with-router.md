@@ -205,7 +205,7 @@ Internally, the SDK subtracts 1% from the query output, as shown in `Slippage.ap
 /**
  * Applies slippage to an amount in a given direction
  *
- * @param amount amout to apply slippage to
+ * @param amount amount to apply slippage to
  * @param direction +1 adds the slippage to the amount, and -1 will remove the slippage from the amount
  * @returns
  */
@@ -448,7 +448,7 @@ struct SwapPathExactAmountIn {
 * each `path` defines a `minAmountOut`. If the amount of `tokenOut` is less than this (e.g. because of slippage) the transaction will revert 
 * pool add/remove operations can be included in the path by using a pool address as tokenIn/Out
   * tokenIn == pool: router will remove liquidity from pool to a single token, `tokenOut`
-  * tokenOut == pool: router will add liqudity using `tokenIn`
+  * tokenOut == pool: router will add liquidity using `tokenIn`
 
 
 #### Javascript

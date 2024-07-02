@@ -87,7 +87,7 @@ mapping(address => HooksConfig) internal _hooksConfig;
 ```
 
 
-## Hook Deltas - using hooks to change `amountCalculated`.
+## Adjusted amounts - using hooks to change `amountCalculated`.
 
 Remember that pool liquidity operations like `swap`, `addLiquidity` and `removeLiquidity` signal to the Vault the entries on the credit & debt tab. These entries can either be calculated as part of custom pool implementations or pools in combination with hooks. Both have the capability to determine the amount of credit & debt the vault adds to the tab.
 

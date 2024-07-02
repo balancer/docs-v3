@@ -41,7 +41,7 @@
   width: 100%;
   background-size: cover;
   background-position: center;
-  text-align: center;  
+  text-align: center;
 
   img {
     max-width: 100%;
@@ -54,6 +54,10 @@
     font-size: 3rem;
     color: #fff;
     line-height: 1;
+    padding: 0 1rem;
+  }
+  h2 {
+    border-color: transparent !important;
   }
 
   .home-eyebrow {    
@@ -122,6 +126,9 @@
   }
 }
 
+.home  h2 {
+  border-color: transparent !important;
+}
 
 .dark .home-hero .home-eyebrow {
   background: linear-gradient(90deg, hsla(244, 78%, 82%, 1) 0%, hsla(266, 37%, 85%, 1) 25%, hsla(0, 36%, 84%, 1) 50%, hsla(25, 73%, 70%, 1) 100%);
@@ -247,4 +254,9 @@
       }
     }
   }
+}
+
+
+.home .theme-default-content h2:first-child + p {
+  margin-top: 1rem;
 }

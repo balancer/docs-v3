@@ -71,7 +71,7 @@ const slippage = Slippage.fromPercentage("1"); // 1%
 
 // API can be used to fetch relevant pool data
 const balancerApi = new BalancerApi(
-  "https://backend-v3-canary.beets-ftm-node.com/graphql",
+  "https://api-v3.balancer.fi/",
   chainId
 );
 const poolState: PoolState = await balancerApi.pools.fetchPoolState(pool);
@@ -161,7 +161,7 @@ The three main helper classes we use from the SDK are:
 In this example we use the BalancerApi `fetchPoolState` function to fetch the pool data required for the removeLiquidityProportional `poolState` parameter. 
 ```typescript
 const balancerApi = new BalancerApi(
-    'https://backend-v3-canary.beets-ftm-node.com/graphql',
+    'https://api-v3.balancer.fi/',
     chainId,
 );
 const poolState = await balancerApi.pools.fetchPoolState(pool);
@@ -195,7 +195,7 @@ Internally, the SDK subtracts 1% from the query output, as shown in `Slippage.ap
 /**
  * Applies slippage to an amount in a given direction
  *
- * @param amount amout to apply slippage to
+ * @param amount amount to apply slippage to
  * @param direction +1 adds the slippage to the amount, and -1 will remove the slippage from the amount
  * @returns
  */

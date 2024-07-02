@@ -40,7 +40,6 @@ onMounted(() => {
   </form>
 </template>
 
-
 <style>
 .search-input-wrapper .search-icon.search {
   z-index: 5;
@@ -49,7 +48,7 @@ onMounted(() => {
 .home .search-box {
   width: 100%;
   max-width: var(--search-box-max-width);
-  margin: 20px auto 50px;
+  margin: 40px auto 40px;
 }
 
 .home .search-input-wrapper .search-icon.search {

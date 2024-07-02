@@ -29,7 +29,8 @@ const NavbarBrandLogo: FunctionalComponent = () => {
   const img = h('img', {
     class: 'logo',
     src: withBase(navbarBrandLogo.value),
-    alt: navbarBrandTitle.value,
+    alt: 'Balancer v3 Docs logo',
+    title: 'Balancer v3 Docs',
   });
   if (themeLocale.value.logoDark === undefined) {
     return img;
@@ -43,14 +44,5 @@ const NavbarBrandLogo: FunctionalComponent = () => {
 <template>
   <RouterLink :to="navbarBrandLink">
     <NavbarBrandLogo />
-
-    <span
-      v-if="navbarBrandTitle"
-      class="site-name"
-      :class="{ 'can-hide': navbarBrandLogo }"
-    >
-      {{ navbarBrandTitle }}
-    </span>
-    <span v-if="navbarBrandTitle" class="site-name-docs"> V3 DOCS </span>
   </RouterLink>
 </template>

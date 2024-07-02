@@ -13,7 +13,7 @@ html.dark {
   --c-text: #E5D3BE; // equivalent to text.primary
   --c-text-light: #A0AEC0; // equivalent to text.secondary
   --c-text-lighter: #909BAD; // equivalent to text.secondaryAlpha50
-  --c-text-lightest: #728097; // equivalent to text.secondaryGradient
+  --c-text-lightest: #8A96A8; // equivalent to text.secondaryGradient
   --c-text-code: #f08d49;
 
   // link colors
@@ -30,9 +30,9 @@ html.dark {
   --c-sidebar-heading: #fff;
 
   // Table colors
-  --table-bg: rgba(49, 55, 63, 0.8);
-  --table-bg-alt: rgba(51, 65, 85, 0.8);
-  --table-text: #728097;
+  --table-bg: #31373F;
+  --table-bg-alt: #31373F;
+  --table-text: var(--c-text-lightest);
   --table-border: rgba(62, 76, 90, 0.8);
 
   // Table header colors

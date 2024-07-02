@@ -59,7 +59,7 @@ export default defineComponent({
 }
 
 .group:hover .header {
-  color: var(--c-brand-hover-accent);
+  color: var(--c-brand);
 }
 
 .card-link img {
