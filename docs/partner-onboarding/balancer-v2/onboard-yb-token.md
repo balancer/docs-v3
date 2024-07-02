@@ -32,7 +32,7 @@ For security reasons and to make sure your rate provider adheres to
 Balancer’s standards, please initiate a rate provider review [here](https://github.com/balancer/code-review/issues)
 
 ::: info
-Depending on the complexit of your rate provider, reviews usually take up to 1-2 weeks for Balancer labs to complete.
+Depending on the complexity of your rate provider, reviews usually take up to 1-2 weeks for Balancer labs to complete.
 Consult the [issue board](https://github.com/balancer/code-review/issues) for the review status
 :::
 
@@ -82,7 +82,7 @@ For more details, consult our [gauge onboarding guide](./gauge-onboarding.md). T
 
 1. Post a proposal based on the gauge
    proposal [instruction set](https://forum.balancer.fi/t/instructions-overview/2674/2)
-2. Balancer contributors will make sure all criteria are met and post votes by Thurdsays
+2. Balancer contributors will make sure all criteria are met and post votes by Thursdays
 3. The voting round lasts from Thursday 8PM CET until the following Monday 8PM CET
 4. After a successful vote, an on-chain transaction to add gauges to the gauge controller has to be executed. This
    usually happens until Tuesday evening CET

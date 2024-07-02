@@ -112,7 +112,7 @@ This shows that even large impermanent losses can always be reversed through sub
 
 # 80/20 Pools
 
-Here we will examine how disproporionate pool weights affect the calculation of impermanent loss, using the same scenario described above, but for an 80/20 vs. a 50/50 pool.
+Here we will examine how disproportionate pool weights affect the calculation of impermanent loss, using the same scenario described above, but for an 80/20 vs. a 50/50 pool.
 
 <!-- prettier-ignore-start -->
 #### COMP WETH 80/20

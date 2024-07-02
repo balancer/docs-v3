@@ -5,7 +5,7 @@ description: Formula to calculate the annual percentage rate (APR) of gauge ince
 # APR Calculation
 
 ::: info
-Please note that for mainnet liquidity mining APRs are boostable, therefore a range of 1x to 2.5x of the calculated APR is possible.
+Please note that for mainnet liquidity mining APRs can be boosted, therefore a range of 1x to 2.5x of the calculated APR is possible.
 :::
 
 $$

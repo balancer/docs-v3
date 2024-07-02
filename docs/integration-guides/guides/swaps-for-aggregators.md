@@ -47,7 +47,7 @@ Dynamic Swap Fees and Hooks are still WIP and not finalised
   * The Vault uses the `_getSwapFeePercentage(PoolConfig memory config)` to fetch the swap fee from the pool. This function can implement arbitrary logic.
   * Even when a pool is set to use dynamic swap fees, it still maintains a static swap fee. However, this static fee is not utilized.
 
-The psuedo logic to determine how swap fee is calculated looks like:
+The pseudo logic to determine how swap fee is calculated looks like:
 ```
 swapFeePercentage =
      Pool has DynamicSwapFee => call DynamicSwapFeeHook in the pool
@@ -69,7 +69,7 @@ Checkout Javascript and Solidity examples [here](./swapping-custom-paths-with-ro
 
 ### Multi-path Swaps
 
-Swaps paths constucted of steps through multiple pools/tokens can be made using [swapExactIn](../../developer-reference/contracts/batch-router-api.md#swapexactin) and [swapExactOut](../../developer-reference/contracts/batch-router-api.md#swapexactout) functions.
+Swaps paths constructed of steps through multiple pools/tokens can be made using [swapExactIn](../../developer-reference/contracts/batch-router-api.md#swapexactin) and [swapExactOut](../../developer-reference/contracts/batch-router-api.md#swapexactout) functions.
 
 A `SwapPathStep` is defined as:
 ```
@@ -81,7 +81,7 @@ struct SwapPathStep {
 and paths can include add/remove liquidity steps by using the address of the respective pool. For example, the following `SwapPathExactAmountIn` would execute a swap of USDC to BAL then add liquidity to the 80/20 BAL/WETH pool.
 
 ```solidity
-// Note - psuedo code
+// Note - pseudo code
 SwapPathExactAmountIn {
     tokenIn: USDC
     // for each step:
