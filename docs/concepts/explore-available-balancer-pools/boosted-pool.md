@@ -13,7 +13,7 @@ Boosted Pools are a type of liquidity pool in which some or all of the tokens ca
 The main advantage of boosted pools in the Balancer ecosystem are:
 
 #### 100% yield bearing possibility
-Balancer V3 boosted pools allow for 100% of an LP position to be considered boosted, meaning held in a yield-bearing token. Prominent examples include bb-a-USD, which is a StablePool containing Aave yield-bearing DAI (`aDAI`), Aave yield-bearing USDC (`aUSDC`) and Aave yield-bearing USDT (`aUSDT`). The Balancer BatchRouter can handle user requests to trade among all these assets in a seamless and gas efficient manner (e.g., depositing and withdrawing underlying tokens DAI, USDC and USDT). The front end or aggregator can construct a batch swap with everything the router needs to perform the operations, including interacting with liquidity buffers (see below), and only wrapping or unwrapping when absolutely necessary.
+Balancer v3 boosted pools allow for 100% of an LP position to be considered boosted, meaning held in a yield-bearing token. Prominent examples include bb-a-USD, which is a StablePool containing Aave yield-bearing DAI (`aDAI`), Aave yield-bearing USDC (`aUSDC`) and Aave yield-bearing USDT (`aUSDT`). The Balancer BatchRouter can handle user requests to trade among all these assets in a seamless and gas efficient manner (e.g., depositing and withdrawing underlying tokens DAI, USDC and USDT). The front end or aggregator can construct a batch swap with everything the router needs to perform the operations, including interacting with liquidity buffers (see below), and only wrapping or unwrapping when absolutely necessary.
 
 #### Gas efficient swaps between boosted pool's base assets
 Boosted pools leverage the Vault's [liquidity buffers](/concepts/vault/buffer.html#erc4626-liquidity-buffers) concept to facilitate gas-efficient swaps between boosted pools. This allows LPs to maintain 100% boosted pool positions and still earn swap fees from base-asset to base-asset trades.
@@ -27,5 +27,5 @@ Boosted pools are an excellent method for introducing LSTs and yield-bearing tok
 ### Examples
 
 :::info
-Once V3 launches this will be updated.
+Once v3 launches this will be updated.
 :::

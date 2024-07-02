@@ -5,7 +5,7 @@ title: Security
 # Security
 
 :::info
-As the development of Balancer V3 is ongoing, this page will gradually be updated with more information.
+As the development of Balancer v3 is ongoing, this page will gradually be updated with more information.
 :::
 
 ## Bug Bounty
@@ -20,13 +20,13 @@ For security reports outside of the scope of the bug bounty program, please reac
 
 ## Audits
 
-Once audits for Balancer V3 have been finished, they are accessible here:
+Once audits for Balancer v3 have been finished, they are accessible here:
 
 | Scope                             | Company       | Report                                                                                                         |
 | --------------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------- |
 
 ## Code Immutability
-The core contracts that make up the Balancer V2 Protocol, such as the Vault and Pools (Weighted, Stable, LBP, Managed, Linear, etc), are immutable by design. Any pool updates are made by deploying brand new factories/pools and require users to electively migrate.
+The core contracts that make up the Balancer v2 Protocol, such as the Vault and Pools (Weighted, Stable, LBP, Managed, Linear, etc), are immutable by design. Any pool updates are made by deploying brand new factories/pools and require users to electively migrate.
 
 ## Balancer x Certora Accelerator
 

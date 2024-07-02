@@ -12,7 +12,7 @@ This class provides functionality to:
 * Perform on-chain queries to see the result of an addLiquidity operation
 * Build an addLiquidity transaction, with slippage, for a consumer to submit
 * Supported add types: SingleToken, Unbalanced, Proportional
-* Supports Balancer V2 & V3
+* Supports Balancer v2 & v3
 
 ### Example
 
@@ -82,7 +82,7 @@ This class provides functionality to:
 * Perform on-chain queries to see the result of an removeLiquidity operation
 * Build a removeLiquidity transaction, with slippage, for a consumer to submit
 * Supported remove types: Unbalanced, SingleTokenExactOutInput, SingleTokenExactInInput, Proportional
-* Supports Balancer V2 & V3
+* Supports Balancer v2 & v3
 
 ### Example
 
@@ -180,7 +180,7 @@ ___
 This class provides functionality to:
 * Perform on-chain queries to see the result of a Swap operation
 * Build a Swap transaction, with slippage, for a consumer to submit
-* Supports Balancer V2 & V3
+* Supports Balancer v2 & v3
 
 ### Example
 
@@ -323,7 +323,7 @@ ___
 ## PriceImpact
 
 This class provides helper functions to calculate Price Impact for add/remove/swap actions.
-* Supports Balancer V2 & V3
+* Supports Balancer v2 & v3
 
 ### Example
 
@@ -531,7 +531,7 @@ pools.fetchPoolState(id: string): Promise<PoolState>
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
-| id | string | ID of pool, V2=poolId, V3=address |
+| id | string | ID of pool, v2=poolId, v3=address |
 
 **Returns**
 
@@ -556,7 +556,7 @@ fetchPoolStateWithBalances(
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
-| id | string | ID of pool, V2=poolId, V3=address |
+| id | string | ID of pool, v2=poolId, v3=address |
 
 **Returns**
 
@@ -579,7 +579,7 @@ fetchNestedPoolState(id: string): Promise<NestedPoolState>
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
-| id | string | ID of pool, V2=poolId, V3=address |
+| id | string | ID of pool, v2=poolId, v3=address |
 
 **Returns**
 

@@ -5,7 +5,7 @@ title: Overview
 
 ## Routers
 
-In the Balancer V3 architecture, Routers serve as the pivotal interface for users, facilitating efficient interaction with the underlying Vault primitives. Rather than directly engaging with the Vault, users are encouraged to use Routers as their primary entry point. This approach streamlines operations and enhances flexibility by abstracting multi-step operations into simple user-facing functions.
+In the Balancer v3 architecture, Routers serve as the pivotal interface for users, facilitating efficient interaction with the underlying Vault primitives. Rather than directly engaging with the Vault, users are encouraged to use Routers as their primary entry point. This approach streamlines operations and enhances flexibility by abstracting multi-step operations into simple user-facing functions.
 
 Key Functions:
 * Aggregation of Operations: Routers excel at consolidating complex user interactions into specific single-purpose function calls. This encapsulation provides users with a seamless and intuitive experience.
