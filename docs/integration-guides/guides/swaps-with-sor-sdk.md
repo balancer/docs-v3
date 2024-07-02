@@ -45,7 +45,7 @@ const swapAmount = TokenAmount.fromHumanAmount(tokenIn, "1.2345678910");
 
 // API is used to fetch best swap paths from available liquidity across V2 & V3
 const balancerApi = new BalancerApi(
-    "https://backend-v3-canary.beets-ftm-node.com/graphql",
+    "https://api-v3.balancer.fi/",
     chainId
 );
 
@@ -135,7 +135,7 @@ The three main helper classes we use from the SDK are:
 In this example we use the BalancerApi `fetchSorSwapPaths` function to fetch the optimised swap paths for a token pair and swap amount. 
 ```typescript
 const balancerApi = new BalancerApi(
-    'https://backend-v3-canary.beets-ftm-node.com/graphql',
+    'https://api-v3.balancer.fi/',
     chainId,
 );
 const sorPaths = await balancerApi.sorSwapPaths.fetchSorSwapPaths({

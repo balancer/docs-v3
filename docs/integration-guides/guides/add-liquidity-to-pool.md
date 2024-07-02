@@ -81,7 +81,7 @@ const slippage = Slippage.fromPercentage('1'); // 1%
 
 // API can be used to fetch relevant pool data
 const balancerApi = new BalancerApi(
-    'https://backend-v3-canary.beets-ftm-node.com/graphql',
+    'https://api-v3.balancer.fi/',
     chainId,
 );
 const poolState = await balancerApi.pools.fetchPoolState(pool);
@@ -151,7 +151,7 @@ The three main helper classes we use from the SDK are:
 In this example we use the BalancerApi `fetchPoolState` function to fetch the pool data required for the addLiquidityUnbalanced `poolState` parameter. 
 ```typescript
 const balancerApi = new BalancerApi(
-    'https://backend-v3-canary.beets-ftm-node.com/graphql',
+    'https://api-v3.balancer.fi/',
     chainId,
 );
 const poolState = await balancerApi.pools.fetchPoolState(pool);
