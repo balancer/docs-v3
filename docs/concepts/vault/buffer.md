@@ -170,9 +170,6 @@ Consider now an EXACT_IN trade of 60k DAI to USDC. The DAI - waDAI buffer does n
 Even though the DAI - waDAI buffer did not have enough liquidity the trade was successfully routed via Balancer. The difference now is that the Vault utilized the buffer internal wrapping capability to wrap DAI into waDAI & rebalanced itself.
 
 
-:::info TODO
-add DAI - WETH swap route (where the last step is a trade with pool rather than buffer)
-:::
 
 <style scoped>
 table {
