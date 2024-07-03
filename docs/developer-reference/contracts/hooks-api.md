@@ -276,3 +276,10 @@ Called before `onBeforeSwap` if the pool has dynamic fees.
 |----------------|--------|----------------------------------------------------------|
 | success        | bool   | True if the pool wishes to proceed with settlement       |
 | dynamicSwapFee | uint256| Value of the swap fee                                    |
+
+<style scoped>
+table {
+    display: table;
+    width: 100%;
+}
+</style>

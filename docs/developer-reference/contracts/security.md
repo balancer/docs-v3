@@ -40,3 +40,10 @@ The Balancer x Certora Security Accelerator offers the following benefits:
 - Set up and introduction of Certora's formal verification Prover
 - $10.000 USD worth of credits for Certora's formal verification Prover
 - Integration assistance by Balancer on code functionality and business logic
+
+<style scoped>
+table {
+    display: table;
+    width: 100%;
+}
+</style>

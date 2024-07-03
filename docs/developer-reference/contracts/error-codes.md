@@ -197,10 +197,6 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | ----------------- | ----------------------------------------------- |
 | BalanceOverflow() | One of the balances is above the maximum value that can be stored |
 
-
-
-
-
 <style scoped>
 table {
     display: table;

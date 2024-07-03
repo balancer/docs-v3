@@ -34,3 +34,10 @@ If you have any questions/feedback on our dashboards, feel free to reach out by 
 | [Balancer v2 Revenues Overview](https://dune.com/balancer/v2-revenues) | Weekly swap fee revenues, LP revenues by pool and token                                                        | Pool ID, Start Date, End Date, blockchain, and Token Address |
 | [Protocol Fees](https://dune.com/balancer/protocol-fees) | Protocol Fees Collected per pool, blockchain, pool type, Fees Collected and BAL emissions per round, Core Pools Fees Collected per Epoch| Pool ID, Start Date, End Date, blockchain, Only Core Pools, Round ID, Fee Epoch |
 | [LSTs](https://dune.com/balancer/lst) | Liquidity, Volume, Fees Collected and Liquidity Utilization on LST Pools and tokens                                                       | Pool ID, Start Date, End Date, blockchain, and Token Address |
+
+<style scoped>
+table {
+    display: table;
+    width: 100%;
+}
+</style>

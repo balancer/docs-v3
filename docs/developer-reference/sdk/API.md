@@ -660,3 +660,10 @@ calculateProportionalAmounts(
 
 Amounts proportional to the reference amount.
 ___
+
+<style scoped>
+table {
+    display: table;
+    width: 100%;
+}
+</style>

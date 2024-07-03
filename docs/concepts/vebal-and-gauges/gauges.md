@@ -131,3 +131,11 @@ liquidityGauges(where:{
 ::: warning
 Be aware that if there are no tokens other than BAL for a given Gauge, the tokens array will come back empty.
 :::
+
+
+<style scoped>
+table {
+    display: table;
+    width: 100%;
+}
+</style>
