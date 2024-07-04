@@ -66,7 +66,7 @@ When a new pool is registered a hook contract address can be passed to "link" th
 
 ![Vault-Pool-Hooks relation](/images/hooks.png)
 
-The architecture shows that a hooks contract is a standalone contract, which can be used my multiple pools of the same type (WeightedPools) but also multiple pools of different pool types (WeightedPools, StablePools). The address of the hook is passed to the pool registration.
+The architecture shows that a hooks contract is a standalone contract, which can be used by multiple pools of the same type (WeightedPools) but also multiple pools of different pool types (WeightedPools, StablePools). The address of the hook is passed to the pool registration.
 
 ```solidity
 function registerPool(
