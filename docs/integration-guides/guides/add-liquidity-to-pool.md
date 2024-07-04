@@ -293,7 +293,7 @@ const tx = await router.addLiquidityUnbalanced(
 
 The following code snippet shows how to add liquidity from a smart contract.
 
-::: warning Queries cannot be used within the same block to set minBptAmountOut due to possible manipulation
+::: warning Queries should not be used onchain to set minAmountOut due to possible manipulation via frontrunning.
 :::
 
 ```solidity

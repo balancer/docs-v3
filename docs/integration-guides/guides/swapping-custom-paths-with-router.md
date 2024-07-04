@@ -354,7 +354,7 @@ const tx = await router.swapSingleTokenExactIn(
 
 #### Solidity
 
-::: warning Queries cannot be used within the same block to set minAmountOut due to possible manipulation
+::: warning Queries should not be used onchain to set minAmountOut due to possible manipulation via frontrunning.
 :::
 
 ```solidity
@@ -584,7 +584,7 @@ const tx = await router.swapExactIn(
 
 #### Solidity
 
-::: warning Queries cannot be used within the same block to set minAmountOut due to possible manipulation
+::: warning Queries should not be used onchain to set minAmountOut due to possible manipulation via frontrunning.
 :::
 
 ```solidity

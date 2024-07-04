@@ -303,7 +303,7 @@ const tx = await router.removeLiquidityProportional(
 
 The following code snippet shows how to remove liquidity from a smart contract.
 
-::: warning Queries cannot be used within the same block to set minAmountsOut due to possible manipulation
+::: warning Queries should not be used onchain to set minAmountOut due to possible manipulation via frontrunning.
 :::
 
 ```solidity
