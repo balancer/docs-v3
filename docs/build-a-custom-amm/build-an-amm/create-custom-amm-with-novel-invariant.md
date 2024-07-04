@@ -397,19 +397,15 @@ struct LiquidityManagement {
 These settings get passed into the [pool registration](/developer-reference/contracts/vault-api.html#registerpool) flow.
 
 
-## Deploy your pool
-
-When deploying your pool, there are three required steps that must be taken, in order:
-
-1. Deploy the pool contract to the desired network, ensuring that the correct `vault` is provided. The address of the deployed contract will be needed in step `2` and `3`. Official deployments can be found [here](/reference/contracts/).
-2. Call [`vault.registerPool()`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L77). Register will identify the pool with the vault and allow you to define token config, hook support, pause windows, and custom liquidity operation support.
-3. Call [`vault.initialize()`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L110). Initialize will perform any pool specific setup and seed the pool with initial liquidity, enabling swaps and normal liquidity operations.
-
-Creating pools via a factory contract is the suggested approach, however not mandatory. Balancer's off-chain infrastructure uses the `factory` address as a means to identify the `type` of pool, which is important for integration into the UI, SDK, external aggregators, etc.
-
 ## Testing your pool
 
 Depending on the combination of liquidity operations you allow for your pool you need to ensure the correct amount of BPT get's minted whenever a user adds/removes liquidity unbalanced (which calls into `computeInvariant`) and proportional adds/removes (which does not call into the pool and solely relies on [BasePoolMath.sol](https://github.com/balancer/balancer-v3-monorepo/blob/4864599800adc88d6a53f0a5b71c8352eac2f3a1/pkg/solidity-utils/contracts/math/BasePoolMath.sol#L7)). Let's say your pool has reserves of [100, 100] and an `addLiquidityProportional([50,50])` gets the user 100 BPT in return, if the user were to `addLiquidityUnbalanced([50,50])` you must ensure that the amount of BPT that gets minted is the same as in the `addLiquidityProportional([50,50])` operation. Consider also reading through [liquidity invariant approximation](/concepts/vault/liquidity-invariant-approximation.html) to get more context on various combination of pool operations.
+
+
+## Deploying your pool
+
+See the guide to [Deploy a Custom AMM Using a Factory](/build-a-custom-amm/build-an-amm/deploy-custom-amm-using-factory.html).
+
 
 <!---
 ### Balancer UI Support
