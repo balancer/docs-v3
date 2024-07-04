@@ -55,10 +55,10 @@ The majority of functions listed above either accrue debt (`_takeDebt`) or suppl
 
 ```solidity
 /**
- * @notice Retrieves the token delta for a specific user and token.
+ * @notice Retrieves the token delta for a specific token.
  * @dev This function allows reading the value from the `_tokenDeltas` mapping.
  * @param token The token for which the delta is being fetched
- * @return The delta of the specified token for the specified user
+ * @return The delta of the specified token
  */
 function getTokenDelta(IERC20 token) external view returns (int256);
 ```
