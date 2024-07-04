@@ -5,7 +5,7 @@ title: Integrating Balancer Liquidity For Swap Aggregators
 
 # Integrating Balancer Liquidity For Swap Aggregators
 
-This page serves as a central hub for aggregators seeking vital information and resources to seamlessly integrate with Balancer V3 liquidity. Should you require additional assistance or find any gaps in the provided information, our team is readily available to support you.
+This page serves as a central hub for aggregators seeking vital information and resources to seamlessly integrate with Balancer v3 liquidity. Should you require additional assistance or find any gaps in the provided information, our team is readily available to support you.
 
 ## Making Swaps
 
@@ -20,11 +20,11 @@ The core concepts of executing Swaps are the same for any programming language o
 * There are two subsets of a swap:
   * Single Swap: A swap, tokenIn > tokenOut, using a single pool. This is the most gas efficient option for a swap of this kind.
   * Multi-path Swaps: Swaps involving multiple paths but all executed in the same transaction. Each path can have its own (or the same) tokenIn/tokenOut.
-* Balancer V2 used the concept of poolIds, this is no longer used in V3 which always uses pool address 
+* Balancer v2 used the concept of poolIds, this is no longer used in v3 which always uses pool address 
 
 ### Balancer Routers
 
-In the Balancer V3 architecture, [Routers](../../concepts/router/overview.md) serve as the pivotal interface for users, facilitating efficient interaction with the underlying Vault primitives. Rather than directly engaging with the Vault, users are encouraged to utilize Routers as their primary entry point.
+In the Balancer v3 architecture, [Routers](../../concepts/router/overview.md) serve as the pivotal interface for users, facilitating efficient interaction with the underlying Vault primitives. Rather than directly engaging with the Vault, users are encouraged to utilize Routers as their primary entry point.
 
 ::: warning Note - the sender must approve the Vault (not the Router) for each swap input token
 :::
@@ -35,7 +35,7 @@ In the Balancer V3 architecture, [Routers](../../concepts/router/overview.md) se
 Dynamic Swap Fees and Hooks are still WIP and not finalised
 :::
 
-[Swap fees](../../concepts/vault/swap-fee.md) come in two different forms for V3 pools:
+[Swap fees](../../concepts/vault/swap-fee.md) come in two different forms for v3 pools:
 
 * [Static Swap Fee](../../concepts/vault/swap-fee.md#setting-a-static-swap-fee): 
   * Initially set as part of the pool registration. 
@@ -47,7 +47,7 @@ Dynamic Swap Fees and Hooks are still WIP and not finalised
   * The Vault uses the `_getSwapFeePercentage(PoolConfig memory config)` to fetch the swap fee from the pool. This function can implement arbitrary logic.
   * Even when a pool is set to use dynamic swap fees, it still maintains a static swap fee. However, this static fee is not utilized.
 
-The psuedo logic to determine how swap fee is calculated looks like:
+The pseudo logic to determine how swap fee is calculated looks like:
 ```
 swapFeePercentage =
      Pool has DynamicSwapFee => call DynamicSwapFeeHook in the pool
@@ -69,7 +69,7 @@ Checkout Javascript and Solidity examples [here](./swapping-custom-paths-with-ro
 
 ### Multi-path Swaps
 
-Swaps paths constucted of steps through multiple pools/tokens can be made using [swapExactIn](../../developer-reference/contracts/batch-router-api.md#swapexactin) and [swapExactOut](../../developer-reference/contracts/batch-router-api.md#swapexactout) functions.
+Swaps paths constructed of steps through multiple pools/tokens can be made using [swapExactIn](../../developer-reference/contracts/batch-router-api.md#swapexactin) and [swapExactOut](../../developer-reference/contracts/batch-router-api.md#swapexactout) functions.
 
 A `SwapPathStep` is defined as:
 ```
@@ -81,7 +81,7 @@ struct SwapPathStep {
 and paths can include add/remove liquidity steps by using the address of the respective pool. For example, the following `SwapPathExactAmountIn` would execute a swap of USDC to BAL then add liquidity to the 80/20 BAL/WETH pool.
 
 ```solidity
-// Note - psuedo code
+// Note - pseudo code
 SwapPathExactAmountIn {
     tokenIn: USDC
     // for each step:
@@ -113,9 +113,9 @@ Checkout Javascript and Solidity examples [here](./swapping-custom-paths-with-ro
 The API is currently a WIP and some info in this section is still a WIP
 :::
 
-The [Balancer API](../../data-and-analytics/data-and-analytics/balancer-api.md) can be used to retrieve a list of V3 pools and immutable data for calculating swaps. The API is running as a graphql server and is deployed at https://api-v3.balancer.fi.
+The [Balancer API](../../data-and-analytics/data-and-analytics/balancer-api.md) can be used to retrieve a list of v3 pools and immutable data for calculating swaps. The API is running as a graphql server and is deployed at https://api-v3.balancer.fi.
 
-The following query can be used to fetch V3 pools with relevant static data used for swap calculations:
+The following query can be used to fetch v3 pools with relevant static data used for swap calculations:
 
 ```
 query MyQuery {

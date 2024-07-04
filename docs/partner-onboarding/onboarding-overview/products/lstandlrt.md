@@ -11,7 +11,7 @@ counterparts. These tokenised assets allow users to gain exposure to both on-cha
 compounded within a single token. Compared to traditional AMM design, Balancer uses a variety of new concepts to leverage yield-bearing token liquidity while offering optimal results to liquidity providers (LPs) and traders by optimizing trade routes and exchange rates between assets.
 This is achieved by utilizing three core components:
 1. [Rate provider](../../balancer-v2/rate-providers.md) technology
-2. [Core Pool Dynamcis](../../balancer-v2/core-pools.md)
+2. [Core Pool Dynamics](../../balancer-v2/core-pools.md)
 3. [Boosted pools](../products/boostedpools.md)
 
 #### Rate provider technology
@@ -30,7 +30,7 @@ Do you want to onboard your yield-bearing token to Balancer and leverage its cor
 # Resources
 If you want to learn more about these concepts in more detail, follow these in-depth articles for more information
 * Articles about YB tokens
-  - [Best of Both: Stability & Yield with Frax V3](https://beefy.com/articles/frax/)
+  - [Best of Both: Stability & Yield with Frax v3](https://beefy.com/articles/frax/)
   - [Balancer Integrates Chainlink Price Feeds](https://medium.com/balancer-protocol/balancer-integrates-chainlink-price-feeds-to-help-secure-staked-eth-composable-stable-pools-c649d8181510)
   - [Elliptical Concentrated Liquidity](https://medium.com/balancer-protocol/built-on-balancer-elliptical-concentrated-liquidity-77f289d346f9)
   - [Inside Balancer Contracts — A composable symphony](https://medium.com/balancer-protocol/inside-balancer-contracts-a-composable-symphony-1-229f6e90224d)

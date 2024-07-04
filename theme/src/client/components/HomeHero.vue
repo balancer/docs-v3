@@ -69,23 +69,27 @@ const taglineColor = computed(() => (isDarkMode.value ? '#A0AEC0' : '#3a5169'));
 </script>
 
 <template>
-  <header class="home-hero" :style="heroStyle">
-    <h1 v-if="heroText" id="main-title" :style="{ color: headerColor }">
-      {{ heroText }}
-    </h1>
+  <div class="home-hero-container">
+    <div class="home-hero-bg">
+      <header class="home-hero" :style="heroStyle">
+        <p class="home-eyebrow">Balancer v3 Docs</p>
+        <h1 v-if="heroText" id="main-title" :style="{ color: headerColor }">
+          AMMs made easy
+        </h1>
+        <p v-if="tagline" class="description" :style="{ color: taglineColor }">
+          {{ tagline }}
+        </p>
 
-    <p v-if="tagline" class="description" :style="{ color: taglineColor }">
-      {{ tagline }}
-    </p>
-
-    <p v-if="actions.length" class="actions">
-      <AutoLink
-        v-for="action in actions"
-        :key="action.text"
-        class="action-button"
-        :class="[action.type]"
-        :item="action"
-      />
-    </p>
-  </header>
+        <p v-if="actions.length" class="actions">
+          <AutoLink
+            v-for="action in actions"
+            :key="action.text"
+            class="action-button"
+            :class="[action.type]"
+            :item="action"
+          />
+        </p>
+      </header>
+    </div>
+  </div>
 </template>

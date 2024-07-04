@@ -15,11 +15,11 @@ Upon activation of the transient state, the vault is unlocked and permissions to
 - `swap`: Exchanges one type of token for another.
 - `addLiquidity`: Adds one or more tokens to a liquidity pool.
 - `removeLiquidity`: Removes one or more tokens from a liquidity pool.
-- `erc4626BufferWrapOrUnwrap`: Wraps/unwraps tokens based on provided parameters
-- `addLiquidityToBuffer`: Adds liquidity to a yield-bearing token buffer
-- `removeLiquidityFromBuffer`: Removes liquidity from a yield-bearing token buffer
+- `erc4626BufferWrapOrUnwrap`: Wraps/unwraps tokens based on provided parameters.
+- `addLiquidityToBuffer`: Adds liquidity to a yield-bearing token buffer.
+- `removeLiquidityFromBuffer`: Removes liquidity from a yield-bearing token buffer (permissioned).
 - `initialize`: Initialize a liquidity pool.
-- `removeLiquidityRecovery`: Removes liquidity proportionally, burning an exact pool token amount.
+- `removeLiquidityRecovery`: Removes liquidity proportionally, burning an exact pool token amount (only in Recovery Mode).
 
 ## Key concepts
 
@@ -63,7 +63,7 @@ The majority of functions listed above either accrue debt (`_takeDebt`) or suppl
 function getTokenDelta(IERC20 token) external view returns (int256);
 ```
 
-Each time debt is taken or credit is supplied for a given token, the token deltas is updated to the net changes. If the net changes for a token zero out the internal `_nonZeroDeltaCount()` is decremented whereas a non zero net change increments the `_nonZeroDeltaCount()`. 
+Each time debt is taken or credit is supplied for a given token, the token delta is updated to reflect the net change. If the net change for a token zero out, the internal `_nonZeroDeltaCount()` is decremented; a non-zero net change increments the `_nonZeroDeltaCount()`. 
 
 ```solidity
 function _accountDelta(IERC20 token, int256 delta) internal {

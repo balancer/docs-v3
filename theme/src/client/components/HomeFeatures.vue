@@ -23,6 +23,7 @@ const features = computed(() => {
       :link="card.link"
       :details="card.details"
       :icon="card.icon"
+      :iconDark="card.iconDark"
     />
   </div>
 </template>

@@ -97,7 +97,7 @@
 
   a:hover,
   a.active:hover {
-    color: var(--c-brand-hover-accent);
+    color: var(--c-brand);
   }
 
   a.right-anchor-heading.active {
@@ -106,7 +106,7 @@
 
 
   a.active {
-    color: var(--c-brand-light);
+    color: var(--c-brand-hover-accent);
     font-weight: 500;
   }
 
@@ -244,7 +244,7 @@ a.sidebar-item {
 
 a.sidebar-heading + .sidebar-item-children .sidebar-item:not(.sidebar-heading):not(.collapsible).active {
   background: rgba(49, 55, 63, 0.15);
-  color: rgba(0, 211, 149, 100);
+  color: #00a474;
 }
 
 .dark {

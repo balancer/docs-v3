@@ -653,3 +653,10 @@ Executes a batch of function calls on this contract.
 | Name      | Type             | Description                                              |
 |-----------|------------------|----------------------------------------------------------|
 | results   | bytes[] memory   | Array of bytes arrays, each representing the return data from each function call executed |
+
+<style scoped>
+table {
+    display: table;
+    width: 100%;
+}
+</style>

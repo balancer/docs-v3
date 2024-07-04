@@ -9,14 +9,14 @@ heroImage: /images/backgrounds/purple.png
 ## AddLiquidity
 
 This class provides functionality to:
-* Perform on-chain queries to see the result of an addLiqudity operation
+* Perform on-chain queries to see the result of an addLiquidity operation
 * Build an addLiquidity transaction, with slippage, for a consumer to submit
 * Supported add types: SingleToken, Unbalanced, Proportional
-* Supports Balancer V2 & V3
+* Supports Balancer v2 & v3
 
 ### Example
 
-See the [addLiqudity guide](../../integration-guides/guides/add-liquidity-to-pool.md) and the [addLiqudity example](https://github.com/balancer/b-sdk/tree/main/examples/addLiquidity/addLiquidity.ts).
+See the [addLiquidity guide](../../integration-guides/guides/add-liquidity-to-pool.md) and the [addLiquidity example](https://github.com/balancer/b-sdk/tree/main/examples/addLiquidity/addLiquidity.ts).
 
 ### Constructor
 
@@ -42,7 +42,7 @@ query(
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
 | input | [AddLiquidityInput](https://github.com/balancer/b-sdk/tree/main/src/entities/addLiquidity/types.ts#L38) | User defined inputs |
-| poolState | [PoolState](https://github.com/balancer/b-sdk/tree/main/src/entities/types.ts#L5) | Current state of pool that liqudity is being added to |
+| poolState | [PoolState](https://github.com/balancer/b-sdk/tree/main/src/entities/types.ts#L5) | Current state of pool that liquidity is being added to |
 
 **Returns**
 
@@ -79,14 +79,14 @@ ___
 ## RemoveLiquidity
 
 This class provides functionality to:
-* Perform on-chain queries to see the result of an removeLiqudity operation
+* Perform on-chain queries to see the result of an removeLiquidity operation
 * Build a removeLiquidity transaction, with slippage, for a consumer to submit
 * Supported remove types: Unbalanced, SingleTokenExactOutInput, SingleTokenExactInInput, Proportional
-* Supports Balancer V2 & V3
+* Supports Balancer v2 & v3
 
 ### Example
 
-See the [removeLiqudity guide](../../integration-guides/guides/remove-liquidity-from-pool.md) and the [removeLiqudity example](ttps://github.com/balancer/b-sdk/tree/main/examples/removeLiquidity/removeLiquidity.ts).
+See the [removeLiquidity guide](../../integration-guides/guides/remove-liquidity-from-pool.md) and the [removeLiquidity example](ttps://github.com/balancer/b-sdk/tree/main/examples/removeLiquidity/removeLiquidity.ts).
 
 ### Constructor
 
@@ -112,7 +112,7 @@ query(
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
 | input | [RemoveLiquidityInput](https://github.com/balancer/b-sdk/tree/main/src/entities/removeLiquidity/types.ts#L52) | User defined inputs |
-| poolState | [PoolState](https://github.com/balancer/b-sdk/tree/main/src/entities/types.ts#L5) | Current state of pool that liqudity is being removed from |
+| poolState | [PoolState](https://github.com/balancer/b-sdk/tree/main/src/entities/types.ts#L5) | Current state of pool that liquidity is being removed from |
 
 **Returns**
 
@@ -139,7 +139,7 @@ queryRemoveLiquidityRecovery(
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
 | input | [RemoveLiquidityRecoveryInput](https://github.com/balancer/b-sdk/tree/main/src/entities/removeLiquidity/types.ts#L47) | User defined inputs |
-| poolState | [PoolState](https://github.com/balancer/b-sdk/tree/main/src/entities/types.ts#L5) | Current state of pool that liqudity is being removed from |
+| poolState | [PoolState](https://github.com/balancer/b-sdk/tree/main/src/entities/types.ts#L5) | Current state of pool that liquidity is being removed from |
 
 **Returns**
 
@@ -180,7 +180,7 @@ ___
 This class provides functionality to:
 * Perform on-chain queries to see the result of a Swap operation
 * Build a Swap transaction, with slippage, for a consumer to submit
-* Supports Balancer V2 & V3
+* Supports Balancer v2 & v3
 
 ### Example
 
@@ -227,7 +227,7 @@ Promise<ExactInQueryOutput | ExactOutQueryOutput>
 [ExactInQueryOutput](https://github.com/balancer/b-sdk/tree/main/src/entities/swap/types.ts#L44)
 [ExactOutQueryOutput](https://github.com/balancer/b-sdk/tree/main/src/entities/swap/types.ts#L49)
 
-The upated return for the given swap, either `expectedAmountOut` or `expectedAmountIn` depending on swap kind.
+The updated return for the given swap, either `expectedAmountOut` or `expectedAmountIn` depending on swap kind.
 ___
 
 ### buildCall
@@ -323,7 +323,7 @@ ___
 ## PriceImpact
 
 This class provides helper functions to calculate Price Impact for add/remove/swap actions.
-* Supports Balancer V2 & V3
+* Supports Balancer v2 & v3
 
 ### Example
 
@@ -347,7 +347,7 @@ addLiquiditySingleToken(
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
 | input | [AddLiquiditySingleTokenInput](https://github.com/balancer/b-sdk/tree/main/src/entities/addLiquidity/types.ts#L27) | Same input used in the corresponding add liquidity operation |
-| poolState | [PoolState](https://github.com/balancer/b-sdk/tree/main/src/entities/types.ts#L5) | Current state of pool that liqudity is being added to |
+| poolState | [PoolState](https://github.com/balancer/b-sdk/tree/main/src/entities/types.ts#L5) | Current state of pool that liquidity is being added to |
 
 **Returns**
 
@@ -373,7 +373,7 @@ addLiquidityUnbalanced = async (
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
 | input | AddLiquidityUnbalancedInput | Same input used in the corresponding add liquidity operation |
-| poolState | [PoolState](https://github.com/balancer/b-sdk/tree/main/src/entities/types.ts#L5) | Current state of pool that liqudity is being added to |
+| poolState | [PoolState](https://github.com/balancer/b-sdk/tree/main/src/entities/types.ts#L5) | Current state of pool that liquidity is being added to |
 
 **Returns**
 
@@ -429,7 +429,7 @@ removeLiquidity = async (
 | -------------      | ------------- | ------------  |
 | input | [RemoveLiquiditySingleTokenExactInInput](https://github.com/balancer/b-sdk/tree/main/src/entities/removeLiquidity/types.ts#L35) | Same input used in the corresponding remove liquidity operation |
 | input | [RemoveLiquidityUnbalancedInput](https://github.com/balancer/b-sdk/tree/main/src/entities/removeLiquidity/types.ts#L24) | Same input used in the corresponding remove liquidity operation |
-| poolState | [PoolState](https://github.com/balancer/b-sdk/tree/main/src/entities/types.ts#L5) | Current state of pool that liqudity is being removed from |
+| poolState | [PoolState](https://github.com/balancer/b-sdk/tree/main/src/entities/types.ts#L5) | Current state of pool that liquidity is being removed from |
 
 **Returns**
 
@@ -531,7 +531,7 @@ pools.fetchPoolState(id: string): Promise<PoolState>
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
-| id | string | ID of pool, V2=poolId, V3=address |
+| id | string | ID of pool, v2=poolId, v3=address |
 
 **Returns**
 
@@ -556,7 +556,7 @@ fetchPoolStateWithBalances(
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
-| id | string | ID of pool, V2=poolId, V3=address |
+| id | string | ID of pool, v2=poolId, v3=address |
 
 **Returns**
 
@@ -579,7 +579,7 @@ fetchNestedPoolState(id: string): Promise<NestedPoolState>
 
 | Name               | Type          | Description   |
 | -------------      | ------------- | ------------  |
-| id | string | ID of pool, V2=poolId, V3=address |
+| id | string | ID of pool, v2=poolId, v3=address |
 
 **Returns**
 
@@ -660,3 +660,10 @@ calculateProportionalAmounts(
 
 Amounts proportional to the reference amount.
 ___
+
+<style scoped>
+table {
+    display: table;
+    width: 100%;
+}
+</style>

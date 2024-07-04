@@ -16,9 +16,9 @@ onMounted(() => {
   ]).then(([docsearch]) => {
     docsearch = docsearch.default;
     docsearch({
-      appId: 'Q107DW7NMM',
-      apiKey: 'c611e593d4e81a8c6efde877c69c9d7f',
-      indexName: 'dev_balancer',
+      appId: 'BHJFZH2L5I',
+      apiKey: 'fc280a2048eb40eff54b4d5e7fa04fa4',
+      indexName: 'v3-docs',
       inputSelector: '#algolia-search-input',
       handleSelected: (input, event, suggestion) => {
         const { pathname, hash } = new URL(suggestion.url);
@@ -40,7 +40,6 @@ onMounted(() => {
   </form>
 </template>
 
-
 <style>
 .search-input-wrapper .search-icon.search {
   z-index: 5;
@@ -49,7 +48,7 @@ onMounted(() => {
 .home .search-box {
   width: 100%;
   max-width: var(--search-box-max-width);
-  margin: 40px auto;
+  margin: 40px auto 40px;
 }
 
 .home .search-input-wrapper .search-icon.search {
@@ -60,6 +59,7 @@ onMounted(() => {
 .home .search-input-wrapper .search-icon.shortcut {
   height: 45px;
   width: 30px;
+  z-index: 1;
 }
 
 .home .search-input-wrapper .search-icon.shortcut::after {

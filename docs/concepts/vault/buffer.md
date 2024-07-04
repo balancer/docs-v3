@@ -64,7 +64,7 @@ function removeLiquidityFromBuffer(
 
 
 ## Using a buffer to swap. 
-The swapper has the responsibility to decide whether a specific swap route should use Buffers by indicating if a given `pool` is a buffer. Rember: You can always use a buffer even it is does not have liquidity (instead it will simply wrap or unwrap). This is done by setting the boolean entry in the `SwapPathStep` struct.
+The swapper has the responsibility to decide whether a specific swap route should use Buffers by indicating if a given `pool` is a buffer. Remember: You can always use a buffer even it is does not have liquidity (instead it will simply wrap or unwrap). This is done by setting the boolean entry in the `SwapPathStep` struct.
 
 The `pool` param in this particular case is the wrapped Tokens entrypoint. Meaning the address where a user would call deposit in. In the case of Aave it would the waUSDC. 
 ``` solidity
@@ -153,7 +153,7 @@ Balances of pool & buffers before the batchswap:
 
 ### Balances without enough buffer liquidity available in DAI - waDAI buffer
 
-Consider now an EXACT_IN trade of 60k DAI to USDC. The DAI - waDAI buffer does not have enough liquidity to support the trade from it's reserves, so it calls into the waDAI contract to wrap DAI to waDAI (amount) and additionally rebalances the buffer to balanced reserves.
+Consider now an EXACT_IN trade of 60k DAI to USDC. The DAI - waDAI buffer does not have enough liquidity to support the trade from its reserves, so it calls into the waDAI contract to wrap DAI to waDAI (amount) and additionally rebalances the buffer to balanced reserves.
 
 | DAIBufferBalance before Swap         | DAIBufferBalance after Swap                                              | waDAIBufferBalance before Swap         | waDAIBufferBalance after Swap |
 | --------                             | -----------------------------------------------------                    | --------                               | -  |
@@ -170,9 +170,6 @@ Consider now an EXACT_IN trade of 60k DAI to USDC. The DAI - waDAI buffer does n
 Even though the DAI - waDAI buffer did not have enough liquidity the trade was successfully routed via Balancer. The difference now is that the Vault utilized the buffer internal wrapping capability to wrap DAI into waDAI & rebalanced itself.
 
 
-:::info TODO
-add DAI - WETH swap route (where the last step is a trade with pool rather than buffer)
-:::
 
 <style scoped>
 table {

@@ -10,4 +10,4 @@ One of the primary sources of data is our [API GraphQL](./data-and-analytics/bal
 
 In addition to the API, we also provide a [subgraph](./data-and-analytics/subgraph.md) that indexes the Balancer protocol. This subgraph offers a comprehensive view of the protocol's data, making it easy to analyze and understand the protocol's behavior over time.
 
-Lastly, various [Dune dashboards](./data-and-analytics/dune.md) exist. These dashboards provide a visual representation of the protocol's data, making it easy to understand and interpret. They are a great resource visual data analysis.
+Lastly, various [Dune dashboards](/data-and-analytics/data-and-analytics/dune/overview.html) exist. These dashboards provide a visual representation of the protocol's data, making it easy to understand and interpret. They are a great resource visual data analysis.

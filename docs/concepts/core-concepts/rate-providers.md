@@ -34,21 +34,22 @@ Using oracles for price feeds is a simple way to determine an exchange rate. The
 
 #### [`ChainlinkRegistryRateProvider`](https://github.com/balancer/metastable-rate-providers/blob/master/contracts/ChainlinkRegistryRateProvider.sol)
 
-This contract makes use of Chainlink's registry contract so it can handle if Chainlink migrates to a new price feed for a given asset pair. Though there are increased gas costs for this, its a tradeoff for ensuring the pool doesn't get stuck on an abandoned price feed. While this is an unlikely scenario, it doesn't hurt to be careful.
+This contract makes use of Chainlink's registry contract so it can handle Chainlink migrating to a new price feed for a given asset pair. Though there are increased gas costs for this, it's a tradeoff for ensuring the pool doesn't get stuck on an abandoned price feed. While this is an unlikely scenario, it doesn't hurt to be careful.
 
 #### [`ChainlinkRateProvider`](https://github.com/balancer/metastable-rate-providers/blob/master/contracts/ChainlinkRateProvider.sol)
 
-If you're running on a network for which Chainlink doesn't have a registry and you think the risk of a deprecated price feed is low enough, then you can use the rateProvider that directly queries a given Chainlink oracle.
+If you're running on a network where Chainlink doesn't have a registry and you think the risk of a deprecated price feed is low enough, then you can use the rateProvider that directly queries a given Chainlink oracle.
 
 
 ## Implementation
 
-The Balancer Vault stores a tokens rate as part of a `PoolData` struct.
+The Balancer Vault stores each token's rate in the `PoolData` struct.
 
 ```solidity
 struct PoolData {
-    PoolConfig poolConfig;
-    TokenConfig[] tokenConfig;
+    PoolConfigBits poolConfigBits;
+    IERC20[] tokens;
+    TokenInfo[] tokenInfo;
     uint256[] balancesRaw;
     uint256[] balancesLiveScaled18;
     uint256[] tokenRates;
@@ -56,19 +57,4 @@ struct PoolData {
 }
 ```
 
-Each time a `swap`, `addLiquidity` or `removeLiquidity` operation is performed, the token's rate is read to guarantee accurate results. The `tokenRates` from `PoolData` are internally updated through the `updateTokenRate` function, which is utilized by all `swap`, `addLiquidity`, and `removeLiquidity` operations. As mentioned in [token scaling](/concepts/vault/token-scaling.html), data from the external Rate Provider contract is read and stored.
-
-```solidity
-function updateTokenRate(PoolData memory poolData, uint256 tokenIndex) internal view {
-    TokenType tokenType = poolData.tokenConfig[tokenIndex].tokenType;
-
-    if (tokenType == TokenType.STANDARD) {
-        poolData.tokenRates[tokenIndex] = FixedPoint.ONE;
-    } else if (tokenType == TokenType.WITH_RATE) {
-        poolData.tokenRates[tokenIndex] = poolData.tokenConfig[tokenIndex].rateProvider.getRate();
-    } else {
-        revert IVaultErrors.InvalidTokenConfiguration();
-    }
-}
-```
-
+Each time a `swap`, `addLiquidity` or `removeLiquidity` operation is performed, the token's rate is read to guarantee accurate results. The `tokenRates` from `PoolData` are internally updated through the `reloadBalancesAndRates` function, which is called as needed by all `swap`, `addLiquidity`, and `removeLiquidity` operations. As mentioned in [token scaling](/concepts/vault/token-scaling.html), data from the external Rate Provider contract is read and stored.

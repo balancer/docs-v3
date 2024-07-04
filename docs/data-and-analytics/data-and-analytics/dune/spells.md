@@ -146,3 +146,10 @@ FROM total_tvl t
 LEFT JOIN swaps s ON s.day = t.day
 ORDER BY 1
 ```
+
+<style scoped>
+table {
+    display: table;
+    width: 100%;
+}
+</style>

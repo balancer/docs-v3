@@ -5,10 +5,10 @@ order: 2
 
 # ERC20MultiToken
 
-ERC20MultiToken is inspired by [ERC1155](https://docs.openzeppelin.com/contracts/3.x/erc1155), but was purpose built for the use case of Balancer V3.
+ERC20MultiToken was inspired by [ERC1155](https://docs.openzeppelin.com/contracts/3.x/erc1155), but customized for Balancer v3.
 At a high level, it allows the [Balancer Vault](/concepts/vault) full control over Balancer Pool Token (BPT) accounting, enabling it to both mint and burn BPT directly.
-By centralizing both token and BPT accounting in the vault, Balancer V3 ensures atomic updates to critical pool state. In contrast to ERC1155, ERC20MultiToken allows
-Balancer Pool Tokens to be fully ERC20 compliant, supporting composability.
+By centralizing both token and BPT accounting in the vault, Balancer v3 ensures atomic updates to critical pool state. In contrast to ERC1155, ERC20MultiToken allows
+Balancer Pool Tokens to be fully ERC20-compliant, supporting composability.
 
 The full implementation of ERC20MultiToken can be found [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/token/ERC20MultiToken.sol).
 
@@ -24,7 +24,7 @@ mapping(address => mapping(address => mapping(address => uint256))) private _all
 mapping(address => uint256) private _totalSupplyOf;
 ```
 
-Additionally, we can observe that each action `mint`, `burn`, `approve`, etc. Takes the pool's address as the first argument, and additionally invokes ERC20 compliant events on BalancerPoolToken.
+Additionally, we can observe that each action `mint`, `burn`, `approve`, etc. Takes the pool's address as the first argument, and additionally invokes ERC20-compliant events on BalancerPoolToken.
 ```solidity
 function _approve(address token, address owner, address spender, uint256 amount) internal {
     if (owner == address(0)) {
@@ -58,6 +58,6 @@ function approve(address owner, address spender, uint256 amount) external onlyVa
 
 ## How is ERC20 compliance achieved?
 
-ERC20MultiToken leverages the relationship between the Balancer vault and it's pools to ensure that all pool tokens (BPT) are fully ERC20 compliant.
+ERC20MultiToken leverages the relationship between the Balancer vault and its pools to ensure that all pool tokens (BPT) are fully ERC20-compliant.
 For a detailed discussion on how this is achieved, refer to the [BalancerPoolToken](/concepts/core-concepts/balancer-pool-tokens.html) section in the docs, or go directly to the
 implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol).

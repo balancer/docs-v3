@@ -1,10 +1,43 @@
 @import '_mixins';
 @import '_variables';
 
+
+.home-hero-container {
+  border: 1rem solid var(--c-bg-lighter);
+  border-radius: 16px;
+  width: calc(100vw - 2rem);
+  margin: 5rem auto 0;  
+  background-image: url(/images/backgrounds/background-noise.png);
+  box-shadow: 0px 0px 0px 1px #49351D05, 1px 1px 1px -0.5px #49351D0F, 3px 3px 3px -1.5px #49351D0F, 6px 6px 6px -3px #49351D0F, 12px 12px 12px -6px #49351D0F, 24px 24px 24px -12px #49351D0F, -0.5px -1px 0px 0px #FFFFFF
+}
+
+@media (min-width: $MQMobile) {
+  .home-hero-container {
+    width: calc(100vw - 4rem);
+    margin: 5.25rem auto 0;
+  }
+}
+
+.home-hero-bg {
+  background: hsla(44,22%,90%, 0.5);
+  width: 100%;
+  height: 100%;
+  box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.04) inset, 7px 6px 12px 0px rgba(0, 0, 0, 0.08) inset, 40px 40px 80px 0px rgba(0, 0, 0, 0.05) inset, 0px -1px 1px 0px rgba(255, 255, 255, 0.25) inset;
+}
+
+.dark .home-hero-container {
+  box-shadow: 0px 0px 0px 1px #00000005, 1px 1px 1px -0.5px #0000000F, 3px 3px 3px -1.5px #0000000F, 6px 6px 6px -3px #0000000F, 12px 12px 12px -6px #0000000F, 24px 24px 24px -12px #0000001A, -0.5px -1px 0px 0px #FFFFFF26;
+}
+
+.dark .home-hero-bg {
+  background: rgba(49, 55, 63, 0.96);
+  box-shadow: 20px 20px 50px 0px rgba(0, 0, 0, 0.2) inset, 10px 10px 25px 0px rgba(0, 0, 0, 0.15) inset, 2px 2px 11px 0px rgba(0, 0, 0, 0.15) inset, 0px -1px 1px 0px #FFFFFF40 inset
+}
+
 .home-hero {
   /* padding-left: var(--sidebar-width); */
-  padding-top: var(--navbar-height);
-  padding-bottom: calc(var(--navbar-height) / 2);
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
   width: 100%;
   background-size: cover;
   background-position: center;
@@ -20,12 +53,31 @@
   h1 {
     font-size: 3rem;
     color: #fff;
+    line-height: 1;
+    padding: 0 1rem;
+  }
+  h2 {
+    border-color: transparent !important;
+  }
+
+  .home-eyebrow {    
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    background: linear-gradient(269deg, #C59D6D -8.34%, #B68449 92.83%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
   }
 
   h1,
   .description,
   .actions {
-    margin: 1.8rem auto;
+    margin: 1rem auto;
   }
 
   .actions {
@@ -37,9 +89,10 @@
 
   .description {
     max-width: 20rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     line-height: 1.3;
     color: #fff;
+    margin-bottom: 0;
   }
 
   .action-button {
@@ -71,6 +124,19 @@
       }
     }
   }
+}
+
+.home  h2 {
+  border-color: transparent !important;
+}
+
+.dark .home-hero .home-eyebrow {
+  background: linear-gradient(90deg, hsla(244, 78%, 82%, 1) 0%, hsla(266, 37%, 85%, 1) 25%, hsla(0, 36%, 84%, 1) 50%, hsla(25, 73%, 70%, 1) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
 .home {
@@ -188,4 +254,9 @@
       }
     }
   }
+}
+
+
+.home .theme-default-content h2:first-child + p {
+  margin-top: 1rem;
 }
