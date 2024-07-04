@@ -58,7 +58,7 @@ swapFeePercentage =
 
 [Queries](../../concepts/router/queries.md) provide the ability to simulate an operation and find its result without executing a transaction. Balancer Routers provide a query for all state changing liquidity operations including single and multi-path swap functions, e.g. `querySwapSingleTokenExactIn`. The following sections link to examples showing how queries can be used.
 
-::: warning Note - for onchain integrations queries cannot be used to set limits within the same block due to possible manipulation
+::: warning Note - for onchain integrations queries should not be used to set limits due to possible manipulation via frontrunning.
 :::
 
 ### Single Swaps
