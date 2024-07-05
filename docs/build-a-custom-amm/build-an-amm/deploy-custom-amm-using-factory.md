@@ -33,17 +33,13 @@ Below, we present an example custom pool factory that uses the `ConstantSumPool`
 
 ```solidity
 contract ConstantSumFactory is BasePoolFactory {
-    /**
-     * Each factory can only deploy one type of custom pool
-     */
+    // Each factory can only deploy one type of custom pool
     constructor(
         IVault vault,
         uint32 pauseWindowDuration
     ) BasePoolFactory(vault, pauseWindowDuration, type(ConstantSumPool).creationCode) {}
 
-    /**
-     * Streamline the process of deploying and registering a pool
-     */
+    // Streamline the process of deploying and registering a pool
     function create(
         string memory name,
         string memory symbol,
@@ -55,9 +51,9 @@ contract ConstantSumFactory is BasePoolFactory {
         address poolHooksContract,
         LiquidityManagement memory liquidityManagement
     ) external returns (address pool) {
-        // First deploy a new pool
+        // Deploy a new pool
         pool = _create(abi.encode(getVault(), name, symbol), salt);
-        // Then register the pool
+        // Register the pool
         _registerPoolWithVault(
             pool,
             tokens,
@@ -73,7 +69,7 @@ contract ConstantSumFactory is BasePoolFactory {
 
 :::
 
-### Factory Constructor Params
+### Factory Constructor Parameters
 
 - `IVault vault`: The address of the Balancer vault
 - `uint32 pauseWindowDuration`: The period, starting from deployment of a factory, during which pools can be paused and unpaused, see [FactoryWidePauseWindow.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/solidity-utils/contracts/helpers/FactoryWidePauseWindow.sol)
@@ -94,7 +90,7 @@ contract ConstantSumFactory is BasePoolFactory {
 
 :::
 
-### Pool Deployment Params
+### Pool Deployment Parameters
 
 - `bytes memory constructorArgs`: The abi encoded constructor args for the custom pool
 - `bytes32 salt`: Used to compute a unique, deterministic address for each pool deployment
@@ -112,7 +108,7 @@ contract ConstantSumFactory is BasePoolFactory {
 
 :::
 
-### Pool Registration Params
+### Pool Registration Parameters
 
 - `TokenConfig[] memory tokens`: An array of descriptors for the tokens the pool will manage, see [Token Types](https://docs-v3.balancer.fi/concepts/vault/token-types.html)
 - `uint256 swapFeePercentage`: Fee charged for each swap. For more information, see [Swap fees](https://docs-v3.balancer.fi/concepts/vault/swap-fee.html)
@@ -158,7 +154,7 @@ Although deploying pools via a factory contract is the recommended approach, it 
 After a custom pool has been deployed and registered, the next step is to add initial liquidity to the pool, which is a three step process:
 
 1. Ensure the [Permit2](https://github.com/Uniswap/permit2) contract has been granted sufficient allowance to spend tokens on behalf of the `msg.sender`
-2. Transfer sufficient allowance to the [Router](http://localhost:8080/concepts/router/overview.html) with [`Permit2.approve`](https://github.com/Uniswap/permit2/blob/cc56ad0f3439c502c246fc5cfcc3db92bb8b7219/src/AllowanceTransfer.sol#L25-L30)
+2. Transfer sufficient allowance to the [Router](https://docs-v3.balancer.fi/concepts/router/overview.html) with [`Permit2.approve`](https://github.com/Uniswap/permit2/blob/cc56ad0f3439c502c246fc5cfcc3db92bb8b7219/src/AllowanceTransfer.sol#L25-L30)
 3. Call [`router.initialize()`](https://github.com/balancer/balancer-v3-monorepo/blob/e9bd6b0b154f2bd083a5049267b7a417c5a2c984/pkg/interfaces/contracts/vault/IRouter.sol#L39-L56)
 
 After a pool has been initialized, normal liquidity operations and swaps are instantly enabled.
