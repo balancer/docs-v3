@@ -186,33 +186,6 @@ Adds liquidity to a pool with a custom request.
 | bptAmountOut  | uint256  | Actual amount of pool tokens received |
 | returnData  | bytes  | Arbitrary (optional) data with encoded response from the pool |
 
-### `addLiquidityToBuffer`
-
-```solidity
-function addLiquidityToBuffer(
-    IERC4626 wrappedToken,
-    uint256 amountUnderlyingRaw,
-    uint256 amountWrappedRaw,
-    address sharesOwner
-) external returns (uint256 issuedShares);
-```
-Adds liquidity to a yield-bearing token buffer (linear pools embedded in the vault).
-
-**Parameters:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626 |
-| amountUnderlyingRaw  | uint256  | Amount of underlying tokens that will be deposited into the buffer |
-| amountWrappedRaw  | uint256  | Amount of wrapped tokens that will be deposited into the buffer |
-| sharesOwner  | address  | Address of the contract that will own the liquidity. Only this contract will be able to remove liquidity from the buffer |
-
-**Returns:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| issuedShares  | uint256  | The amount of tokens sharesOwner has in the buffer, denominated in underlying tokens (This is the BPT of the vault's internal "Linear Pools") |
-
 ## Remove liquidity
 
 ### `removeLiquidityProportional`
@@ -360,30 +333,6 @@ Removes liquidity proportionally, burning an exact pool token amount. Only avail
 |---|---|---|
 | amountsOut  | uint256[]  | Actual amounts of tokens received, sorted in token registration order |
 
-### `removeLiquidityFromBuffer`
-
-```solidity
-function removeLiquidityFromBuffer(
-    IERC4626 wrappedToken,
-    uint256 sharesToRemove
-) external returns (uint256 removedUnderlyingBalanceRaw, uint256 removedWrappedBalanceRaw);
-```
-Removes liquidity from a yield-bearing token buffer (an embedded "Linear Pool").
-
-**Parameters:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| wrappedToken  | IERC4626  | Address of a wrapped token that implements IERC4626 |
-| sharesToRemove  | uint256  | Amount of shares to remove from the buffer. Cannot be greater than sharesOwner total shares |
-
-**Returns:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| removedUnderlyingBalanceRaw  | uint256  | Amount of underlying tokens returned to the user |
-| removedWrappedBalanceRaw  | uint256  | Amount of wrapped tokens returned to the user |
-
 ## Swaps
 
 ### `swapSingleTokenExactIn`
@@ -455,6 +404,60 @@ Executes a swap operation specifying an exact output token amount.
 | Name        | Type      | Description                                         |
 |-------------|-----------|-----------------------------------------------------|
 | amountIn    | uint256   | Calculated amount of input tokens to be sent in exchange for the requested output tokens |
+
+
+## Yield-bearing token buffers
+
+### `addLiquidityToBuffer`
+
+```solidity
+function addLiquidityToBuffer(
+    IERC4626 wrappedToken,
+    uint256 amountUnderlyingRaw,
+    uint256 amountWrappedRaw,
+    address sharesOwner
+) external returns (uint256 issuedShares);
+```
+Adds liquidity to a yield-bearing token buffer (linear pools embedded in the vault).
+
+**Parameters:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+| wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626 |
+| amountUnderlyingRaw  | uint256  | Amount of underlying tokens that will be deposited into the buffer |
+| amountWrappedRaw  | uint256  | Amount of wrapped tokens that will be deposited into the buffer |
+| sharesOwner  | address  | Address of the contract that will own the liquidity. Only this contract will be able to remove liquidity from the buffer |
+
+**Returns:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+| issuedShares  | uint256  | The amount of tokens sharesOwner has in the buffer, denominated in underlying tokens (This is the BPT of the vault's internal "Linear Pools") |
+
+### `removeLiquidityFromBuffer`
+
+```solidity
+function removeLiquidityFromBuffer(
+    IERC4626 wrappedToken,
+    uint256 sharesToRemove
+) external returns (uint256 removedUnderlyingBalanceRaw, uint256 removedWrappedBalanceRaw);
+```
+Removes liquidity from a yield-bearing token buffer (an embedded "Linear Pool").
+
+**Parameters:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+| wrappedToken  | IERC4626  | Address of a wrapped token that implements IERC4626 |
+| sharesToRemove  | uint256  | Amount of shares to remove from the buffer. Cannot be greater than sharesOwner total shares |
+
+**Returns:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+| removedUnderlyingBalanceRaw  | uint256  | Amount of underlying tokens returned to the user |
+| removedWrappedBalanceRaw  | uint256  | Amount of wrapped tokens returned to the user |
 
 ## Queries
 
