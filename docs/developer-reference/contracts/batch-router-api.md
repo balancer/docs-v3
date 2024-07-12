@@ -9,6 +9,8 @@ The Batch Router can be used to interact with Balancer onchain via [state changi
 
 ## State-changing functions
 
+## Batch swaps
+
 ### `swapExactIn`
 
 ```solidity
@@ -70,6 +72,8 @@ Executes a swap operation involving multiple paths (steps), specifying exact out
 | tokensIn         | address[] memory       | Calculated input token addresses                                                             |
 | amountsIn        | uint256[] memory       | Calculated amounts of input tokens, ordered by input token address                           |
 
+## Queries
+
 ### `querySwapExactIn`
 
 ```solidity
@@ -119,3 +123,7 @@ Queries a swap operation involving multiple paths (steps), specifying exact outp
 | pathAmountsIn    | uint256[] memory       | Calculated amounts of input tokens to be received corresponding to the last step of each given path |
 | tokensIn         | address[] memory       | Calculated input token addresses                                                             |
 | amountsIn        | uint256[] memory       | Calculated amounts of input tokens to be received, ordered by input token address            |
+
+## Router common
+
+See the bottom of the [Router](./router-api.md#router-common) for functions common to both the `Router` and `BatchRouter`.
