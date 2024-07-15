@@ -418,7 +418,7 @@ function addLiquidityToBuffer(
     address sharesOwner
 ) external returns (uint256 issuedShares);
 ```
-Adds liquidity to a yield-bearing token buffer (linear pools embedded in the vault).
+Adds liquidity to a yield-bearing buffer (one of the Vault's internal ERC4626 token buffers).
 
 **Parameters:**
 
@@ -433,7 +433,7 @@ Adds liquidity to a yield-bearing token buffer (linear pools embedded in the vau
 
 | Name  | Type  | Description  |
 |---|---|---|
-| issuedShares  | uint256  | The amount of tokens sharesOwner has in the buffer, denominated in underlying tokens (This is the BPT of the vault's internal "Linear Pools") |
+| issuedShares  | uint256  | The amount of tokens sharesOwner has in the buffer, denominated in underlying tokens (This is the BPT of an internal ERC4626 token buffer) |
 
 ### `removeLiquidityFromBuffer`
 
@@ -443,7 +443,7 @@ function removeLiquidityFromBuffer(
     uint256 sharesToRemove
 ) external returns (uint256 removedUnderlyingBalanceRaw, uint256 removedWrappedBalanceRaw);
 ```
-Removes liquidity from a yield-bearing token buffer (an embedded "Linear Pool").
+Removes liquidity from a yield-bearing token buffer (one of the Vault's internal ERC4626 token buffers).
 
 **Parameters:**
 
