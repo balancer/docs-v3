@@ -31,7 +31,7 @@ Executes a swap operation involving multiple paths (steps), specifying exact inp
 | Name       | Type                               | Description                                                                                  |
 |------------|------------------------------------|----------------------------------------------------------------------------------------------|
 | paths      | SwapPathExactAmountIn[] memory     | Swap paths from token in to token out, specifying exact amounts in.                          |
-| deadline   | uint256                            | Deadline for the swap                                                                        |
+| deadline   | uint256                            | Deadline for the swap, after which it will revert                                                                        |
 | wethIsEth  | bool                               | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH     |
 | userData   | bytes calldata                     | Additional (optional) data required for the swap                                             |
 
@@ -60,7 +60,7 @@ Executes a swap operation involving multiple paths (steps), specifying exact out
 | Name       | Type                               | Description                                                                                  |
 |------------|------------------------------------|----------------------------------------------------------------------------------------------|
 | paths      | SwapPathExactAmountOut[] memory    | Swap paths from token in to token out, specifying exact amounts out.                         |
-| deadline   | uint256                            | Deadline for the swap                                                                        |
+| deadline   | uint256                            | Deadline for the swap, after which it will revert                                                                        |
 | wethIsEth  | bool                               | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH     |
 | userData   | bytes calldata                     | Additional (optional) data required for the swap                                             |
 

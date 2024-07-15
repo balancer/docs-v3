@@ -903,7 +903,7 @@ This `VaultExtension` function fetches the role accounts for a given pool (pause
 ```solidity
 function computeDynamicSwapFee(
     address pool,
-    IBasePool.PoolSwapParams memory swapParams
+    PoolSwapParams memory swapParams
 ) external view returns (bool, uint256);
 ```
 This `VaultExtension` function queries the current dynamic swap fee of a pool, given a set of swap parameters.
@@ -913,7 +913,7 @@ This `VaultExtension` function queries the current dynamic swap fee of a pool, g
 | Name  | Type  | Description  |
 |---|---|---|
 | pool  | address  | The pool  |
-| swapParams  | IBasePool.PoolSwapParams  | The swap parameters used to compute the fee  |
+| swapParams  | PoolSwapParams  | The swap parameters used to compute the fee  |
 
 **Returns:**
 

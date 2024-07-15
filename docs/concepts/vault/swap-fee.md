@@ -34,15 +34,9 @@ Different types of pools can have varying minimum and maximum swap fees. These v
 This means that all new pool types (assuming they implement `IBasePool`) will need to think about what the swap fee range should be, according to the pool type's math and other constraints, then override and set the values accordingly.
 
 ## Dynamic swap fee
-Liquidity pools can be set up to use dynamic swap fees. When registering a pool with a dynamic swap fee, your `PoolRegistrationParams` should include the entry:
-```solidity
-PoolRegistrationParams({
-    //...
-    hasDynamicSwapFee: true,
-    //...
-})
-```
-Instead of getting the swap fee from the [pool's configuration](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L33), the Vault uses the [`onComputeDynamicSwapFee()`](/developer-reference/contracts/hooks-api.html#oncomputedynamicswapfee) hook to fetch the dynamic swap fee from the pool. This function returns the swap fee percentage to be used for the current swap. It's important to note that even when a pool is set to use dynamic swap fees, it still maintains a static swap fee. However, this static fee is not used.
+Liquidity pools can be set up to use dynamic swap fees. When registering a pool with a dynamic swap fee, `shouldCallComputeDynamicSwapFee` should be true in the HooksConfig.
+
+Instead of getting the swap fee from the [pool's configuration](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L33), the Vault uses the [`onComputeDynamicSwapFee()`](/developer-reference/contracts/hooks-api.html#oncomputedynamicswapfee) hook to fetch the dynamic swap fee from the pool. This function returns the swap fee percentage to be used for the current swap. It's important to note that even when a pool is set to use dynamic swap fees, it still maintains a static swap fee, which is not directly used (though it is sent to the dynamic fee hook for reference).
 
 :::info
 The capability to compute dynamic swap fee percentages opens up new and creative ways to calculate fees. For example, the fees can be adjusted depending on the swap direction, or configured to maintain a token's pegged value.

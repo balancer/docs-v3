@@ -56,7 +56,7 @@ contract VeBALFeeDiscountHook is BaseHooks {
 
     /// @inheritdoc IHooks
     function onComputeDynamicSwapFee(
-        IBasePool.PoolSwapParams calldata params,
+        PoolSwapParams calldata params,
         uint256 staticSwapFeePercentage
     ) external view override returns (bool, uint256) {
         // If the router is not trusted, does not apply the veBAL discount because getSender() may be manipulated by a
@@ -109,7 +109,8 @@ In this example we validate that the `factory` param forwarded from the Vault ma
 
 ```solidity
 function onComputeDynamicSwapFee(
-    IBasePool.PoolSwapParams calldata params,
+    PoolSwapParams calldata params,
+    address pool,
     uint256 staticSwapFeePercentage
 ) external view override returns (bool, uint256) {
     // If the router is not trusted, does not apply the veBAL discount because getSender() may be manipulated by a

@@ -34,13 +34,18 @@ Refer to the [Pool hooks API](/developer-reference/contracts/hooks-api.html) pag
 Each Hook contract must implement the `getHookFlags` function which returns a `HookFlags` indicating which hooks are supported:
 ```solidity
 /**
-    * @notice Returns flags informing which hooks are implemented in the contract.
-    * @return hookFlags Flags indicating which hooks the contract supports
-    */
+ * @notice Return the set of hooks implemented by the contract.
+ * @return hookFlags Flags indicating which hooks the contract supports
+ */
 function getHookFlags() external returns (HookFlags memory hookFlags);
 ```
 
 ```solidity
+/**
+  * @dev `enableHookAdjustedAmounts` must be true for all contracts that modify the `amountCalculated`
+  * in after hooks. Otherwise, the Vault will ignore any "hookAdjusted" amounts. Setting any "shouldCall"
+  * flags to true will cause the Vault to call the corresponding hook during operations.
+  */
 struct HookFlags {
     bool enableHookAdjustedAmounts;
     bool shouldCallBeforeInitialize;
@@ -80,10 +85,11 @@ function registerPool(
 If you want your Hooks contract to be used, you must implement `onRegister` as the Vault calls it during the [pool registration](https://github.com/balancer/balancer-v3-monorepo/blob/49553c0546121f7725e0b024b240d6e722f02538/pkg/vault/contracts/VaultExtension.sol#L184). The intention of `onRegister` is for the developer to verify that the pool should be allowed to use the hooks contract.
 :::
 
-Afterwards the pool is linked to the hook via the `_hooksConfig` mapping, shown below.
+Afterwards the pool is linked to the hook via the `_hooksContracts` mapping, shown below.
 
 ```solidity
-mapping(address => HooksConfig) internal _hooksConfig;
+// Registry of pool hooks contracts.
+mapping(address => IHooks) internal _hooksContracts;
 ```
 
 

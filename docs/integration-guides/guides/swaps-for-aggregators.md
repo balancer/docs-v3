@@ -208,7 +208,7 @@ Find a pools [dynamic swap fee](../../concepts/vault/swap-fee.md#dynamic-swap-fe
 */
 function computeDynamicSwapFee(
     address pool,
-    IBasePool.PoolSwapParams memory swapParams
+    PoolSwapParams memory swapParams
 ) external view returns (bool, uint256);
 ```
 
