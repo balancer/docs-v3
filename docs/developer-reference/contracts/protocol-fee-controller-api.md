@@ -1,32 +1,33 @@
 ---
 order: 8
-title: Protocol Fee collector API
+title: Protocol Fee Controller API
 ---
 
-# ProtocolFeesCollector
+# ProtocolFeesController
 
-The protocol Fees collector is an upgradeable contract managing fee related activities.
+The protocol Fees controller is used to manage protocol and pool creator fees for the Vault. Like the authorizer, it can be updated through governance.
 
 ### `getGlobalProtocolSwapFeePercentage`
 
 ```solidity
 function getGlobalProtocolSwapFeePercentage() external view returns (uint256);
 ```
-This function returns the current global protocol swap fee percentage.
+This function returns the current global protocol swap fee percentage. This is the default value used for new pools deployed by standard factories.
 
 ### `getGlobalProtocolYieldFeePercentage`
 
 ```solidity
 function getGlobalProtocolYieldFeePercentage() external view returns (uint256);
 ```
-This function returns the current global protocol yield fee percentage.
+This function returns the current global protocol yield fee percentage. This is the default value used for new pools deployed by standard factories.
 
 ### `getPoolProtocolSwapFeeInfo`
 
 ```solidity
 function getPoolProtocolSwapFeeInfo(address pool) external view returns (uint256, bool);
 ```
-This function returns the current protocol swap fee for a given pool and a boolean indicating if the protocol fee has been overridden.
+This function returns the current protocol swap fee for a given pool and a boolean indicating whether the protocol fee has been overridden by governance.
+Only pools whose protocol fees have NOT been overridden can be permissionlessly updated using `updateProtocolSwapFeePercentage`.
 
 **Parameters:**
 
@@ -39,7 +40,8 @@ This function returns the current protocol swap fee for a given pool and a boole
 ```solidity
 function getPoolProtocolYieldFeeInfo(address pool) external view returns (uint256, bool);
 ```
-This function returns the current protocol yield fee for a given pool and a boolean indicating if the protocol fee has been overridden.
+This function returns the current protocol yield fee for a given pool and a boolean indicating if the protocol fee has been overridden by governance.
+Only pools whose protocol fees have NOT been overridden can be permissionlessly updated using `updateProtocolYieldFeePercentage`.
 
 **Parameters:**
 
@@ -52,7 +54,7 @@ This function returns the current protocol yield fee for a given pool and a bool
 ```solidity
 function getProtocolFeeAmounts(address pool) external view returns (uint256[] memory feeAmounts);
 ```
-This function returns the amount of each pool token allocated to the protocol for withdrawal. It includes both swap and yield fees.
+This function returns the amount of each pool token allocated to the protocol and available for withdrawal. It includes both swap and yield fees. Calling `collectAggregateFees` on the Vault will transfer any pending fees from the Vault to the Protocol Fee Controller, and allocate them to the protocol and pool creator.
 
 **Parameters:**
 
@@ -65,7 +67,7 @@ This function returns the amount of each pool token allocated to the protocol fo
 ```solidity
 function getPoolCreatorFeeAmounts(address pool) external view returns (uint256[] memory feeAmounts);
 ```
-This function returns the amount of each pool token allocated to the pool creator for withdrawal. It includes both swap and yield fees.
+This function returns the amount of each pool token allocated to the pool creator and available for withdrawal. It includes both swap and yield fees. Calling `collectAggregateFees` on the Vault will transfer any pending fees from the Vault to the Protocol Fee Controller, and allocate them to the protocol and pool creator.
 
 **Parameters:**
 
@@ -81,7 +83,7 @@ function computeAggregateFeePercentage(
     uint256 poolCreatorFeePercentage
 ) external pure returns (uint256 aggregateFeePercentage);
 ```
-This function returns a calculated aggregate percentage from protocol and pool creator fee percentages. It's not tied to any particular pool; this just performs the low-level "additive fee" calculation.
+This function returns a calculated aggregate percentage from protocol and pool creator fee percentages. It's not tied to any particular pool; this just performs the low-level "additive fee" calculation. Note that this respects the Vault's 24-bit aggregate fee precision limit. If you try to set a fee such that the aggregate requires greater than 24-bit precision, this will revert.
 
 **Parameters:**
 
@@ -125,7 +127,7 @@ function registerPool(
     bool protocolFeeExempt
 ) external returns (uint256 aggregateSwapFeePercentage, uint256 aggregateYieldFeePercentage);
 ```
-This function adds pool-specific entries to the protocol swap and yield percentages. This must be called from the Vault during pool registration. It will initialize the pool to the global protocol fee percentage values, and return the initial aggregate fee percentages, based on an initial pool creator fee of 0.
+This function adds pool-specific entries for protocol swap and yield percentages. This must be called from the Vault during pool registration. It will initialize the pool to the global protocol fee percentage values (or 0, if the `protocolFeeExempt` flag is set), and return the initial aggregate fee percentages, based on an initial pool creator fee of 0. The idea here is to allow protocols to "test" new pool types with zero fees. Governance can always override the protocol fee percentages: the exemption only sets the starting value, and does not mean the pool creator controls the protocol fee. (The pool creator does exclusively control pool creator fees.)
 
 **Parameters:**
 
@@ -144,22 +146,22 @@ function receiveAggregateFees(
     uint256[] memory yieldFeeAmounts
 ) external;
 ```
-This function is called by the Vault when aggregate swap or yield fees are collected. This must be called from the Vault, during permissionless collection. Note that since charging protocol fees (i.e., distributing tokens between pool and fee balances) occurs in the Vault, but fee collection happens in the ProtocolFeeController, the swap fees reported here may encompass multiple operations.
+This function is called by the Vault when aggregate swap or yield fees are collected. Note that since charging protocol fees (i.e., distributing tokens between pool and fee balances) occurs in the Vault, but fee collection happens in the ProtocolFeeController, the swap fees reported here may encompass multiple operations. This is a permissioned call; the caller must be the Vault.
 
 **Parameters:**
 
 | Name  | Type  | Description  |
 |---|---|---|
 | pool  | address  | The pool on which the swap fees were charged  |
-| swapFeeAmounts  | uint256[]  | An array parallel to the pool tokens, with the swap fees collected in each token  |
-| yieldFeeAmounts  | uint256[]  | An array parallel to the pool tokens, with the yield fees collected in each token  |
+| swapFeeAmounts  | uint256[]  | An array sorted in token registration order, with the swap fees collected in each token  |
+| yieldFeeAmounts  | uint256[]  | An array sorted in token registration order, with the yield fees collected in each token  |
 
 ### `setGlobalProtocolSwapFeePercentage`
 
 ```solidity
 function setGlobalProtocolSwapFeePercentage(uint256 newProtocolSwapFeePercentage) external;
 ```
-This function sets the global protocol swap fee percentage, used by standard pools.
+This function sets the global protocol swap fee percentage, used by standard pools. This is a permissioned call.
 
 **Parameters:**
 
@@ -172,7 +174,7 @@ This function sets the global protocol swap fee percentage, used by standard poo
 ```solidity
 function setGlobalProtocolYieldFeePercentage(uint256 newProtocolYieldFeePercentage) external;
 ```
-This function sets the global protocol yield fee percentage, used by standard pools.
+This function sets the global protocol yield fee percentage, used by standard pools. This is a permissioned call.
 
 **Parameters:**
 
@@ -185,7 +187,7 @@ This function sets the global protocol yield fee percentage, used by standard po
 ```solidity
 function setProtocolSwapFeePercentage(address pool, uint256 newProtocolSwapFeePercentage) external;
 ```
-This function overrides the protocol swap fee percentage for a specific pool.
+This function overrides the protocol swap fee percentage for a specific pool. This is a permissioned call.
 
 **Parameters:**
 
@@ -199,7 +201,7 @@ This function overrides the protocol swap fee percentage for a specific pool.
 ```solidity
 function setProtocolYieldFeePercentage(address pool, uint256 newProtocolYieldFeePercentage) external;
 ```
-This function overrides the protocol yield fee percentage for a specific pool.
+This function overrides the protocol yield fee percentage for a specific pool. This is a permissioned call.
 
 **Parameters:**
 
@@ -213,7 +215,7 @@ This function overrides the protocol yield fee percentage for a specific pool.
 ```solidity
 function setPoolCreatorSwapFeePercentage(address pool, uint256 poolCreatorSwapFeePercentage) external;
 ```
-This function assigns a new pool creator swap fee percentage to the specified pool.
+This function assigns a new pool creator swap fee percentage to the specified pool. This is a permissioned call; the caller must be the pool creator.
 
 **Parameters:**
 
@@ -227,7 +229,7 @@ This function assigns a new pool creator swap fee percentage to the specified po
 ```solidity
 function setPoolCreatorYieldFeePercentage(address pool, uint256 poolCreatorYieldFeePercentage) external;
 ```
-This function assigns a new pool creator yield fee percentage to the specified pool.
+This function assigns a new pool creator yield fee percentage to the specified pool. This is a permissioned call; the caller must be the pool creator.
 
 **Parameters:**
 
@@ -241,7 +243,7 @@ This function assigns a new pool creator yield fee percentage to the specified p
 ```solidity
 function withdrawProtocolFees(address pool, address recipient) external;
 ```
-This function withdraws collected protocol fees for a given pool. It sends swap and yield protocol fees to the recipient.
+This function withdraws collected protocol fees for a given pool. It sends swap and yield protocol fees to the recipient. This is a permissioned call.
 
 **Parameters:**
 
@@ -255,7 +257,7 @@ This function withdraws collected protocol fees for a given pool. It sends swap 
 ```solidity
 function withdrawPoolCreatorFees(address pool, address recipient) external;
 ```
-This function withdraws collected pool creator fees for a given pool. It sends swap and yield pool creator fees to the recipient.
+This function withdraws collected pool creator fees for a given pool. It sends swap and yield pool creator fees to the recipient. This is a permissioned call; the caller must be the pool creator.
 
 **Parameters:**
 
@@ -263,3 +265,16 @@ This function withdraws collected pool creator fees for a given pool. It sends s
 |---|---|---|
 | pool  | address  | The pool on which fees were collected  |
 | recipient  | address  | Address to send the tokens  |
+
+### `withdrawPoolCreatorFees`
+
+```solidity
+function withdrawPoolCreatorFees(address pool) external;
+```
+This function withdraws collected pool creator fees for a given pool. It sends swap and yield pool creator fees to the registered pool creator. Since there is no recipient, this is a permissionless call, allowing easier automation of fee collection.
+
+**Parameters:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+| pool  | address  | The pool on which fees were collected  |
