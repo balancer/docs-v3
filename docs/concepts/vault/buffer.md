@@ -27,14 +27,14 @@ If your organization is a DAO and you're seeking to enhance liquidity for your E
 Liquidity can be added to a buffer for a specific token pair. This is done by invoking the `addLiquidityToBuffer` function, where you designate the ERC4626 Token as the buffer reference. You also specify the amounts of both the wrapped and underlying tokens that you want to add to the buffer. It's important to note that a buffer can still function with zero liquidity. It can be used to wrap and unwrap assets, meaning that even an empty buffer can facilitate swaps through the Vault.
 ```solidity
 /**
- * @notice Adds liquidity to a yield-bearing token buffer (linear pools embedded in the vault).
+ * @notice Adds liquidity to a yield-bearing buffer (one of the Vault's internal ERC4626 token buffers).
  * @param wrappedToken Address of the wrapped token that implements IERC4626
  * @param amountUnderlyingRaw Amount of underlying tokens that will be deposited into the buffer
  * @param amountWrappedRaw Amount of wrapped tokens that will be deposited into the buffer
- * @param sharesOwner Address of the contract that will own the liquidity.
- *        Only this contract will be able to remove liquidity from the buffer
- * @return issuedShares the amount of tokens sharesOwner has in the buffer, denominated in underlying tokens
- *         (This is the BPT of the vault's internal "Linear Pools")
+ * @param sharesOwner Address of the contract that will own the liquidity. Only this contract will be able to
+ * remove liquidity from the buffer
+ * @return issuedShares the amount of tokens sharesOwner has in the buffer, denominated in underlying tokens.
+ * (This is the BPT of an internal ERC4626 token buffer.)
 */
 function addLiquidityToBuffer(
     IERC4626 wrappedToken,
@@ -45,14 +45,14 @@ function addLiquidityToBuffer(
 ```
 
 ## Removing liquidity from a buffer 
-After you've added liquidity to a buffer, you have the option to remove a specified amount based on . This is done by invoking the function `removeLiquidityFromBuffer`. This function will subsequently burn a specified amount of your bufferShares and return the corresponding amount of tokens that you had previously provided.
+After you've added liquidity to a buffer, you have the option to remove a specified amount based on the share amount. This is done by invoking the function `removeLiquidityFromBuffer`. This function will subsequently burn a specified amount of your bufferShares and return the corresponding amount of tokens that you had previously provided.
 ```solidity
 /**
- * @notice Removes liquidity from a yield-bearing token buffer (an embedded "Linear Pool").
+ * @notice Removes liquidity from a yield-bearing buffer (one of the Vault's internal ERC4626 token buffers).
  * @dev Only proportional withdrawals are supported, and removing liquidity is permissioned.
  * @param wrappedToken Address of a wrapped token that implements IERC4626
- * @param sharesToRemove Amount of shares to remove from the buffer. Cannot be greater than sharesOwner
- *        total shares
+ * @param sharesToRemove Amount of shares to remove from the buffer. Cannot be greater than sharesOwner's
+ * total shares
  * @return removedUnderlyingBalanceRaw Amount of underlying tokens returned to the user
  * @return removedWrappedBalanceRaw Amount of wrapped tokens returned to the user
 */

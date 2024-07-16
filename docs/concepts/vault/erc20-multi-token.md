@@ -38,7 +38,8 @@ function _approve(address token, address owner, address spender, uint256 amount)
     _allowances[token][owner][spender] = amount;
     
     emit Approval(token, owner, spender, amount);
-    // We also invoke the "approve" event on the pool token to ensure full compliance with ERC20 standards.
+    // We also emit the "approve" event on the pool token to ensure full compliance with ERC20 standards.
+
     BalancerPoolToken(token).emitApproval(owner, spender, amount);
 }
 ```
