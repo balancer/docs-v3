@@ -253,22 +253,24 @@ Called after a swap to give the Pool an opportunity to perform actions once the 
 | success                        | bool   | True if the pool wishes to proceed with settlement       |
 | hookAdjustedAmountCalculatedRaw| uint256| New amount calculated, modified by the hook              |
 
-### `onComputeDynamicSwapFee`
+### `onComputeDynamicSwapFeePercentage`
 
 ```solidity
-function onComputeDynamicSwapFee(
+function onComputeDynamicSwapFeePercentage(
     PoolSwapParams calldata params,
+    address pool,
     uint256 staticSwapFeePercentage
-) external view returns (bool success, uint256 dynamicSwapFee);
+) external view returns (bool success, uint256 dynamicSwapFeePercentage);
 ```
-Called before `onBeforeSwap` if the pool has dynamic fees.
+Called after `onBeforeSwap` and before the main swap operation, if the pool has dynamic fees.
 
 **Parameters:**
 
-| Name                    | Type                       | Description                                              |
-|-------------------------|----------------------------|----------------------------------------------------------|
-| params                  | PoolSwapParams   | Swap parameters                                          |
-| staticSwapFeePercentage | uint256                    | Value of the static swap fee, for reference              |
+| Name                    | Type             | Description                                  |
+|-------------------------|------------------|----------------------------------------------|
+| params                  | PoolSwapParams   | Swap parameters                              |
+| pool                    | address          | Address of the pool                          |
+| staticSwapFeePercentage | uint256          | Value of the static swap fee, for reference  |
 
 **Returns:**
 

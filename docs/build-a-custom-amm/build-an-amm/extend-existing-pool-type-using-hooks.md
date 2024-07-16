@@ -49,14 +49,15 @@ contract VeBALFeeDiscountHook is BaseHooks {
         LiquidityManagement calldata
     ) external view override returns (bool) {
         // This hook implements a restrictive approach, where we check if the factory is an allowed factory and if
-        // the pool was created by the allowed factory. Since we only use onComputeDynamicSwapFee, this might be an
-        // overkill in real applications because the pool math doesn't play a role in the discount calculation.
+        // the pool was created by the allowed factory. Since we only use onComputeDynamicSwapFeePercentage, this might
+        // be an overkill in real applications because the pool math doesn't play a role in the discount calculation.
         return factory == _allowedFactory && IBasePoolFactory(factory).isPoolFromFactory(pool);
     }
 
     /// @inheritdoc IHooks
-    function onComputeDynamicSwapFee(
+    function onComputeDynamicSwapFeePercentage(
         PoolSwapParams calldata params,
+        address pool,
         uint256 staticSwapFeePercentage
     ) external view override returns (bool, uint256) {
         // If the router is not trusted, does not apply the veBAL discount because getSender() may be manipulated by a
@@ -108,7 +109,7 @@ In this example we validate that the `factory` param forwarded from the Vault ma
 ### Implementing the Swap Fee Logic
 
 ```solidity
-function onComputeDynamicSwapFee(
+function onComputeDynamicSwapFeePercentage(
     PoolSwapParams calldata params,
     address pool,
     uint256 staticSwapFeePercentage
@@ -130,7 +131,7 @@ function onComputeDynamicSwapFee(
 }
 ```
 
-Now we can implement the logic in the `onComputeDynamicSwapFee` function, which the Vault calls to retrieve the swap fee value. In our example, any veBal holder enjoys a 50% swap fee discount, instead of the default static swap fee. However, there are some nuances to consider in this implementation.
+Now we can implement the logic in the `onComputeDynamicSwapFeePercentage` function, which the Vault calls to retrieve the swap fee value. In our example, any veBal holder enjoys a 50% swap fee discount, instead of the default static swap fee. However, there are some nuances to consider in this implementation.
 
 To obtain the user's veBAL balance, we need the sender's address, which we can retrieve by calling `getSender()` on the router. This relies on the router returning the correct address, so it's crucial to ensure the router is "trusted" (any contract can act as a [Router](/concepts/router/overview.html#routers)). In our example we passed a trusted `_router` address, which is saved during the hook deployment.
 

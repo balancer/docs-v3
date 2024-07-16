@@ -27,7 +27,7 @@ Hooks are implemented as standalone contracts that can have their own internal l
 - `onAfterRemoveLiquidity`
 - `onBeforeSwap`
 - `onAfterSwap`
-- `onComputeDynamicSwapFee`
+- `onComputeDynamicSwapFeePercentage`
 
 Refer to the [Pool hooks API](/developer-reference/contracts/hooks-api.html) page for full function references.
 
