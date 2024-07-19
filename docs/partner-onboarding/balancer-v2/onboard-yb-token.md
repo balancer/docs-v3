@@ -4,10 +4,6 @@ order: 2
 ---
 
 # Onboard your Yield-bearing Asset to Balancer v2
-
-::: tip
-Balancer contributors are happy to help during the onboarding process. Feel free to reach out to us on our discord!
-:::
 Onboarding of your yield-bearing asset involves a few steps to fully leverage Balancer tech. These steps include
 whitelisting of your token, provision of a rate provider for optimized trading as well as applying to a Balancer gauge
 to receive BAL rewards if your project wishes to do so.
