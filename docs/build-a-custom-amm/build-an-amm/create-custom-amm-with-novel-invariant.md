@@ -48,7 +48,7 @@ contract ConstantProductPool is IBasePool, BalancerPoolToken {
      */
     function onSwap(PoolSwapParams calldata params)
         external
-        view
+        pure
         returns (uint256 amountCalculatedScaled18)
     {
         amountCalculatedScaled18 = params.balancesScaled18[params.indexOut] * params.amountGivenScaled18 / 
@@ -63,7 +63,7 @@ contract ConstantProductPool is IBasePool, BalancerPoolToken {
      */
     function computeInvariant(uint256[] memory balancesLiveScaled18)
         public
-        view
+        pure
         returns (uint256 invariant)
     {
         // expected to work with 2 tokens only
@@ -72,7 +72,7 @@ contract ConstantProductPool is IBasePool, BalancerPoolToken {
             invariant = invariant.mulDown(balancesLiveScaled18[i]);
         }
         // scale the invariant to 1e18
-        invariant = _sqrt(invariant) * 1e9;
+        invariant = Math.sqrt(invariant) * 1e9;
 
     }
 
@@ -88,7 +88,7 @@ contract ConstantProductPool is IBasePool, BalancerPoolToken {
         uint256[] memory balancesLiveScaled18,
         uint256 tokenInIndex,
         uint256 invariantRatio
-    ) external view returns (uint256 newBalance) {
+    ) external pure returns (uint256 newBalance) {
         uint256 otherTokenIndex = tokenInIndex == 0 ? 1 : 0;
 
         uint256 newInvariant = computeInvariant(balancesLiveScaled18).mulDown(invariantRatio);
@@ -97,12 +97,12 @@ contract ConstantProductPool is IBasePool, BalancerPoolToken {
     }
 
     /// @return minimumSwapFeePercentage The minimum swap fee percentage for a pool
-    function getMinimumSwapFeePercentage() external view returns (uint256) {
+    function getMinimumSwapFeePercentage() external pure returns (uint256) {
         return _MIN_SWAP_FEE_PERCENTAGE;
     }
 
     /// @return maximumSwapFeePercentage The maximum swap fee percentage for a pool
-    function getMaximumSwapFeePercentage() external view returns (uint256) {
+    function getMaximumSwapFeePercentage() external pure returns (uint256) {
         return _MAX_SWAP_FEE_PERCENTAGE;
     }
 }
@@ -127,7 +127,7 @@ contract ConstantSumPool is IBasePool, BalancerPoolToken {
      * @param params Swap parameters
      * @return amountCalculatedScaled18 Calculated amount for the swap
      */
-    function onSwap(PoolSwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
+    function onSwap(PoolSwapParams calldata params) external pure returns (uint256 amountCalculatedScaled18) {
         amountCalculatedScaled18 = params.amountGivenScaled18;
     }
     
@@ -137,7 +137,7 @@ contract ConstantSumPool is IBasePool, BalancerPoolToken {
      * @param balancesLiveScaled18 Array of current pool balances for each token in the pool, scaled to 18 decimals
      * @return invariant The calculated invariant of the pool, represented as a uint256
      */
-    function computeInvariant(uint256[] memory balancesLiveScaled18) external view returns (uint256 invariant) {
+    function computeInvariant(uint256[] memory balancesLiveScaled18) external pure returns (uint256 invariant) {
         invariant = balancesLiveScaled18[0] + balancesLiveScaled18[1];
     }
 
@@ -160,12 +160,12 @@ contract ConstantSumPool is IBasePool, BalancerPoolToken {
     }
 
     /// @return minimumSwapFeePercentage The minimum swap fee percentage for a pool
-    function getMinimumSwapFeePercentage() external view returns (uint256) {
+    function getMinimumSwapFeePercentage() external pure returns (uint256) {
         return _MIN_SWAP_FEE_PERCENTAGE;
     }
 
     /// @return maximumSwapFeePercentage The maximum swap fee percentage for a pool
-    function getMaximumSwapFeePercentage() external view returns (uint256) {
+    function getMaximumSwapFeePercentage() external pure returns (uint256) {
         return _MAX_SWAP_FEE_PERCENTAGE;
     }
 }
@@ -201,7 +201,7 @@ Our two-token `ConstantSumPool` uses the constant sum invariant, or `X + Y = K`.
 ```solidity
 function computeInvariant(uint256[] memory balancesLiveScaled18)
     public
-    view
+    pure
     returns (uint256 invariant)
 {
     // expected to work with 2 tokens only
@@ -217,7 +217,7 @@ function computeInvariant(uint256[] memory balancesLiveScaled18)
 
 @tab Constant Sum Pool
 ```solidity
-function computeInvariant(uint256[] memory balancesLiveScaled18) external view returns (uint256 invariant) {
+function computeInvariant(uint256[] memory balancesLiveScaled18) external pure returns (uint256 invariant) {
     invariant = balancesLiveScaled18[0] + balancesLiveScaled18[1];
 }
 ```
@@ -248,7 +248,7 @@ function computeBalance(
     uint256[] memory balancesLiveScaled18,
     uint256 tokenInIndex,
     uint256 invariantRatio
-) external view returns (uint256 newBalance) {
+) external pure returns (uint256 newBalance) {
     uint256 otherTokenIndex = tokenInIndex == 0 ? 1 : 0;
 
     uint256 newInvariant = computeInvariant(balancesLiveScaled18).mulDown(invariantRatio);
@@ -297,7 +297,7 @@ the amount entering the pool will always equal the amount leaving the pool:
 ```solidity
 function onSwap(PoolSwapParams calldata params)
     external
-    view
+    pure
     returns (uint256 amountCalculatedScaled18)
 {
     amountCalculatedScaled18 = params.balancesScaled18[params.indexOut] * params.amountGivenScaled18 / 
@@ -307,7 +307,7 @@ function onSwap(PoolSwapParams calldata params)
 
 @tab Constant Sum Pool
 ```solidity
-function onSwap(PoolSwapParams calldata params) external returns (uint256 amountCalculatedScaled18) {
+function onSwap(PoolSwapParams calldata params) external pure returns (uint256 amountCalculatedScaled18) {
     amountCalculatedScaled18 = params.amountGivenScaled18;
 }
 ```
