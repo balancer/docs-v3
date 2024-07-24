@@ -13,7 +13,7 @@ references:
 Weighted Pools are an extension of the classical $x * y = k$ AMM pools popularized by Uniswap v1. Weighted Pools use [Weighted Math](./weighted-math.md), which makes them great for general cases, including tokens that don't necessarily have any price correlation (ex. DAI/WETH). Unlike pools in other AMMs that only provide 50/50 weightings, Balancer Weighted Pools enable users to build pools with more than two tokens and custom weights, such as pools with 80/20 or 60/20/20 weights.
 
 ::: info info
-For performance reasons, Balancer v3 pools are limited at the Vault level to 4 tokens.
+Balancer v3 pools are limited at the Vault level to 8 tokens, and Standard Weighted Pools support any token count up to this limit.
 Weighted Pools have additional security constraints based on Weighted Math. (These are the same as in v2.)
 
 - The minimum token weight is 1%
