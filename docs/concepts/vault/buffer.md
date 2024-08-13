@@ -31,16 +31,13 @@ Liquidity can be added to a buffer for a specific token pair. This is done by in
  * @param wrappedToken Address of the wrapped token that implements IERC4626
  * @param amountUnderlyingRaw Amount of underlying tokens that will be deposited into the buffer
  * @param amountWrappedRaw Amount of wrapped tokens that will be deposited into the buffer
- * @param sharesOwner Address of the contract that will own the liquidity. Only this contract will be able to
- * remove liquidity from the buffer
  * @return issuedShares the amount of tokens sharesOwner has in the buffer, denominated in underlying tokens.
  * (This is the BPT of an internal ERC4626 token buffer.)
 */
 function addLiquidityToBuffer(
     IERC4626 wrappedToken,
     uint256 amountUnderlyingRaw,
-    uint256 amountWrappedRaw,
-    address sharesOwner
+    uint256 amountWrappedRaw
 ) external returns (uint256 issuedShares);
 ```
 

@@ -414,8 +414,7 @@ Executes a swap operation specifying an exact output token amount.
 function addLiquidityToBuffer(
     IERC4626 wrappedToken,
     uint256 amountUnderlyingRaw,
-    uint256 amountWrappedRaw,
-    address sharesOwner
+    uint256 amountWrappedRaw
 ) external returns (uint256 issuedShares);
 ```
 Adds liquidity to a yield-bearing buffer (one of the Vault's internal ERC4626 token buffers).

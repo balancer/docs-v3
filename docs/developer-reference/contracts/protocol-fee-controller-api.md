@@ -49,12 +49,25 @@ Only pools whose protocol fees have NOT been overridden can be permissionlessly 
 |---|---|---|
 | pool  | address  | The pool for which to get the protocol yield fee info  |
 
+### `collectAggregateFees`
+
+```solidity
+function collectAggregateFees(address pool) external;
+```
+This function collects accumulated aggregate swap and yield fees for the specified pool. It makes a permissioned call on `collectAggregateFees` in the Vault to calculate the fee amounts, then calls `sendTo` to transfer the tokens, after which they are distributed to the protocol and pool creator balances. As this affects Vault accounting, it is invoked through `unlock` and a local "hook", with the ProtocolFeeController acting as the "Router". The Vault function supplies credit for the tokens to be taken as fees, and the fee controller takes debt (through `sendTo`), ensuring valid settlement.
+
+**Parameters:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+| pool  | address  | The pool on which all aggregate fees should be collected  |
+
 ### `getProtocolFeeAmounts`
 
 ```solidity
 function getProtocolFeeAmounts(address pool) external view returns (uint256[] memory feeAmounts);
 ```
-This function returns the amount of each pool token allocated to the protocol and available for withdrawal. It includes both swap and yield fees. Calling `collectAggregateFees` on the Vault will transfer any pending fees from the Vault to the Protocol Fee Controller, and allocate them to the protocol and pool creator.
+This function returns the amount of each pool token allocated to the protocol and available for withdrawal. It includes both swap and yield fees. Calling `collectAggregateFees` will transfer any pending fees from the Vault to the Protocol Fee Controller, and allocate them to the protocol and pool creator.
 
 **Parameters:**
 
