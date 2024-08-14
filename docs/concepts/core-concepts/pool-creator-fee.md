@@ -49,7 +49,7 @@ function withdrawPoolCreatorFees(address pool) external;
 
 ### Tracking accrued fees
 
-The aggregate pool creator fees (sum of pool creator swap and yield fees) can be fetched from the [ProtocolFeeCollector.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/ProtocolFeeController.sol)
+The aggregate pool creator fees (sum of pool creator swap and yield fees) can be fetched from the [ProtocolFeeController.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/ProtocolFeeController.sol)
 ```solidity
 /**
  * @notice Returns the amount of each pool token allocated to the pool creator for withdrawal.
