@@ -214,7 +214,7 @@ Optional hook to be executed after removing liquidity.
 ### `onBeforeSwap`
 
 ```solidity
-function onBeforeSwap(IBasePool.PoolSwapParams calldata params, address pool) external returns (bool success);
+function onBeforeSwap(PoolSwapParams calldata params, address pool) external returns (bool success);
 ```
 Called before a swap to give the Pool an opportunity to perform actions.
 
@@ -222,7 +222,7 @@ Called before a swap to give the Pool an opportunity to perform actions.
 
 | Name      | Type                       | Description                                              |
 |-----------|----------------------------|----------------------------------------------------------|
-| params    | IBasePool.PoolSwapParams   | Swap parameters                                          |
+| params    | PoolSwapParams   | Swap parameters                                          |
 | pool      | address                    | Pool address, used to get pool information from the vault|
 
 **Returns:**
@@ -253,22 +253,24 @@ Called after a swap to give the Pool an opportunity to perform actions once the 
 | success                        | bool   | True if the pool wishes to proceed with settlement       |
 | hookAdjustedAmountCalculatedRaw| uint256| New amount calculated, modified by the hook              |
 
-### `onComputeDynamicSwapFee`
+### `onComputeDynamicSwapFeePercentage`
 
 ```solidity
-function onComputeDynamicSwapFee(
-    IBasePool.PoolSwapParams calldata params,
+function onComputeDynamicSwapFeePercentage(
+    PoolSwapParams calldata params,
+    address pool,
     uint256 staticSwapFeePercentage
-) external view returns (bool success, uint256 dynamicSwapFee);
+) external view returns (bool success, uint256 dynamicSwapFeePercentage);
 ```
-Called before `onBeforeSwap` if the pool has dynamic fees.
+Called after `onBeforeSwap` and before the main swap operation, if the pool has dynamic fees.
 
 **Parameters:**
 
-| Name                    | Type                       | Description                                              |
-|-------------------------|----------------------------|----------------------------------------------------------|
-| params                  | IBasePool.PoolSwapParams   | Swap parameters                                          |
-| staticSwapFeePercentage | uint256                    | Value of the static swap fee, for reference              |
+| Name                    | Type             | Description                                  |
+|-------------------------|------------------|----------------------------------------------|
+| params                  | PoolSwapParams   | Swap parameters                              |
+| pool                    | address          | Address of the pool                          |
+| staticSwapFeePercentage | uint256          | Value of the static swap fee, for reference  |
 
 **Returns:**
 

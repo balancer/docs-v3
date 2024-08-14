@@ -27,14 +27,26 @@ The accrued creator fees can only be claimed by the `poolCreator`, as the functi
 
 ```solidity
 /**
-    * @notice Withdraw collected pool creator fees for a given pool.
-    * @dev Sends swap and yield pool creator fees to the recipient.
-    * @param pool The pool on which fees were collected
-    * @param recipient Address to send the tokens
-    */
+ * @notice Withdraw collected pool creator fees for a given pool. This is a permissioned function.
+ * @dev Sends swap and yield pool creator fees to the recipient.
+ * @param pool The pool on which fees were collected
+ * @param recipient Address to send the tokens
+ */
 function withdrawPoolCreatorFees(address pool, address recipient) external;
 ```
 This collects the entire amount of accrued creator fees. It is not possible to claim creator swap or yield fees separately.
+
+Note that there is also a permissionless version, without a recipient, that sends the fees to the registered pool creator.
+
+```solidity
+/**
+ * @notice Withdraw collected pool creator fees for a given pool.
+ * @dev Sends swap and yield pool creator fees to the registered poolCreator.
+ * @param pool The pool on which fees were collected
+ */
+function withdrawPoolCreatorFees(address pool) external;
+```
+
 ### Tracking accrued fees
 
 The aggregate pool creator fees (sum of pool creator swap and yield fees) can be fetched from the [ProtocolFeeController.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/ProtocolFeeController.sol)
@@ -42,8 +54,8 @@ The aggregate pool creator fees (sum of pool creator swap and yield fees) can be
 /**
  * @notice Returns the amount of each pool token allocated to the pool creator for withdrawal.
  * @dev Includes both swap and yield fees.
- * @param pool The pool on which fees were collected
- * @param feeAmounts The total amounts of each token that are available for withdrawal, in token registration order
+ * @param pool The address of the pool on which fees were collected
+ * @param feeAmounts The total amounts of each token available for withdrawal, sorted in token registration order
  */
 function getPoolCreatorFeeAmounts(address pool) external view returns (uint256[] memory feeAmounts);
 ```

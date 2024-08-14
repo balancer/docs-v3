@@ -9,6 +9,8 @@ The Batch Router can be used to interact with Balancer onchain via [state changi
 
 ## State-changing functions
 
+## Batch swaps
+
 ### `swapExactIn`
 
 ```solidity
@@ -29,7 +31,7 @@ Executes a swap operation involving multiple paths (steps), specifying exact inp
 | Name       | Type                               | Description                                                                                  |
 |------------|------------------------------------|----------------------------------------------------------------------------------------------|
 | paths      | SwapPathExactAmountIn[] memory     | Swap paths from token in to token out, specifying exact amounts in.                          |
-| deadline   | uint256                            | Deadline for the swap                                                                        |
+| deadline   | uint256                            | Deadline for the swap, after which it will revert                                                                        |
 | wethIsEth  | bool                               | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH     |
 | userData   | bytes calldata                     | Additional (optional) data required for the swap                                             |
 
@@ -58,7 +60,7 @@ Executes a swap operation involving multiple paths (steps), specifying exact out
 | Name       | Type                               | Description                                                                                  |
 |------------|------------------------------------|----------------------------------------------------------------------------------------------|
 | paths      | SwapPathExactAmountOut[] memory    | Swap paths from token in to token out, specifying exact amounts out.                         |
-| deadline   | uint256                            | Deadline for the swap                                                                        |
+| deadline   | uint256                            | Deadline for the swap, after which it will revert                                                                        |
 | wethIsEth  | bool                               | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH     |
 | userData   | bytes calldata                     | Additional (optional) data required for the swap                                             |
 
@@ -69,6 +71,8 @@ Executes a swap operation involving multiple paths (steps), specifying exact out
 | pathAmountsIn    | uint256[] memory       | Calculated amounts of input tokens corresponding to the first step of each given path        |
 | tokensIn         | address[] memory       | Calculated input token addresses                                                             |
 | amountsIn        | uint256[] memory       | Calculated amounts of input tokens, ordered by input token address                           |
+
+## Queries
 
 ### `querySwapExactIn`
 
@@ -119,3 +123,7 @@ Queries a swap operation involving multiple paths (steps), specifying exact outp
 | pathAmountsIn    | uint256[] memory       | Calculated amounts of input tokens to be received corresponding to the last step of each given path |
 | tokensIn         | address[] memory       | Calculated input token addresses                                                             |
 | amountsIn        | uint256[] memory       | Calculated amounts of input tokens to be received, ordered by input token address            |
+
+## Router common
+
+See the bottom of the [Router](./router-api.md#router-common) for functions common to both the `Router` and `BatchRouter`.

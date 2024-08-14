@@ -41,6 +41,10 @@ Onboarding your asset onto Balancer involves three main steps:
 - **Customize Pool Logic**: Utilize Balancer v3's [hooks](../../concepts/core-concepts/hooks.md) for tailored functionality. 
 - **Engage in Governance**: [Apply for a gauge](../balancer-v2/gauge-onboarding.md) to receive BAL rewards for your pool.
 
+  ::: tip
+  Balancer contributors are happy to help during the onboarding process. Feel free to reach out to us on our [Discord](https://discord.balancer.fi)!
+  :::
+
 ### Find the Right Product for Your Needs
 
 Use our Product Wizard to discover the best solutions for your business. Explore use cases and read success stories.
