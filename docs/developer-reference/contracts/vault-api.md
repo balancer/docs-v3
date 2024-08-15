@@ -466,8 +466,7 @@ This `VaultAdmin` function unpauses native vault buffers globally. When buffers 
 function addLiquidityToBuffer(
     IERC4626 wrappedToken,
     uint256 amountUnderlyingRaw,
-    uint256 amountWrappedRaw,
-    address sharesOwner
+    uint256 amountWrappedRaw
 ) external returns (uint256 issuedShares);
 ```
 This `VaultAdmin` function adds liquidity to a yield-bearing token buffer (linear pool embedded in the vault).
@@ -949,19 +948,6 @@ This `VaultAdmin` function assigns a new static swap fee percentage to the speci
 | pool  | address  | The address of the pool for which the static swap fee will be changed  |
 | swapFeePercentage  | uint256  | The new swap fee percentage to apply to the pool  |
 
-### `collectAggregateFees`
-
-```solidity
-function collectAggregateFees(address pool) external;
-```
-This `VaultAdmin` function collects accumulated aggregate swap and yield fees for the specified pool. Fees are sent to the ProtocolFeeController address.
-
-**Parameters:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| pool  | address  | The pool on which all aggregate fees should be collected  |
-
 ### `updateAggregateSwapFeePercentage`
 
 ```solidity
@@ -1078,9 +1064,9 @@ This `VaultAdmin` function disables recovery mode for a pool. This is a permissi
 ### `quote`
 
 ```solidity
-function quote(bytes calldata data) external payable returns (bytes memory result);
+function quote(bytes calldata data) external returns (bytes memory result);
 ```
-This `VaultExtension` function performs a callback on `msg.sender` with arguments provided in `data`. It is used to query a set of operations on the Vault. Only off-chain `eth_call` are allowed, anything else will revert.
+This `VaultExtension` function performs a callback on `msg.sender` with arguments provided in `data`. It is used to query a set of operations on the Vault. Only off-chain `eth_call` are allowed, anything else will revert. Also note that it is non-payable, as the Vault does not allow ETH.
 
 **Parameters:**
 
@@ -1097,9 +1083,9 @@ This `VaultExtension` function performs a callback on `msg.sender` with argument
 ### `quoteAndRevert`
 
 ```solidity
-function quoteAndRevert(bytes calldata data) external payable;
+function quoteAndRevert(bytes calldata data) external;
 ```
-This `VaultExtension` function performs a callback on `msg.sender` with arguments provided in `data`. It is used to query a set of operations on the Vault. Only off-chain `eth_call` are allowed, anything else will revert. This call always reverts, returning the result in the revert reason.
+This `VaultExtension` function performs a callback on `msg.sender` with arguments provided in `data`. It is used to query a set of operations on the Vault. Only off-chain `eth_call` are allowed, anything else will revert. This call always reverts, returning the result in the revert reason. Also note that it is non-payable, as the Vault does not allow ETH.
 
 **Parameters:**
 
