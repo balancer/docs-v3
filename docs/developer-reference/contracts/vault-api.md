@@ -1066,7 +1066,7 @@ This `VaultAdmin` function disables recovery mode for a pool. This is a permissi
 ```solidity
 function quote(bytes calldata data) external returns (bytes memory result);
 ```
-This `VaultExtension` function performs a callback on `msg.sender` with arguments provided in `data`. It is used to query a set of operations on the Vault. Only off-chain `eth_call` are allowed, anything else will revert. Also not that it is non-payable, as the Vault does not allow ETH.
+This `VaultExtension` function performs a callback on `msg.sender` with arguments provided in `data`. It is used to query a set of operations on the Vault. Only off-chain `eth_call` are allowed, anything else will revert. Also note that it is non-payable, as the Vault does not allow ETH.
 
 **Parameters:**
 
@@ -1085,7 +1085,7 @@ This `VaultExtension` function performs a callback on `msg.sender` with argument
 ```solidity
 function quoteAndRevert(bytes calldata data) external;
 ```
-This `VaultExtension` function performs a callback on `msg.sender` with arguments provided in `data`. It is used to query a set of operations on the Vault. Only off-chain `eth_call` are allowed, anything else will revert. This call always reverts, returning the result in the revert reason. Also not that it is non-payable, as the Vault does not allow ETH.
+This `VaultExtension` function performs a callback on `msg.sender` with arguments provided in `data`. It is used to query a set of operations on the Vault. Only off-chain `eth_call` are allowed, anything else will revert. This call always reverts, returning the result in the revert reason. Also note that it is non-payable, as the Vault does not allow ETH.
 
 **Parameters:**
 
