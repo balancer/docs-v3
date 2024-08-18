@@ -68,8 +68,7 @@ The `pool` param in this particular case is the wrapped Tokens entrypoint. Meani
 struct SwapPathStep {
     address pool;
     IERC20 tokenOut;
-    // if true, pool is a yield-bearing token buffer. Used to wrap/unwrap tokens if pool doesn't have
-    // enough liquidity
+    // If true, pool is an ERC4626 buffer. Used to wrap/unwrap tokens if pool doesn't have enough liquidity.
     bool isBuffer;
 }
 ```
@@ -82,9 +81,9 @@ In the case of trading DAI to USDC via (DAI-waDAI Buffer, waDAI - waUSDC Boosted
 ```solidity
 struct SwapPathExactAmountIn {
         IERC20 tokenIn;
-        // for each step:
-        // if tokenIn == pool, use removeLiquidity SINGLE_TOKEN_EXACT_IN
-        // if tokenOut == pool, use addLiquidity UNBALANCED
+        // For each step:
+        // If tokenIn == pool, use removeLiquidity SINGLE_TOKEN_EXACT_IN.
+        // If tokenOut == pool, use addLiquidity UNBALANCED.
         SwapPathStep[] steps;
         uint256 exactAmountIn;
         uint256 minAmountOut;

@@ -16,8 +16,8 @@ Upon activation of the transient state, the vault is unlocked and permissions to
 - `addLiquidity`: Adds one or more tokens to a liquidity pool.
 - `removeLiquidity`: Removes one or more tokens from a liquidity pool.
 - `erc4626BufferWrapOrUnwrap`: Wraps/unwraps tokens based on provided parameters.
-- `addLiquidityToBuffer`: Adds liquidity to a yield-bearing token buffer.
-- `removeLiquidityFromBuffer`: Removes liquidity from a yield-bearing token buffer (permissioned).
+- `addLiquidityToBuffer`: Adds liquidity to an ERC4626 buffer.
+- `removeLiquidityFromBuffer`: Removes liquidity from an ERC4626 buffer.
 - `initialize`: Initialize a liquidity pool.
 - `removeLiquidityRecovery`: Removes liquidity proportionally, burning an exact pool token amount (only in Recovery Mode).
 
