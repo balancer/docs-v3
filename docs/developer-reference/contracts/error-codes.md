@@ -89,16 +89,14 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | BufferNotInitialized(IERC4626)| Buffer for the given wrapped token was not initialized |
 | NotEnoughBufferShares()| The user is trying to remove more than their allocated shares from the buffer |
 | WrongUnderlyingToken(IERC4626, address)| The wrapped token asset does not match the underlying token |
-| InvalidUnderlyingToken()| A wrapped token reported the zero address as its underlying token asset |
-| WrapAmountTooSmall(address)| The amount given to wrap/unwrap was too small, which can introduce rounding issues |
+| InvalidUnderlyingToken(IERC4626)| A wrapped token reported the zero address as its underlying token asset |
+| WrapAmountTooSmall(IERC4626)| The amount given to wrap/unwrap was too small, which can introduce rounding issues |
 | VaultBuffersArePaused()| Buffer operation attempted while vault buffers are paused |
-| BufferSharesInvalidReceiver(address)| Buffer shares were minted to an invalid address |
-| BufferSharesInvalidOwner(address)| Buffer shares were burned from an invalid address |
-| UserDataNotSupported()         | Optional User Data should be empty in the current add / remove liquidity kind |
+| BufferSharesInvalidReceiver()| Buffer shares were minted to an invalid address |
+| BufferSharesInvalidOwner()| Buffer shares were burned from an invalid address |
 | DoesNotSupportUnbalancedLiquidity()         | Pool does not support adding / removing liquidity with an unbalanced input |
 | CannotReceiveEth()             | The contract should not receive ETH |
 | NotVaultDelegateCall()         | The Vault extension was called by an account directly; it can only be called by the Vault via delegatecall |
-| OperationNotSupported()        | Error thrown when a function is not supported |
 | WrongVaultExtensionDeployment()| The vault extension was configured with an incorrect Vault address |
 | WrongProtocolFeeControllerDeployment()| The protocol fee controller was configured with an incorrect Vault address |
 | WrongVaultAdminDeployment()    | The vault admin was configured with an incorrect Vault address |
@@ -110,8 +108,8 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | ProtocolSwapFeePercentageTooHigh() | Error raised when the protocol swap fee percentage exceeds the maximum allowed value |
 | ProtocolYieldFeePercentageTooHigh() | Error raised when the protocol yield fee percentage exceeds the maximum allowed value |
 | PoolCreatorFeePercentageTooHigh() | Error raised when the pool creator swap or yield fee percentage exceeds the maximum allowed value |
-| PoolCreatorNotRegistered(address pool) | Error raised if there is no pool creator on a withdrawal attempt from the given pool |
-| CallerIsNotPoolCreator(address caller) | Error raised if the wrong account attempts to withdraw pool creator fees |
+| PoolCreatorNotRegistered(address) | Error raised if there is no pool creator on a withdrawal attempt from the given pool |
+| CallerIsNotPoolCreator(address, address) | Error raised if the wrong account attempts to withdraw pool creator fees |
 
 ## RouterCommon
 
