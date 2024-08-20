@@ -422,7 +422,8 @@ This `VaultExtension` function gets the current bpt rate of a pool, by dividing 
 |---|---|---|
 | rate  | uint256  | BPT rate  |
 
-## Yield-bearing token buffers
+## ERC4626 Buffers
+
 ### `erc4626BufferWrapOrUnwrap`
 
 ```solidity
@@ -460,16 +461,17 @@ function unpauseVaultBuffers() external;
 ```
 This `VaultAdmin` function unpauses native vault buffers globally. When buffers are paused, it's not possible to add liquidity or wrap/unwrap tokens using Vault's `erc4626BufferWrapOrUnwrap` primitive. However, it's still possible to remove liquidity. This is a permissioned call.
 
-### `addLiquidityToBuffer`
+### `initializeBuffer`
 
 ```solidity
-function addLiquidityToBuffer(
+function initializeBuffer(
     IERC4626 wrappedToken,
     uint256 amountUnderlyingRaw,
-    uint256 amountWrappedRaw
+    uint256 amountWrappedRaw,
+    address sharesOwner
 ) external returns (uint256 issuedShares);
 ```
-This `VaultAdmin` function adds liquidity to a yield-bearing token buffer (linear pool embedded in the vault).
+This `VaultAdmin` function adds liquidity to an internal ERC4626 buffer in the Vault for the first time. And operations involving the buffer will revert until it is initialized.
 
 **Parameters:**
 
@@ -478,18 +480,38 @@ This `VaultAdmin` function adds liquidity to a yield-bearing token buffer (linea
 | wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626  |
 | amountUnderlyingRaw  | uint256  | Amount of underlying tokens that will be deposited into the buffer  |
 | amountWrappedRaw  | uint256  | Amount of wrapped tokens that will be deposited into the buffer  |
-| sharesOwner  | address  | Address of contract that will own the deposited liquidity. Only this contract will be able to remove liquidity from the buffer  |
+| sharesOwner  | address  | Address of the contract that will own the liquidity. Only this contract will be able to remove liquidity from the buffer |
+
+### `addLiquidityToBuffer`
+
+```solidity
+function addLiquidityToBuffer(
+    IERC4626 wrappedToken,
+    uint256 amountUnderlyingRaw,
+    uint256 amountWrappedRaw,
+    address sharesOwner
+) external returns (uint256 issuedShares);
+```
+This `VaultAdmin` function adds liquidity to an internal ERC4626 buffer in the Vault. Reverts if the buffer has not been initialized.
+
+**Parameters:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+| wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626  |
+| amountUnderlyingRaw  | uint256  | Amount of underlying tokens that will be deposited into the buffer  |
+| amountWrappedRaw  | uint256  | Amount of wrapped tokens that will be deposited into the buffer  |
+| sharesOwner  | address  | Address of the contract that will own the liquidity. Only this contract will be able to remove liquidity from the buffer |
 
 ### `removeLiquidityFromBuffer`
 
 ```solidity
 function removeLiquidityFromBuffer(
     IERC4626 wrappedToken,
-    uint256 sharesToRemove,
-    address sharesOwner
+    uint256 sharesToRemove
 ) external returns (uint256 removedUnderlyingBalanceRaw, uint256 removedWrappedBalanceRaw);
 ```
-This `VaultAdmin` function removes liquidity from a yield-bearing token buffer (linear pool embedded in the vault). Only proportional exits are supported.
+This `VaultAdmin` function removes liquidity from an internal ERC4626 buffer in the Vault. Only proportional exits are supported. Note that the `sharesOnwer` here is the msg.sender; unlike initialize, add, and other buffer operations, the entrypoint for this function is the Vault itself.
 
 **Parameters:**
 
@@ -497,7 +519,6 @@ This `VaultAdmin` function removes liquidity from a yield-bearing token buffer (
 |---|---|---|
 | wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626  |
 | sharesToRemove  | uint256  | Amount of shares to remove from the buffer. Cannot be greater than sharesOwner total shares  |
-| sharesOwner  | address  | Address of contract that owns the deposited liquidity.  |
 
 ### `getBufferOwnerShares`
 

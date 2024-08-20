@@ -406,7 +406,33 @@ Executes a swap operation specifying an exact output token amount.
 | amountIn    | uint256   | Calculated amount of input tokens to be sent in exchange for the requested output tokens |
 
 
-## Yield-bearing token buffers
+## ERC4626 Buffers
+
+### `initializeBuffer`
+
+```solidity
+function initializeBuffer(
+    IERC4626 wrappedToken,
+    uint256 amountUnderlyingRaw,
+    uint256 amountWrappedRaw
+) external returns (uint256 issuedShares);
+```
+Adds liquidity for the first time to one of the Vault's internal ERC4626 buffers. Buffer operations will revert until the buffer is initialized.
+
+**Parameters:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+| wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626 |
+| amountUnderlyingRaw  | uint256  | Amount of underlying tokens that will be deposited into the buffer |
+| amountWrappedRaw  | uint256  | Amount of wrapped tokens that will be deposited into the buffer |
+
+**Returns:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+| issuedShares  | uint256  | The amount of tokens sharesOwner has in the buffer, denominated in underlying tokens (This is the BPT of an internal ERC4626 token buffer) |
+
 
 ### `addLiquidityToBuffer`
 
@@ -426,37 +452,12 @@ Adds liquidity to a yield-bearing buffer (one of the Vault's internal ERC4626 to
 | wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626 |
 | amountUnderlyingRaw  | uint256  | Amount of underlying tokens that will be deposited into the buffer |
 | amountWrappedRaw  | uint256  | Amount of wrapped tokens that will be deposited into the buffer |
-| sharesOwner  | address  | Address of the contract that will own the liquidity. Only this contract will be able to remove liquidity from the buffer |
 
 **Returns:**
 
 | Name  | Type  | Description  |
 |---|---|---|
 | issuedShares  | uint256  | The amount of tokens sharesOwner has in the buffer, denominated in underlying tokens (This is the BPT of an internal ERC4626 token buffer) |
-
-### `removeLiquidityFromBuffer`
-
-```solidity
-function removeLiquidityFromBuffer(
-    IERC4626 wrappedToken,
-    uint256 sharesToRemove
-) external returns (uint256 removedUnderlyingBalanceRaw, uint256 removedWrappedBalanceRaw);
-```
-Removes liquidity from a yield-bearing token buffer (one of the Vault's internal ERC4626 token buffers).
-
-**Parameters:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| wrappedToken  | IERC4626  | Address of a wrapped token that implements IERC4626 |
-| sharesToRemove  | uint256  | Amount of shares to remove from the buffer. Cannot be greater than sharesOwner total shares |
-
-**Returns:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| removedUnderlyingBalanceRaw  | uint256  | Amount of underlying tokens returned to the user |
-| removedWrappedBalanceRaw  | uint256  | Amount of wrapped tokens returned to the user |
 
 ## Queries
 
