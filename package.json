@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@balancer-labs/sdk": "^0.1.40",
+    "@balancer-labs/sdk": "1.1.6",
     "@types/ethereum-blockies": "^0.1.0",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
@@ -40,7 +40,7 @@
     "vuepress-plugin-md-enhance": "^2.0.0-beta.131"
   },
   "dependencies": {
-    "@balancer/sdk": "^0.0.3",
+    "@balancer-labs/sdk": "1.1.6",
     "@ethersproject/bignumber": "^5.7.0",
     "@headlessui/vue": "^1.7.14",
     "axios": "^1.4.0",
