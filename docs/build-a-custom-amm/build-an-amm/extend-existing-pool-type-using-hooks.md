@@ -23,12 +23,26 @@ Below, we present a naive implementation of a swap-fee discount hook contract gi
 
 ```solidity
 contract VeBALFeeDiscountHook is BaseHooks {
-    // only pools from the allowedFactory are able to register and use this hook
+    // Only pools from a specific factory are able to register and use this hook.
     address private immutable _allowedFactory;
-    // only calls from a trusted routers are allowed to call this hook, because the hook relies on the getSender
-    // implementation to work properly
+    // Only trusted routers are allowed to call this hook, because the hook relies on the `getSender` implementation
+    // implementation to work properly.
     address private immutable _trustedRouter;
+    // The gauge token received from staking the 80/20 BAL/WETH pool token.
     IERC20 private immutable _veBAL;
+
+    /**
+     * @notice A new `VeBALFeeDiscountHookExample` contract has been registered successfully.
+     * @dev If the registration fails the call will revert, so there will be no event.
+     * @param hooksContract This contract
+     * @param factory The factory (must be the allowed factory, or the call will revert)
+     * @param pool The pool on which the hook was registered
+     */
+    event VeBALFeeDiscountHookExampleRegistered(
+        address indexed hooksContract,
+        address indexed factory,
+        address indexed pool
+    );
 
     constructor(IVault vault, address allowedFactory, address veBAL, address trustedRouter) BaseHooks(vault) {
         _allowedFactory = allowedFactory;
@@ -49,8 +63,12 @@ contract VeBALFeeDiscountHook is BaseHooks {
         LiquidityManagement calldata
     ) external view override returns (bool) {
         // This hook implements a restrictive approach, where we check if the factory is an allowed factory and if
-        // the pool was created by the allowed factory. Since we only use onComputeDynamicSwapFeePercentage, this might
-        // be an overkill in real applications because the pool math doesn't play a role in the discount calculation.
+        // the pool was created by the allowed factory. Since we only use onComputeDynamicSwapFeePercentage, this
+        // might be an overkill in real applications because the pool math doesn't play a role in the discount
+        // calculation.
+
+        emit VeBALFeeDiscountHookExampleRegistered(address(this), factory, pool);
+
         return factory == _allowedFactory && IBasePoolFactory(factory).isPoolFromFactory(pool);
     }
 
@@ -98,13 +116,16 @@ function onRegister(
     TokenConfig[] memory,
     LiquidityManagement calldata
 ) external view override returns (bool) {
+
+    emit VeBALFeeDiscountHookExampleRegistered(address(this), factory, pool);
+
     return factory == _allowedFactory && IBasePoolFactory(factory).isPoolFromFactory(pool);
 }
 ```
 
 The `onRegister` function enables developers to implement custom validation logic to ensure the registration is valid. When a new pool is registered, a hook address can be provided to "link" the pool and the hook. At this stage, the `onRegister` function is invoked by the Vault, and it must return true for the registration to be successful. If the validation fails, the function should return false, preventing the registration from being completed.
 
-In this example we validate that the `factory` param forwarded from the Vault matches the `allowedFactory` set during the hook deployment, and that the pool was deployed by that factory.
+In this example we validate that the `factory` param forwarded from the Vault matches the `allowedFactory` set during the hook deployment, and that the pool was deployed by that factory. If successful, it emits an event for tracking by offchain processes.
 
 ### Implementing the Swap Fee Logic
 
