@@ -88,8 +88,8 @@ If you want your Hooks contract to be used, you must implement `onRegister` as t
 Afterwards the pool is linked to the hook via the `_hooksContracts` mapping, shown below.
 
 ```solidity
-// Registry of pool hooks contracts.
-mapping(address => IHooks) internal _hooksContracts;
+// The hooks contracts associated with each pool.
+mapping(address pool => IHooks hooksContract) internal _hooksContracts;
 ```
 
 
