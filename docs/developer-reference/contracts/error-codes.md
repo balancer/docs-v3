@@ -73,6 +73,7 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | SwapFeePercentageTooLow()     | Error raised when the swap fee percentage is less than the minimum allowed value |
 | SwapFeePercentageTooHigh()     | Error raised when the swap fee percentage exceeds the maximum allowed value |
 | FeePrecisionTooHigh()     | Primary fee percentages result in an aggregate fee that cannot be stored with the required precision |
+| PercentageAboveMax()     | A given percentage is above the maximum (usually FixedPoint.ONE, or 1e18 wei) |
 | QueriesDisabled()              | A user tried to execute a query operation when they were disabled |
 | PoolInRecoveryMode(address)    | Cannot enable recovery mode when already enabled |
 | PoolNotInRecoveryMode(address) | Cannot disable recovery mode when not enabled |
@@ -124,10 +125,6 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | Error           | Comment                                         |
 | --------------- | ----------------------------------------------- |
 | StandardPoolWithCreator()     | A pool creator was specified for a pool from a Balancer core pool type |
-
-## PoolConfigLib
-| --------------- | ----------------------------------------------- |
-| InvalidPercentage()     | Given percentage is above FixedPoint.ONE (1e18 wei) |
 
 ## BasePoolMath
 | Error           | Comment                                         |
