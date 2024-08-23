@@ -19,7 +19,7 @@ A hooks contract should inherit the [BaseHooks.sol](https://github.com/balancer/
 * **Base implementation**: A complete implementation of the [IHooks.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IHooks.sol) interface, with each implemented function returning false.
 * **Configuration**: A virtual function `getHookFlags` that must be implemented by your hooks contract, defining which hooks your contract supports.
 
-Below, we present a naive implementation of a swap-fee discount hook contract giving any veBAL holder a reduced swap fee:
+Below, we present a naive implementation of a swap-fee discount hook contract giving any veBAL holder a reduced swap fee. Hooks should also inherit from `VaultGuard`, which stores a reference to the Vault and provides the `onlyVault` modifier. This is required for `onRegister` and hook overrides, to ensure they cannot be called except by the Vault.
 
 ```solidity
 contract VeBALFeeDiscountHook is BaseHooks, VaultGuard {
