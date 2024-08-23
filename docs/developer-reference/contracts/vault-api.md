@@ -149,7 +149,7 @@ This `VaultExtension` function retrieves the reserve (i.e., total Vault balance)
 
 ```solidity
 function swap(
-    SwapParams memory params
+    VaultSwapParams memory vaultSwapParams
 ) external returns (uint256 amountCalculatedRaw, uint256 amountInRaw, uint256 amountOutRaw);
 ```
 This `Vault` function swaps tokens based on provided parameters. All parameters are given in raw token decimal encoding.
@@ -158,7 +158,7 @@ This `Vault` function swaps tokens based on provided parameters. All parameters 
 
 | Name  | Type  | Description  |
 |---|---|---|
-| params  | SwapParams  | Parameters for the swap operation  |
+| params  | VaultSwapParams  | Parameters for the swap operation  |
 
 **Returns:**
 
