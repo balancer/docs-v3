@@ -5,12 +5,12 @@ title: Extend an Existing Pool Type Using Hooks
 
 # Extend an Existing Pool Type Using Hooks
 
-_This section is for developers looking to extend an existing pool type with custom hooks. If you are looking to create a custom AMM with a novel invariant, start [here](/build-a-custom-amm/build-an-amm/create-custom-amm-with-novel-invariant.html)._
+_This section is for developers looking to extend an existing pool type with custom hooks. If you are looking to create a custom AMM with a novel invariant, start [here](/docs/build-a-custom-amm/build-an-amm/create-custom-amm-with-novel-invariant.md)._
 
 Hooks introduce a new framework for extending the functionality of existing pool types at key points throughout their lifecycle. By enabling actions during pool operations and facilitating dynamic swap fee computation, hooks offer unprecedented control over pool behavior. This innovative concept empowers developers to craft tailored pool behaviors, catering to specific use cases and enhancing operations with greater flexibility and control.
 
 ::: info
-Before you start with this walkthrough, consider reading through the [technical section on hooks](/concepts/core-concepts/hooks.html#hook-contracts) and take a look at the [Hooks API](/developer-reference/contracts/hooks-api.html).
+Before you start with this walkthrough, consider reading through the [technical section on hooks](/docs/concepts/core-concepts/hooks.md#hook-contracts) and take a look at the [Hooks API](/docs/developer-reference/contracts/hooks-api.md).
 :::
 
 ## Creating a Dynamic Swap Fee Hook Contract
@@ -133,5 +133,5 @@ function onComputeDynamicSwapFeePercentage(
 
 Now we can implement the logic in the `onComputeDynamicSwapFeePercentage` function, which the Vault calls to retrieve the swap fee value. In our example, any veBal holder enjoys a 50% swap fee discount, instead of the default static swap fee. However, there are some nuances to consider in this implementation.
 
-To obtain the user's veBAL balance, we need the sender's address, which we can retrieve by calling `getSender()` on the router. This relies on the router returning the correct address, so it's crucial to ensure the router is "trusted" (any contract can act as a [Router](/concepts/router/overview.html#routers)). In our example we passed a trusted `_router` address, which is saved during the hook deployment.
+To obtain the user's veBAL balance, we need the sender's address, which we can retrieve by calling `getSender()` on the router. This relies on the router returning the correct address, so it's crucial to ensure the router is "trusted" (any contract can act as a [Router](/docs/concepts/router/overview.md#routers)). In our example we passed a trusted `_router` address, which is saved during the hook deployment.
 
