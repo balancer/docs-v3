@@ -82,7 +82,7 @@ function registerPool(
 ```
 
 ::: info
-If you want your Hooks contract to be used, you must implement `onRegister` as the Vault calls it during the [pool registration](https://github.com/balancer/balancer-v3-monorepo/blob/49553c0546121f7725e0b024b240d6e722f02538/pkg/vault/contracts/VaultExtension.sol#L184). The intention of `onRegister` is for the developer to verify that the pool should be allowed to use the hooks contract.
+If you want your Hooks contract to be used, you must implement `onRegister` as the Vault calls it during the [pool registration](https://github.com/balancer/balancer-v3-monorepo/blob/49553c0546121f7725e0b024b240d6e722f02538/pkg/vault/contracts/VaultExtension.sol#L175). The intention of `onRegister` is for the developer to verify that the pool should be allowed to use the hooks contract.
 :::
 
 Afterwards the pool is linked to the hook via the `_hooksContracts` mapping, shown below.
@@ -126,7 +126,7 @@ A detailed view of what an `after` hook for a given liquidity operation can chan
 
 
 ## Hook examples
-If you want to get started with developing your own hooks contract, check out the [developing a hooks contract](/build-a-custom-amm/build-an-amm/extend-existing-pool-type-using-hooks.html) page. Various hook examples are shown there. Additionally the monorepo displays more ideas on how to approach hook development.
+If you want to get started with developing your own hooks contract, check out the [developing a hooks contract](/docs/build-a-custom-amm/build-an-amm/extend-existing-pool-type-using-hooks.md) page. Various hook examples are shown there. Additionally the monorepo displays more ideas on how to approach hook development.
 
 
 <style scoped>
