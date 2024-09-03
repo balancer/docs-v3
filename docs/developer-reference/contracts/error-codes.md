@@ -22,7 +22,7 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 
 | Error            | Comment                                         |
 | ---------------- | ----------------------------------------------- |
-| TotalSupplyTooLow| The total supply of a pool token can't be lower than the absolute minimum |
+| PoolTotalSupplyTooLow(uint256) | The total supply of a pool token can't be lower than the absolute minimum |
 
 ## IVaultErrors
 
@@ -43,7 +43,7 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | BalanceNotSettled()            | A transient accounting operation completed with outstanding token deltas |
 | VaultIsNotUnlocked()           | A user called a Vault function (swap, add/remove liquidity) outside the lock context |
 | DynamicSwapFeeHookFailed()           | The pool has returned false to the beforeSwap hook, indicating the transaction should revert |
-|| BeforeSwapHookFailed()         | The pool has returned false to the beforeSwap hook, indicating the transaction should revert |
+| BeforeSwapHookFailed()         | The pool has returned false to the beforeSwap hook, indicating the transaction should revert |
 | AfterSwapHookFailed()          | The pool has returned false to the afterSwap hook, indicating the transaction should revert |
 | BeforeInitializeHookFailed()   | The pool has returned false to the beforeInitialize hook, indicating the transaction should revert |
 | AfterInitializeHookFailed()    | The pool has returned false to the afterInitialize hook, indicating the transaction should revert |
@@ -95,6 +95,9 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | VaultBuffersArePaused()| Buffer operation attempted while vault buffers are paused |
 | BufferSharesInvalidReceiver()| Buffer shares were minted to an invalid address |
 | BufferSharesInvalidOwner()| Buffer shares were burned from an invalid address |
+| BufferTotalSupplyTooLow(uint256) | The total supply of a buffer can't be lower than the absolute minimum |
+| NotEnoughUnderlying(IERC4626,uint256,uint256) | A wrap/unwrap operation consumed more or returned less underlying tokens than it should |
+| NotEnoughWrapped(IERC4626,uint256,uint256) | A wrap/unwrap operation consumed more or returned less wrapped tokens than it should |
 | DoesNotSupportUnbalancedLiquidity()         | Pool does not support adding / removing liquidity with an unbalanced input |
 | CannotReceiveEth()             | The contract should not receive ETH |
 | NotVaultDelegateCall()         | The Vault extension was called by an account directly; it can only be called by the Vault via delegatecall |
