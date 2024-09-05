@@ -12,9 +12,10 @@ If you have any questions/feedback on our dashboards, feel free to reach out by 
 
 | Dashboard Name                                      | Main information                                                                                                  | Filters                                  |
 | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| [veBAL](https://dune.com/balancer/vebal)                   | Total veBAL, veBAL locking, power by top LPs, votes by gauge and network                                            |                                          |
+| [veBAL](https://dune.com/balancer/vebal)                   | Total veBAL, veBAL locking, power by top LPs, votes by gauge and network, vlAURA distribution                                            |                                          |
 | [veBAL Analysis](https://dune.com/balancer/vebal-analysis)          | Power and votes by provider                                                                                    | Provider                                 |
 | [veBAL Gauge Votes](https://dune.com/balancer/vebal-gauge-analysis)    | Voters on gauge                                                                                                 | Gauge                                    |
+| [veBAL Wrappers](https://dune.com/balancer/vebal-wrappers)    | Volume and Pegs for auraBAL, sdBAL and tetuBAL over time                                                                                                 |                                     |
 | [Balancer Overview](https://dune.com/balancer/overview)       | Volume (by source, cumulative, 24h and 7d), TVL, average swap fees, liquidity utilization, Balancer on 1inch and cowswap | Pool ID, Start Date, End Date, and blockchain |
 | [Balancer Exchange](https://dune.com/balancer/exchange)       | Volume (by token, 24h and 7d), # of swaps, new/old traders, fees distribution, gas costs                           | Aggregation, Start Date, End Date, and blockchain |
 | [Balancer Report](https://dune.com/balancer/report)        | TVL, Volume (cumulative, market share, by token), swap fees revenue                                                | Pool ID, Start Date, End Date, and blockchain |
@@ -34,6 +35,14 @@ If you have any questions/feedback on our dashboards, feel free to reach out by 
 | [Balancer v2 Revenues Overview](https://dune.com/balancer/v2-revenues) | Weekly swap fee revenues, LP revenues by pool and token                                                        | Pool ID, Start Date, End Date, blockchain, and Token Address |
 | [Protocol Fees](https://dune.com/balancer/protocol-fees) | Protocol Fees Collected per pool, blockchain, pool type, Fees Collected and BAL emissions per round, Core Pools Fees Collected per Epoch| Pool ID, Start Date, End Date, blockchain, Only Core Pools, Round ID, Fee Epoch |
 | [LSTs](https://dune.com/balancer/lst) | Liquidity, Volume, Fees Collected and Liquidity Utilization on LST Pools and tokens                                                       | Pool ID, Start Date, End Date, blockchain, and Token Address |
+| [LST / LRT DEX Volume](https://dune.com/balancer/dex-volume-lst) | LST / LRT Volume by DEX, Market Share by DEX, Relative Weight of LSTs / LRTs on Trades| Start Date, Aggregation, blockchain, and Token Pair |
+| [Balancer - CoWSwap AMMs - Overview](https://dune.com/balancer/balancer-cowswap-amm) | TVL, Volume, Pools created by Blockchain, Surplus, Liquidity Utilization| Start Date, Blockchain|
+| [Balancer - CoWSwap AMMs - Pool Analysis](https://dune.com/balancer/balancer-cowswap-amm-pool) |Volume (daily, 24h, 7d), TVL, Surplus, Liquidity Utilization, Token Balances                                    | Pool Address, Start Date, End Date, blockchain|
+| [Balancer On Mode](https://dune.com/balancer/balancer-on-mode)       | Volume (cumulative, 24h and 7d), Daily Swaps, TVL, liquidity utilization, Pools | Start Date, End Date |
+| [Balancer On Fraxtal](https://dune.com/balancer/balancer-on-fraxtal)       | Volume (cumulative, 24h and 7d), Daily Swaps, TVL, liquidity utilization, Pools | Start Date, End Date |
+| [Arbitrum Liquidity Growth Program](https://dune.com/balancer/arbitrum-lgp)       | Volume (cumulative, 24h and 7d), Daily Swaps, DAU, TVL, liquidity utilization, Pools, LST / LRT Liquidity, Yield-Bearing Stablecoins Liquidity, ARB Incentives by Gauge and Tx., BAL Emissions | Start Date, End Date, TVL Currency |
+| [Optimism LST/LRT Grant](https://dune.com/balancer/optimism-lstlrt)       | Volume (cumulative, 24h and 7d), Daily Swaps, DAU, TVL, liquidity utilization, LST / LRT Liquidity and Volume,  OP Incentives by Gauge and Tx. | Start Date, End Date |
+| [Rate Providers Review](https://dune.com/balancer/rate-providers)       | Historical Exchange Rates| Blockchain, Contract Address, Start Block, Function Name |
 
 <style scoped>
 table {
