@@ -3,7 +3,7 @@
 # Sepolia Deployment Addresses
 
 ::: info More Details
-For more information on specific deployments as well as changelogs for different contract versions, please see the [deployment tasks](https://github.com/balancer/balancer-deployments/tree/master/tasks).
+Balancer v3 is in active development. This page shows the latest version of deployed contracts.
 :::
 
 ## Pool Factories
@@ -32,10 +32,7 @@ For more information on specific deployments as well as changelogs for different
 
 ## Authorization
 
-
 ## Gauges and Governance
-
-
 
 ## Ungrouped Active/Current Contracts
     
