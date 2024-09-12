@@ -4,7 +4,7 @@ title: User - Get joins & exit events for a pool
 
 # Get pool join & exits events for a user
 
-```
+```graphql
 {
   userGetPoolJoinExits(
     poolId: "0x3de27efa2f1aa663ae5d458857e731c129069f29000200000000000000000588"

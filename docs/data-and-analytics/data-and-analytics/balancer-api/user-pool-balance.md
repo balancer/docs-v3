@@ -6,7 +6,7 @@ title: User - Get pool balances
 
 As this is a CowAMM pool we also use the expanded `GqlPoolSwapEventCowAmm` type to get CowAMM specific swap data.
 
-```
+```graphql
 {
   userGetPoolBalances(
     address: "0x..."
