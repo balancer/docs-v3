@@ -213,7 +213,7 @@ function computeInvariant(uint256[] memory balancesLiveScaled18)
     invariant = _sqrt(invariant) * 1e9;
 
 }
-```solidity
+```
 
 @tab Constant Sum Pool
 ```solidity
