@@ -235,7 +235,7 @@ This section will contain more details once code is finalised
 
 ## Useful Resources
 
-* [Deployment Addresses](http://localhost:8080/developer-reference/contracts/deployment-addresses/mainnet.html)
+* [Deployment Addresses](/developer-reference/contracts/deployment-addresses/mainnet.html)
 * [Router ABI](../../developer-reference/contracts/abi/router.md)
 * [BatchRouter ABI](../../developer-reference/contracts/abi/batch-router.md)
 * [Router API](../../developer-reference/contracts/router-api.md)

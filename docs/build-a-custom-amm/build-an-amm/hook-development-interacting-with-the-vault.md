@@ -8,7 +8,7 @@ The [Balancer Router](../../concepts/router/overview.md#balancer-routers) is typ
 
 ## Making A Swap
 
-It is possible for a Hook to make a [swap](http://localhost:8080/developer-reference/contracts/vault-api.html#swaps) by following the following steps:
+It is possible for a Hook to make a [swap](/developer-reference/contracts/vault-api.html#swaps) by following the following steps:
 
 1. Send the tokens you are swapping to the Vault:
 ```solidity
@@ -37,7 +37,7 @@ _vault.settle(token, amount)
 
 ## AddingLiquidity - Donating To Pool LPs 
 
-Hooks can [add](http://localhost:8080/developer-reference/contracts/vault-api.html#add-liquidity)/[remove](http://localhost:8080/developer-reference/contracts/vault-api.html#remove-liquidity) liquidity to pools. The following snippet shows how the [`DONATION`](http://localhost:8080/concepts/vault/add-remove-liquidity-types.html#add-liquidity) kind can be used to add collected fees to a pool. This effectively donates the fees to the pool LPs and can be seen in action in the [ExitFeeHookExample](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-hooks/contracts/ExitFeeHookExample.sol#L160-L169).
+Hooks can [add](/developer-reference/contracts/vault-api.html#add-liquidity)/[remove](/developer-reference/contracts/vault-api.html#remove-liquidity) liquidity to pools. The following snippet shows how the [`DONATION`](/concepts/vault/add-remove-liquidity-types.html#add-liquidity) kind can be used to add collected fees to a pool. This effectively donates the fees to the pool LPs and can be seen in action in the [ExitFeeHookExample](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-hooks/contracts/ExitFeeHookExample.sol#L160-L169).
 
 ```solidity
 _vault.addLiquidity(
@@ -54,7 +54,7 @@ _vault.addLiquidity(
 
 ## Collecting Fees
 
-The Vault [`sendTo`](http://localhost:8080/developer-reference/contracts/vault-api.html#sendto) function can be used to collect fees to a hook.
+The Vault [`sendTo`](/developer-reference/contracts/vault-api.html#sendto) function can be used to collect fees to a hook.
 ```solidity
 _vault.sendTo(feeToken, address(this), hookFee);
 ```
