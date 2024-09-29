@@ -5,7 +5,7 @@ title: Router API
 
 # Router API
 
-The Router can be used to interact with Balancer onchain via [state changing](/concepts/router/onchain-api/router-api.html#state-changing-functions) operations or used to [query operations](/concepts/router/onchain-api/router-api.html#query-functions) in an offchain context.
+The Router can be used to interact with Balancer onchain via [state changing](/concepts/router/onchain-api/router-api.html#state-changing-functions) operations or used to [query operations](/concepts/router/onchain-api/router-api.html#query-functions) in an off-chain context.
 
 ## State-changing functions
 The router's state-changing functions are used for interacting with Balancer onchain. They provide simple interfaces for the most common user actions performed against the Balancer Vault.
@@ -439,25 +439,24 @@ Adds liquidity for the first time to one of the Vault's internal ERC4626 buffers
 ```solidity
 function addLiquidityToBuffer(
     IERC4626 wrappedToken,
-    uint256 amountUnderlyingRaw,
-    uint256 amountWrappedRaw
-) external returns (uint256 issuedShares);
+    uint256 exactSharesToIssue
+) external returns (uint256 amountUnderlyingRaw, uint256 amountWrappedRaw);
 ```
-Adds liquidity to a yield-bearing buffer (one of the Vault's internal ERC4626 token buffers).
+Adds liquidity proportionally to a yield-bearing buffer (one of the Vault's internal ERC4626 token buffers).
 
 **Parameters:**
 
 | Name  | Type  | Description  |
 |---|---|---|
 | wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626 |
-| amountUnderlyingRaw  | uint256  | Amount of underlying tokens that will be deposited into the buffer |
-| amountWrappedRaw  | uint256  | Amount of wrapped tokens that will be deposited into the buffer |
+| exactSharesToIssue  | uint256  | The value in underlying tokens that `sharesOwner` wants to add to the buffer, in underlying token decimals |
 
 **Returns:**
 
 | Name  | Type  | Description  |
 |---|---|---|
-| issuedShares  | uint256  | The amount of tokens sharesOwner has in the buffer, denominated in underlying tokens (This is the BPT of an internal ERC4626 token buffer) |
+| amountUnderlyingRaw  | uint256  | Amount of underlying tokens deposited into the buffer |
+| amountWrappedRaw  | uint256  | Amount of wrapped tokens deposited into the buffer |
 
 ## Queries
 
@@ -760,7 +759,7 @@ Queries an `swapSingleTokenExactOut` operation without actually executing it.
 
 ## Router common
 
-These functions are shared between the `Router` and `BatchRouter` (defined in `RouterCommon`).
+These functions are shared between the `Router`, `BatchRouter`, and `CompositeLiquidityRouter` (defined in `RouterCommon`).
 
 ### `permitBatchAndCall`
 
