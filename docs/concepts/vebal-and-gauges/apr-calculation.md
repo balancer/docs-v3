@@ -14,7 +14,7 @@ $$
 
 where
 
-* `workingSupply` = value obtained from the gauge vyper contract in step 2
+* `workingSupply` = value obtained from the gauge Vyper contract in step 2
 * `gaugeRelWeight` = relative voting weight obtained from the gauge controller contract from step 3
 * `weeklyBALemissions` = **** currently active weekly emissions, fixed at 145’000 BAL
 * `priceOfBAL` = price of BAL in $ as obtained from an external pricing provider

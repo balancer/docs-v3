@@ -24,7 +24,7 @@ Want to learn more about Balancer? Click [here](../../concepts/core-concepts/int
 Balancer Technology provides innovative AMM designs such as
 
 1. **[Boosted Pools](./products/boostedpools.md)**: Leverage token utilization for optimal yield.
-2. **[Yield-Bearing liquidity pools](products/lstandlrt.md)**: Optimised LP tech for liquid-staking tokens (LST) and yield-bearing stablecoins.
+2. **[Yield-Bearing liquidity pools](products/lstandlrt.md)**: Optimized LP tech for liquid-staking tokens (LST) and yield-bearing stablecoins.
 3. **[ve8020 / Governance Tokenomics](products/ve8020.md)**: Enhanced liquidity dynamics and aligned incentive structures for governance positions.
 4. **[Stable Pools](products/stablecoinliquidity.md)**: Advanced technology for highly correlated stable assets, such as Gyro-stable pools.
 
