@@ -32,7 +32,7 @@ In the Balancer v3 architecture, [Routers](../../concepts/router/overview.md) se
 ### Swap Fees
 
 :::info Work in progress
-Dynamic Swap Fees and Hooks are still WIP and not finalised
+Dynamic Swap Fees and Hooks are still WIP and not finalized
 :::
 
 [Swap fees](../../concepts/vault/swap-fee.md) come in two different forms for v3 pools:
@@ -223,19 +223,19 @@ The reference repo is still a WIP. For now please see the [SOR repo](https://git
 ## Boosted Pools
 
 :::info Work in progress
-This section will contain more details once code is finalised
+This section will contain more details once code is finalized
 :::
 
 ## Hooks 
 
 :::info Work in progress
-This section will contain more details once code is finalised
+This section will contain more details once code is finalized
 :::
 
 
 ## Useful Resources
 
-* [Deployment Addresses](http://localhost:8080/developer-reference/contracts/deployment-addresses/mainnet.html)
+* [Deployment Addresses](/developer-reference/contracts/deployment-addresses/mainnet.html)
 * [Router ABI](../../developer-reference/contracts/abi/router.md)
 * [BatchRouter ABI](../../developer-reference/contracts/abi/batch-router.md)
 * [Router API](../../developer-reference/contracts/router-api.md)

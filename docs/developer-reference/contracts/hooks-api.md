@@ -51,7 +51,7 @@ Returns flags informing which hooks are implemented in the contract.
 ```solidity
 function onBeforeInitialize(uint256[] memory exactAmountsIn, bytes memory userData) external returns (bool);
 ```
-Optional hook to be executed before pool initialization.
+Optional hook to be executed before pool initialization. Note that unlike the swap and liquidity hooks, the initialize hooks are non-reentrant.
 
 **Parameters:**
 
@@ -75,7 +75,7 @@ function onAfterInitialize(
     bytes memory userData
 ) external returns (bool);
 ```
-Optional hook to be executed after pool initialization.
+Optional hook to be executed after pool initialization. Note that unlike the swap and liquidity hooks, the initialize hooks are non-reentrant.
 
 **Parameters:**
 

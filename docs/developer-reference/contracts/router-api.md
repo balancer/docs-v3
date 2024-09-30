@@ -5,7 +5,7 @@ title: Router API
 
 # Router API
 
-The Router can be used to interact with Balancer onchain via [state changing](/concepts/router/onchain-api/router-api.html#state-changing-functions) operations or used to [query operations](/concepts/router/onchain-api/router-api.html#query-functions) in an offchain context.
+The Router can be used to interact with Balancer onchain via [state changing](/concepts/router/onchain-api/router-api.html#state-changing-functions) operations or used to [query operations](/concepts/router/onchain-api/router-api.html#query-functions) in an off-chain context.
 
 ## State-changing functions
 The router's state-changing functions are used for interacting with Balancer onchain. They provide simple interfaces for the most common user actions performed against the Balancer Vault.

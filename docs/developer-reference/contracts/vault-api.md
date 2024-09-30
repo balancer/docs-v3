@@ -511,7 +511,7 @@ function removeLiquidityFromBuffer(
     uint256 sharesToRemove
 ) external returns (uint256 removedUnderlyingBalanceRaw, uint256 removedWrappedBalanceRaw);
 ```
-This `VaultAdmin` function removes liquidity from an internal ERC4626 buffer in the Vault. Only proportional exits are supported. Note that the `sharesOnwer` here is the msg.sender; unlike initialize, add, and other buffer operations, the entrypoint for this function is the Vault itself.
+This `VaultAdmin` function removes liquidity from an internal ERC4626 buffer in the Vault. Only proportional exits are supported. Note that the `sharesOwner` here is the msg.sender; unlike initialize, add, and other buffer operations, the entrypoint for this function is the Vault itself.
 
 **Parameters:**
 
@@ -1212,7 +1212,7 @@ This `VaultAdmin` function gets the minimum number of tokens in a pool.
 
 | Name  | Type  | Description  |
 |---|---|---|
-|  | uint256  | The token count of a minimal pool  |
+|  | uint256  | The minimum token count of a pool  |
 
 ### `getMaximumPoolTokens`
 
@@ -1225,7 +1225,59 @@ This `VaultAdmin` function gets the maximum number of tokens in a pool.
 
 | Name  | Type  | Description  |
 |---|---|---|
-|  | uint256  | The token count of a maximal pool  |
+|  | uint256  | The maximum token count of a pool  |
+
+### `getPoolMinimumTotalSupply`
+
+```solidity
+function getPoolMinimumTotalSupply() external pure returns (uint256);
+```
+This `VaultAdmin` function gets the minimum total supply of pool tokens (BPT) for an initialized pool. This prevents pools from being completely drained. When the pool is initialized, this minimum amount of BPT is minted to the zero address. This is an 18-decimal floating point number; BPT are always 18 decimals.
+
+**Returns:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+|  | uint256  | The minimum total supply a pool can have after initialization  |
+
+### `getBufferMinimumTotalSupply`
+
+```solidity
+function getBufferMinimumTotalSupply() external pure returns (uint256);
+```
+This `VaultAdmin` function gets the minimum total supply of an ERC4626 wrapped token buffer in the Vault. This prevents buffers from being completely drained. When the buffer is initialized, this minimum number of shares is added to the shares resulting from the initial deposit. Buffer total supply accounting is internal to the Vault, as buffers are not tokenized.
+
+**Returns:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+|  | uint256  | The minimum total supply a buffer can have after initialization |
+
+### `getMinimumTradeAmount`
+
+```solidity
+function getMinimumTradeAmount() external view returns (uint256);
+```
+This `VaultAdmin` function gets the minimum trade amount in a pool operation. This limit is applied to the 18-decimal "upscaled" amount in any operation (swap, add/remove liquidity).
+
+**Returns:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+|  | uint256  | The minimum trade amount as an 18-decimal floating point number |
+
+### `getMinimumWrapAmount`
+
+```solidity
+function getMinimumWrapAmount() external view returns (uint256);
+```
+This `VaultAdmin` function gets the minimum wrap amount in a buffer operation. This limit is applied to the wrap operation amount, in native underlying token decimals.
+
+**Returns:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+|  | uint256  | The minimum wrap amount in native underlying token decimals |
 
 ### `vault`
 

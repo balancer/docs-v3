@@ -3,7 +3,7 @@
 # Mainnet Deployment Addresses
 
 ::: info More Details
-For more information on specific deployments as well as changelogs for different contract versions, please see the [deployment tasks](https://github.com/balancer/balancer-deployments/tree/master/tasks).
+Balancer v3 is in active development. Once the contracts have been deployed on this network this page will be updated. In the meantime you can take a look at the [sepolia deployment](./sepolia.md).
 :::
 
 ## Pool Factories
