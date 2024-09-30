@@ -14,14 +14,15 @@ The full implementation of ERC20MultiToken can be found [here](https://github.co
 
 The snippet below presents the storage variables implemented in ERC20MultiToken. We can see that each variable has a top level mapping that is indexed on the address of the token (pool):
 ```solidity
-// token -> (owner -> balance): Users' pool tokens balances
-mapping(address => mapping(address => uint256)) private _balances;
+// Users' pool token (BPT) balances.
+mapping(address token => mapping(address owner => uint256 balance)) private _balances;
 
-// token -> (owner -> (spender -> allowance)): Users' allowances
-mapping(address => mapping(address => mapping(address => uint256))) private _allowances;
+// Users' pool token (BPT) allowances.
+mapping(address token => mapping(address owner => mapping(address spender => uint256 allowance))) private _allowances;
 
-// token -> total supply
-mapping(address => uint256) private _totalSupplyOf;
+// Total supply of all pool tokens (BPT). These are tokens minted and burned by the Vault.
+// The Vault balances of regular pool tokens are stored in `_reservesOf`.
+mapping(address token => uint256 totalSupply) private _totalSupplyOf;
 ```
 
 Additionally, we can observe that each action `mint`, `burn`, `approve`, etc. Takes the pool's address as the first argument, and additionally invokes ERC20-compliant events on BalancerPoolToken.

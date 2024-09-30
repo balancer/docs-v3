@@ -591,7 +591,7 @@ Promise<NestedPoolState>
 ___
 ### sorSwapPaths.fetchSorSwapPaths
 
-Finds optimised swap paths for a given swap config.
+Finds optimized swap paths for a given swap config.
 
 ```typescript
 fetchSorSwapPaths(sorInput: SorInput): Promise<Path[]>
@@ -609,7 +609,7 @@ fetchSorSwapPaths(sorInput: SorInput): Promise<Path[]>
 Promise<Path[]>
 ```
 
-[Path[]](https://github.com/balancer/b-sdk/tree/main/src/entities/swap/paths/types.ts#L6) - optimised swap paths for the given swap.
+[Path[]](https://github.com/balancer/b-sdk/tree/main/src/entities/swap/paths/types.ts#L6) - optimized swap paths for the given swap.
 ___
 
 ## Utils

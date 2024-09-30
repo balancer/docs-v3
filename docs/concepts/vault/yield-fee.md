@@ -26,10 +26,10 @@ For performance reasons, the Vault stores only the aggregate percentage (i.e., t
 
 The Vault stores accrued fees per pool per token in an _aggregateFeeAmounts[pool][token] mapping. The `bytes32` slot holds both yield and swap fees accrued by this pool.
 ```solidity
-// Pool -> (Token -> fee): aggregate protocol swap/yield fees accumulated in the Vault for harvest.
-// Reusing PackedTokenBalance to save bytecode (despite differing semantics).
-// It's arbitrary which is which: we define raw=swap; derived=yield
-mapping(address => mapping(IERC20 => bytes32)) internal _aggregateFeeAmounts;
+// Aggregate protocol swap/yield fees accumulated in the Vault for harvest.
+// Reusing PackedTokenBalance for the bytes32 values to save bytecode (despite differing semantics).
+// It's arbitrary which is which: we define raw = swap; derived = yield.
+mapping(address pool => mapping(IERC20 token => bytes32 packedFeeAmounts)) internal _aggregateFeeAmounts;
 ```
 :::
 

@@ -126,13 +126,13 @@ npm install @balancer/sdk
 :::
 
 The three main helper classes we use from the SDK are:
-* `BalancerApi` - to query the SOR for optimised swap path
+* `BalancerApi` - to query the SOR for optimized swap path
 * `Swap` - to build swap queries and transactions
 * `Slippage` - to simplify creating limits with user defined slippage 
 
-### Fetching Optimised Swap Paths
+### Fetching Optimized Swap Paths
 
-In this example we use the BalancerApi `fetchSorSwapPaths` function to fetch the optimised swap paths for a token pair and swap amount. 
+In this example we use the BalancerApi `fetchSorSwapPaths` function to fetch the optimized swap paths for a token pair and swap amount. 
 ```typescript
 const balancerApi = new BalancerApi(
     'https://api-v3.balancer.fi/',

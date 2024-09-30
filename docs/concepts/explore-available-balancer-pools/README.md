@@ -8,7 +8,7 @@ title: Available Balancer Pools
 Let's explore some of the diverse pool types within the Balancer Protocol, each tailored to specific use cases.
 
 - [Weighted Pools](./weighted-pool/weighted-pool.md): Weighted Pools are highly versatile and configurable pools. They are ideal for general cases and enable users to build pools with different token counts and weightings.
-- [80/20 Pool](./weighted-pool/80-20-pool.md): An optimised version of the Weighted Pool with set weights of 80%/20%. The perfect fit for achieving liquidity of governance tokens.
+- [80/20 Pool](./weighted-pool/80-20-pool.md): An optimized version of the Weighted Pool with set weights of 80%/20%. The perfect fit for achieving liquidity of governance tokens.
 - [Stable Pools](./stable-pool/stable-pool.md): Stable Pools are optimal for assets expected to consistently trade at near parity or with a known exchange rate.
 - [Boosted Pool](./boosted-pool.md): Boosted Pools are designed to allow for greater capital efficiency, deeper liquidity, and increased yield for Liquidity Providers.
 - [Liquidity Bootstrapping pools](./liquidity-bootstrapping-pool.md): Liquidity Bootstrapping Pools (LBPs) are pools that can dynamically change token weighting. LBPs create sell pressure and fair market advantages. Used very successfully for fair token launches.

@@ -29,7 +29,7 @@ Hooks are implemented as standalone contracts that can have their own internal l
 - `onAfterSwap`
 - `onComputeDynamicSwapFeePercentage`
 
-Refer to the [Pool hooks API](/developer-reference/contracts/hooks-api.html) page for full function references.
+Refer to the [Pool hooks API](/developer-reference/contracts/hooks-api.html) page for full function references. The swap, liquidity, and dynamic swap fee hooks are reentrant (i.e., you can call additional Vault operations during them, such as a swap after adding liquidity).
 
 Each Hook contract must implement the `getHookFlags` function which returns a `HookFlags` indicating which hooks are supported:
 ```solidity
@@ -88,8 +88,8 @@ If you want your Hooks contract to be used, you must implement `onRegister` as t
 Afterwards the pool is linked to the hook via the `_hooksContracts` mapping, shown below.
 
 ```solidity
-// Registry of pool hooks contracts.
-mapping(address => IHooks) internal _hooksContracts;
+// The hooks contracts associated with each pool.
+mapping(address pool => IHooks hooksContract) internal _hooksContracts;
 ```
 
 
