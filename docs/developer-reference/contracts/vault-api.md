@@ -511,7 +511,7 @@ function removeLiquidityFromBuffer(
     uint256 sharesToRemove
 ) external returns (uint256 removedUnderlyingBalanceRaw, uint256 removedWrappedBalanceRaw);
 ```
-This `VaultAdmin` function removes liquidity from an internal ERC4626 buffer in the Vault. Only proportional exits are supported. Note that the `sharesOnwer` here is the msg.sender; unlike initialize, add, and other buffer operations, the entrypoint for this function is the Vault itself.
+This `VaultAdmin` function removes liquidity from an internal ERC4626 buffer in the Vault. Only proportional exits are supported. Note that the `sharesOwner` here is the msg.sender; unlike initialize, add, and other buffer operations, the entrypoint for this function is the Vault itself.
 
 **Parameters:**
 

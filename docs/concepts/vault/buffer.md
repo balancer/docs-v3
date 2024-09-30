@@ -132,7 +132,7 @@ Considering these three pools only, the way to swap through them is via a `swapE
 
 #### Balances with enough buffer liquidity available
 
-Balances of pool & buffers before the batchswap:
+Balances of pool & buffers before the batch swap:
 
 | DAIBufferBalance before Swap         | DAIBufferBalance after Swap                                      | waDAIBufferBalance before Swap         | waDAIBufferBalance after Swap |
 | --------                             | -----------------------------------------------------            | --------                               | -  |
