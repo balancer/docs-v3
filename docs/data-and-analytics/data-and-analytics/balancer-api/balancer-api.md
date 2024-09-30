@@ -9,7 +9,7 @@ Balancer's API exposes data on Balancer's smart contracts accessible via graphql
 You can subscribe to the [Telegram channel](https://t.me/BalBeetsApi) or check out the [repo](https://github.com/balancer/backend) stay updated. 
 :::
 
-Queries are organised around these main domains:
+Queries are organized around these main domains:
 
 - Pools
 - Gauges

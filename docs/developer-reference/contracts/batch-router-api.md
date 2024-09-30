@@ -5,7 +5,7 @@ title: Batch Router API
 
 # Batch Router API
 
-The Batch Router can be used to interact with Balancer onchain via [state changing](/concepts/router/onchain-api/batch-router-api.html#state-changing-functions) operations or used to [query operations](/concepts/router/onchain-api/batch-router-api.html#query-functions) in an offchain context.
+The Batch Router can be used to interact with Balancer onchain via [state changing](/concepts/router/onchain-api/batch-router-api.html#state-changing-functions) operations or used to [query operations](/concepts/router/onchain-api/batch-router-api.html#query-functions) in an off-chain context.
 
 ## State-changing functions
 

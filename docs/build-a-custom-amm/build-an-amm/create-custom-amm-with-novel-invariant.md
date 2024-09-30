@@ -23,7 +23,7 @@ To expedite the development process, Balancer provides two contracts to inherit 
 
 Both `IBasePool` and `BalancerPoolToken` are used across all core Balancer pools, even those implemented by Balancer Labs (ie: [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L18)).
 
-Below, we present a naive implementation of a two token `ConstantProductPool` & `ConstantSumPool` utilising (X * Y = K) & (X + Y = K) as a reference for walking through the required functions necessary to implement a custom AMM on Balancer protocol:
+Below, we present a naive implementation of a two token `ConstantProductPool` & `ConstantSumPool` utilizing (X * Y = K) & (X + Y = K) as a reference for walking through the required functions necessary to implement a custom AMM on Balancer protocol:
 
 ::: code-tabs#shell
 @tab Constant Product Pool
@@ -192,7 +192,7 @@ By implementing `computeInvariant` and `computeBalance`, your custom AMM will im
 ### Compute Invariant
 
 Custom AMMs built on Balancer protocol are defined primarily by their invariant. Broadly speaking, an invariant is a mathematical function that defines
-how the AMM exchanges one asset for another. A few widely known invariants include [Constant Product (X * Y = K)](https://docs.uniswap.org/contracts/v2/concepts/protocol-overview/how-uniswap-works) and [Stableswap](https://berkeley-defi.github.io/assets/material/StableSwap.pdf).
+how the AMM exchanges one asset for another. A few widely known invariants include [Constant Product (X * Y = K)](https://docs.uniswap.org/contracts/v2/concepts/protocol-overview/how-uniswap-works) and [StableSwap](https://berkeley-defi.github.io/assets/material/StableSwap.pdf).
 
 Our two-token `ConstantSumPool` uses the constant sum invariant, or `X + Y = K`. To implement `computeInvariant`, we simply add the balances of the two tokens. For the `ConstantProductPool` the invariant calculation is the square root of the product of balances. This ensures invariant growth proportional to liquidity growth.
 
@@ -420,7 +420,7 @@ an explanation on the steps required to be added to the UI will follow.
 an explanation on the steps required to be supported by the swap UI will follow
 :::
 
-### Aggregator support (1inch, paraswap, 0x, etc.)
+### Aggregator support (1inch, Paraswap, 0x, etc.)
 
 :::info
 an explanation on the steps required for aggregator support will follow.
