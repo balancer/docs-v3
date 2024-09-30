@@ -22,16 +22,7 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 
 | Error            | Comment                                         |
 | ---------------- | ----------------------------------------------- |
-| TotalSupplyTooLow| The total supply of a pool token can't be lower than the absolute minimum |
-
-## IRouter
-
-| Error          | Comment                                         |
-| -------------- | ----------------------------------------------- |
-| EthTransfer    | Incoming ETH transfer from an address that is not WETH |
-| InsufficientEth| The amount of ETH paid is insufficient to complete this operation |
-| ExitBelowMin   | The actual bptAmountOut is below the minimum limit specified in the exit |
-| SwapDeadline   | The swap transaction was not mined before the specified deadline timestamp |
+| PoolTotalSupplyTooLow(uint256) | The total supply of a pool token can't be lower than the absolute minimum |
 
 ## IVaultErrors
 
@@ -41,6 +32,7 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | PoolAlreadyInitialized(address) | A pool has already been initialized. `initialize` may only be called once |
 | PoolNotRegistered(address)      | A pool has not been registered |
 | PoolNotInitialized(address)     | A referenced pool has not been initialized |
+| HookRegistrationFailed(address, address, address)     | A hook contract rejected a pool on registration |
 | TokenAlreadyRegistered(IERC20)  | A token was already registered (i.e., it is a duplicate in the pool) |
 | MinTokens()                     | The token count is below the minimum allowed |
 | MaxTokens()                     | The token count is above the maximum allowed |
@@ -49,9 +41,8 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | InvalidTokenConfiguration()     | The data in a TokenConfig struct is inconsistent or unsupported |
 | TokensMismatch(address, address, address) | The token list passed into an operation does not match the pool tokens in the pool |
 | BalanceNotSettled()            | A transient accounting operation completed with outstanding token deltas |
-| WrongLocker(address, address)  | In transient accounting, a locker is attempting to execute an operation out of order |
-| NoLocker()                     | A user called a Vault function (swap, add/remove liquidity) outside the lock context |
-| LockerOutOfBounds(uint256)     | The caller attempted to access a Locker at an invalid index |
+| VaultIsNotUnlocked()           | A user called a Vault function (swap, add/remove liquidity) outside the lock context |
+| DynamicSwapFeeHookFailed()           | The pool has returned false to the beforeSwap hook, indicating the transaction should revert |
 | BeforeSwapHookFailed()         | The pool has returned false to the beforeSwap hook, indicating the transaction should revert |
 | AfterSwapHookFailed()          | The pool has returned false to the afterSwap hook, indicating the transaction should revert |
 | BeforeInitializeHookFailed()   | The pool has returned false to the beforeInitialize hook, indicating the transaction should revert |
@@ -65,17 +56,24 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | CannotSwapSameToken()           | The user attempted to swap a token for itself |
 | TokenNotRegistered()            | The user attempted to swap a token not in the pool |
 | SwapLimit(uint256, uint256)     | An amount in or out has exceeded the limit specified in the swap request |
+| HookAdjustedSwapLimit(uint256, uint256)     | A hook adjusted amount in or out has exceeded the limit specified in the swap request |
+| TradeAmountTooSmall()       | The amount given or calculated for an operation is below the minimum limit |
 | InvalidAddLiquidityKind()       | Add liquidity kind not supported |
 | AmountInAboveMax(IERC20, uint256, uint256) | A required amountIn exceeds the maximum limit specified for the operation |
+| HookAdjustedAmountInAboveMax(IERC20, uint256, uint256) | A hook adjusted amountIn exceeds the maximum limit specified for the operation |
 | BptAmountOutBelowMin(uint256, uint256) | The BPT amount received from adding liquidity is below the minimum specified for the operation |
 | DoesNotSupportAddLiquidityCustom() | Pool does not support adding liquidity with a customized input |
+| DoesNotSupportDonation() | Pool does not support adding liquidity through donation |
 | InvalidRemoveLiquidityKind()    | Remove liquidity kind not supported |
 | AmountOutBelowMin(IERC20, uint256, uint256) | The actual amount out is below the minimum limit specified for the operation |
+| HookAdjustedAmountOutBelowMin(IERC20, uint256, uint256) | The hook adjusted amount out is below the minimum limit specified for the operation |
 | BptAmountInAboveMax(uint256, uint256) | The required BPT amount in exceeds the maximum limit specified for the operation |
 | DoesNotSupportRemoveLiquidityCustom() | Pool does not support removing liquidity with a customized input |
-| ProtocolSwapFeePercentageTooHigh() | Error raised when the protocol swap fee percentage exceeds the maximum allowed value |
-| ProtocolYieldFeePercentageTooHigh() | Error raised when the protocol yield fee percentage exceeds the maximum allowed value |
+| ProtocolFeesExceedTotalCollected() | Error raised when the sum of the parts (aggregate swap or yield fee) |
+| SwapFeePercentageTooLow()     | Error raised when the swap fee percentage is less than the minimum allowed value |
 | SwapFeePercentageTooHigh()     | Error raised when the swap fee percentage exceeds the maximum allowed value |
+| FeePrecisionTooHigh()     | Primary fee percentages result in an aggregate fee that cannot be stored with the required precision |
+| PercentageAboveMax()     | A given percentage is above the maximum (usually FixedPoint.ONE, or 1e18 wei) |
 | QueriesDisabled()              | A user tried to execute a query operation when they were disabled |
 | PoolInRecoveryMode(address)    | Cannot enable recovery mode when already enabled |
 | PoolNotInRecoveryMode(address) | Cannot disable recovery mode when not enabled |
@@ -88,13 +86,65 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | PoolPaused(address)            | A user tried to perform an operation involving a paused Pool |
 | PoolNotPaused(address)         | Governance tried to unpause the Pool when it was not paused |
 | PoolPauseWindowExpired(address)| Governance tried to pause a Pool after the pause period expired |
-| SenderIsNotPauseManager(address) | The caller is not the registered pause manager for the pool |
-| UserDataNotSupported()         | Optional User Data should be empty in the current add / remove liquidity kind |
+| BufferAlreadyInitialized(IERC4626)| Buffer for the given wrapped token was already initialized |
+| BufferNotInitialized(IERC4626)| Buffer for the given wrapped token was not initialized |
+| NotEnoughBufferShares()| The user is trying to remove more than their allocated shares from the buffer |
+| WrongUnderlyingToken(IERC4626, address)| The wrapped token asset does not match the underlying token |
+| InvalidUnderlyingToken(IERC4626)| A wrapped token reported the zero address as its underlying token asset |
+| WrapAmountTooSmall(IERC4626)| The amount given to wrap/unwrap was too small, which can introduce rounding issues |
+| VaultBuffersArePaused()| Buffer operation attempted while vault buffers are paused |
+| BufferSharesInvalidReceiver()| Buffer shares were minted to an invalid address |
+| BufferSharesInvalidOwner()| Buffer shares were burned from an invalid address |
+| BufferTotalSupplyTooLow(uint256) | The total supply of a buffer can't be lower than the absolute minimum |
+| NotEnoughUnderlying(IERC4626,uint256,uint256) | A wrap/unwrap operation consumed more or returned less underlying tokens than it should |
+| NotEnoughWrapped(IERC4626,uint256,uint256) | A wrap/unwrap operation consumed more or returned less wrapped tokens than it should |
+| DoesNotSupportUnbalancedLiquidity()         | Pool does not support adding / removing liquidity with an unbalanced input |
 | CannotReceiveEth()             | The contract should not receive ETH |
 | NotVaultDelegateCall()         | The Vault extension was called by an account directly; it can only be called by the Vault via delegatecall |
-| OperationNotSupported()        | Error thrown when a function is not supported |
 | WrongVaultExtensionDeployment()| The vault extension was configured with an incorrect Vault address |
+| WrongProtocolFeeControllerDeployment()| The protocol fee controller was configured with an incorrect Vault address |
 | WrongVaultAdminDeployment()    | The vault admin was configured with an incorrect Vault address |
+| QuoteResultSpoofed()    | Quote reverted with a reserved error code |
+
+## IProtocolFeeController
+
+| Error                           | Comment                                         |
+| ProtocolSwapFeePercentageTooHigh() | Error raised when the protocol swap fee percentage exceeds the maximum allowed value |
+| ProtocolYieldFeePercentageTooHigh() | Error raised when the protocol yield fee percentage exceeds the maximum allowed value |
+| PoolCreatorFeePercentageTooHigh() | Error raised when the pool creator swap or yield fee percentage exceeds the maximum allowed value |
+| PoolCreatorNotRegistered(address) | Error raised if there is no pool creator on a withdrawal attempt from the given pool |
+| CallerIsNotPoolCreator(address, address) | Error raised if the wrong account attempts to withdraw pool creator fees |
+
+## RouterCommon
+
+| Error          | Comment                                         |
+| -------------- | ----------------------------------------------- |
+| EthTransfer    | Incoming ETH transfer from an address that is not WETH |
+| InsufficientEth| The amount of ETH paid is insufficient to complete this operation |
+| SwapDeadline   | The swap transaction was not mined before the specified deadline timestamp |
+
+## BasePoolFactory
+
+| Error           | Comment                                         |
+| --------------- | ----------------------------------------------- |
+| StandardPoolWithCreator()     | A pool creator was specified for a pool from a Balancer core pool type |
+
+## BasePoolMath
+| Error           | Comment                                         |
+| --------------- | ----------------------------------------------- |
+| InvariantRatioAboveMax()     | An add liquidity operation increased the invariant above the limit |
+| InvariantRatioBelowMin()     | A remove liquidity operation decreased the invariant below the limit |
+
+## StablePool
+
+| Error           | Comment                                         |
+| --------------- | ----------------------------------------------- |
+| AmplificationFactorTooLow()     | The amplification factor is below the minimum of the range (1 - 5000) |
+| AmplificationFactorTooHigh() | The amplification factor is above the maximum of the range (1 - 5000) |
+| AmpUpdateDurationTooShort()     | The amplification change duration is too short |
+| AmpUpdateRateTooFast() | The amplification change rate is too fast |
+| AmpUpdateAlreadyStarted()     | Amplification update operations must be done one at a time |
+| AmpUpdateNotStarted() | Cannot stop an amplification update before it starts |
 
 ## WeightedPool
 
@@ -145,7 +195,7 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | StableInvariantDidntConverge()| The iterations to calculate the invariant didn't converge |
 | StableGetBalanceDidntConverge()| The iterations to calculate the balance didn't converge |
 
-## Weighted 
+## WeightedMath 
 
 | Error                 | Comment                                         |
 | --------------------- | ----------------------------------------------- |
@@ -161,12 +211,17 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | IndexOutOfBounds() | An index is beyond the current bounds of the set |
 | KeyNotFound()   | This error is thrown when attempting to retrieve an entry that is not present in the map |
 
-## Enumerable Set
+## (Transient) Enumerable Set
 
 | Error           | Comment                                         |
 | --------------- | ----------------------------------------------- |
 | IndexOutOfBounds() | An index is beyond the current bounds of the set |
 | ElementNotFound()   | An element that is not present in the set |
+
+## ReentrancyGuardTransient
+| Error           | Comment                                         |
+| --------------- | ----------------------------------------------- |
+| ReentrancyGuardReentrantCall() | Unauthorized reentrant call |
 
 ## BalancerPoolToken
 | Error                         | Comment                                         |
@@ -181,12 +236,6 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | VaultAlreadyCreated() | Vault has already been deployed, so this factory is disabled |
 | VaultAddressMismatch()| The given salt does not match the generated address when attempting to create the Vault |
 
-## ERC4626BufferPoolFactory
-
-| Error                             | Comment                                         |
-| --------------------------------- | ----------------------------------------------- |
-| IncompatibleWrappedToken(address) | The wrapped token does not conform to the Vault's requirement for ERC4626-compatibility |
-
 ## FactoryWidePauseWindow
 | Error                             | Comment                                         |
 | --------------------------------- | ----------------------------------------------- |
@@ -196,6 +245,17 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | Error             | Comment                                         |
 | ----------------- | ----------------------------------------------- |
 | BalanceOverflow() | One of the balances is above the maximum value that can be stored |
+
+## RevertCodec
+| Error             | Comment                                         |
+| ----------------- | ----------------------------------------------- |
+| Result(bytes) | On success of the primary operation in a `quoteAndRevert`, this error is thrown with the return data |
+| ErrorSelectorNotFound() | Handle the "reverted without a reason" case (i.e., no return data) |
+
+## TransientStorageHelpers
+| Error             | Comment                                         |
+| ----------------- | ----------------------------------------------- |
+| TransientIndexOutOfBounds() | An index is out of bounds on an array operation (e.g., at) |
 
 <style scoped>
 table {
