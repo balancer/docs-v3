@@ -125,7 +125,7 @@ function onRegister(
 
 The `onRegister` function enables developers to implement custom validation logic to ensure the registration is valid. When a new pool is registered, a hook address can be provided to "link" the pool and the hook. At this stage, the `onRegister` function is invoked by the Vault, and it must return true for the registration to be successful. If the validation fails, the function should return false, preventing the registration from being completed.
 
-In this example we validate that the `factory` param forwarded from the Vault matches the `allowedFactory` set during the hook deployment, and that the pool was deployed by that factory. If successful, it emits an event for tracking by offchain processes.
+In this example we validate that the `factory` param forwarded from the Vault matches the `allowedFactory` set during the hook deployment, and that the pool was deployed by that factory. If successful, it emits an event for tracking by off-chain processes.
 
 ### Implementing the Swap Fee Logic
 
