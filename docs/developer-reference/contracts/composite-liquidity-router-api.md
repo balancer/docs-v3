@@ -234,6 +234,61 @@ Query a `removeLiquidityProportionalFromERC4626Pool` operation.
 | underlyingAmountsOut    | uint256[] memory       | Actual amounts of tokens received, sorted in token registration order of wrapped wrapped tokens in the pool   |
 
 
+### `queryAddLiquidityUnbalancedNestedPool`
+
+```solidity
+function queryAddLiquidityUnbalancedNestedPool(
+    address pool,
+    address[] memory tokensIn,
+    uint256[] memory exactAmountsIn,
+    bytes memory userData
+) external returns (uint256 bptAmountOut);
+```
+Query an `addLiquidityUnbalancedNestedPool` operation.
+
+**Parameters:**
+
+| Name       | Type                               | Description                                                                                  |
+|------------|------------------------------------|----------------------------------------------------------------------------------------------|
+| pool      | address     | Address of the liquidity pool                        |
+| tokensIn      | address[] memory     | Input token addresses, sorted by user preference. `tokensIn` array must have all tokens from child pools and all tokens that are not BPTs from the nested pool (parent pool). |
+| exactAmountsIn   | uint256[] memory        | Amount of each underlying token in, sorted according to tokensIn array |
+| userData   | bytes calldata                     | Additional (optional) data required for the operation                                             |
+
+**Returns:**
+
+| Name             | Type                   | Description                                                                                  |
+|------------------|------------------------|----------------------------------------------------------------------------------------------|
+| bptAmountOut   | uint256       | Expected amount of parent pool tokens to receive        |
+
+### `queryRemoveLiquidityProportionalNestedPool`
+
+```solidity
+function queryRemoveLiquidityProportionalNestedPool(
+    address parentPool,
+    uint256 exactBptAmountIn,
+    address[] memory tokensOut,
+    bytes memory userData
+) external returns (uint256[] memory amountsOut);
+```
+Query a `removeLiquidityProportionalNestedPool` operation.
+
+**Parameters:**
+
+| Name       | Type                               | Description                                                                                  |
+|------------|------------------------------------|----------------------------------------------------------------------------------------------|
+| parentPool      | address     | Address of the highest level pool (which contains BPTs of other pools) |
+| exactBptAmountIn      | uint256     | Exact amount of `parentPool` tokens provided |
+| tokensOut   | address[] memory        | Output token addresses, sorted by user preference. `tokensOut` array must have all tokens from child pools and all tokens that are not BPTs from the nested pool (parent pool). If not all tokens are informed, balances are not settled and the operation reverts. Tokens that repeat must be informed only once. |
+| userData   | bytes calldata                     | Additional (optional) data required for the operation                                             |
+
+**Returns:**
+
+| Name             | Type                   | Description                                                                                  |
+|------------------|------------------------|----------------------------------------------------------------------------------------------|
+| amountsOut   | uint256[] memory       | Actual amounts of tokens received, parallel to `tokensOut` |
+
+
 ## Router common
 
 See the bottom of the [Router](./router-api.md#router-common) for functions common to `Router`, `BatchRouter`, and `CompositeLiquidityRouter`.
