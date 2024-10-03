@@ -25,13 +25,13 @@ Further documentation is available on the self documented [api server](https://a
 
 # Examples
 
-* [Pools - Get a pool's details including APRs](./pool-details-with-apr.md)
+* [Pools - Get a v2 pool's details including APRs](./pool-details-with-apr.md)
 * [Pools - Pools with TVL greater than $10k](./pools-with-tvl.md)
 * [Pools - Top 10 pools ordered by TVL](./pools-top-ordered-tvl.md)
 * [Pools - Get swap events for a pool](./pool-swap-events.md)
 * [Swap - Query the Smart Order Router (SOR)](./swap-query-sor.md)
 * [User - Get pool balances for a user](./user-pool-balance.md)
-* [User - Get pool join & exits events for a user](./user-pool-join-exits.md)
+* [User - Get v2 pool join & exits events for a user](./user-pool-join-exits.md)
 
 
 
