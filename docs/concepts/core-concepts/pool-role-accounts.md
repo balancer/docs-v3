@@ -5,7 +5,7 @@ title: Pool Role Accounts
 
 # Pool Role Permissions
 
-During pool registration `PoolRoleAccounts` are immutably set. These addresses have permission to change certain pool settings:
+During pool registration `PoolRoleAccounts` are set immutably. These addresses have permission to change certain pool settings:
 
 ```solidity
 struct PoolRoleAccounts {
