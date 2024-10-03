@@ -20,7 +20,10 @@ Weighted Pools have additional security constraints based on Weighted Math. (The
 - Weights must sum to 100%
 - Swaps amounts cannot exceed 30% of the token balance
 - The invariant cannot decrease below 70% or increase beyond 300% on liquidity operations
+- The swap fee must be between 0.001% and 10%. (Note that the lower limit is higher than in v2.)
 :::
+
+Note that the swap fee and invariant limits are defined in `WeightedPool` through implementing the `ISwapFeePercentageBounds` and `IUnbalancedLiquidityInvariantRatioBounds` interfaces, which are included in `IBasePool`.
 
 ::: chart Weighted Pool
 

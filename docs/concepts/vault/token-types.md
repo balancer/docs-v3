@@ -16,7 +16,7 @@ Tokens should be defined as `WITH_RATE` when they have an externally available e
 
 See [Rate scaling](./token-scaling.md#rate-scaling) For an in-depth explanation on how Balancer manages tokens with rates.
 
-When [registering](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L138) a token as `WITH_RATE`, your [`TokenConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L84-L89) should resemble the following:
+When [registering](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L144-L166) a token as `WITH_RATE`, your [`TokenConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L84-L89) should resemble the following:
 ```solidity
 TokenConfig({
     token: 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0,
@@ -26,14 +26,14 @@ TokenConfig({
 })
 ```
 
-::: info What does paysYieldFees mean?
+::: info What does `paysYieldFees` mean?
 paysYieldFees means that a portion of the yield a specific token accrues is used to fund Balancer DAO operations. Similar to how swap fees accrue to the Balancer treasury.
 :::
 
 ## All other tokens (`STANDARD`)
 Any token that is not `WITH_RATE` should be set as `STANDARD`. 
 
-When [registering](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L138) a token as `STANDARD`, your [`TokenConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L84-L89) should resemble the following:
+When [registering](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L144-L166) a token as `STANDARD`, your [`TokenConfig`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L84-L89) should resemble the following:
 ```solidity
 TokenConfig({
     token: 0xba100000625a3754423978a60c9317c58a424e3D,

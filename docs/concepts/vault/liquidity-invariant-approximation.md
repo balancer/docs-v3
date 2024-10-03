@@ -28,9 +28,9 @@ This methodology and evaluation criteria apply to all disproportionate liquidity
 
 ::: info Custom pool implication
 As a custom pool developer, you are faced with the choice of allowing these combinations in your pool. If you chose to do so, you must verify
-the liquidity-invariant approximation approach in your tests to ensure fair & even settlement across various operations.
+the liquidity-invariant approximation approach in your tests to ensure fair and even settlement across various operations.
 :::
 
 ## Verification
 
-For reference, see the [`LiquidityApproximation.t.sol`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/test/foundry/LiquidityApproximation.t.sol#L682) test file where the required assertions are verified in `assertLLiquidityOperationNoSwapFee()` and `assertLiquidityOperation()`. 
+For reference, see the [`LiquidityApproximation.t.sol`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/test/foundry/LiquidityApproximation.t.sol) test file where the required assertions are verified in `assertLiquidityOperationNoSwapFee()` and `assertLiquidityOperation()`. 
