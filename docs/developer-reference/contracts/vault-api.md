@@ -329,7 +329,7 @@ function getPoolTokenInfo(
         uint256[] memory lastLiveBalances
     );
 ```
-This function gets the raw data for a pool: tokens, raw and last live balances.
+This `VaultExtension` function gets the raw data for a pool: tokens, raw and last live balances.
 
 **Parameters:**
 
@@ -487,12 +487,11 @@ This `VaultAdmin` function adds liquidity to an internal ERC4626 buffer in the V
 ```solidity
 function addLiquidityToBuffer(
     IERC4626 wrappedToken,
-    uint256 amountUnderlyingRaw,
-    uint256 amountWrappedRaw,
+    uint256 exactSharesToIssue,
     address sharesOwner
-) external returns (uint256 issuedShares);
+) external returns (uint256 amountUnderlyingRaw, uint256 amountWrappedRaw);
 ```
-This `VaultAdmin` function adds liquidity to an internal ERC4626 buffer in the Vault. Reverts if the buffer has not been initialized.
+This `VaultAdmin` function adds liquidity proportionally to an internal ERC4626 buffer in the Vault. Reverts if the buffer has not been initialized.
 
 **Parameters:**
 
@@ -839,6 +838,27 @@ This `VaultExtension` function returns the paused status, and end times of the P
 | poolBufferPeriodEndTime  | uint32  | The timestamp after which the Pool unpauses itself (if paused)  |
 | pauseManager  | address  | The pause manager, or the zero address  |
 
+## ERC4626 Buffers
+
+### `isERC4626BufferInitialized`
+
+```solidity
+function isERC4626BufferInitialized(IERC4626 wrappedToken) external view returns (bool isBufferInitialized);
+```
+This `VaultExtension` function checks whether `initializeBuffer` has been called on the given `wrappedToken`. Buffers must be initialized before use.
+
+**Parameters:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+| wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626  |
+
+**Returns:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+| isBufferInitialized  | bool  | True if the ERC4626 buffer is initialized  |
+
 ## Fees
 ### `getAggregateSwapFeeAmount`
 
@@ -918,13 +938,13 @@ This `VaultExtension` function fetches the role accounts for a given pool (pause
 |---|---|---|
 | roleAccounts  | PoolRoleAccounts  | A struct containing the role accounts for the pool (or 0 if unassigned)  |
 
-### `computeDynamicSwapFee`
+### `computeDynamicSwapFeePercentage`
 
 ```solidity
 function computeDynamicSwapFee(
     address pool,
     PoolSwapParams memory swapParams
-) external view returns (bool, uint256);
+) external view returns (uint256);
 ```
 This `VaultExtension` function queries the current dynamic swap fee of a pool, given a set of swap parameters.
 
@@ -939,8 +959,7 @@ This `VaultExtension` function queries the current dynamic swap fee of a pool, g
 
 | Name  | Type  | Description  |
 |---|---|---|
-| success  | bool  | True if the pool has a dynamic swap fee and it can be successfully computed  |
-| dynamicSwapFee  | uint256  | The dynamic swap fee percentage  |
+| dynamicSwapFeePercentage  | uint256  | The dynamic swap fee percentage  |
 
 ### `getProtocolFeeController`
 
@@ -968,6 +987,20 @@ This `VaultAdmin` function assigns a new static swap fee percentage to the speci
 |---|---|---|
 | pool  | address  | The address of the pool for which the static swap fee will be changed  |
 | swapFeePercentage  | uint256  | The new swap fee percentage to apply to the pool  |
+
+### `collectAggregateFees`
+
+```solidity
+function collectAggregateFees(address pool) public returns (uint256[] memory totalSwapFees, uint256[] memory totalYieldFees);
+```
+This function collects accumulated aggregate swap and yield fees for the specified pool. It can only be called from the `ProtocolFeeController`, which unlocks the Vault, acting as a Router. In the Vault, it clears the `aggregateFeeAmounts` storage, supplying credit for each amount which must be settled at the end of the fee controller action.
+
+**Parameters:**
+
+| Name  | Type  | Description  |
+|---|---|---|
+| pool  | address  | The pool on which all aggregate fees should be collected  |
+
 
 ### `updateAggregateSwapFeePercentage`
 
@@ -1126,33 +1159,6 @@ This `VaultExtension` function checks if the queries are enabled on the Vault.
 | Name  | Type  | Description  |
 |---|---|---|
 |  | bool  | If true, then queries are disabled  |
-
-### `calculateBufferAmounts`
-
-```solidity
-function calculateBufferAmounts(
-    SwapKind kind,
-    IERC4626 wrappedToken,
-    uint256 amountGiven
-) external returns (uint256 amountCalculated, uint256 amountInUnderlying, uint256 amountOutWrapped);
-```
-This `VaultExtension` function calculates the buffer amounts for a given swap kind, wrapped token, and given amount.
-
-**Parameters:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| kind  | SwapKind  | The kind of swap (in or out)  |
-| wrappedToken  | IERC4626  | The wrapped token involved in the swap  |
-| amountGiven  | uint256  | The amount given for the swap  |
-
-**Returns:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| amountCalculated  | uint256  | The calculated amount for the swap  |
-| amountInUnderlying  | uint256  | The amount in the underlying token  |
-| amountOutWrapped  | uint256  | The amount in the wrapped token  |
 
 ### `disableQuery`
 

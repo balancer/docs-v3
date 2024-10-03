@@ -96,6 +96,7 @@ Optional hook to be executed after pool initialization. Note that unlike the swa
 ```solidity
 function onBeforeAddLiquidity(
     address router,
+    address pool,
     AddLiquidityKind kind,
     uint256[] memory maxAmountsInScaled18,
     uint256 minBptAmountOut,
@@ -110,6 +111,7 @@ Optional hook to be executed before adding liquidity.
 | Name              | Type               | Description                                              |
 |-------------------|--------------------|----------------------------------------------------------|
 | router            | address            | The address (usually a router contract) that initiated a swap operation on the Vault |
+| pool              | address   | Pool address, used to fetch pool information from the Vault (pool config, tokens, etc.) |
 | kind              | AddLiquidityKind   | The type of add liquidity operation (e.g., proportional, custom) |
 | maxAmountsInScaled18 | uint256[] memory | Maximum amounts of input tokens                          |
 | minBptAmountOut   | uint256            | Minimum amount of output pool tokens                     |
@@ -127,11 +129,13 @@ Optional hook to be executed before adding liquidity.
 ```solidity
 function onAfterAddLiquidity(
     address router,
+    address pool,
     uint256[] memory amountsInScaled18,
+    uint256[] memory amountsInRaw,
     uint256 bptAmountOut,
     uint256[] memory balancesScaled18,
     bytes memory userData
-) external returns (bool success);
+) external returns (bool success, uint256[] memory hookAdjustedAmountsInRaw);
 ```
 Optional hook to be executed after adding liquidity.
 
@@ -140,7 +144,9 @@ Optional hook to be executed after adding liquidity.
 | Name              | Type               | Description                                              |
 |-------------------|--------------------|----------------------------------------------------------|
 | router            | address            | The address (usually a router contract) that initiated a swap operation on the Vault |
-| amountsInScaled18 | uint256[] memory   | Scaled amounts of tokens added in token registration order |
+| pool              | address   | Pool address, used to fetch pool information from the Vault (pool config, tokens, etc.) |
+| amountsInScaled18 | uint256[] memory| Actual amounts of tokens added, sorted in token registration order
+| amountsInRaw      | uint256[] memory | Actual amounts of tokens added, sorted in token registration order
 | bptAmountOut      | uint256            | Amount of pool tokens minted                             |
 | balancesScaled18  | uint256[] memory   | Current pool balances in token registration order        |
 | userData          | bytes memory       | Additional (optional) data provided by the user          |
@@ -150,12 +156,14 @@ Optional hook to be executed after adding liquidity.
 | Name      | Type   | Description                                              |
 |-----------|--------|----------------------------------------------------------|
 | success   | bool   | True if the pool wishes to proceed with settlement       |
+| hookAdjustedAmountsInRaw   | uint256[] memory   | New amountsInRaw, potentially modified by the hook |
 
 ### `onBeforeRemoveLiquidity`
 
 ```solidity
 function onBeforeRemoveLiquidity(
     address router,
+    address pool,
     RemoveLiquidityKind kind,
     uint256 maxBptAmountIn,
     uint256[] memory minAmountsOutScaled18,
@@ -170,6 +178,7 @@ Optional hook to be executed before removing liquidity.
 | Name              | Type               | Description                                              |
 |-------------------|--------------------|----------------------------------------------------------|
 | router            | address            | The address (usually a router contract) that initiated a swap operation on the Vault |
+| pool              | address   | Pool address, used to fetch pool information from the Vault (pool config, tokens, etc.) |
 | kind              | RemoveLiquidityKind| The type of remove liquidity operation (e.g., proportional, custom) |
 | maxBptAmountIn    | uint256            | Maximum amount of input pool tokens                      |
 | minAmountsOutScaled18 | uint256[] memory | Minimum output amounts in token registration order      |
@@ -187,11 +196,14 @@ Optional hook to be executed before removing liquidity.
 ```solidity
 function onAfterRemoveLiquidity(
     address router,
+    address pool,
+    RemoveLiquidityKind kind,
     uint256 bptAmountIn,
     uint256[] memory amountsOutScaled18,
+    uint256[] memory amountsOutRaw,
     uint256[] memory balancesScaled18,
     bytes memory userData
-) external returns (bool success);
+) external returns (bool success, uint256[] memory hookAdjustedAmountsOutRaw);
 ```
 Optional hook to be executed after removing liquidity.
 
@@ -200,8 +212,11 @@ Optional hook to be executed after removing liquidity.
 | Name              | Type               | Description                                              |
 |-------------------|--------------------|----------------------------------------------------------|
 | router            | address            | The address (usually a router contract) that initiated a swap operation on the Vault |
+| pool              | address   | Pool address, used to fetch pool information from the Vault (pool config, tokens, etc.) |
+| kind              | RemoveLiquidityKind| The type of remove liquidity operation (e.g., proportional, custom) |
 | bptAmountIn       | uint256            | Amount of pool tokens to burn                            |
-| amountsOutScaled18| uint256[] memory   | Amount of tokens to receive in token registration order  |
+| amountsOutScaled18| uint256[] memory   | Scaled amount of tokens to receive, in token registration order  |
+| amountsOutRaw| uint256[] memory   | Actual amount of tokens to receive, in token registration order  |
 | balancesScaled18  | uint256[] memory   | Current pool balances in token registration order        |
 | userData          | bytes memory       | Additional (optional) data provided by the user          |
 
@@ -210,6 +225,7 @@ Optional hook to be executed after removing liquidity.
 | Name      | Type   | Description                                              |
 |-----------|--------|----------------------------------------------------------|
 | success   | bool   | True if the pool wishes to proceed with settlement       |
+| hookAdjustedAmountsOutRaw   | uint256[] memory   | New amountsOutRaw, potentially modified by the hook |
 
 ### `onBeforeSwap`
 
@@ -277,7 +293,7 @@ Called after `onBeforeSwap` and before the main swap operation, if the pool has 
 | Name           | Type   | Description                                              |
 |----------------|--------|----------------------------------------------------------|
 | success        | bool   | True if the pool wishes to proceed with settlement       |
-| dynamicSwapFee | uint256| Value of the swap fee                                    |
+| dynamicSwapFeePercentage | uint256| Value of the swap fee                          |
 
 <style scoped>
 table {
