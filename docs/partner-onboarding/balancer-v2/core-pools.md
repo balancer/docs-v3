@@ -33,6 +33,6 @@ To summarize: core pools participate in the ecosystem flywheel by being entitled
 ![Core Pool Framework](/images/corePoolFramework.png)
 
 ## Helpful Resources to Learn More
-- [BIP-19: Incentivize Core Pools & L2 Usage](https://forum.balancer.fi/t/bip-19-incentivize-core-pools-l2-usage/3329)
+- [BIP-19: Incentivize Core Pools and L2 Usage](https://forum.balancer.fi/t/bip-19-incentivize-core-pools-l2-usage/3329)
 - [Core Pools Dashboard](https://balancer.defilytica.com/#/corePools)
 - [Protocol Fee Dune Dashboard](https://dune.com/balancer/protocol-fees)
