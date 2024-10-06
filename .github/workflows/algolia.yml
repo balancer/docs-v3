@@ -17,7 +17,7 @@ jobs:
                   "start_urls": [
                     "https://docs-v3.balancer.fi/",
                     "https://docs-v3.balancer.fi/integration-guides/",
-                    "https://docs-v3.balancer.fi/build-a-custom-amm/",
+                    "https://docs-v3.balancer.fi/build/",
                     "https://docs-v3.balancer.fi/developer-reference/",
                     "https://docs-v3.balancer.fi/concepts/core-concepts/introduction.html",
                     "https://docs-v3.balancer.fi/partner-onboarding/onboarding-overview/introduction.html",

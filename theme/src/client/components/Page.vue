@@ -3,6 +3,8 @@ import PageHero from '@theme/PageHero.vue';
 import PageMeta from '@theme/PageMeta.vue';
 import PageNav from '@theme/PageNav.vue';
 import RightAnchor from '@theme/RightAnchor.vue';
+import HomeFeatures from '@theme/HomeFeatures.vue';
+
 </script>
 
 <template>
@@ -14,6 +16,8 @@ import RightAnchor from '@theme/RightAnchor.vue';
         <slot name="content-top" />
 
         <Content />
+        
+        <HomeFeatures />
 
         <slot name="content-bottom" />
 

@@ -1,11 +1,11 @@
 ---
 order: 2
-title: Extend an Existing Pool Type Using Hooks
+title: Extend an Existing Pool Type
 ---
 
 # Extend an Existing Pool Type Using Hooks
 
-_This section is for developers looking to extend an existing pool type with custom hooks. If you are looking to create a custom AMM with a novel invariant, start [here](/build-a-custom-amm/build-an-amm/create-custom-amm-with-novel-invariant.html)._
+_This section is for developers looking to extend an existing pool type with custom hooks. If you are looking to create a custom AMM with a novel invariant, start [here](/build/build-an-amm/create-custom-amm-with-novel-invariant.html)._
 
 Hooks introduce a new framework for extending the functionality of existing pool types at key points throughout their lifecycle. By enabling actions during pool operations and facilitating dynamic swap fee computation, hooks offer unprecedented control over pool behavior. This innovative concept empowers developers to craft tailored pool behaviors, catering to specific use cases and enhancing operations with greater flexibility and control.
 

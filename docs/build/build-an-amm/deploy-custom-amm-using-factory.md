@@ -5,7 +5,7 @@ title: Deploy a Custom AMM Using a Factory
 
 # Deploy a Custom AMM Using a Factory
 
-_This section is for developers looking to deploy a custom pool contract that has already been written. If you are looking to design a custom AMM with a novel invariant, start [here](/build-a-custom-amm/build-an-amm/create-custom-amm-with-novel-invariant.html)._
+_This section is for developers looking to deploy a custom pool contract that has already been written. If you are looking to design a custom AMM with a novel invariant, start [here](/build/build-an-amm/create-custom-amm-with-novel-invariant.html)._
 
 Balancer recommends that custom pools be deployed via a factory contract because our off-chain infrastructure uses the factory address as a means to identify the type of pool, which is important for integration into the UI, SDK, and external aggregators.
 
@@ -26,7 +26,7 @@ To see example foundry scripts for deploying a custom pool using a factory, chec
 
 A factory contract should inherit the [BasePoolFactory.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-utils/contracts/BasePoolFactory.sol) abstract contract, which sets the table for deploying pools with `CREATE3` and streamlines the registration process.
 
-Below, we present an example custom pool factory that uses the `ConstantSumPool` contract from [Build your custom AMM](/build-a-custom-amm/build-an-amm/create-custom-amm-with-novel-invariant.html#build-your-custom-amm)
+Below, we present an example custom pool factory that uses the `ConstantSumPool` contract from [Build your custom AMM](/build/build-an-amm/create-custom-amm-with-novel-invariant.html#build-your-custom-amm)
 
 ::: code-tabs#shell
 @tab ConstantSumPool
@@ -115,7 +115,7 @@ contract ConstantSumFactory is BasePoolFactory {
 - `bool protocolFeeExempt`: If true, the pool's initial aggregate fees will be set to 0
 - `PoolRoleAccounts memory roleAccounts`: Addresses allowed to change certain pool settings, see [Pool Role Permissions](https://docs-v3.balancer.fi/concepts/core-concepts/pool-role-accounts.html)
 - `address poolHooksContract`: Contract that implements the hooks for the pool. If no hooks, use the zero address
-- `LiquidityManagement memory liquidityManagement`: Specifies support for [Custom Liquidity Operations](https://docs-v3.balancer.fi/build-a-custom-amm/build-an-amm/create-custom-amm-with-novel-invariant.html#add-remove-liquidity)
+- `LiquidityManagement memory liquidityManagement`: Specifies support for [Custom Liquidity Operations](https://docs-v3.balancer.fi/build/build-an-amm/create-custom-amm-with-novel-invariant.html#add-remove-liquidity)
 
 ::: code-tabs#shell
 @tab BasePoolFactory

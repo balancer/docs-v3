@@ -1,8 +1,8 @@
 ---
-title: Hook Development - Interacting With The Vault
+title: Interacting With The Vault
 ---
 
-# Hook Development - Interacting With The Vault
+# Interacting With The Vault Using Hooks
 
 The [Balancer Router](../../concepts/router/overview.md#balancer-routers) is typically the interface Externally Owned Accounts (EOAs) use to interact with the V3 Vault. While the Router uses Permit2 for token permissions, Hooks—being separate smart contracts—cannot sign these permissions. Instead, Hooks interact directly with the Vault. This section covers some common scenarios and usage patterns for Hooks.
 

@@ -110,7 +110,7 @@ const side = (baseDir, relativeDir = '', currentLevel = 1) => {
 
 // export const sidebar = getConfig('./', {});
 export const sidebar: SidebarConfig = {
-  '/build-a-custom-amm': side('docs/build-a-custom-amm/', ''),
+  '/build': side('docs/build/', ''),
   '/concepts': side('docs/concepts/', ''),
   '/partner-onboarding': side('docs/partner-onboarding/', ''),
   '/data-and-analytics': side('docs/data-and-analytics/', ''),
