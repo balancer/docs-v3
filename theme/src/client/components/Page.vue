@@ -4,6 +4,7 @@ import PageMeta from '@theme/PageMeta.vue';
 import PageNav from '@theme/PageNav.vue';
 import RightAnchor from '@theme/RightAnchor.vue';
 import HomeFeatures from '@theme/HomeFeatures.vue';
+import VideoEmbed from '@theme/VideoEmbed.vue';
 
 </script>
 
@@ -16,8 +17,8 @@ import HomeFeatures from '@theme/HomeFeatures.vue';
         <slot name="content-top" />
 
         <Content />
-        
         <HomeFeatures />
+        <VideoEmbed />
 
         <slot name="content-bottom" />
 

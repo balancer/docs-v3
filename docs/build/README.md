@@ -1,6 +1,7 @@
 ---
 order: 0
 title: Build on Balancer
+videoSrc: https://www.youtube.com/embed/videoseries?list=PLFKRKS7Isj-LPvafy-qMuRSlnIFYxHNJw
 
 features:
 
