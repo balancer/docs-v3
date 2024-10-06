@@ -5,7 +5,7 @@ title: Hooks
 # Hooks
 
 :::info Get Started
-To get started building your own hook check out the [guide](../../build-a-custom-amm/build-an-amm/extend-existing-pool-type-using-hooks.md).
+To get started building your own hook check out the [guide](../../build/build-an-amm/extend-existing-pool-type-using-hooks.md).
 :::
 
 Hooks introduce a framework to extend existing pool types at various key points throughout the pool’s lifecycle. Hooks can execute actions during pool operation and also compute a dynamic swap fee. Potential applications for hooks include:
@@ -126,7 +126,7 @@ A detailed view of what an `after` hook for a given liquidity operation can chan
 
 
 ## Hook examples
-If you want to get started with developing your own hooks contract, check out the [developing a hooks contract](/build-a-custom-amm/build-an-amm/extend-existing-pool-type-using-hooks.html) page. Various hook examples are shown there. Additionally the monorepo displays more ideas on how to approach hook development.
+If you want to get started with developing your own hooks contract, check out the [developing a hooks contract](/build/build-an-amm/extend-existing-pool-type-using-hooks.html) page. Various hook examples are shown there. Additionally the monorepo displays more ideas on how to approach hook development.
 
 
 <style scoped>
