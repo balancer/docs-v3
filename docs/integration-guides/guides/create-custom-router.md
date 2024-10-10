@@ -10,15 +10,15 @@ A custom Router is a smart contract which interacts with the Balancer Vault and 
 - DEX aggregators, which want to tweak the default interaction via the Balancer Router in a certain way to deliver best prices to their users.
 - DeFi projects wanting to provide seamless liquidity migrations of their users from various Dexes to Balancer in order to participate from the deep liquidity offered on Balancer
 - DeFi projects looking to provide liquidity on Balancer in custom proportions across multiple pools with more granular control metrics as part of the liquidity provisioning
-- DeFi projects looking to enhance the liquidity mining experience for LPs by introducing a better staking & migration flow.
+- DeFi projects looking to enhance the liquidity mining experience for LPs by introducing a better staking and migration flow.
 
 The main work custom routers in the outlined examples above have in common is that:
 - They utilize multiple Vault interactions based on the required use-case
-- They add additional control flows & external interactions to the Router smart contract for granular liquidity operations
+- They add additional control flows and external interactions to the Router smart contract for granular liquidity operations
 
 ## Usage
 
-The following custom Router displays how LPs can migrate pool liquidity to a new pool with the same tokens & stake it in a gauge without the need to transfer tokens except the BPT.
+The following custom Router displays how LPs can migrate pool liquidity to a new pool with the same tokens and stake it in a gauge without the need to transfer tokens except the BPT.
 
 ```solidity
 // SPDX-License-Identifier: GPL-3.0-or-later

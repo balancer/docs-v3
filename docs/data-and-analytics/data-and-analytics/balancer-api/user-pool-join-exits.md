@@ -1,8 +1,8 @@
 ---
-title: User - Get joins & exit events for a pool
+title: User - Get joins and exit events for a pool
 ---
 
-# Get pool join & exits events for a user
+# Get v2 pool join and exits events for a user
 
 ```graphql
 {

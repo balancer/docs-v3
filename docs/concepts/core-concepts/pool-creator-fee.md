@@ -4,7 +4,7 @@ title: Pool Creator Fee
 ---
 ## Pool Creator Fee
 
-Introducing the Pool Creator Fee—a groundbreaking feature within the Balancer Protocol that revolutionizes the way developers engage with liquidity pools. With this innovative concept, developers of specific pools have the opportunity to earn a share of the swap fee & yield fee as revenue, incentivizing the creation of successful and thriving pools. In the following section, we delve into the details of this exciting feature, exploring how it works and its implications for pool creators.
+Introducing the Pool Creator Fee—a groundbreaking feature within the Balancer Protocol that revolutionizes the way developers engage with liquidity pools. With this innovative concept, developers of specific pools have the opportunity to earn a share of the swap fee and yield fee as revenue, incentivizing the creation of successful and thriving pools. In the following section, we delve into the details of this exciting feature, exploring how it works and its implications for pool creators.
 
 ## Implementation
 
@@ -32,11 +32,11 @@ The accrued creator fees can only be claimed by the `poolCreator`, as the functi
  * @param pool The pool on which fees were collected
  * @param recipient Address to send the tokens
  */
-function withdrawPoolCreatorFees(address pool, address recipient) external;
+function withdrawPoolCreatorFees(address pool, address recipient) external onlyPoolCreator(pool);
 ```
 This collects the entire amount of accrued creator fees. It is not possible to claim creator swap or yield fees separately.
 
-Note that there is also a permissionless version, without a recipient, that sends the fees to the registered pool creator.
+Note that there is also a permissionless version, without a recipient, that sends the fees to the registered pool creator. If this address is a contract, that means anyone can send tokens to that contract at any time, so you must ensure they can be withdrawn!
 
 ```solidity
 /**
@@ -62,8 +62,8 @@ function getPoolCreatorFeeAmounts(address pool) external view returns (uint256[]
 
 ### Setting The Fee Appropriately
 
-Developers must carefully consider their decisions regarding the creator fee, as increasing this fee reduces the portion of swap & yield fees allocated to Liquidity Providers. While higher creator fees may increase revenue for the creator, they can also diminish incentives for Liquidity Providers to participate, potentially resulting in reduced liquidity and overall fee generation within the pool.
+Developers must carefully consider their decisions regarding the creator fee, as increasing this fee reduces the portion of swap and yield fees allocated to Liquidity Providers. While higher creator fees may increase revenue for the creator, they can also diminish incentives for Liquidity Providers to participate, potentially resulting in reduced liquidity and overall fee generation within the pool.
 
-The pool creator can set the fees by calling the [`ProtocolFeeController`'s](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/ProtocolFeeController.sol) `setPoolCreatorYieldFeePercentage` &  `setPoolCreatorSwapFeePercentage`.
+The pool creator can set the fees by calling the [`ProtocolFeeController`'s](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/ProtocolFeeController.sol) `setPoolCreatorYieldFeePercentage` and  `setPoolCreatorSwapFeePercentage`.
 
-The maximum `poolCreatorFeePercentage` for both types is 100% (`100e18`). Note that this percentage is net protocol fees, which are paid first. As described above, a 100% fee would leave nothing for LPs.
+The maximum `poolCreatorFeePercentage` for both types is 100% (`1e18`). Note that this percentage is net protocol fees, which are paid first. As described above, a 100% fee would leave nothing for LPs. And in practice, depending on the configuration of other fees, it might revert (e.g., exact out calculations divide by "1-fee").

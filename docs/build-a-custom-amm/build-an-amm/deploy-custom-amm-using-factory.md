@@ -15,7 +15,7 @@ To fully set up a new custom pool so that normal liquidity operations and swaps 
 2. Deploy the pool contract using the factory's `_create` function
 3. Register the pool using the factory's `_registerPoolWithVault` function
 4. Use [Permit2](https://github.com/Uniswap/permit2) to approve the Router to spend the tokens that will be used to initialize the pool
-5. Call [`router.initialize()`](https://github.com/balancer/balancer-v3-monorepo/blob/e9bd6b0b154f2bd083a5049267b7a417c5a2c984/pkg/interfaces/contracts/vault/IRouter.sol#L39-L56) to seed the pool with initial liquidity
+5. Call [`router.initialize()`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IRouter.sol#L46-L53) to seed the pool with initial liquidity
 
 ::: tip
 
@@ -155,6 +155,6 @@ After a custom pool has been deployed and registered, the next step is to add in
 
 1. Ensure the [Permit2](https://github.com/Uniswap/permit2) contract has been granted sufficient allowance to spend tokens on behalf of the `msg.sender`
 2. Transfer sufficient allowance to the [Router](https://docs-v3.balancer.fi/concepts/router/overview.html) with [`Permit2.approve`](https://github.com/Uniswap/permit2/blob/cc56ad0f3439c502c246fc5cfcc3db92bb8b7219/src/AllowanceTransfer.sol#L25-L30)
-3. Call [`router.initialize()`](https://github.com/balancer/balancer-v3-monorepo/blob/e9bd6b0b154f2bd083a5049267b7a417c5a2c984/pkg/interfaces/contracts/vault/IRouter.sol#L39-L56)
+3. Call [`router.initialize()`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IRouter.sol#L46-L53)
 
 After a pool has been initialized, normal liquidity operations and swaps are instantly enabled.

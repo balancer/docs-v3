@@ -15,7 +15,7 @@ The BalancerPoolToken contract adheres to the ERC20 token standard by incorporat
 
 Here's how the [`BalancerPoolToken`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol) contract achieves this:
 
-Inheritance: The [`BalancerPoolToken`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol) contract also inherits from `IERC20`, `IERC20Metadata` and `IERC20Permit`. This means it has all the methods and properties required by the ERC20 standard.
+Inheritance: The [`BalancerPoolToken`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BalancerPoolToken.sol) contract also inherits from `IERC20`, `IERC20Metadata`, `IERC20Permit`, `IRateProvider`, `EIP712`, `Nonces`, `ERC165` and our local `VaultGuard`. This means it has all the methods and properties required by the ERC20 standard.
 
 - Delegation: The BalancerPoolToken contract doesn't manage the token state itself. Instead, it delegates this responsibility to the Vault contract. For example, the totalSupply, balanceOf, transfer, allowance, approve, and transferFrom methods all call the corresponding methods on the Vault contract.
 
@@ -23,9 +23,16 @@ Inheritance: The [`BalancerPoolToken`](https://github.com/balancer/balancer-v3-m
 
 - ERC20Permit: The BalancerPoolToken contract also implements the ERC20 Permit extension, which allows approvals to be made via signatures. This is done in the permit method, which again delegates the approval to the Vault contract.
 
+- IRateProvider: Each pool can serve as a rate provider, with a natural "BPT Rate" = pool value (= invariant) / totalSupply. However, great care must be taken when using pool tokens this way, as rates may be unpredictable or manipulable. In general, since the rate calculation does not include a "rounding hint" (as does the base invariant calculation), if there is any significant or non-linear error in the invariant, the computed value of the invariant might go down when it should go up. Weighted Pool invariants have this property, so calling `getRate` on a Weighted Pool is unsafe, and reverts unconditionally.
+
+- EIP712, Nonces: These have to do with supporting permit2 and signatures, so that explicit token approvals can be avoided in many cases.
+
+- ERC165: This is not used in core pool types, but allows interface detection. See the [Ethereum docs](https://eips.ethereum.org/EIPS/eip-165).
+
+- VaultGuard: This simply stores a reference to the Vault and defines the `onlyVault` modifier for functions that can only be called by the Vault.
+
 By doing this, the BalancerPoolToken contract ensures that Balancer Pool Tokens (BPTs) are fully ERC20 compliant, while also allowing the Vault contract to have full control over BPT accounting. This design ensures atomic updates to critical pool state and supports composability, which is crucial for integration with other DeFi protocols.
 
 ## Composability
 
-As BPTs adhere to the ERC20 standard, they can seamlessly integrate as pool tokens in other pools. For instance, the BPT of a boosted pool comprising DAI, USDC, and USDT can be paired with tokens from new projects. This composability ensures the maintenance of deep and capital-efficient stable liquidity, while simultaneously creating efficient swap paths for the project token.
-
+As BPTs adhere to the ERC20 standard, they can seamlessly integrate as pool tokens in other pools. For instance, the BPT of an ERC4626 pool comprising wrapped versions of DAI, USDC, and USDT can be paired with tokens from new projects. This composability ensures the maintenance of deep and capital-efficient stable liquidity, while simultaneously creating efficient swap paths for the project token.

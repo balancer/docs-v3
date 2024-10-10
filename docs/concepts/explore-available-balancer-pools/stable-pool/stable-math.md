@@ -12,7 +12,7 @@ Stable Math is designed to allow for swaps between any assets that have the same
 
 ### TypeScript
 
-Developers can use the TypeScript math implementations used by the Smart Order router
+Developers can use the TypeScript math implementations used by the Smart Order router (equivalent v2 reference).
 
 - [stableMath.ts](https://github.com/balancer/balancer-sor/blob/john/v2-package-linear/src/pools/stablePool/stableMath.ts)
 - [metaStableMath.ts](https://github.com/balancer/balancer-sor/blob/john/v2-package-linear/src/pools/metaStablePool/metaStableMath.ts)
@@ -34,7 +34,7 @@ Where:
 
 ## Swap Equations
 
-Similar to determining the invariant, determining (out/in) amount given (in/out) amounts is also done iteratively. Both [outGivenIn](https://github.com/georgeroman/balancer-v2-pools/blob/db415173277bfa86d9aa6b0c1fbd15481c7a2398/src/pools/stable/math.ts#L88) and [inGivenOut](https://github.com/georgeroman/balancer-v2-pools/blob/db415173277bfa86d9aa6b0c1fbd15481c7a2398/src/pools/stable/math.ts#L138) use the same function, [getTokenBalanceGivenInvariantAndAllOtherBalances](https://github.com/georgeroman/balancer-v2-pools/blob/db415173277bfa86d9aa6b0c1fbd15481c7a2398/src/pools/stable/math.ts#L502).
+Similar to determining the invariant, determining (out/in) amount given (in/out) amounts is also done iteratively. Both [outGivenIn](https://github.com/georgeroman/balancer-v2-pools/blob/db415173277bfa86d9aa6b0c1fbd15481c7a2398/src/pools/stable/math.ts#L88) and [inGivenOut](https://github.com/georgeroman/balancer-v2-pools/blob/db415173277bfa86d9aa6b0c1fbd15481c7a2398/src/pools/stable/math.ts#L138) use the same function, [getTokenBalanceGivenInvariantAndAllOtherBalances](https://github.com/georgeroman/balancer-v2-pools/blob/db415173277bfa86d9aa6b0c1fbd15481c7a2398/src/pools/stable/math.ts#L502). Note that these are v2 references; we don't use TS in this way in v3, and `computeBalance` is equivalent to `getTokenBalanceGivenInvariantAndAllOtherBalances` in v2. Otherwise, they are mathematically equivalent.
 
 ### outGivenIn
 

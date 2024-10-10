@@ -12,7 +12,7 @@ This class provides functionality to:
 * Perform on-chain queries to see the result of an addLiquidity operation
 * Build an addLiquidity transaction, with slippage, for a consumer to submit
 * Supported add types: SingleToken, Unbalanced, Proportional
-* Supports Balancer v2 & v3
+* Supports Balancer v2 and v3
 
 ### Example
 
@@ -82,7 +82,7 @@ This class provides functionality to:
 * Perform on-chain queries to see the result of an removeLiquidity operation
 * Build a removeLiquidity transaction, with slippage, for a consumer to submit
 * Supported remove types: Unbalanced, SingleTokenExactOutInput, SingleTokenExactInInput, Proportional
-* Supports Balancer v2 & v3
+* Supports Balancer v2 and v3
 
 ### Example
 
@@ -180,7 +180,7 @@ ___
 This class provides functionality to:
 * Perform on-chain queries to see the result of a Swap operation
 * Build a Swap transaction, with slippage, for a consumer to submit
-* Supports Balancer v2 & v3
+* Supports Balancer v2 and v3
 
 ### Example
 
@@ -323,7 +323,7 @@ ___
 ## PriceImpact
 
 This class provides helper functions to calculate Price Impact for add/remove/swap actions.
-* Supports Balancer v2 & v3
+* Supports Balancer v2 and v3
 
 ### Example
 

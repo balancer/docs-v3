@@ -15,7 +15,7 @@ _This section is for developers looking to build a new custom pool type with a n
 
 ## Build your custom AMM
 
-At a high level, creating a custom AMM on Balancer protocol involves the implementation of five functions `onSwap`, `computeInvariant` and `computeBalance` as well as `getMaximumSwapFeePercentage` and `getMinimumSwapFeePercentage`.
+At a high level, creating a custom AMM on Balancer protocol involves the implementation of five functions `onSwap`, `computeInvariant` and `computeBalance` as well as the `ISwapFeePercentageBounds` and `IUnbalancedLiquidityInvariantRatioBounds` interfaces (which define `getMinimumSwapFeePercentage` / `getMaximumSwapFeePercentage`, and `getMinimumInvariantRatio` / `getMaximumInvariantRatio`, respectively).
 To expedite the development process, Balancer provides two contracts to inherit from:
 
 - [IBasePool.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IBasePool.sol) - This interface defines the required functions that every Balancer pool must implement
@@ -23,7 +23,9 @@ To expedite the development process, Balancer provides two contracts to inherit 
 
 Both `IBasePool` and `BalancerPoolToken` are used across all core Balancer pools, even those implemented by Balancer Labs (ie: [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol)).
 
-Below, we present a naive implementation of a two token `ConstantProductPool` & `ConstantSumPool` utilizing (X * Y = K) & (X + Y = K) as a reference for walking through the required functions necessary to implement a custom AMM on Balancer protocol:
+Standard Balancer pools also implement the optional `Version` interface (for easy on- and off-chain verification of the contract version), and `IPoolInfo`, which exposes Vault getters (e.g., `getTokens`, and `getTokenInfo`) through the pool itself as a convenience. On top of that, the standard pools define custom interfaces that return structs corresponding to the immutable and dynamic data fields for the pools. For instance, Weighted Pools return the weights. Note that dynamic pool values (e.g., live balances), exposed through either `IPoolInfo` or the custom interfaces, will only be valid on-chain if the Vault is locked (i.e., not in the middle of a transaction).
+
+Below, we present a naive implementation of a two token `ConstantProductPool` and `ConstantSumPool` utilizing (X * Y = K) and (X + Y = K) as references for walking through the required functions necessary to implement a custom AMM on Balancer protocol:
 
 ::: code-tabs#shell
 @tab Constant Product Pool
@@ -39,7 +41,9 @@ contract ConstantProductPool is IBasePool, BalancerPoolToken {
         IVault vault,
         string memory name,
         string memory symbol)
-    BalancerPoolToken(vault, name, symbol) {}
+    BalancerPoolToken(vault, name, symbol) {
+        // solhint-disable-previous-line no-empty-blocks
+    }
 
     /**
      * @notice Execute a swap in the pool.
@@ -57,28 +61,29 @@ contract ConstantProductPool is IBasePool, BalancerPoolToken {
 
     /**
      * @notice Computes and returns the pool's invariant.
-     * @dev This function computes the invariant based on current balances
-     * @param balancesLiveScaled18 Array of current pool balances for each token in the pool, scaled to 18 decimals
+     * @dev This function computes the invariant based on current balances.
+     * @param balancesLiveScaled18 Token balances after paying yield fees, applying decimal scaling and rates
+     * @param rounding Rounding direction to consider when computing the invariant
      * @return invariant The calculated invariant of the pool, represented as a uint256
      */
-    function computeInvariant(uint256[] memory balancesLiveScaled18)
-        public
-        pure
-        returns (uint256 invariant)
-    {
-        // expected to work with 2 tokens only
+    function computeInvariant(
+        uint256[] memory balancesLiveScaled18,
+        Rounding rounding
+    ) public view returns (uint256 invariant) {
+        // expected to work with 2 tokens only.
         invariant = FixedPoint.ONE;
         for (uint256 i = 0; i < balancesLiveScaled18.length; ++i) {
-            invariant = invariant.mulDown(balancesLiveScaled18[i]);
+            invariant = rounding == Rounding.ROUND_DOWN
+                ? invariant.mulDown(balancesLiveScaled18[i])
+                : invariant.mulUp(balancesLiveScaled18[i]);
         }
         // scale the invariant to 1e18
         invariant = Math.sqrt(invariant) * 1e9;
-
     }
 
     /**
-     * @dev Computes the new balance of a token after an operation, given the invariant growth ratio and all other
-     * balances.
+     * @notice Computes the new balance of a token after an operation.
+     * @dev This takes into account the invariant growth ratio and all other balances.
      * @param balancesLiveScaled18 Current live balances (adjusted for decimals, rates, etc.)
      * @param tokenInIndex The index of the token we're computing the balance for, in token registration order
      * @param invariantRatio The ratio of the new invariant (after an operation) to the old
@@ -91,19 +96,29 @@ contract ConstantProductPool is IBasePool, BalancerPoolToken {
     ) external pure returns (uint256 newBalance) {
         uint256 otherTokenIndex = tokenInIndex == 0 ? 1 : 0;
 
-        uint256 newInvariant = computeInvariant(balancesLiveScaled18).mulDown(invariantRatio);
+        uint256 newInvariant = computeInvariant(balancesLiveScaled18, Rounding.ROUND_DOWN).mulDown(invariantRatio);
 
         newBalance = (newInvariant * newInvariant / balancesLiveScaled18[otherTokenIndex]);
     }
 
-    /// @return minimumSwapFeePercentage The minimum swap fee percentage for a pool
+    /// @inheritdoc ISwapFeePercentageBounds
     function getMinimumSwapFeePercentage() external pure returns (uint256) {
         return _MIN_SWAP_FEE_PERCENTAGE;
     }
 
-    /// @return maximumSwapFeePercentage The maximum swap fee percentage for a pool
+    /// @inheritdoc ISwapFeePercentageBounds
     function getMaximumSwapFeePercentage() external pure returns (uint256) {
         return _MAX_SWAP_FEE_PERCENTAGE;
+    }
+
+    /// @inheritdoc IUnbalancedLiquidityInvariantRatioBounds
+    function getMinimumInvariantRatio() external pure returns (uint256) {
+        return WeightedMath._MIN_INVARIANT_RATIO;
+    }
+
+    /// @inheritdoc IUnbalancedLiquidityInvariantRatioBounds
+    function getMaximumInvariantRatio() external pure returns (uint256) {
+        return WeightedMath._MAX_INVARIANT_RATIO;
     }
 }
 ```
@@ -133,11 +148,17 @@ contract ConstantSumPool is IBasePool, BalancerPoolToken {
     
     /**
      * @notice Computes and returns the pool's invariant.
-     * @dev This function computes the invariant based on current balances
-     * @param balancesLiveScaled18 Array of current pool balances for each token in the pool, scaled to 18 decimals
+     * @dev This function computes the invariant based on current balances. There is no precision loss for addition,
+     * so we can ignore the rounding direction.
+     *
+     * @param balancesLiveScaled18 Token balances after paying yield fees, applying decimal scaling and rates
+     * @param rounding Rounding direction to consider when computing the invariant
      * @return invariant The calculated invariant of the pool, represented as a uint256
      */
-    function computeInvariant(uint256[] memory balancesLiveScaled18) external pure returns (uint256 invariant) {
+    function computeInvariant(
+        uint256[] memory balancesLiveScaled18,
+        Rounding
+    ) public pure returns (uint256 invariant) {
         invariant = balancesLiveScaled18[0] + balancesLiveScaled18[1];
     }
 
@@ -145,7 +166,7 @@ contract ConstantSumPool is IBasePool, BalancerPoolToken {
      * @dev Computes the new balance of a token after an operation, given the invariant growth ratio and all other
      * balances.
      * @param balancesLiveScaled18 Current live balances (adjusted for decimals, rates, etc.)
-     * @param tokenInIndex The index of the token we're computing the balance for (tokens will be sorted alphanumerically)
+     * @param tokenInIndex The index of the token we're computing the balance for (tokens are sorted alphanumerically)
      * @param invariantRatio The ratio of the new invariant (after an operation) to the old
      * @return newBalance The new balance of the selected token, after the operation
      */
@@ -154,7 +175,7 @@ contract ConstantSumPool is IBasePool, BalancerPoolToken {
         uint256 tokenInIndex,
         uint256 invariantRatio
     ) external pure returns (uint256 newBalance) {
-        uint256 invariant = computeInvariant(balancesLiveScaled18);
+        uint256 invariant = computeInvariant(balancesLiveScaled18, Rounding.ROUND_DOWN);
         
         newBalance = (balancesLiveScaled18[tokenInIndex] + invariant.mulDown(invariantRatio)) - invariant;
     }
@@ -168,11 +189,20 @@ contract ConstantSumPool is IBasePool, BalancerPoolToken {
     function getMaximumSwapFeePercentage() external pure returns (uint256) {
         return _MAX_SWAP_FEE_PERCENTAGE;
     }
+
+    /// @inheritdoc IUnbalancedLiquidityInvariantRatioBounds
+    function getMinimumInvariantRatio() external pure returns (uint256) {
+        return WeightedMath._MIN_INVARIANT_RATIO;
+    }
+
+    /// @inheritdoc IUnbalancedLiquidityInvariantRatioBounds
+    function getMaximumInvariantRatio() external pure returns (uint256) {
+        return WeightedMath._MAX_INVARIANT_RATIO;
+    }
 }
 ```
 
 :::
-
 
 ::: info What does Scaled18 mean?
 Internally, Balancer protocol scales all tokens to 18 decimals to minimize the potential for errors that can occur when
@@ -194,32 +224,35 @@ By implementing `computeInvariant` and `computeBalance`, your custom AMM will im
 Custom AMMs built on Balancer protocol are defined primarily by their invariant. Broadly speaking, an invariant is a mathematical function that defines
 how the AMM exchanges one asset for another. A few widely known invariants include [Constant Product (X * Y = K)](https://docs.uniswap.org/contracts/v2/concepts/protocol-overview/how-uniswap-works) and [StableSwap](https://berkeley-defi.github.io/assets/material/StableSwap.pdf).
 
-Our two-token `ConstantSumPool` uses the constant sum invariant, or `X + Y = K`. To implement `computeInvariant`, we simply add the balances of the two tokens. For the `ConstantProductPool` the invariant calculation is the square root of the product of balances. This ensures invariant growth proportional to liquidity growth.
+Our two-token `ConstantSumPool` uses the constant sum invariant, or `X + Y = K`. To implement `computeInvariant`, we simply add the balances of the two tokens. For the `ConstantProductPool`, the invariant calculation is the square root of the product of balances. This ensures invariant growth proportional to liquidity growth.
 
 ::: code-tabs#shell
 @tab Constant Product Pool
 ```solidity
-function computeInvariant(uint256[] memory balancesLiveScaled18)
-    public
-    pure
-    returns (uint256 invariant)
-{
-    // expected to work with 2 tokens only
-    invariant = FixedPoint.ONE;
-    for (uint256 i = 0; i < balancesLiveScaled18.length; ++i) {
-        invariant = invariant.mulDown(balancesLiveScaled18[i]);
+    function computeInvariant(
+        uint256[] memory balancesLiveScaled18,
+        Rounding rounding
+    ) public view returns (uint256 invariant) {
+        // expected to work with 2 tokens only.
+        invariant = FixedPoint.ONE;
+        for (uint256 i = 0; i < balancesLiveScaled18.length; ++i) {
+            invariant = rounding == Rounding.ROUND_DOWN
+                ? invariant.mulDown(balancesLiveScaled18[i])
+                : invariant.mulUp(balancesLiveScaled18[i]);
+        }
+        // scale the invariant to 1e18
+        invariant = Math.sqrt(invariant) * 1e9;
     }
-    // scale the invariant to 1e18
-    invariant = _sqrt(invariant) * 1e9;
-
-}
 ```
 
 @tab Constant Sum Pool
 ```solidity
-function computeInvariant(uint256[] memory balancesLiveScaled18) external pure returns (uint256 invariant) {
-    invariant = balancesLiveScaled18[0] + balancesLiveScaled18[1];
-}
+    function computeInvariant(
+        uint256[] memory balancesLiveScaled18,
+        Rounding
+    ) public pure returns (uint256 invariant) {
+        invariant = balancesLiveScaled18[0] + balancesLiveScaled18[1];
+    }
 ```
 :::
 
@@ -231,7 +264,8 @@ For additional references, refer to the [WeightedPool](https://github.com/balanc
 In the context of `computeBalance` the invariant is used as a measure of liquidity. What you need to consider when implementing all possible liquidity operations on the pool is that:
 - bptAmountOut for an unbalanced add liquidity operation should equal bptAmountOut for a proportional add liquidity in the case that `exactAmountsIn` for the unbalanced add are equal to the `amountsIn` for the same bptAmountOut for both addLiquidity scenarios. `AddLiquidityProportional` does not call into the custom pool it instead calculates BptAmountOut using [BasePoolMath.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/solidity-utils/contracts/math/BasePoolMath.sol#L50-L54) whereas `addLiquidityUnbalanced` calls the custom pool's `computeInvariant`. 
 - the amountIn for an exactBptAmountOut in an `addLiquiditySingleTokenExactOut` should equal the amountIn for an unbalanced addLiquidity when the bptAmountOut is expected to be the same for both operations. `addLiquiditySingleTokenExactOut` uses `computeBalance` whereas `addLiquidityUnbalanced` uses `computeInvariant`.
-These are important consideration to ensure that LPs get the same share of the pool's liquidity when adding liquidity. In a Uniswap V2 Pair adding liquidity not in proportional amounts get's [penalized](https://github.com/Uniswap/v2-core/blob/master/contracts/UniswapV2Pair.sol#L123), which you can also implement in a custom pool, as long as you accurately handle the bullet points outlined above.
+
+These are important consideration to ensure that LPs get the same share of the pool's liquidity when adding liquidity. In a Uniswap V2 Pair adding liquidity not in proportional amounts gets [penalized](https://github.com/Uniswap/v2-core/blob/master/contracts/UniswapV2Pair.sol#L123), which you can also implement in a custom pool, as long as you accurately handle the bullet points outlined above.
 :::
 
 ### Compute Balance
@@ -251,7 +285,7 @@ function computeBalance(
 ) external pure returns (uint256 newBalance) {
     uint256 otherTokenIndex = tokenInIndex == 0 ? 1 : 0;
 
-    uint256 newInvariant = computeInvariant(balancesLiveScaled18).mulDown(invariantRatio);
+    uint256 newInvariant = computeInvariant(balancesLiveScaled18, Rounding.ROUND_DOWN).mulDown(invariantRatio);
 
     newBalance = (newInvariant * newInvariant / balancesLiveScaled18[otherTokenIndex]);
 }
@@ -264,7 +298,7 @@ function computeBalance(
     uint256 tokenInIndex,
     uint256 invariantRatio
 ) external pure returns (uint256 newBalance) {
-    uint256 invariant = computeInvariant(balancesLiveScaled18);
+    uint256 invariant = computeInvariant(balancesLiveScaled18, Rounding.ROUND_DOWN);
 
     newBalance = (balancesLiveScaled18[tokenInIndex] + invariant.mulDown(invariantRatio)) - invariant;
 }
@@ -337,7 +371,7 @@ The approach taken by Balancer Labs is to define a [NewPoolParams](https://githu
 The charging of swap fees is managed entirely by the Balancer vault. The pool is only responsible for declaring the `swapFeePercentage` for any given swap or unbalanced liquidity operation on registration as well as declaring an minimum and maximum swap fee percentage. For more information, see [Swap fees](https://docs-v3.balancer.fi/concepts/vault/swap-fee.html).
 
 ::: info Do I need to take swap fees into account when implementing onSwap?
-No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swap, the amount in (`params.amountGivenScaled18`) will already have the swap fee removed before `onSwap` is called.
+No, swap fees are managed entirely by the Balancer vault. For an `EXACT_OUT` swap, the amount in (`params.amountGivenScaled18`) will already have the swap fee removed before `onSwap` is called. Fees are always taken on `tokenIn`.
 :::
 
 Balancer supports two types of swap fees:
@@ -380,9 +414,10 @@ For your AMM to support remove liquidity custom, it must:
 
 There may be instances where your AMM should not support specific built-in liquidity operations. If certain operations should be enabled in your custom pool is defined in `LiquidityManagement`. You can choose to:
 
-- disable unbalanced liquidity add and removals
-- enable add liquidity custom
-- enable remove liquidity custom
+- disable add and remove liquidity unbalanced (i.e., non-proportional; enabled by default. These cannot be disabled independently.)
+- enable add liquidity custom (disabled by default)
+- enable remove liquidity custom (disabled by default)
+- enable donation (disabled by default)
 
 To achieve this, the respective entry in the `LiquidityManagement` struct needs to be set.
 
@@ -391,6 +426,7 @@ struct LiquidityManagement {
     bool disableUnbalancedLiquidity;
     bool enableAddLiquidityCustom;
     bool enableRemoveLiquidityCustom;
+    bool enableDonation;
 }
 ```
 These settings get passed into the [pool registration](/docs/developer-reference/contracts/vault-api.md#registerpool) flow.

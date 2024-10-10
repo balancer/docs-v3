@@ -76,6 +76,8 @@ A `SwapPathStep` is defined as:
 struct SwapPathStep {
     address pool;
     IERC20 tokenOut;
+    // If true, the "pool" is an ERC4626 Buffer. Used to wrap/unwrap tokens if pool doesn't have enough liquidity.
+    bool isBuffer;
 }
 ```
 and paths can include add/remove liquidity steps by using the address of the respective pool. For example, the following `SwapPathExactAmountIn` would execute a swap of USDC to BAL then add liquidity to the 80/20 BAL/WETH pool.
@@ -90,11 +92,13 @@ SwapPathExactAmountIn {
     steps: [
         { 
             pool: '0xBAL_USDC_POOL',
-            tokenOut: '0xBAL'
+            tokenOut: '0xBAL',
+            isBuffer: false
         },
         {
             pool: '0xB-80BAL-20WETH_POOL',
-            tokenOut: '0xB-80BAL-20WETH_POOL'
+            tokenOut: '0xB-80BAL-20WETH_POOL',
+            isBuffer: false
         }
     ]
     exactAmountIn: 1000000,
@@ -151,23 +155,21 @@ function getPoolTokenInfo(
 )
     external
     view
-    returns (TokenConfig[] memory tokenConfig, uint256[] memory balancesRaw, uint256[] memory scalingFactors);
+    returns (IERC20[] memory tokens, TokenInfo[] memory tokenInfo, uint256[] memory balancesRaw, uint256[] memory lastLiveBalances);
 ```
 
-where `TokenConfig`:
+where `TokenInfo`:
 ```solidity
 /**
- * @dev Encapsulate the data required for the Vault to support a token of the given type.
- * For STANDARD tokens, the rate provider address must be 0, and paysYieldFees must be false.
- * All WITH_RATE tokens need a rate provider, and may or may not be yield-bearing.
+ * @notice This data structure is stored in `_poolTokenInfo`, a nested mapping from pool -> (token -> TokenInfo).
+ * @dev Since the token is already the key of the nested mapping, it would be redundant (and an extra SLOAD) to store
+ * it again in the struct. When we construct PoolData, the tokens are separated into their own array.
  *
- * @param token The token address
  * @param tokenType The token type (see the enum for supported types)
  * @param rateProvider The rate provider for a token (see further documentation above)
  * @param paysYieldFees Flag indicating whether yield fees should be charged on this token
  */
-struct TokenConfig {
-    IERC20 token;
+struct TokenInfo {
     TokenType tokenType;
     IRateProvider rateProvider;
     bool paysYieldFees;
@@ -209,7 +211,7 @@ Find a pools [dynamic swap fee](../../concepts/vault/swap-fee.md#dynamic-swap-fe
 function computeDynamicSwapFee(
     address pool,
     PoolSwapParams memory swapParams
-) external view returns (bool, uint256);
+) external view returns (uint256);
 ```
 
 ## Pool Maths Reference
@@ -238,8 +240,10 @@ This section will contain more details once code is finalized
 * [Deployment Addresses](/developer-reference/contracts/deployment-addresses/mainnet.html)
 * [Router ABI](../../developer-reference/contracts/abi/router.md)
 * [BatchRouter ABI](../../developer-reference/contracts/abi/batch-router.md)
+* [CompositeLiquidityRouter ABI](../../developer-reference/contracts/abi/composite-liquidity-router.md)
 * [Router API](../../developer-reference/contracts/router-api.md)
 * [BatchRouter API](../../developer-reference/contracts/batch-router-api.md)
+* [CompositeLiquidityRouter API](../../developer-reference/contracts/composite-liquidity-router-api.md)
 * [Pool Maths Reference](https://github.com/balancer/balancer-sor/blob/master/src/pools/weightedPool/weightedMath.ts)
 * [Vault API](../../developer-reference/contracts/vault-api.md)
 * [Balancer API docs](../../data-and-analytics/data-and-analytics/balancer-api.md)

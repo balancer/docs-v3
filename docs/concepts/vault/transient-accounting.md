@@ -16,6 +16,7 @@ Upon activation of the transient state, the vault is unlocked and permissions to
 - `addLiquidity`: Adds one or more tokens to a liquidity pool.
 - `removeLiquidity`: Removes one or more tokens from a liquidity pool.
 - `erc4626BufferWrapOrUnwrap`: Wraps/unwraps tokens based on provided parameters.
+- `initializeBuffer`: Initializes an ERC4626 buffer. This sets the underlying asset token, and is necessary to enable use of the buffer.
 - `addLiquidityToBuffer`: Adds liquidity to an ERC4626 buffer.
 - `removeLiquidityFromBuffer`: Removes liquidity from an ERC4626 buffer.
 - `initialize`: Initialize a liquidity pool.
@@ -76,17 +77,15 @@ function _accountDelta(IERC20 token, int256 delta) internal {
     // Calculate the new delta after accounting for the change.
     int256 next = current + delta;
 
-    unchecked {
-        // If the resultant delta becomes zero after this operation,
-        // decrease the count of non-zero deltas.
-        if (next == 0) {
-            _nonZeroDeltaCount().tDecrement();
-        }
-        // If there was no previous delta (i.e., it was zero) and now we have one,
-        // increase the count of non-zero deltas.
-        else if (current == 0) {
-            _nonZeroDeltaCount().tIncrement();
-        }
+    // If the resultant delta becomes zero after this operation,
+    // decrease the count of non-zero deltas.
+    if (next == 0) {
+        _nonZeroDeltaCount().tDecrement();
+    }
+    // If there was no previous delta (i.e., it was zero) and now we have one,
+    // increase the count of non-zero deltas.
+    else if (current == 0) {
+        _nonZeroDeltaCount().tIncrement();
     }
 
     // Update the delta for this token.
