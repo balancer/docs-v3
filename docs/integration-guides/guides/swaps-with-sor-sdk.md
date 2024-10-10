@@ -43,7 +43,7 @@ const deadline = 999999999999999999n; // Deadline for the swap, in this case inf
 const slippage = Slippage.fromPercentage("0.1"); // 0.1%
 const swapAmount = TokenAmount.fromHumanAmount(tokenIn, "1.2345678910");
 
-// API is used to fetch best swap paths from available liquidity across v2 & v3
+// API is used to fetch best swap paths from available liquidity across v2 and v3
 const balancerApi = new BalancerApi(
     "https://api-v3.balancer.fi/",
     chainId

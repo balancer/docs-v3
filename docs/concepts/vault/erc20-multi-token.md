@@ -48,8 +48,8 @@ function _approve(address token, address owner, address spender, uint256 amount)
 ## Where is the public interface?
 
 You'll notice that [ERC20MultiToken.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/token/ERC20MultiToken.sol) contains only internal functions.
-You can find the public interface defined in [IVaultExtension.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L160-L223) and implemented in [VaultExtension.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol).
-To ensure that the state changing public interface is always delegate-called by the vault, each function has the [onlyVaultDelegateCall](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L75) modifier.
+You can find the public interface defined in [IVaultExtension.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultExtension.sol#L231-L290) and implemented in [VaultExtension.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L589-L630).
+To ensure that the state changing public interface is always delegate-called by the vault, each function has the [onlyVaultDelegateCall](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/VaultExtension.sol#L69-L72) modifier.
 
 ```solidity
 function approve(address owner, address spender, uint256 amount) external onlyVaultDelegateCall returns (bool) {

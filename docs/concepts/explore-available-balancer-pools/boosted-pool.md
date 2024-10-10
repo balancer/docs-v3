@@ -18,7 +18,7 @@ Balancer v3 boosted pools allow for 100% of an LP position to be considered boos
 #### Gas efficient swaps between boosted pool's base assets
 Boosted pools leverage the Vault's [liquidity buffers](/concepts/vault/buffer.html#erc4626-liquidity-buffers) concept to facilitate gas-efficient swaps between boosted pools. This allows LPs to maintain 100% boosted pool positions and still earn swap fees from base-asset to base-asset trades.
 
-#### Boosted pools are "plug & play" for ERC4626 Vaults
+#### Boosted pools are "plug and play" for ERC4626 Vaults
 Any token that complies with the ERC4626 standard can easily become an asset within a boosted pool and can be swapped on Balancer gas efficiently while keeping swap prices competitive due to [liquidity buffers](/concepts/vault/buffer.html#erc4626-liquidity-buffers).
 
 #### Great way for a DAO to facilitate liquidity for their token product

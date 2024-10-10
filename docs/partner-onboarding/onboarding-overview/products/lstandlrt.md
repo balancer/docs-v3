@@ -30,7 +30,7 @@ Do you want to onboard your yield-bearing token to Balancer and leverage its cor
 # Resources
 If you want to learn more about these concepts in more detail, follow these in-depth articles for more information
 * Articles about YB tokens
-  - [Best of Both: Stability & Yield with Frax v3](https://beefy.com/articles/frax/)
+  - [Best of Both: Stability and Yield with Frax v3](https://beefy.com/articles/frax/)
   - [Balancer Integrates Chainlink Price Feeds](https://medium.com/balancer-protocol/balancer-integrates-chainlink-price-feeds-to-help-secure-staked-eth-composable-stable-pools-c649d8181510)
   - [Elliptical Concentrated Liquidity](https://medium.com/balancer-protocol/built-on-balancer-elliptical-concentrated-liquidity-77f289d346f9)
   - [Inside Balancer Contracts — A composable symphony](https://medium.com/balancer-protocol/inside-balancer-contracts-a-composable-symphony-1-229f6e90224d)

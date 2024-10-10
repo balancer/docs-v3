@@ -23,7 +23,7 @@ To expedite the development process, Balancer provides two contracts to inherit 
 
 Both `IBasePool` and `BalancerPoolToken` are used across all core Balancer pools, even those implemented by Balancer Labs (ie: [WeightedPool](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/WeightedPool.sol#L18)).
 
-Below, we present a naive implementation of a two token `ConstantProductPool` & `ConstantSumPool` utilizing (X * Y = K) & (X + Y = K) as a reference for walking through the required functions necessary to implement a custom AMM on Balancer protocol:
+Below, we present a naive implementation of a two token `ConstantProductPool` and `ConstantSumPool` utilizing (X * Y = K) and (X + Y = K) as references for walking through the required functions necessary to implement a custom AMM on Balancer protocol:
 
 ::: code-tabs#shell
 @tab Constant Product Pool

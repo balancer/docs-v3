@@ -16,7 +16,7 @@ For more formulas and derivations of the below formulas, please refer to the [Ba
 
 ### TypeScript
 
-Developers can use the TypeScript math implementations used by the Smart Order router
+Developers can use the TypeScript math implementations used by the Smart Order router (equivalent v2 reference).
 
 - [weightedMath.ts](https://github.com/balancer/balancer-sor/blob/john/v2-package-linear/src/pools/weightedPool/weightedMath.ts)
 
