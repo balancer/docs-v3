@@ -9,13 +9,13 @@ This page is a work in progress
 
 # ERC4626 Liquidity Buffers
 
-Liquidity Buffers, an internal mechanism of the Vault, facilitate liquidity for pairs of an ERC4626 `asset` (underlying token like DAI) and the ERC4626 Vault Token (like waDAI). The Balancer Vault provides additional liquidity, enabling the entry into the ERC4626 Vault Token positions without the need to wrap or unwrap tokens, thereby avoiding higher gas costs.
+Liquidity Buffers, an internal mechanism of the Vault, facilitate liquidity for pairs of an ERC4626 `asset` (underlying token like DAI) and the ERC4626 Vault Token (like waDAI). The Balancer Vault provides additional liquidity, enabling the entry into the ERC4626 Vault Token positions without the need to wrap or unwrap tokens through the lending protocol, thereby avoiding higher gas costs.
 
 ERC4626 liquidity buffers trade on a `previewDeposit` & `previewMint` basis. Meaning given an amount of 100 DAI, the liquidity buffer gives out waDAI based on the return value from `previewDeposit(100 DAI)`.
 
-A significant benefit of the Vault's liquidity buffers is that Liquidity Providers (LPs) can now provide liquidity in positions of [100% boosted pools](/concepts/explore-available-balancer-pools/boosted-pool.html) (two yield-bearing assets) while simultaneously adding gas efficient batch-swaps routes.
+A significant benefit of the Vault's liquidity buffers is that Liquidity Providers (LPs) can now provide liquidity in positions of [100% boosted pools](/concepts/explore-available-balancer-pools/boosted-pool.html) (two yield-bearing assets) while simultaneously adding gas efficient batch swap routes.
 
-It's important to note that ERC4626 liquidity buffers are not Balancer Pools. They are a concept internal to the Vault and only function with Tokens that comply with the ERC4626 Standard.
+It's important to note that ERC4626 liquidity buffers are not Balancer Pools. They are a concept internal to the Vault and only function with tokens that comply with the ERC4626 Standard.
 
 action: this section can use more wording work.
 :::info
@@ -24,32 +24,44 @@ If your organization is a DAO and you're seeking to enhance liquidity for your E
 
 
 ## Adding liquidity to a buffer
-Liquidity can be added to a buffer for a specific token pair. This is done by invoking the `addLiquidityToBuffer` function, where you designate the ERC4626 Token as the buffer reference. You also specify the amounts of both the wrapped and underlying tokens that you want to add to the buffer. It's important to note that a buffer can still function with zero liquidity. It can be used to wrap and unwrap assets, meaning that even an empty buffer can facilitate swaps through the Vault.
+Liquidity can be added to a buffer for a specific token pair. This is done by invoking the `addLiquidityToBuffer` function, where you designate the ERC4626 Token as the buffer reference. Note that for security reasons, liquidity can only be added (or removed) proportionally. It's important to note that a buffer can still function with zero liquidity. It can be used to wrap and unwrap assets, meaning that even an empty buffer can facilitate swaps through the Vault.
 ```solidity
 /**
  * @notice Adds liquidity to a yield-bearing buffer (one of the Vault's internal ERC4626 token buffers).
  * @param wrappedToken Address of the wrapped token that implements IERC4626
- * @param amountUnderlyingRaw Amount of underlying tokens that will be deposited into the buffer
- * @param amountWrappedRaw Amount of wrapped tokens that will be deposited into the buffer
- * @return issuedShares the amount of tokens sharesOwner has in the buffer, denominated in underlying tokens.
- * (This is the BPT of an internal ERC4626 token buffer.)
+ * @param exactSharesToIssue The value in underlying tokens that `sharesOwner` wants to add to the buffer,
+ * in underlying token decimals
+ * @return amountUnderlyingRaw Amount of underlying tokens deposited into the buffer
+ * @return amountWrappedRaw Amount of wrapped tokens deposited into the buffer
 */
 function addLiquidityToBuffer(
     IERC4626 wrappedToken,
-    uint256 amountUnderlyingRaw,
-    uint256 amountWrappedRaw
-) external returns (uint256 issuedShares);
+    uint256 exactSharesToIssue
+) external returns (uint256 amountUnderlyingRaw, uint256 amountWrappedRaw);
 ```
 
 ## Removing liquidity from a buffer 
-After you've added liquidity to a buffer, you have the option to remove a specified amount based on the share amount. This is done by invoking the function `removeLiquidityFromBuffer`. This function will subsequently burn a specified amount of your bufferShares and return the corresponding amount of tokens that you had previously provided.
+After you've added liquidity to a buffer, you have the option to remove a specified amount based on the share amount. This is done by invoking the function `removeLiquidityFromBuffer` on the Vault. This function will subsequently burn a specified amount of your bufferShares and return the corresponding amount of tokens that you had previously provided. 
+
+Note that in contrast to adding liquidity, removing liquidity depends critically on knowing the identity of the sender - otherwise, a malicious actor could withdraw liquidity belonging to another address. Since the Router must be trusted to send the correct sender to the Vault, removing liquidity through the Router would require governance to grant permission to that Router to perform the operation. This is not ideal, as it's a potential vector to lock funds (if governance revoked the permission), or even steal funds (if governance approved a malicious Router).
+
+In order to keep it permissionless, `removeLiquidityFromBuffer` was moved to the Vault, where it can be called directly (with no ambiguity about the sender), avoiding this issue.
+
 ```solidity
 /**
- * @notice Removes liquidity from a yield-bearing buffer (one of the Vault's internal ERC4626 token buffers).
- * @dev Only proportional withdrawals are supported, and removing liquidity is permissioned.
- * @param wrappedToken Address of a wrapped token that implements IERC4626
+ * @notice Removes liquidity from an internal ERC4626 buffer in the Vault.
+ * @dev Only proportional exits are supported, and the sender has to be the owner of the shares.
+ * This function unlocks the Vault just for this operation; it does not work with a Router as an entrypoint.
+ *
+ * Pre-conditions:
+ * - The buffer needs to be initialized.
+ * - sharesOwner is the original msg.sender, it needs to be checked in the Router. That's why
+ *   this call is authenticated; only routers approved by the DAO can remove the liquidity of a buffer.
+ * - The buffer needs to have some liquidity and have its asset registered in `_bufferAssets` storage.
+ *
+ * @param wrappedToken Address of the wrapped token that implements IERC4626
  * @param sharesToRemove Amount of shares to remove from the buffer. Cannot be greater than sharesOwner's
- * total shares
+ * total shares. It is expressed in underlying token native decimals.
  * @return removedUnderlyingBalanceRaw Amount of underlying tokens returned to the user
  * @return removedWrappedBalanceRaw Amount of wrapped tokens returned to the user
 */
@@ -63,7 +75,7 @@ function removeLiquidityFromBuffer(
 ## Using a buffer to swap. 
 The swapper has the responsibility to decide whether a specific swap route should use Buffers by indicating if a given `pool` is a buffer. Remember: You can always use a buffer even it is does not have liquidity (instead it will simply wrap or unwrap). This is done by setting the boolean entry in the `SwapPathStep` struct.
 
-The `pool` param in this particular case is the wrapped Tokens entrypoint. Meaning the address where a user would call deposit in. In the case of Aave it would the waUSDC. 
+The `pool` param in this particular case is the wrapped Tokens entrypoint, meaning the address on which the user would call deposit. In the case of Aave, this would be waUSDC. 
 ``` solidity
 struct SwapPathStep {
     address pool;
@@ -115,8 +127,7 @@ SwapPathExactAmountIn({
 })
 ```
 
-
-The trade will execute regardless if the Buffer has enough liquidity or not. Remember: If the buffer does not have enough liquidity it will simply additionally wrap or unwrap (and incur additional gas cost).
+The trade will execute regardless of whether the Buffer has enough liquidity or not. Remember: If the buffer does not have enough liquidity it will simply additionally wrap or unwrap (and incur additional gas cost).
 
 ### Swapping DAI to USDC via 3 hops.
 Let's consider a swap from 10k DAI to USDC. the exchangeRate of 1waDAI - DAI is 1.1 & exchangeRate for waUSDC - USDC is 1.1. Involved pools & Buffers are:
