@@ -439,10 +439,10 @@ Adds liquidity for the first time to one of the Vault's internal ERC4626 buffers
 ```solidity
 function addLiquidityToBuffer(
     IERC4626 wrappedToken,
-    uint256 exactSharesToIssue
+    uint256 exactSharesToIssue,
 ) external returns (uint256 amountUnderlyingRaw, uint256 amountWrappedRaw);
 ```
-Adds liquidity proportionally to a yield-bearing buffer (one of the Vault's internal ERC4626 token buffers).
+Adds liquidity proportionally to a yield-bearing buffer (one of the Vault's internal ERC4626 token buffers). This limitation is necessary to avoid having multiple "wrap/unwrap" paths.
 
 **Parameters:**
 
@@ -465,7 +465,6 @@ Adds liquidity proportionally to a yield-bearing buffer (one of the Vault's inte
 ```solidity
 function queryAddLiquidityProportional(
     address pool,
-    uint256[] memory maxAmountsIn,
     uint256 exactBptAmountOut,
     bytes memory userData
 ) external returns (uint256[] memory amountsIn);
@@ -477,7 +476,6 @@ Queries an `addLiquidityProportional` operation without actually executing it.
 | Name              | Type        | Description                                                        |
 |-------------------|-------------|--------------------------------------------------------------------|
 | pool              | address     | Address of the liquidity pool                                      |
-| maxAmountsIn      | uint256[]   | Maximum amounts of tokens to be added, sorted in token registration order |
 | exactBptAmountOut | uint256     | Exact amount of pool tokens to be received                         |
 | userData          | bytes       | Additional (optional) data required for the query                  |
 

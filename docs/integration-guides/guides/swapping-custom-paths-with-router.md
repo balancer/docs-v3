@@ -433,6 +433,8 @@ function swapExactIn(
 struct SwapPathStep {
     address pool;
     IERC20 tokenOut;
+    // If true, the "pool" is an ERC4626 Buffer. Used to wrap/unwrap tokens if pool doesn't have enough liquidity.
+    bool isBuffer;
 }
 
 struct SwapPathExactAmountIn {
@@ -449,6 +451,7 @@ struct SwapPathExactAmountIn {
 * pool add/remove operations can be included in the path by using a pool address as tokenIn/Out
   * tokenIn == pool: router will remove liquidity from pool to a single token, `tokenOut`
   * tokenOut == pool: router will add liquidity using `tokenIn`
+  * isBuffer: if true, this means the "pool" address is actually an ERC4626 wrapped token, and we want to use the associated buffer
 
 
 #### Javascript
@@ -480,10 +483,12 @@ const paths = [
     {
         pool: "0xb816c48b18925881ce8b64717725c7c9842429e4" as Address,
         tokenOut: "0x7b79995e5f793a07bc00c21412e50ecae098e7f9" as Address,
+        isBuffer: false,
     },
     {
         pool: "0x6ad4e679c5bd9a14c50a81bd5f928a2a5ba7ec80" as Address,
         tokenOut: "0xb19382073c7a0addbb56ac6af1808fa49e377b75" as Address,
+        isBuffer: false,
     },
     ],
 },
@@ -495,6 +500,7 @@ const paths = [
     {
         pool: "0x1e5b830439fce7aa6b430ca31a9d4dd775294378" as Address,
         tokenOut: "0xb19382073c7a0addbb56ac6af1808fa49e377b75" as Address,
+        isBuffer: false,
     },
     ],
 },
@@ -543,10 +549,12 @@ const paths = [
       {
         pool: "0xb816c48b18925881ce8b64717725c7c9842429e4",
         tokenOut: "0x7b79995e5f793a07bc00c21412e50ecae098e7f9",
+        isBuffer: false,
       },
       {
         pool: "0x6ad4e679c5bd9a14c50a81bd5f928a2a5ba7ec80",
         tokenOut: "0xb19382073c7a0addbb56ac6af1808fa49e377b75",
+        isBuffer: false,
       },
     ],
   },
@@ -558,6 +566,7 @@ const paths = [
       {
         pool: "0x1e5b830439fce7aa6b430ca31a9d4dd775294378",
         tokenOut: "0xb19382073c7a0addbb56ac6af1808fa49e377b75",
+        isBuffer: false,
       },
     ],
   },

@@ -4,7 +4,11 @@ This section includes all of the permissions currently setup in the Authorizer. 
 
 - [Mainnet](mainnet.md)
 - [Arbitrum](arbitrum.md)
+- [Avalanche](avalanche.md)
 - [Optimism](optimism.md)
 - [Polygon](polygon.md)
 - [Gnosis](gnosis.md)
+- [Base](base.md)
+- [zkEVM](zkevm.md)
 - [Görli](goerli.md)
+- [Sepolia](sepolia.md)

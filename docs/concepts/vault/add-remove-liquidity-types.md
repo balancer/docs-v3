@@ -8,7 +8,7 @@ title: Add/Remove liquidity types
 Balancer protocol leverages the [Liquidity invariant approximation](/concepts/vault/liquidity-invariant-approximation.html) to provide a generalized solution for add and remove liquidity operations.
 This enables the Vault to implement complex `unbalanced` and `singleAsset` liquidity operations that all custom AMMs built on Balancer support by default.
 
-The Vault's [`addLiquidity`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultMain.sol#L60-L72) and [`removeLiquidity`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultMain.sol#L78-L91) functions accept a `kind` argument that identifies the type of operation to be performed. As each `kind` has slightly different requirements, the argument impacts
+The Vault's [`addLiquidity`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultMain.sol#L93-L95) and [`removeLiquidity`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IVaultMain.sol#L112-L114) functions accept a `kind` argument that identifies the type of operation to be performed. As each `kind` has slightly different requirements, the argument impacts
 how the other function arguments are interpreted.
 
 If you're an integrator looking to implement add or remove liquidity for an existing pool, see the [Router Onchain API](/concepts/router/overview.html).
