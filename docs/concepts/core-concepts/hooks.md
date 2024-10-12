@@ -126,7 +126,7 @@ A detailed view of what an `after` hook for a given liquidity operation can chan
 
 
 ## Hook examples
-If you want to get started with developing your own hooks contract, check out the [developing a hooks contract](/docs/build-a-custom-amm/build-an-amm/extend-existing-pool-type-using-hooks.md) page. Various hook examples are shown there. Additionally the monorepo displays more ideas on how to approach hook development.
+If you want to get started with developing your own hooks contract, check out the [developing a hooks contract](/docs/build-a-custom-amm/build-an-amm/extend-existing-pool-type-using-hooks.html) page. Various hook examples are shown there. Additionally the monorepo displays more ideas on how to approach hook development.
 
 
 <style scoped>
