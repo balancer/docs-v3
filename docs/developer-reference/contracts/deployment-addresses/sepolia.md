@@ -10,10 +10,10 @@ Balancer v3 is in active development. This page shows the latest version of depl
 
 | Name             | Address                                    | Deployment |
 |------------------|--------------------------------------------|------------|
-| StablePoolFactory| 0x4b4b45Edf6Ca26ae894377Cf4FeD1FA9F82D85C6 | 7          |
-| MockStablePool   | 0x75457Be6462C35d23aBA13e43825079733acB27E | 7          |
-| WeightedPoolFactory| 0x765ce16dbb3D7e89a9beBc834C5D6894e7fAA93c | 7          |
-| MockWeightedPool   | 0x83a6375b50046256d47816Ff80B96975B0e589Cc | 7          |
+| StablePoolFactory| 0x088F634B55C19A3138fd919098fB1320c4aBa6D0 | 9          |
+| MockStablePool   | 0x47e7cC04016BC65358e8638Ea32a1d35e13ef8CB | 9          |
+| WeightedPoolFactory| 0x209e6cE55A89A39329C9666a5B8b371e84572aE8 | 9          |
+| MockWeightedPool   | 0x78e1c96103f0A76394BE4dC19eB684e0f87D7d5f | 9          |
 
 
 ## Core
@@ -21,13 +21,14 @@ Balancer v3 is in active development. This page shows the latest version of depl
 
 | Name                 | Address                                    | Deployment |
 |----------------------|--------------------------------------------|------------|
-| ProtocolFeeController| 0x99f2D91EBA577e4Bf7175E72B3Ef2B6dDb1FaBe3 | 7          |
-| VaultAdmin           | 0x33156628B220fC3812b325Cd977CEB6523c01E2a | 7          |
-| VaultExtension       | 0x2ed7a4eca0689C16A67E01dd25509fa231C148c2 | 7          |
-| Vault                | 0x7966FE92C59295EcE7FB5D9EfDB271967BFe2fbA | 7          |
-| Router               | 0xDd10aDF05379D7C0Ee4bC9c72ecc5C01c40E25b8 | 7          |
-| BatchRouter          | 0x48341a762AD5470f96F4B553681696d1e5eeac0A | 7          |
-| VaultExplorer        | 0x7f1D444Be59798feD1db893C75e6eC977449A9cD | 7          |
+| ProtocolFeeController| 0x89530f8Abde4d55eD9Ad053949DA9Cac74F8AF14 | 9          |
+| VaultAdmin           | 0xa91b39DAeF308666a1e8E34BCacE2C3a899AaE78 | 9          |
+| VaultExtension       | 0xdE8EfE5C22EC8D34a6f6EA1E4AFd49d432a1d5d5 | 9          |
+| Vault                | 0x30AF3689547354f82C70256894B07C9D0f067BB6 | 9          |
+| Router               | 0x77eDc69766409C599F06Ef0B551a0990CBfe13A7 | 9          |
+| BatchRouter          | 0x16Cf31c5c4f92ad6185D583080C84FEeb6074c78 | 9          |
+| CompositeLiquidityRouter| 0x89cA59Bc46c00D90C496Fc99f16668b00Dd6B5CC | 9          |
+| VaultExplorer        | 0x84B15F8dCE31aFA9507b7161e95f20C24aC4C1cd | 9          |
 
 
 ## Authorization
@@ -38,10 +39,10 @@ Balancer v3 is in active development. This page shows the latest version of depl
     
 | Name                    | Address                                    | Deployment |
 |-------------------------|--------------------------------------------|------------|
-| FeeTakingHookExample     | 0xAD41a3ef49F2bdf7c02ab67e6a82b99121d0Bd98 | 7          |
-| ExitFeeHookExample       | 0x301EDe5Fd4f9d7266B09c3A2E38F97776447154B | 7          |
-| DirectionalFeeHookExample| 0xaf2692484AaE97c797686CaA468fb1B3E77F0bDC | 7          |
-| LotteryHookExample       | 0x2371cB9AB7B498D7CD173cf30828ebc1430F1482 | 7          |
+| FeeTakingHookExample     | 0x0546b036a2A006d3f3730F028528Bf4EaBeb2009 | 9          |
+| ExitFeeHookExample       | 0x0BA07700fDB18ff14D075e03A863ede2954e3fA2 | 9          |
+| DirectionalFeeHookExample| 0x00C1f8dd270480375661B9a2fD100a407e6dCEDa | 9          |
+| LotteryHookExample       | 0x506C90680336D65ebDC203Cf1283381e72b26e07 | 9          |
 
 
     
