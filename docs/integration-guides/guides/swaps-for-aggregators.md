@@ -123,7 +123,7 @@ The following query can be used to fetch v3 pools with relevant static data used
 
 ```
 query MyQuery {
-  poolGetPools(where: {vaultVersionIn: 3}) {
+  poolGetPools(where: {protocolVersionIn: 3}) {
     id
     type
     dynamicData {
