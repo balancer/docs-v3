@@ -39,6 +39,7 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | InvalidToken()                  | Invalid tokens (e.g.,zero) cannot be registered |
 | InvalidTokenType()              | The token type given in a TokenConfig during pool registration is invalid |
 | InvalidTokenConfiguration()     | The data in a TokenConfig struct is inconsistent or unsupported |
+| InvalidTokenDecimals()          | Tokens with more than 18 decimals are not supported |
 | TokensMismatch(address,address,address) | The token list passed into an operation does not match the pool tokens in the pool |
 | BalanceNotSettled()            | A transient accounting operation completed with outstanding token deltas |
 | VaultIsNotUnlocked()           | A user called a Vault function (swap,add/remove liquidity) outside the lock context |
