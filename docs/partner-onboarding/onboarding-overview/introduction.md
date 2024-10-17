@@ -19,7 +19,7 @@ With a vastly simplified developer experience, 100% boosted pools, LST base pair
 Want to learn more about Balancer? Click [here](../../concepts/core-concepts/introduction.md)
 :::
 
-### Unique AMM Designs & Products
+### Unique AMM Designs and Products
 
 Balancer Technology provides innovative AMM designs such as
 

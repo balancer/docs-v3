@@ -757,7 +757,7 @@ Queries an `swapSingleTokenExactOut` operation without actually executing it.
 
 ## Router common
 
-These functions are shared between the `Router` and `BatchRouter` (defined in `RouterCommon`).
+These functions are shared between the `Router`, `BatchRouter`, and `CompositeLiquidityRouter` (defined in `RouterCommon`).
 
 ### `permitBatchAndCall`
 

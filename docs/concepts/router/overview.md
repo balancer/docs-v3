@@ -32,10 +32,10 @@ Balancer has developed, audited and deployed Router contracts with the goal of p
 - [Code](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BatchRouter.sol)
 
 ### Composite Liquidity Router
-- ERC4626 buffer and nested swaps
+- Liquidity operations on pools containing ERC4626 tokens, and nested pools (i.e. pools containing the BPT of other pools)
 - [API](../../developer-reference/contracts/composite-liquidity-router-api.md)
 - [Code](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/CompositeLiquidityRouter.sol)
 
-Additionally, all Routers expose [Query Functions](./queries.md) providing the ability to query the result of an operation using the latest onchain state.
+Additionally all Routers expose [Query Functions](./queries.md) providing the ability to query the result of an operation using the latest onchain state.
 
 Latest deployment of the Routers can be found in the [deployments section](/developer-reference/contracts/deployment-addresses/mainnet.html).
