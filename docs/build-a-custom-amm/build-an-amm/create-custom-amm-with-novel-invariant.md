@@ -25,7 +25,16 @@ Both `IBasePool` and `BalancerPoolToken` are used across all core Balancer pools
 
 Standard Balancer pools also implement the optional `Version` interface (for easy on- and off-chain verification of the contract version), and `IPoolInfo`, which exposes Vault getters (e.g., `getTokens`, and `getTokenInfo`) through the pool itself as a convenience. On top of that, the standard pools define custom interfaces that return structs corresponding to the immutable and dynamic data fields for the pools. For instance, Weighted Pools return the weights. Note that dynamic pool values (e.g., live balances), exposed through either `IPoolInfo` or the custom interfaces, will only be valid on-chain if the Vault is locked (i.e., not in the middle of a transaction).
 
-Below, we present a naive implementation of a two token `ConstantProductPool` and `ConstantSumPool` utilizing (X * Y = K) and (X + Y = K) as references for walking through the required functions necessary to implement a custom AMM on Balancer protocol:
+Below, we present a naive implementation of a two token `ConstantProductPool` and `ConstantSumPool` utilizing (sqrt(X * Y) = K) and (X + Y = K) as references for walking through the required functions necessary to implement a custom AMM on Balancer protocol.
+
+You can think of the invariant as a measure of the "value" of the pool, which is related to the total liquidity (i.e., the "BPT rate" is `invariant` / `totalSupply`). Two critical properties must hold (for Balancer, and for AMMs in general):
+
+1) The invariant should not change due to a swap. In practice, it can *increase* due to swap fees, which effectively add liquidity after the swap - but it should never decrease.
+2) The invariant must be "linear"; i.e., increasing the balances proportionally must increase the invariant in the same proportion: inv(a * n,b * n,c * n) = inv(a, b, c) * n
+
+Property #1 is required to prevent "round trip" paths that drain value from the pool (and all LP shareholders). Intuitively, an accurate pricing algorithm ensures the user gets an equal value of token out given token in, so the total value should not change.
+
+Property #2 is essential for the "fungibility" of LP shares. If it did not hold, then different users depositing the same total value would get a different number of LP shares. In that case, LP shares would not be interchangeable, as they must be in a fair DEX.
 
 ::: code-tabs#shell
 @tab Constant Product Pool
