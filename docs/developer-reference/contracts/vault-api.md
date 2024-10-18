@@ -1093,7 +1093,7 @@ This `VaultExtension` function removes liquidity from a pool specifying exact po
 ```solidity
 function enableRecoveryMode(address pool) external;
 ```
-This `VaultAdmin` function enables recovery mode for a pool. This is a permissioned function.
+This `VaultAdmin` function enables recovery mode for a pool. This is a permissioned function, but becomes permissionless if the Vault or pool is paused.
 
 **Parameters:**
 
