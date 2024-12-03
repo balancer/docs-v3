@@ -50,7 +50,7 @@ footer:
 - [Deployments](https://github.com/balancer/pvt-deployments/tree/master)
 - [SDK](https://github.com/balancer/balancer-sdk)
 - [API](https://github.com/balancer/backend)
-- [Frontend](https://github.com/balancer/frontend-v3)
+- [Frontend](https://github.com/balancer/frontend-monorepo)
 - [Subgraph](https://github.com/balancer/balancer-subgraph-v3)
 
 
