@@ -32,11 +32,26 @@ query MyQuery {
 
 ## Onchain
 
-It is also possible to query a list of pools from each pool factory.
+It is possible to query a list of pools from each pool factory using the following:
 
-:::info Work in progress
-WIP for pool factories
-:::
+```solidity
+/**
+* @notice Return a subset of the list of pools deployed by this factory.
+* @dev `start` must be a valid index, but if `count` exceeds the total length, it will not revert, but simply
+* stop at the end and return fewer results than requested.
+*
+* @param start The index of the first pool to return
+* @param count The maximum number of pools to return
+* @return pools The list of pools deployed by this factory, starting at `start` and returning up to `count` pools
+*/
+function getPoolsInRange(uint256 start, uint256 count) external view returns (address[] memory pools);
+
+/**
+* @notice Return the complete list of pools deployed by this factory.
+* @return pools The list of pools deployed by this factory
+*/
+function getPools() external view returns (address[] memory pools);
+```
 
 # Fetching Pool Data
 
