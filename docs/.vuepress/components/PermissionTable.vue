@@ -106,6 +106,18 @@ export default defineComponent({
     await this.fetchData();
   },
   methods: {
+    isV3Related(deployment: string, callerNames: string[]): boolean {
+      // Check if deployment contains v3
+      const isV3Deployment = deployment.includes('-v3-');
+
+      // Check if any caller name contains v3
+      const hasV3Caller = callerNames.some(
+        name => name.includes('-v3-') || name.includes('/v3/')
+      );
+
+      return isV3Deployment || hasV3Caller;
+    },
+
     async fetchData() {
       try {
         const [permissionsRes, reverseAddressRes, actionIdsRes] =
@@ -117,7 +129,7 @@ export default defineComponent({
               `https://raw.githubusercontent.com/BalancerMaxis/bal_addresses/main/outputs/${this.chain}_reverse.json`
             ),
             fetch(
-              'https://raw.githubusercontent.com/balancer/balancer-deployments/master/action-ids/mainnet/action-ids.json'
+              `https://raw.githubusercontent.com/balancer/balancer-deployments/master/action-ids/${this.chain}/action-ids.json`
             ),
           ]);
 
@@ -144,15 +156,18 @@ export default defineComponent({
                   return name || addr;
                 });
 
-                processedData.push({
-                  function: functionName,
-                  contract: contract,
-                  callerNames: callerNamesArray.join(', '),
-                  callerNamesArray: callerNamesArray,
-                  callerAddresses: permissionAddresses.join(', '),
-                  callerAddressesArray: permissionAddresses,
-                  deployments: deployment,
-                });
+                // Only add if it's v3 related
+                if (this.isV3Related(deployment, callerNamesArray)) {
+                  processedData.push({
+                    function: functionName,
+                    contract: contract,
+                    callerNames: callerNamesArray.join(', '),
+                    callerNamesArray: callerNamesArray,
+                    callerAddresses: permissionAddresses.join(', '),
+                    callerAddressesArray: permissionAddresses,
+                    deployments: deployment,
+                  });
+                }
               }
             );
           });
