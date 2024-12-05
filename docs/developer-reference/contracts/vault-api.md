@@ -645,7 +645,7 @@ This `VaultAdmin` function returns the amount of underlying and wrapped tokens d
 ```solidity
 function getAuthorizer() external view returns (IAuthorizer);
 ```
-This `Vault` function returns the Vault's Authorizer. It is in the main Vault for performance reasons.
+This `VaultExtension` function returns the Vault's Authorizer.
 
 **Returns:**
 
