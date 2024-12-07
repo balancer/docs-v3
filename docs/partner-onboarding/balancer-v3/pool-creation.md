@@ -29,8 +29,9 @@ The process of creating a pool begins with choosing the configuration
 - For weighted pools, it is important that you enter amounts that are proportional to weight percentage values
 
 ### Pool Parameters
-- See detailed information about swap fee percentages here
-- Stable pools require an amplificaiton parameter setting. See detailed information here
+- See detailed information about swap fee percentages [here](/concepts/vault/swap-fee.html)
+- Stable pools require an amplificaiton parameter setting. See detailed information [here](/concepts/explore-available-balancer-pools/stable-pool/stable-math.html)
+- See more information about pool management [here](/concepts/core-concepts/pool-role-accounts.html)
 - When using a pool hook, you have the option to disable unbalanced liquidity operations and/or allow donations
   - If the pool hooks contract sets the `enableHookAdjustedAmounts` flag to `true`, the pool must also set `disableUnbalancedLiquidity` to `true`
   - It is important to understand the permissions related to a given hooks `onRegister` function. For example, the hook could require that the pool set `enableDonations` to `true`
