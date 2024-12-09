@@ -4,7 +4,7 @@ order: 1
 ---
 # Pool Creation
 
-This guide will help you understand pool configuration options and how to use the [pool creation UI](https://pool-creator-git-v3-pool-creation-balancer.vercel.app/v3?_vercel_share=xpIdz0S1R08JOWZx6BhA38OLthCZyBTb)
+This guide will help you understand pool configuration options and how to use the [v3 pool creation UI](https://pool-creator.balancer.fi/v3)
 
 :::tip
 If you encounter any issues or need additional help, please reach out to us on [discord](https://discord.balancer.fi/) or create an issue on [github](https://github.com/balancer/pool-creator/issues/new/choose)
