@@ -1,0 +1,50 @@
+---
+title: Pool Creation
+order: 1
+---
+# Pool Creation
+
+This guide will help you understand pool configuration options and how to use the [pool creation UI](https://pool-creator-git-v3-pool-creation-balancer.vercel.app/v3?_vercel_share=xpIdz0S1R08JOWZx6BhA38OLthCZyBTb)
+
+:::tip
+If you encounter any issues or need additional help, please reach out to us on [discord](https://discord.balancer.fi/) or create an issue on [github](https://github.com/balancer/pool-creator/issues/new/choose)
+:::
+
+## Configuration Options
+The process of creating a pool begins with choosing the configuration
+
+### Network Selection
+- You must select a supported network before choosing a pool type
+- After advancing with the "Next" button, the only way to switch the network is to "Reset Progress"
+
+### Pool Type
+- Select either a "Weighted" or "Stable" pool type. See detailed information [here](/concepts/explore-available-balancer-pools/)
+
+### Pool Tokens
+- You must choose at least two tokens
+- You must have sufficient wallet balance relative to the input amount in order to advance
+- If the token is yield-bearing, you may need to use a [rate provider](/partner-onboarding/onboarding-overview/rate-providers.html)
+  - If our API contains an approved rate provider review for the token you selected, it will be automatically populated
+- For weighted pools, you can lock weights so that only unlocked weights are automatically recalculated
+- For weighted pools, it is important that you enter amounts that are proportional to weight percentage values
+
+### Pool Parameters
+- See detailed information about swap fee percentages [here](/concepts/vault/swap-fee.html)
+- Stable pools require an amplificaiton parameter setting. See detailed information [here](/concepts/explore-available-balancer-pools/stable-pool/stable-math.html)
+- See more information about pool management [here](/concepts/core-concepts/pool-role-accounts.html)
+- When using a pool hook, you have the option to disable unbalanced liquidity operations and/or allow donations
+  - If the pool hooks contract sets the `enableHookAdjustedAmounts` flag to `true`, the pool must also set `disableUnbalancedLiquidity` to `true`
+  - It is important to understand the permissions related to a given hooks `onRegister` function. For example, the hook could require that the pool set `enableDonations` to `true`
+
+### Pool Information
+- Pool name and symbol are automatically populated, but you have the option to modify both
+
+## Creation Process
+- Click the "Preview Pool" button to open the Pool Creation modal
+- After step 1, you cannot close the modal to go back and change configuration options unless you "Reset Progress"
+- After completing the pool creation process, you will have the option to view your pool on Balancer or create another pool
+
+:::tip
+- Your pool may take a few minutes to show on [balancer.fi](https://balancer.fi/pools)
+- If you used a rate provider that has not been reviewed, your pool will not show on [balancer.fi](https://balancer.fi/pools) 
+:::
