@@ -1,60 +1,47 @@
-
-
 # Sepolia Deployment Addresses
-
-::: info More Details
-Balancer v3 is in active development. This page shows the latest version of deployed contracts.
-:::
 
 ## Pool Factories
 
-| Name             | Address                                    | Deployment |
-|------------------|--------------------------------------------|------------|
-| StablePoolFactory| 0xcB107E7075add7a95ae7192c052b4e6814bf0ad5 | 11          |
-| MockStablePool   | 0x5906b98aE7928676019D2B880F9C556bDEC5F4AA | 11          |
-| WeightedPoolFactory| 0x9aAD2c188b4eACcA85C44E7A9250dDADcae1A2E9 | 11          |
-| MockWeightedPool   | 0x88Ab7C08CcD43788738005e3da95598f9dFf4c16 | 11          |
-
+| Name                | Address                                    |
+| ------------------- | ------------------------------------------ |
+| StablePoolFactory   | 0xd67F485C07D258B3e93835a3799d862ffcB55923 |
+| MockStablePool      | 0x7373C5b9610d43466395617c428eCAA5b47ac5AA |
+| WeightedPoolFactory | 0x7532d5a3bE916e4a4D900240F49F0BABd4FD855C |
+| MockWeightedPool    | 0xFc253B433B7225AC7736EAbDF4115F7252aECb91 |
 
 ## Core
 
-
-| Name                 | Address                                    | Deployment |
-|----------------------|--------------------------------------------|------------|
-| ProtocolFeeController| 0x0cf640653230a5fA0edb4627660D62eefaBfF8cE | 11          |
-| VaultAdmin           | 0x2AD9162D9b388b75eB40cBF996AbE8E968670c5C | 11          |
-| VaultExtension       | 0x59657ebA33Bf0a7dBf03E74a242e6b4F58D6003a | 11          |
-| Vault                | 0xBC582d2628FcD404254a1e12CB714967Ce428915 | 11          |
-| Router               | 0x4D2aA7a3CD7F8dA6feF37578A1881cD63Fd3715E | 11          |
-| BatchRouter          | 0x4232e5EEaA16Bcf483d93BEA469296B4EeF22503 | 11          |
-| BufferRouter         | 0xD907aFAF02492e054D64da3A14312BdA356fc618 | 11          |
-| CompositeLiquidityRouter | 0x2F118d8397D861354751709e1E0c14663e17F5C1 | 11          |
-| VaultExplorer        | 0xa9F171e84A95c103aD4aFAC3Ec83810f9cA193a8 | 11          |
-
+| Name                     | Address                                    |
+| ------------------------ | ------------------------------------------ |
+| ProtocolFeeController    | 0xa731C23D7c95436Baaae9D52782f966E1ed07cc8 |
+| VaultAdmin               | 0x35fFB749B273bEb20F40f35EdeB805012C539864 |
+| VaultExtension           | 0x0E8B07657D719B86e06bF0806D6729e3D528C9A9 |
+| Vault                    | 0xbA1333333333a1BA1108E8412f11850A5C319bA9 |
+| Router                   | 0x0BF61f706105EA44694f2e92986bD01C39930280 |
+| BatchRouter              | 0xC85b652685567C1B074e8c0D4389f83a2E458b1C |
+| BufferRouter             | 0xb5F3A41515457CC6E2716c62a011D260441CcfC9 |
+| CompositeLiquidityRouter | 0xc6674C0c7694E9b990eAc939E74F8cc3DD39B4b0 |
+| VaultExplorer            | 0xEB15EBBF9C1a4D7D243d57dE447Df0b97C40c324 |
 
 ## Authorization
 
 ## Gauges and Governance
 
 ## Ungrouped Active/Current Contracts
-    
-| Name                    | Address                                    | Deployment |
-|-------------------------|--------------------------------------------|------------|
-| FeeTakingHookExample     | 0x790ae803b6c0467C6A4cbDc6d6d712DE34CfdB76 | 11          |
-| ExitFeeHookExample       | 0x2Aa9D4066DAe16ef001765efF2cA8F41Bde0b019 | 11          |
-| DirectionalFeeHookExample| 0xD9e535a65eb38F962B84f7BBD2bf60293bA54058 | 11          |
-| LotteryHookExample       | 0x0E85194F9eD75F0EFf2b89B73b6AD3053be03853 | 11          |
 
+| Name                      | Address                                    |
+| ------------------------- | ------------------------------------------ |
+| FeeTakingHookExample      | 0x790ae803b6c0467C6A4cbDc6d6d712DE34CfdB76 |
+| ExitFeeHookExample        | 0x2Aa9D4066DAe16ef001765efF2cA8F41Bde0b019 |
+| DirectionalFeeHookExample | 0xD9e535a65eb38F962B84f7BBD2bf60293bA54058 |
+| LotteryHookExample        | 0x0E85194F9eD75F0EFf2b89B73b6AD3053be03853 |
 
-    
 # Deprecated Contracts
 
-These deployments were in use at some point, and may still be in active operation, for example in the case of pools created with old factories.  In general it's better to interact with newer versions when possible.
+These deployments were in use at some point, and may still be in active operation, for example in the case of pools created with old factories. In general it's better to interact with newer versions when possible.
 
 #### If you can only find the contract you are looking for in the deprecated section and it is not an old pool, try checking the deployments tasks to find it or ask in the Discord before using a deprecated contract.
 
-
-    
 <style scoped>
 table {
     display: table;
@@ -71,4 +58,3 @@ td {
     overflow: hidden;
 }
 </style>
-
