@@ -52,5 +52,6 @@ footer:
 - [API](https://github.com/balancer/backend)
 - [Frontend](https://github.com/balancer/frontend-monorepo)
 - [Subgraph](https://github.com/balancer/balancer-subgraph-v3)
+- [V2 Docs](https://docs-v2.balancer.fi)
 
 

@@ -10,6 +10,10 @@ Welcome to the Balancer Explained section, where we delve deep into the design a
 
 If you're eager to jump into development and start building with Balancer, we've got you covered as well! Check out our [Integration Guides](../../integration-guides/README.md) for step-by-step instructions, explore the [Building An AMM](../../build/README.md) section for creating your own automated market maker, or consult the [Developer Reference](../../developer-reference/README.md) docs for comprehensive technical details.
 
+::: info
+Please note these docs cover V3. For anything V2 related please vist [here](https://docs-v2.balancer.fi).
+:::
+
 ## What is Balancer?
 
 Balancer is a decentralized automated market maker (AMM) protocol built on Ethereum with a clear focus on fungible and yield-bearing liquidity. Balancer's success is intrinsically linked to the success of protocols and products built on the platform. Balancer v3’s architecture focuses on simplicity, flexibility, and extensibility at its core. The v3 vault more formally defines the requirements of a custom pool, shifting core design patterns out of the pool and into the vault.
