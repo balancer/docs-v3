@@ -18,16 +18,16 @@ The schemas of GraphQL elements are defined in two separate schema files:
 
 ### Vault Subgraphs
 
-| Network  | Development URL (rate-limited)                                                 | Production URL                                                                                                        |
-| -------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| Ethereum | https://api.studio.thegraph.com/query/75376/balancer-v3/version/latest         | https://gateway.thegraph.com/api/[API-KEY]/subgraphs/id/QmPoxXQWfZffo454w7aM1fV6jK32zApX4J7VS4Ls4MSLGm                |
-| Gnosis   | https://api.studio.thegraph.com/query/75376/balancer-v3-gnosis/version/latest  | https://gateway-gnosis.network.thegraph.com/api/[API-KEY]/subgraphs/id/QmSLd8fuWE6eGRMZrYmxjX6ckumZDhG5mcQUBMY5Zfz3oU |
-| Sepolia  | https://api.studio.thegraph.com/query/75376/balancer-v3-sepolia/version/latest | https://api.studio.thegraph.com/query/75376/balancer-v3-sepolia/version/latest                                        |
+| Network  | Production URL                                                                                       | Development URL (rate-limited)                                                 |
+| -------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Ethereum | https://gateway.thegraph.com/api/[api-key]/subgraphs/id/4rixbLvpuBCwXTJSwyAzQgsLR8KprnyMfyCuXT8Fj5cd | https://api.studio.thegraph.com/query/75376/balancer-v3/version/latest         |
+| Gnosis   | https://gateway.thegraph.com/api/[api-key]/subgraphs/id/DDoABVc9xCRQwuXRq2QLZ6YLkjoFet74vnfncQDgJVo2 | https://api.studio.thegraph.com/query/75376/balancer-v3-gnosis/version/latest  |
+| Sepolia  | https://api.studio.thegraph.com/query/75376/balancer-v3-sepolia/version/latest                       | https://api.studio.thegraph.com/query/75376/balancer-v3-sepolia/version/latest |
 
 ### Pools Subgraphs
 
-| Network  | Development URL (rate-limited)                                                       | Production URL                                                                                                        |
-| -------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| Ethereum | https://api.studio.thegraph.com/query/75376/balancer-pools-v3/version/latest         | https://gateway.thegraph.com/api/[API-KEY]/subgraphs/id/QmVGssjwfVAP8b2buqVVKz5sdb69ryyvxED5qQPGeW8Yk2                |
-| Gnosis   | https://api.studio.thegraph.com/query/75376/balancer-pools-v3-gnosis/version/latest  | https://gateway-gnosis.network.thegraph.com/api/[API-KEY]/subgraphs/id/QmQpKVgaEhrPygATrgpCTLSMqqmHCLuC3vpdonSC1Z9iqo |
-| Sepolia  | https://api.studio.thegraph.com/query/75376/balancer-pools-v3-sepolia/version/latest | https://api.studio.thegraph.com/query/75376/balancer-pools-v3-sepolia/version/latest                                  |
+| Network  | Production URL                                                                                       | Development URL (rate-limited)                                                       |
+| -------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Ethereum | https://gateway.thegraph.com/api/[api-key]/subgraphs/id/C4tijcwi6nThKJYBmT5JaYK2As2kJGADs89AoQaCnYz7 | https://api.studio.thegraph.com/query/75376/balancer-pools-v3/version/latest         |
+| Gnosis   | https://gateway.thegraph.com/api/[api-key]/subgraphs/id/yeZGqiwNf3Lqpeo8XNHih83bk5Tbu4KvFwWVy3Dbus6  | https://api.studio.thegraph.com/query/75376/balancer-pools-v3-gnosis/version/latest  |
+| Sepolia  | https://api.studio.thegraph.com/query/75376/balancer-pools-v3-sepolia/version/latest                 | https://api.studio.thegraph.com/query/75376/balancer-pools-v3-sepolia/version/latest |
