@@ -4,7 +4,7 @@ order: 0
 ---
 
 ::: info
-The Vault should not be interacted with directly. [Routers](../router/overview.md) serve as the entry point for all user actions.
+Retail users should not interact directly with the Vault should not be interacted with directly. [Routers](../router/overview.md) serve as the entry point for all user actions.
 :::
 
 # The Vault
@@ -19,6 +19,7 @@ In v3, the vault more formally defines the requirements of a pool contract, shif
 The result is pool contracts that are compact and much easier to reason about.
 
 - [On-chain API](/developer-reference/contracts/vault-api.html)
+- [Configuration](/developer-reference/contracts/vault-config.html)
 - Features
   - [Transient accounting](/concepts/vault/transient-accounting.html)
   - [ERC20MultiToken](/concepts/vault/erc20-multi-token.html)
