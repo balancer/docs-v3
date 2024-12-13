@@ -17,24 +17,63 @@ A significant benefit of the Vault's liquidity buffers is that Liquidity Provide
 
 It's important to note that ERC4626 liquidity buffers are not Balancer Pools. They are a concept internal to the Vault and only function with tokens that comply with the ERC4626 Standard.
 
-action: this section can use more wording work.
 :::info
 If your organization is a DAO and you're seeking to enhance liquidity for your ERC4626 compliant token, Balancer's ERC4626 liquidity buffers can be a valuable tool. By providing POL to these buffers, you can enable LPs of your token to gain increased access to yield-bearing tokens. This arrangement allows LPs to concentrate on [boosted pools](/concepts/explore-available-balancer-pools/boosted-pool.html), while your DAO contributes POL to the buffer.
 :::
 
 
 ## Adding liquidity to a buffer
-Liquidity can be added to a buffer for a specific token pair. This is done by invoking the `addLiquidityToBuffer` function in the [Buffer Router](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BufferRouter.sol), where you designate the ERC4626 Token as the buffer reference. Note that for security reasons, liquidity can only be added (or removed) proportionally. It's important to note that a buffer can still function with zero liquidity. It can be used to wrap and unwrap assets, meaning that even an empty buffer can facilitate swaps through the Vault.
+Liquidity can be added to a buffer for a specific token pair. Buffers must be initialized before use, by invoking the `initializeBuffer` function in the [Buffer Router](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BufferRouter.sol). Initialization is the only operation that can be done "unbalanced," and sets the initial proportions of wrapped and underlying tokens. Thereafter, liquidity can only be added and removed proportionally. This is for simplicity and security reasons, as allowing ongoing unbalanced adds/removes would mean supporting implicit wrap/unwrap operations (in the same way unbalanced liquidity operations on pools involve an implicit swap).
+
+it is strongly recommended to initialize ERC4626 buffers *before* deploying any pools with corresponding wrapped tokens. To ensure the pools work as intended, buffers should be created and funded by sponsors prior to deploying pools designed to use them.
+
+Note that from an economic perspective, there is no intrinsic benefit to being an LP in a buffer. Buffers aren’t pools, so there are no swap fees, no yield participation (compared to simply HODLing), and no connection to the LM system. Funding them is permissionless, but who would do it?
+
+The general idea is that funding parties would be DAO partners (starting with the Balancer DAO) who are motivated to support the platform and promote use of their protocol or yield-bearing token. Immediate access to Balancer liquidity and gas-efficient trades for community members should be enough to entice DAOs and lending protocols to contribute. They would be potentially sacrificing yield on a relatively small position, in hopes that the UX improvement and gas savings for retail users will attract disproportionately greater trade volume and TVL.
+
+Note also that since buffers are not pools, buffer liquidity is not tokenized. Instead of receiving BPT in return for a buffer deposit, the system calculates buffer "shares," and maintains internal accounting of the total shares issued, and the share balance per LP. An important consequence of this is that these shares cannot be transferred. Only the account (or contract) that added liquidity will be able to remove it, so if a contract is involved in providing liquidity, care must be taken to ensure that contract supports all necessary operations.
+
+Providing liquidity to buffers has no benefit for retail users, who should not be calling these functions. (Accordingly, there is no UI for them.)
+
+```solidity
+/**
+ * @notice Adds liquidity for the first time to an internal ERC4626 buffer in the Vault.
+ * @dev Calling this method binds the wrapped token to its underlying asset internally; the asset in the wrapper
+ * cannot change afterwards, or every other operation on that wrapper (add / remove / wrap / unwrap) will fail.
+ * To avoid unexpected behavior, always initialize buffers before creating or initializing any pools that contain
+ * the wrapped tokens to be used with them.
+ *
+ * @param wrappedToken Address of the wrapped token that implements IERC4626
+ * @param exactAmountUnderlyingIn Amount of underlying tokens that will be deposited into the buffer
+ * @param exactAmountWrappedIn Amount of wrapped tokens that will be deposited into the buffer
+ * @param minIssuedShares Minimum amount of shares to receive from the buffer, expressed in underlying token
+ * native decimals
+ * @return issuedShares the amount of tokens sharesOwner has in the buffer, denominated in underlying tokens
+ * (This is the BPT of the Vault's internal ERC4626 buffer.)
+ */
+function initializeBuffer(
+    IERC4626 wrappedToken,
+    uint256 exactAmountUnderlyingIn,
+    uint256 exactAmountWrappedIn,
+    uint256 minIssuedShares
+) external returns (uint256 issuedShares);
+```
+
+Thereafter, additional liquidity can be added by invoking the `addLiquidityToBuffer` function in the [Buffer Router](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BufferRouter.sol), where you designate the ERC4626 Token as the buffer reference. Note that for security reasons, liquidity can only be added (or removed) proportionally. It's important to note that a buffer can still function with zero liquidity. It can be used to wrap and unwrap assets, meaning that even an empty buffer can facilitate swaps through the Vault.
 ```solidity
 /**
  * @notice Adds liquidity proportionally to an internal ERC4626 buffer in the Vault.
  * @dev Requires the buffer to be initialized beforehand. Restricting adds to proportional simplifies the Vault
  * code, avoiding rounding issues and minimum amount checks. It is possible to add unbalanced by interacting
  * with the wrapper contract directly.
+ *
  * @param wrappedToken Address of the wrapped token that implements IERC4626
- * @param maxAmountUnderlyingIn Maximum amount of underlying tokens to add to the buffer. It is expressed in underlying token native decimals
- * @param maxAmountWrappedIn Maximum amount of wrapped tokens to add to the buffer. It is expressed in wrapped token native decimals
- * @param exactSharesToIssue The amount of shares that `sharesOwner` wants to add to the buffer, in underlying token decimals
+ * @param maxAmountUnderlyingIn Maximum amount of underlying tokens to add to the buffer. It is expressed in
+ * underlying token native decimals
+ * @param maxAmountWrappedIn Maximum amount of wrapped tokens to add to the buffer. It is expressed in wrapped
+ * token native decimals
+ * @param exactSharesToIssue The amount of shares that `sharesOwner` wants to add to the buffer, in underlying
+ * token decimals
  * @return amountUnderlyingIn Amount of underlying tokens deposited into the buffer
  * @return amountWrappedIn Amount of wrapped tokens deposited into the buffer
  */
@@ -43,7 +82,7 @@ function addLiquidityToBuffer(
     uint256 maxAmountUnderlyingIn,
     uint256 maxAmountWrappedIn,
     uint256 exactSharesToIssue
-) external returns (uint256 amountUnderlyingRaw, uint256 amountWrappedRaw);
+) external returns (uint256 amountUnderlyingIn, uint256 amountWrappedIn);
 ```
 
 ## Removing liquidity from a buffer 
