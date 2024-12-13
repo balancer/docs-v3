@@ -7,7 +7,11 @@ title: Deploy a Custom AMM Using a Factory
 
 _This section is for developers looking to deploy a custom pool contract that has already been written. If you are looking to design a custom AMM with a novel invariant, start [here](/build/build-an-amm/create-custom-amm-with-novel-invariant.html)._
 
-Balancer recommends that custom pools be deployed via a factory contract because our off-chain infrastructure uses the factory address as a means to identify the type of pool, which is important for integration into the UI, SDK, and external aggregators.
+Balancer recommends that custom pools be deployed via a factory contract because our off-chain infrastructure uses the factory address as a means to identify the type of pool, which is important for integration into the UI, SDK, and external aggregators. Factories also provide important security benefits, mainly guaranteeing the integrity of the setup and preventing front-running. If the contract deploys and registers the factory in one operation, the pool is certain to have the desired configuration.
+
+Although core Balancer pool factories do not do this, as they are meant to be generic and support many different use cases, including separate funding, consider also initializing through the factory (or at least in the same transaction as the create). Factories could even inspect the on-chain conditions during deployment, and revert if they are unfavorable (e.g., nested pool rates have been manipulated), further reducing the risks of front-running or other types of interference. Regarding initialization, it is also recommended to initialize ERC4626 buffers *before* deploying any pools with corresponding wrapped tokens. Initialization is the step that sets the proportion of underlying and wrapped tokens; thereafter, liquidity can only be added proportionally. To ensure the pools work as intended, buffers should be created and funded by sponsors prior to deploying pools designed to use them.
+
+For maximum security, consider using a private node for sensitive / high liquidity operations, to avoid risks associated with the public mempool.
 
 To fully set up a new custom pool so that normal liquidity operations and swaps are enabled, five required steps must be taken:
 

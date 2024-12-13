@@ -31,10 +31,6 @@
 
 | Name                      | Address                                    |
 | ------------------------- | ------------------------------------------ |
-| FeeTakingHookExample      | 0x790ae803b6c0467C6A4cbDc6d6d712DE34CfdB76 |
-| ExitFeeHookExample        | 0x2Aa9D4066DAe16ef001765efF2cA8F41Bde0b019 |
-| DirectionalFeeHookExample | 0xD9e535a65eb38F962B84f7BBD2bf60293bA54058 |
-| LotteryHookExample        | 0x0E85194F9eD75F0EFf2b89B73b6AD3053be03853 |
 
 # Deprecated Contracts
 

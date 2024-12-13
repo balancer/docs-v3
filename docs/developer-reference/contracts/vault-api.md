@@ -149,7 +149,7 @@ This `VaultExtension` function retrieves the reserve (i.e., total Vault balance)
 ```solidity
 function getAddLiquidityCalledFlag(address pool) external view returns (bool);
 ```
-This `VaultExtension` function retrieves the value of the falg used to detect and tax "round trip" transactions (adding and removing liquidity in the same pool).
+This `VaultExtension` function retrieves the value of the flag used to detect and tax "round trip" transactions (adding and removing liquidity in the same pool).
 
 **Parameters:**
 
