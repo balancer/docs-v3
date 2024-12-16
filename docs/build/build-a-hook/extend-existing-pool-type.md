@@ -156,3 +156,9 @@ Now we can implement the logic in the `onComputeDynamicSwapFeePercentage` functi
 
 To obtain the user's veBAL balance, we need the sender's address, which we can retrieve by calling `getSender()` on the router. This relies on the router returning the correct address, so it's crucial to ensure the router is "trusted" (any contract can act as a [Router](/concepts/router/overview.html)). In our example we passed a trusted `_router` address, which is saved during the hook deployment.
 
+:::info
+For further reading, the following articles provide more helpful context when it comes to building a hook & understanding the impact hooks can have on pool performance.
+- [YouTube video](https://www.youtube.com/watch?v=kaz6duliRPA&t=10s)
+- [Stable Surge Hook theory](https://medium.com/balancer-protocol/balancers-stablesurge-hook-09d2eb20f219)
+- [Stable Surge approaches](https://pitchandrolls.com/2024/09/10/unlocking-the-power-of-balancer-v3-hook-development-made-simple/)
+:::
