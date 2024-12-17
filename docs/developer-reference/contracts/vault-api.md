@@ -179,6 +179,24 @@ This `Vault` function swaps tokens based on provided parameters. All parameters 
 |---|---|---|
 | params  | VaultSwapParams  | Parameters for the swap operation  |
 
+The `VaultSwapParams` are defined as
+```solidity
+struct VaultSwapParams {
+    SwapKind kind;
+    address pool;
+    IERC20 tokenIn;
+    IERC20 tokenOut;
+    uint256 amountGivenRaw;
+    uint256 limitRaw;
+    bytes userData;
+}
+
+enum SwapKind {
+    EXACT_IN,
+    EXACT_OUT
+}
+```
+
 **Returns:**
 
 | Name  | Type  | Description  |
@@ -203,6 +221,27 @@ This `Vault` function adds liquidity to a pool. Caution should be exercised when
 |---|---|---|
 | params  | AddLiquidityParams  | Parameters for the add liquidity operation  |
 
+The `AddLiquidityParams` are defined as 
+```solidity
+struct AddLiquidityParams {
+    address pool;
+    address to;
+    uint256[] maxAmountsIn;
+    uint256 minBptAmountOut;
+    AddLiquidityKind kind;
+    bytes userData;
+}
+
+enum AddLiquidityKind {
+    PROPORTIONAL,
+    UNBALANCED,
+    SINGLE_TOKEN_EXACT_OUT,
+    DONATION,
+    CUSTOM
+}
+
+```
+
 **Returns:**
 
 | Name  | Type  | Description  |
@@ -226,6 +265,26 @@ This `Vault` function removes liquidity from a pool. Trusted routers can burn po
 | Name  | Type  | Description  |
 |---|---|---|
 | params  | RemoveLiquidityParams  | Parameters for the remove liquidity operation  |
+
+The `RemoveLiquidityParams`are defined as 
+```solidity
+struct RemoveLiquidityParams {
+    address pool;
+    address from;
+    uint256 maxBptAmountIn;
+    uint256[] minAmountsOut;
+    RemoveLiquidityKind kind;
+    bytes userData;
+}
+
+enum RemoveLiquidityKind {
+    PROPORTIONAL,
+    SINGLE_TOKEN_EXACT_IN,
+    SINGLE_TOKEN_EXACT_OUT,
+    CUSTOM
+}
+
+```
 
 **Returns:**
 
@@ -327,6 +386,19 @@ This `VaultExtension` function retrieves a PoolData structure, containing compre
 |---|---|---|
 | pool  | address  | The address of the pool  |
 
+The `PoolData` are defined as
+```solidity
+struct PoolData {
+    PoolConfigBits poolConfigBits;
+    IERC20[] tokens;
+    TokenInfo[] tokenInfo;
+    uint256[] balancesRaw;
+    uint256[] balancesLiveScaled18;
+    uint256[] tokenRates;
+    uint256[] decimalScalingFactors;
+}
+```
+
 **Returns:**
 
 | Name  | Type  | Description  |
@@ -355,6 +427,22 @@ This `VaultExtension` function gets the raw data for a pool: tokens, raw and las
 | Name  | Type  | Description  |
 |---|---|---|
 | pool  | address  | Address of the pool  |
+
+The `TokenInfo` are defined as 
+```solidity
+
+struct TokenInfo {
+    TokenType tokenType;
+    IRateProvider rateProvider;
+    bool paysYieldFees;
+}
+
+enum TokenType {
+    STANDARD,
+    WITH_RATE
+}
+
+```
 
 **Returns:**
 
@@ -397,6 +485,22 @@ This `VaultExtension` function gets the configuration parameters of a pool.
 |---|---|---|
 | pool  | address  | Address of the pool  |
 
+The `PoolConfig` are defined as
+```solidity
+struct PoolConfig {
+    LiquidityManagement liquidityManagement;
+    uint256 staticSwapFeePercentage;
+    uint256 aggregateSwapFeePercentage;
+    uint256 aggregateYieldFeePercentage;
+    uint40 tokenDecimalDiffs;
+    uint32 pauseWindowEndTime;
+    bool isPoolRegistered;
+    bool isPoolInitialized;
+    bool isPoolPaused;
+    bool isPoolInRecoveryMode;
+}
+```
+
 **Returns:**
 
 | Name  | Type  | Description  |
@@ -415,6 +519,23 @@ This `VaultExtension` function gets the hooks configuration parameters of a pool
 | Name  | Type  | Description  |
 |---|---|---|
 | pool  | address  | Address of the pool  |
+
+The `HooksConfig` are defined as
+```solidity
+struct HooksConfig {
+    bool enableHookAdjustedAmounts;
+    bool shouldCallBeforeInitialize;
+    bool shouldCallAfterInitialize;
+    bool shouldCallComputeDynamicSwapFee;
+    bool shouldCallBeforeSwap;
+    bool shouldCallAfterSwap;
+    bool shouldCallBeforeAddLiquidity;
+    bool shouldCallAfterAddLiquidity;
+    bool shouldCallBeforeRemoveLiquidity;
+    bool shouldCallAfterRemoveLiquidity;
+    address hooksContract;
+}
+```
 
 **Returns:**
 
@@ -695,6 +816,29 @@ This `VaultExtension` function registers a pool, associating it with its factory
 | roleAccounts  | PoolRoleAccounts  | Addresses the Vault will allow to change certain pool settings  |
 | poolHooksContract  | address  | Contract that implements the hooks for the pool  |
 | liquidityManagement  | LiquidityManagement  | Liquidity management flags with implemented methods  |
+
+The requires params like `TokenConfig`, `PoolRoleAccounts` and `LiquidityManagement` are defined as
+```solidity
+struct TokenConfig {
+    IERC20 token;
+    TokenType tokenType;
+    IRateProvider rateProvider;
+    bool paysYieldFees;
+}
+
+struct PoolRoleAccounts {
+    address pauseManager;
+    address swapFeeManager;
+    address poolCreator;
+}
+
+struct LiquidityManagement {
+    bool disableUnbalancedLiquidity;
+    bool enableAddLiquidityCustom;
+    bool enableRemoveLiquidityCustom;
+    bool enableDonation;
+}
+```
 
 ### `isPoolRegistered`
 
@@ -1029,6 +1173,20 @@ This `VaultExtension` function queries the current dynamic swap fee of a pool, g
 |---|---|---|
 | pool  | address  | The pool  |
 | swapParams  | PoolSwapParams  | The swap parameters used to compute the fee  |
+
+The `PoolSwapParams` are defined as
+
+```solidity
+struct PoolSwapParams {
+    SwapKind kind;
+    uint256 amountGivenScaled18;
+    uint256[] balancesScaled18;
+    uint256 indexIn;
+    uint256 indexOut;
+    address router;
+    bytes userData;
+}
+```
 
 **Returns:**
 
