@@ -47,7 +47,7 @@ footer:
 **Github Repos**
 
 - [Smart Contracts](https://github.com/balancer/balancer-v3-monorepo)
-- [Deployments](https://github.com/balancer/pvt-deployments/tree/master)
+- [Deployments](https://github.com/balancer/balancer-deployments)
 - [SDK](https://github.com/balancer/balancer-sdk)
 - [API](https://github.com/balancer/backend)
 - [Frontend](https://github.com/balancer/frontend-monorepo)
