@@ -179,8 +179,18 @@ This `Vault` function swaps tokens based on provided parameters. All parameters 
 |---|---|---|
 | params  | VaultSwapParams  | Parameters for the swap operation  |
 
-The `VaultSwapParams` are defined as
+[VaultSwapParams](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L277:L295) is defined as:
 ```solidity
+/**
+ * @notice Data passed into primary Vault `swap` operations.
+ * @param kind Type of swap (Exact In or Exact Out)
+ * @param pool The pool with the tokens being swapped
+ * @param tokenIn The token entering the Vault (balance increases)
+ * @param tokenOut The token leaving the Vault (balance decreases)
+ * @param amountGivenRaw Amount specified for tokenIn or tokenOut (depending on the type of swap)
+ * @param limitRaw Minimum or maximum value of the calculated amount (depending on the type of swap)
+ * @param userData Additional (optional) user data
+ */
 struct VaultSwapParams {
     SwapKind kind;
     address pool;
@@ -221,8 +231,17 @@ This `Vault` function adds liquidity to a pool. Caution should be exercised when
 |---|---|---|
 | params  | AddLiquidityParams  | Parameters for the add liquidity operation  |
 
-The `AddLiquidityParams` are defined as 
+[AddLiquidityParams](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L368-L375) is defined as: 
 ```solidity
+/**
+ * @notice Data for an add liquidity operation.
+ * @param pool Address of the pool
+ * @param to Address of user to mint to
+ * @param maxAmountsIn Maximum amounts of input tokens
+ * @param minBptAmountOut Minimum amount of output pool tokens
+ * @param kind Add liquidity kind
+ * @param userData Optional user data
+ */
 struct AddLiquidityParams {
     address pool;
     address to;
@@ -266,8 +285,17 @@ This `Vault` function removes liquidity from a pool. Trusted routers can burn po
 |---|---|---|
 | params  | RemoveLiquidityParams  | Parameters for the remove liquidity operation  |
 
-The `RemoveLiquidityParams`are defined as 
+[RemoveLiquidityParams](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/VaultTypes.sol#L397-L404) is defined as:
 ```solidity
+/**
+ * @notice Data for an remove liquidity operation.
+ * @param pool Address of the pool
+ * @param from Address of user to burn from
+ * @param maxBptAmountIn Maximum amount of input pool tokens
+ * @param minAmountsOut Minimum amounts of output tokens
+ * @param kind Remove liquidity kind
+ * @param userData Optional user data
+ */
 struct RemoveLiquidityParams {
     address pool;
     address from;
@@ -386,8 +414,19 @@ This `VaultExtension` function retrieves a PoolData structure, containing compre
 |---|---|---|
 | pool  | address  | The address of the pool  |
 
-The `PoolData` are defined as
+[PoolData](https://github.com/balancer/balancer-v3-monorepo/blob/2d6ae6a3d0082cafcdb9a963421bcd31858a106c/pkg/interfaces/contracts/vault/VaultTypes.sol#L244-L252) is defined as:
 ```solidity
+/**
+ * @notice Data structure used to represent the current pool state in memory
+ * @param poolConfigBits Custom type to store the entire configuration of the pool.
+ * @param tokens Pool tokens, sorted in token registration order
+ * @param tokenInfo Configuration data for each token, sorted in token registration order
+ * @param balancesRaw Token balances in native decimals
+ * @param balancesLiveScaled18 Token balances after paying yield fees, applying decimal scaling and rates
+ * @param tokenRates 18-decimal FP values for rate tokens (e.g., yield-bearing), or FP(1) for standard tokens
+ * @param decimalScalingFactors Conversion factor used to adjust for token decimals for uniform precision in
+ * calculations. It is 1e18 (FP 1) for 18-decimal tokens
+ */
 struct PoolData {
     PoolConfigBits poolConfigBits;
     IERC20[] tokens;
@@ -428,9 +467,17 @@ This `VaultExtension` function gets the raw data for a pool: tokens, raw and las
 |---|---|---|
 | pool  | address  | Address of the pool  |
 
-The `TokenInfo` are defined as 
+[TokenInfo](https://github.com/balancer/balancer-v3-monorepo/blob/2d6ae6a3d0082cafcdb9a963421bcd31858a106c/pkg/interfaces/contracts/vault/VaultTypes.sol#L227-L231) is defined as:
 ```solidity
-
+/**
+ * @notice This data structure is stored in `_poolTokenInfo`, a nested mapping from pool -> (token -> TokenInfo).
+ * @dev Since the token is already the key of the nested mapping, it would be redundant (and an extra SLOAD) to store
+ * it again in the struct. When we construct PoolData, the tokens are separated into their own array.
+ *
+ * @param tokenType The token type (see the enum for supported types)
+ * @param rateProvider The rate provider for a token (see further documentation above)
+ * @param paysYieldFees Flag indicating whether yield fees should be charged on this token
+ */
 struct TokenInfo {
     TokenType tokenType;
     IRateProvider rateProvider;
@@ -485,8 +532,21 @@ This `VaultExtension` function gets the configuration parameters of a pool.
 |---|---|---|
 | pool  | address  | Address of the pool  |
 
-The `PoolConfig` are defined as
+[PoolConfig](https://github.com/balancer/balancer-v3-monorepo/blob/2d6ae6a3d0082cafcdb9a963421bcd31858a106c/pkg/interfaces/contracts/vault/VaultTypes.sol#L40-L51) is defined as:
 ```solidity
+/**
+ * @notice Represents a pool's configuration (hooks configuration are separated in another struct).
+ * @param liquidityManagement Flags related to adding/removing liquidity
+ * @param staticSwapFeePercentage The pool's native swap fee
+ * @param aggregateSwapFeePercentage The total swap fee charged, including protocol and pool creator components
+ * @param aggregateYieldFeePercentage The total swap fee charged, including protocol and pool creator components
+ * @param tokenDecimalDiffs Compressed storage of the token decimals of each pool token
+ * @param pauseWindowEndTime Timestamp after which the pool cannot be paused
+ * @param isPoolRegistered If true, the pool has been registered with the Vault
+ * @param isPoolInitialized If true, the pool has been initialized with liquidity, and is available for trading
+ * @param isPoolPaused If true, the pool has been paused (by governance or the pauseManager)
+ * @param isPoolInRecoveryMode If true, the pool has been placed in recovery mode, enabling recovery mode withdrawals
+ */
 struct PoolConfig {
     LiquidityManagement liquidityManagement;
     uint256 staticSwapFeePercentage;
@@ -520,8 +580,9 @@ This `VaultExtension` function gets the hooks configuration parameters of a pool
 |---|---|---|
 | pool  | address  | Address of the pool  |
 
-The `HooksConfig` are defined as
+[HooksConfig](https://github.com/balancer/balancer-v3-monorepo/blob/2d6ae6a3d0082cafcdb9a963421bcd31858a106c/pkg/interfaces/contracts/vault/VaultTypes.sol#L73-L85) is defined as:
 ```solidity
+/// @notice Represents a hook contract configuration for a pool (HookFlags + hooksContract address).
 struct HooksConfig {
     bool enableHookAdjustedAmounts;
     bool shouldCallBeforeInitialize;
@@ -817,8 +878,22 @@ This `VaultExtension` function registers a pool, associating it with its factory
 | poolHooksContract  | address  | Contract that implements the hooks for the pool  |
 | liquidityManagement  | LiquidityManagement  | Liquidity management flags with implemented methods  |
 
-The requires params like `TokenConfig`, `PoolRoleAccounts` and `LiquidityManagement` are defined as
+[TokenConfig](https://github.com/balancer/balancer-v3-monorepo/blob/2d6ae6a3d0082cafcdb9a963421bcd31858a106c/pkg/interfaces/contracts/vault/VaultTypes.sol#L211-L216), [PoolRoleAccounts](https://github.com/balancer/balancer-v3-monorepo/blob/2d6ae6a3d0082cafcdb9a963421bcd31858a106c/pkg/interfaces/contracts/vault/VaultTypes.sol#L119-L123) and [LiquidityManagement](https://github.com/balancer/balancer-v3-monorepo/blob/2d6ae6a3d0082cafcdb9a963421bcd31858a106c/pkg/interfaces/contracts/vault/VaultTypes.sol#L17-L22) is defined as:
 ```solidity
+/**
+ * @notice Encapsulate the data required for the Vault to support a token of the given type.
+ * @dev For STANDARD tokens, the rate provider address must be 0, and paysYieldFees must be false. All WITH_RATE tokens
+ * need a rate provider, and may or may not be yield-bearing.
+ *
+ * At registration time, it is useful to include the token address along with the token parameters in the structure
+ * passed to `registerPool`, as the alternative would be parallel arrays, which would be error prone and require
+ * validation checks. `TokenConfig` is only used for registration, and is never put into storage (see `TokenInfo`).
+ *
+ * @param token The token address
+ * @param tokenType The token type (see the enum for supported types)
+ * @param rateProvider The rate provider for a token (see further documentation above)
+ * @param paysYieldFees Flag indicating whether yield fees should be charged on this token
+ */
 struct TokenConfig {
     IERC20 token;
     TokenType tokenType;
@@ -826,12 +901,25 @@ struct TokenConfig {
     bool paysYieldFees;
 }
 
+/**
+ * @notice Represents the accounts holding certain roles for a given pool. This is passed in on pool registration.
+ * @param pauseManager Account empowered to pause/unpause the pool (note that governance can always pause a pool)
+ * @param swapFeeManager Account empowered to set static swap fees for a pool (or 0 to delegate to governance)
+ * @param poolCreator Account empowered to set the pool creator fee (or 0 if all fees go to the protocol and LPs)
+ */
 struct PoolRoleAccounts {
     address pauseManager;
     address swapFeeManager;
     address poolCreator;
 }
 
+/**
+ * @notice Represents a pool's liquidity management configuration.
+ * @param disableUnbalancedLiquidity If set, liquidity can only be added or removed proportionally
+ * @param enableAddLiquidityCustom If set, the pool has implemented `onAddLiquidityCustom`
+ * @param enableRemoveLiquidityCustom If set, the pool has implemented `onRemoveLiquidityCustom`
+ * @param enableDonation If set, the pool will not revert if liquidity is added with AddLiquidityKind.DONATION
+ */
 struct LiquidityManagement {
     bool disableUnbalancedLiquidity;
     bool enableAddLiquidityCustom;
@@ -1174,9 +1262,19 @@ This `VaultExtension` function queries the current dynamic swap fee of a pool, g
 | pool  | address  | The pool  |
 | swapParams  | PoolSwapParams  | The swap parameters used to compute the fee  |
 
-The `PoolSwapParams` are defined as
+The [PoolSwapParams](https://github.com/balancer/balancer-v3-monorepo/blob/2d6ae6a3d0082cafcdb9a963421bcd31858a106c/pkg/interfaces/contracts/vault/VaultTypes.sol#L307-L315) is defined as:
 
 ```solidity
+/**
+ * @notice Data for a swap operation, used by contracts implementing `IBasePool`.
+ * @param kind Type of swap (exact in or exact out)
+ * @param amountGivenScaled18 Amount given based on kind of the swap (e.g., tokenIn for EXACT_IN)
+ * @param balancesScaled18 Current pool balances
+ * @param indexIn Index of tokenIn
+ * @param indexOut Index of tokenOut
+ * @param router The address (usually a router contract) that initiated a swap operation on the Vault
+ * @param userData Additional (optional) data required for the swap
+ */
 struct PoolSwapParams {
     SwapKind kind;
     uint256 amountGivenScaled18;
