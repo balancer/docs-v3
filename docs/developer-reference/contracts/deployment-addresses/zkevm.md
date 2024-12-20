@@ -3,7 +3,7 @@
 ## Active Contracts
 
 ::: info More Details
-For more information on specific deployments as well as changelogs for different contract versions, please see the [deployment tasks](https://github.com/balancer/balancer-deployments/tree/master/tasks).
+For more information on specific deployments as well as changelogs for different contract versions, please see the [deployment tasks](https://github.com/balancer/balancer-deployments/tree/master/v3/tasks).
 :::
 
 ### Core Contracts
