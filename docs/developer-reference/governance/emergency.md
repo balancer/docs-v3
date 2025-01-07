@@ -8,15 +8,16 @@ The [Emergency DAO](https://dao.curve.fi/emergencymembers) is an idea pioneered 
 
 The Balancer Emergency subDAO is a 4-of-7 multisig with the following members as appointed by [this vote](https://forum.balancer.fi/t/form-the-emergency-subdao/3197):
 
-| Person     | Address                                      |
-| :--------- | :------------------------------------------- |
-| Solarcurve | `0x512fce9B07Ce64590849115EE6B32fd40eC0f5F3` |
-| Mike B     | `0xF01Cc7154e255D20489E091a5aEA10Bc136696a8` |
-| Zekraken   | `0xafFC70b81D54F229A5F50ec07e2c76D2AAAD07Ae` |
-| Zen Dragon | `0x7c2eA10D3e5922ba3bBBafa39Dc0677353D2AF17` |
-| Markus     | `0x6bB4720473d4D7133f944785e5EE1A650C07f34e` |
-| Fernando   | `0xbbF0Ae5195444264364CA7eb7E3BB1971B4c3eCb` |
-| Nico       | `0x815d654E930E840D0E0Ee1B18FFc8Fb4ddA4c6B3` |
+
+| Person      | Address                                      |
+| :---------- | :------------------------------------------- |
+| Mike B      | `0xF01Cc7154e255D20489E091a5aEA10Bc136696a8` |
+| Zen Dragon  | `0x7c2eA10D3e5922ba3bBBafa39Dc0677353D2AF17` |
+| Juani       | `0xB5485e0F543eE6e01e221A57e58ED95268215Ac9` |
+| Hypernative | `0x202B1AA0d702898CA474aB6ED31d53BA309308D9` |
+| Franz       | `0x89c7D6ABA9Cd18D8A93571E583EEAc58Da75acE6` |
+| Daniel      | `0x606681E47afC7869482660eCD61bd45B53523D83` |
+| Xeonus      | `0x7019Be4E4eB74cA5F61224FeAf687d2b43998516` |
 
 ## Multisigs
 
