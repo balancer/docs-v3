@@ -6,7 +6,7 @@ The Balancer Governance process has evolved through a number of BIPs as balancer
 
 Balancer governance submissions consist of 2 items, an English proposal and a multisig payload that executes the changes described onchain. The Balancer Maxis, who can be found on the [Balancer Discord](https://discord.balancer.fi/) or contacted through an issue in the [Balancer Multisig Ops Repo](https://github.com/BalancerMaxis/multisig-ops/issues) are tasked with supporting community members in putting together proposals when required, and with the final evaluation and execution of approved proposals. Below are more details on the governance process as of BIP-163.
 
-![img.png](./images/govProcess.png)
+![img.png](images/govProcess.png)
 
 ## Outline
 
@@ -93,7 +93,7 @@ If a Snapshot is approved by governance but rejected for technical reasons, the 
 
 If the vote fails in an approve/reject vote it will not be executed on. Proposes are encouraged to wait at least 30 days and/or until something significant has changed before posting another vote, and delegates with sufficient veBAL to post votes are asked to be considerate about creating governance noise and SPAM by reposting failed votes in rapid succession.
 
-If the vote succeeds or a result has been chosen, follow through to make sure that it is properly executed. Depending on what the vote is about, it may require an action by the [multisig](./multisig.md). The Balancer Maxis are currently responsible for organizing the onchain execution of governance and are working toward making their process as transparent as possible in the public [Balancer Multisig Ops Github Repo](https://github.com/BalancerMaxis/multisig-ops)
+If the vote succeeds or a result has been chosen, follow through to make sure that it is properly executed. Depending on what the vote is about, it may require an action by the [multisig](multisig.md). The Balancer Maxis are currently responsible for organizing the onchain execution of governance and are working toward making their process as transparent as possible in the public [Balancer Multisig Ops Github Repo](https://github.com/BalancerMaxis/multisig-ops)
 
 Assuming all reviews are finished and dependencies are met, the Maxis will make every effort to execute on finished in the same week that governance concludes. Note that it some cases complex BIPs may require more time for final multisigner review.
 

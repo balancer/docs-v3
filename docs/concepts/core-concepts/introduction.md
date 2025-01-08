@@ -1,6 +1,5 @@
 ---
 title: Introduction
-heroImage: /images/backgrounds/red.png
 order: 0
 ---
 
