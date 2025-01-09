@@ -10,7 +10,7 @@ such as LSTs and interest-bearing stablecoins offer an additional layer of effic
 counterparts. These tokenised assets allow users to gain exposure to both on-chain and off-chain interest rates,
 compounded within a single token. Compared to traditional AMM design, Balancer uses a variety of new concepts to leverage yield-bearing token liquidity while offering optimal results to liquidity providers (LPs) and traders by optimizing trade routes and exchange rates between assets.
 This is achieved by utilizing three core components:
-1. [Rate provider](../../balancer-v2/rate-providers.md) technology
+1. [Rate provider](../rate-providers.md) technology
 2. [Core Pool Dynamics](../../balancer-v2/core-pools.md)
 3. [Boosted pools](../products/boostedpools.md)
 

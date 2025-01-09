@@ -22,7 +22,7 @@ claimableTokens = feeDistributorContract.claimTokens(userAddress,tokens).call();
 
 ## Claim Pending Tokens for a veBAL Holder
 
-The process is identical to [querying as above](vebal.md#how-to-query-pending-tokens-for-a-vebal-holders), except instead of `eth_call`, you will use `eth_sendTransaction`.
+The process is identical to [querying as above](https://docs-v2.balancer.fi/reference/vebal-and-gauges/vebal.html#query-pending-tokens-for-a-vebal-holder), except instead of `eth_call`, you will use `eth_sendTransaction`.
 
 ::: warning How do I Know Which Tokens to Query/Claim?
 

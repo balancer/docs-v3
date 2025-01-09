@@ -6,7 +6,7 @@ order: 1
 
 ## Overview
 
-Balancer Governance Token \(BAL\) is the core token behind the Balancer protocol. Alignment between governance token holders and protocol stakeholders is crucial for successful decentralized governance, and BAL tokens are the vehicle to drive this alignment. [veBAL](./veBAL) is an extension of BAL and is used for voting in decentralized governance.
+Balancer Governance Token \(BAL\) is the core token behind the Balancer protocol. Alignment between governance token holders and protocol stakeholders is crucial for successful decentralized governance, and BAL tokens are the vehicle to drive this alignment. [veBAL](veBAL) is an extension of BAL and is used for voting in decentralized governance.
 
 ## Contract Address
 
@@ -211,7 +211,7 @@ This chart outlines the allocation amounts. More details below.
 
 #### Liquidity Providers
 
-Emissions to liquidty providers are decided by a combination of the emissions schedule described above, and [veBAL](./veBAL) voting to determine the allocations that flow to each authorized pool.
+Emissions to liquidty providers are decided by a combination of the emissions schedule described above, and [veBAL](veBAL) voting to determine the allocations that flow to each authorized pool.
 
 #### Founders, Options, Advisors, Investors
 
