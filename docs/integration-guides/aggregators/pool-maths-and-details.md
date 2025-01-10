@@ -1,6 +1,6 @@
 ---
 order: 5
-title: Pool Maths And Details
+title: Pool Types - Maths And Details
 ---
 
 # Pool Maths Reference
@@ -15,11 +15,23 @@ Pools that swap tokens by enforcing a Constant Weighted Product invariant.
 
 See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-weighted).
 
+[Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/weighted)
+
+[Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/weighted.py)
+
+[Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `WeightedPoolFactory`
+
 ## Stable Pool
 
 Pools that swap tokens by enforcing a Stable Math invariant, based on Curve.
 
 See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-stable).
+
+[Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/stable)
+
+[Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/stable.py)
+
+[Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `StablePoolFactory`
 
 Notes:
 * Amplification factor can be dynamic see:
