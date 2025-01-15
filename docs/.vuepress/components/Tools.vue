@@ -71,6 +71,13 @@ const coreTools = [
     details: 'Query swap routes through the SOR ',
     link: '/tools/core/smart-order-router.html',
   },
+  {
+    title: 'Maxis Operations UI',
+    icon: '/images/toolshub/defilytica_simple.png',
+    details:
+      'DAO Operations tooling for incentive management and payload building',
+    link: 'https://balancer.defilytica.tools',
+  },
   // Add more Core Tools as needed
 ];
 
