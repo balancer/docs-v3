@@ -5,7 +5,7 @@ title: Composite Liquidity Router API
 
 # Composite Liquidity Router API
 
-The Composite Liquidity Router can be used to interact with Balancer onchain via [state changing](/concepts/router/onchain-api/composite-liquidity-router-api.html#state-changing-functions) operations or used to [query operations](/concepts/router/onchain-api/composite-liquidity-router-api.html#query-functions) in an off-chain context.
+The Composite Liquidity Router can be used to interact with Balancer onchain via state changing operations or used to query operations in an off-chain context.
 
 This is not the final version; more operations will likely be added.
 
