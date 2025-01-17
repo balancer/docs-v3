@@ -7,6 +7,7 @@ html {
 
 .page {
   display: flex;
+  min-height: calc(100vh - var(--footer-height));
   padding-top: var(--navbar-height);
   padding-left: var(--sidebar-width);
 }
@@ -27,6 +28,11 @@ html {
   background-color: var(--c-bg-navbar);
   transition: background-color var(--t-color), border-color var(--t-color);
   box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.1);
+}
+
+.footer {
+  z-index: 20;
+  position: relative;
 }
 
 .right-anchor {
@@ -50,7 +56,7 @@ html {
   margin: 0;
   top: var(--navbar-height);
   left: 0;
-  bottom: 0;
+  height: 100%;
   box-sizing: border-box;
   border-right: 1px solid var(--c-border);
   overflow-y: auto;
