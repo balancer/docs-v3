@@ -37,10 +37,7 @@ Depending on the network your pool is deployed on, the procedures slightly diffe
    
 4. If no gauge entry was found for your pool, select it
 5. Depending on your pool composition, select a voting cap above 2% (please refer to gauge caps [here](../balancer-v2/gauge-onboarding.md))
-6. Execute the transaction by clicking "Create Mainnet Gauge" 
-
-<img src="/images/incentive-management/gauge_creation_2.png" width="300" alt="asdf">
-
+6. Execute the transaction by clicking "Create Mainnet Gauge"
 7. The gauge ID will show up under event logs and in the UI ([example tx logs](https://etherscan.io/tx/0x4f6057e257f17ed430d13b18bfd9648779369a964df71e1d0db248699c7f14ba#eventlog))
    ![Creation event](/images/incentive-management/gauge_creation_5.png)
 #### Deploying a gauge on a Layer 2 network (Gnosis)
