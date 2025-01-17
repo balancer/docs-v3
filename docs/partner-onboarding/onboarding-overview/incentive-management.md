@@ -108,6 +108,19 @@ Funding is straightforward: you can simply deposit funds into the injector contr
 ## Secondary Reward Setup Checklist
 Given the many steps involved in setting up a secondary rewards program, we made this checklist for you to go through based on the above guides:
 
-
+<ClientOnly>
+  <Checklist 
+    :tasks="[
+      'The reward token is whitelisted (v2)',
+      'Mainnet: Gauge created, L2: Childchain Gauge created',
+      'Injector created and configured (incl. Chainlink Automation)',
+      'Reward token on gauge whitelisted with correct distributor',
+      'Injector is correctly configured',
+      'Injector configuration is loaded and shows up on the operations UI',
+      'The correct amount of funds has been sent to the injector',
+    ]"
+    storage-key="gauge-setup-checklist"
+  />
+</ClientOnly>
 
 
