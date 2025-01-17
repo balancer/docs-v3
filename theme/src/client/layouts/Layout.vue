@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Home from '@theme/Home.vue';
 import Navbar from '@theme/Navbar.vue';
+import Footer from '@theme/Footer.vue';
 import Page from '@theme/Page.vue';
 import Sidebar from '@theme/Sidebar.vue';
 import { usePageData, usePageFrontmatter } from '@vuepress/client';
@@ -133,4 +134,7 @@ const onBeforeLeave = scrollPromise.pending;
       </slot>
     </div>
   </div>
+  <slot name="footer">
+    <Footer />
+  </slot>
 </template>
