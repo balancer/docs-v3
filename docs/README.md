@@ -39,19 +39,4 @@ features:
     details: All things data
     link: /data-and-analytics/README.md
 
-footer:
----
-
-## More Resources
-
-**Github Repos**
-
-- [Smart Contracts](https://github.com/balancer/balancer-v3-monorepo)
-- [Deployments](https://github.com/balancer/balancer-deployments)
-- [SDK](https://github.com/balancer/balancer-sdk)
-- [API](https://github.com/balancer/backend)
-- [Frontend](https://github.com/balancer/frontend-monorepo)
-- [Subgraph](https://github.com/balancer/balancer-subgraph-v3)
-- [V2 Docs](https://docs-v2.balancer.fi)
-
 
