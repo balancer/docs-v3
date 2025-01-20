@@ -5,7 +5,7 @@
 Queries provide the ability to simulate an operation and find its result without executing a transaction. [Balancer Routers](./overview.md#balancer-routers) provide a query for all state changing liquidity operations. An example of how this is useful can be seen when [setting slippage limits](/integration-guides/add-and-remove-liquidity/add-liquidity-to-pool.md#queries-and-safely-setting-slippage-limits).
 
 ## Router queries
-The detailed Router API description can be found in the [Router API section](/concepts/router/onchain-api/router-api.html).
+The detailed Router API description can be found in the [Router API section](/developer-reference/contracts/router-api.html).
 
 - `queryAddLiquidityProportional`
 - `queryAddLiquidityUnbalanced`
@@ -20,13 +20,13 @@ The detailed Router API description can be found in the [Router API section](/co
 - `querySwapSingleTokenExactOut`
 
 ## Batch Router queries
-The detailed Router API description can be found in the [Batch Router API section](/concepts/router/onchain-api/batch-router-api.html).
+The detailed Router API description can be found in the [Batch Router API section](/developer-reference/contracts/batch-router-api.html).
 
 - `querySwapExactIn`
 - `querySwapExactOut`
 
 ## Buffer Router queries
-The detailed Buffer Router API description can be found in the [Buffer Router API section](/concepts/router/onchain-api/buffer-router-api.html).
+The detailed Buffer Router API description can be found in the [Buffer Router API section](/developer-reference/contracts/buffer-router-api.html).
 
 - `queryInitializeBuffer`
 - `queryAddLiquidityToBuffer`
@@ -34,7 +34,7 @@ The detailed Buffer Router API description can be found in the [Buffer Router AP
 
 ## Composite Liquidity Router queries
 
-The detailed Router API description can be found in the [Composite Liquidity Router API section](/concepts/router/onchain-api/composite-liquidity-router-api.html).
+The detailed Router API description can be found in the [Composite Liquidity Router API section](/developer-reference/contracts/composite-liquidity-router-api.html).
 
 - `queryAddLiquidityUnbalancedToERC4626Pool`
 - `queryAddLiquidityProportionalToERC4626Pool`
