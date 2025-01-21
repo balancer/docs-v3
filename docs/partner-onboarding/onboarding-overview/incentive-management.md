@@ -11,6 +11,9 @@ BAL is emitted to whitelisted staking gauges in our veBAL system. For a pool to 
 
 ## Secondary Reward Token Incentives
 The Balancer Maxis have built a sophisticated infrastructure to create and manage secondary reward campaigns for Balancer staking gauges. To make full use of this system, the Maxis provide tooling to facilitate the setup.
+::: info
+To facilitate the management and configuration of seconary reward programs, the Balancer Maxis have built a [DAO Operations UI](https://balancer.defilytica.tools/). It serves as an entry-point to configure, view and modify secondary reward programs and other related DAO payloads.
+:::
 For secondary reward distributions on Balancer, following limitations apply (given Balancer's staking gauges are based on Curve's Vyper implementation):
 1. A staking gauge can have up to 6 reward tokens. The Maxis recommend to use less than 3 to avoid issues if a gauge will receive BAL (and subsequently AURA) rewards.
 2. A gauge distributes rewards in a 1 week schedule after receiving funds. Meaning if you deposit 100 Token A on Monday 00:00 UTC, then those 100 tokens will be distributed over 7 days at a rate of 14.285 tokens / day assuming there is BPT staked in the gauge.
@@ -108,12 +111,12 @@ Given the many steps involved in setting up a secondary rewards program, we made
 <ClientOnly>
   <Checklist 
     :tasks="[
-      'The reward token is whitelisted (v2)',
-      'Mainnet: Gauge created, L2: Childchain Gauge created',
-      'Injector created and configured (incl. Chainlink Automation)',
-      'Reward token on gauge whitelisted with correct distributor',
-      'Injector is correctly configured',
-      'Injector configuration is loaded and shows up on the operations UI',
+      'The reward token is whitelisted (v2) in our [tokenlist](https://github.com/balancer/tokenlists)',
+      'Mainnet: Gauge created, L2: Childchain Gauge created utilizing the [gauge creator tool](https://balancer.defilytica.tools/gauge-creator)',
+      'Injector [created](incentive-management.md#rewards-injector-creation) and [configured](incentive-management.md#rewards-injector-configuration) (incl. Chainlink Automation)',
+      'Reward token on gauge [whitelisted](incentive-management.md#whitelisting-reward-tokens-on-a-target-gauge) while the correct distributor is set',
+      'Injector is correctly [configured](incentive-management.md#rewards-injector-configuration), e.g. target gauges, amounts per period and total amounts.',
+      'Injector configuration is loaded and shows up on the [operations UI](https://balancer.defilytica.tools/rewards-injector)',
       'The correct amount of funds has been sent to the injector',
     ]"
     storage-key="gauge-setup-checklist"
