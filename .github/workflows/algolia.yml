@@ -15,13 +15,13 @@ jobs:
       # TODO: Rework indexing
       CONFIG: '{ "index_name": "v3-docs",
                   "start_urls": [
-                    "https://docs-v3.balancer.fi/",
-                    "https://docs-v3.balancer.fi/integration-guides/",
-                    "https://docs-v3.balancer.fi/build/",
-                    "https://docs-v3.balancer.fi/developer-reference/",
-                    "https://docs-v3.balancer.fi/concepts/core-concepts/introduction.html",
-                    "https://docs-v3.balancer.fi/partner-onboarding/onboarding-overview/introduction.html",
-                    "https://docs-v3.balancer.fi/data-and-analytics/"],
+                    "https://docs.balancer.fi/",
+                    "https://docs.balancer.fi/integration-guides/",
+                    "https://docs.balancer.fi/build/",
+                    "https://docs.balancer.fi/developer-reference/",
+                    "https://docs.balancer.fi/concepts/core-concepts/introduction.html",
+                    "https://docs.balancer.fi/partner-onboarding/onboarding-overview/introduction.html",
+                    "https://docs.balancer.fi/data-and-analytics/"],
                   "selectors": { 
                     "lvl0": "#app header h1",
                     "lvl1": ".page h1",
