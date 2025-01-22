@@ -60,7 +60,7 @@ deployments.
 ## BAL Rewards and Gauges
 
 If you want to receive BAL rewards, set up a proper root gauge on the network your pool was deployed and [apply for a
-gauge](./gauge-onboarding.md)
+gauge](./../onboarding-overview/gauge-onboarding.md)
 
 #### Create a gauge
 
@@ -74,7 +74,7 @@ rewards. In essence following steps need to be performed in terms of gauge creat
 
 ### Apply for receiving BAL rewards through Balancer governance
 
-For more details, consult our [gauge onboarding guide](./gauge-onboarding.md). The timeline to onboard a gauge is as follows:
+For more details, consult our [gauge onboarding guide](./../onboarding-overview/gauge-onboarding.md). The timeline to onboard a gauge is as follows:
 
 1. Post a proposal based on the gauge
    proposal [instruction set](https://forum.balancer.fi/t/instructions-overview/2674/2)

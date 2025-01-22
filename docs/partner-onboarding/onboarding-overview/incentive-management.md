@@ -1,13 +1,16 @@
 ---
 title: Incentive Management
-order: 1
+order: 2
 ---
 
 # Introduction
 The Balancer ecosystem is utilizing a modified version of Curve's vyper gauge infrastructure. Here, we outline how you can utilize our staking gauge system. We cover both how you can apply for a veBAL gauge to receive BAL rewards and how secondary reward programs can be set up.
 
 ## BAL Incentives through veBAL Gauges
-BAL is emitted to whitelisted staking gauges in our veBAL system. For a pool to be eligible for BAL rewards, it needs to be voted in by governance. The process on how to apply for a BAL staking gauge can be found [here](../balancer-v2/gauge-onboarding.md). A guide on how to set up a gauge can be found in the gauge creation [section](incentive-management.md#gauge-creation)
+BAL is emitted to staking gauges that have been added to our veBAL system. For a pool to be eligible for BAL rewards, it needs to be voted in by governance. A guide on how to set up a gauge can be found in the gauge creation [section](incentive-management.md#gauge-creation)
+::: info
+For a gauge to be active in Balancer's veBAL voting list, it needs to be added to / enabled via the Gauge Controller. Therefore, a governance proposal has to be put forward to enable a guage to receive BAL rewards from veBAL voters. Consult the [gauge onboarding FAQ](./../onboarding-overview/gauge-onboarding.md) for more details.
+:::
 
 ## Secondary Reward Token Incentives
 The Balancer Maxis have built a sophisticated infrastructure to create and manage secondary reward campaigns for Balancer staking gauges. To make full use of this system, the Maxis provide tooling to facilitate the setup.
@@ -28,9 +31,9 @@ These sections will provide a step-by-step guide on how to enable, program and d
 ::: info
 The Balancer Maxis are at your service to setup and deploy rewards injectors. You can also manage injectors yourself if you please to do so, and we are happy to help along the setup process
 :::
-### Token Whitelisting
+### Step 1: Token Whitelisting
 Prerequisite for the reward token to be properly picked up by our infrastructure is that it is whitelisted in our tokenlist. Whitelist the reward token by doing a pull-request [here](https://github.com/balancer/tokenlists). Make sure you are providing a checksummed entry for the relevant network.
-### Gauge Creation
+### Step 2: Gauge Creation
 Depending on the network your pool is deployed on, the procedures slightly differ which is explained further below. This assumes that the pool is deployed and has at least a few dollars of liquidity in it. Make sure to check the main app. If the pool is explorable and shows basic stats, it means it has been indexed by our backend, and you can proceed with creating a gauge.
 #### Deploying a gauge on Ethereum Mainnet
 1. Select Ethereum on the [gauge creator tool](https://balancer.defilytica.tools/gauge-creator)
@@ -39,7 +42,7 @@ Depending on the network your pool is deployed on, the procedures slightly diffe
 3. If a gauge has already been created, you can skip this step (UI will show a warning)
    
 4. If no gauge entry was found for your pool, select it
-5. Depending on your pool composition, select a voting cap above 2% (please refer to gauge caps [here](../balancer-v2/gauge-onboarding.md))
+5. Depending on your pool composition, select a voting cap between 2% and an uncapped gauge (please refer to gauge caps [here](./../onboarding-overview/gauge-onboarding.md))
 6. Execute the transaction by clicking "Create Mainnet Gauge"
 7. The gauge ID will show up under event logs and in the UI ([example tx logs](https://etherscan.io/tx/0x4f6057e257f17ed430d13b18bfd9648779369a964df71e1d0db248699c7f14ba#eventlog))
    ![Creation event](/images/incentive-management/gauge_creation_5.png)
@@ -51,26 +54,25 @@ Depending on the network your pool is deployed on, the procedures slightly diffe
 4. Create the Child Chain Gauge and execute the transaction 
 5. There is no need to create a root gauge - only do this if you plan on applying for a veBAL gauge to receive BAL rewards! More detailed instructions on this process can be found [here](https://forum.balancer.fi/t/instructions-overview/2674).
 
-### Rewards Injector Creation
-Depending on your use-case you want to create a rewards injector for your reward token. In that case, you need to follow a series of configuration steps outlined below.
+### Step 3: Rewards Injector Creation
 ::: info
 The Balancer Maxis are the primary POC for incentive management and are happy to assist you along the way of setting up your incentive plans. For more information on the Injector v2 infrastructure, consult the repository [documentation](https://github.com/BalancerMaxis/ChildGaugeInjectorV2).
 :::
+Depending on your use-case you want to create a rewards injector for your reward token. In that case, you need to follow a series of configuration steps outlined below. A rewards injector has the purpose of streamlining the distribution of rewards to gauges on Balancer. It takes care of correct token deposits and timely execution based on Chainlink automation. Furthermore, our rewards injector infrastructure is fully customizable and manageable through our [operations UI](https://balancer.defilytica.tools/rewards-injector) overall streamlining the process. Follow these steps if you want to utilize our infrastructure:
 
-1. Create a new rewards injector from the factory following the [documentation](https://github.com/BalancerMaxis/ChildGaugeInjectorV2?tab=readme-ov-file#deploying-an-injector-using-the-factory).
+1. Create a new rewards injector from the factory following the [documentation](https://github.com/BalancerMaxis/ChildGaugeInjectorV2?tab=readme-ov-file#deploying-an-injector-using-the-factory). Depending on your needs, choose different initial configuration parameters
 ::: tip
 The canonical factory for injectors v2 can be accessed via `0x6142582f8946bf192a4f80ed643a5856d18a7060` on all networks Balancer is currently deployed to.
 :::
-2. Make sure the reward token is [whitelisted](incentive-management.md#token-whitelisting) in our tokenlist
-3. Depending on your needs, choose different initial configuration parameters.
-4. If your new injector has been set up correctly, it will show up in the Injector v2 viewer [drop-down list](https://balancer.defilytica.tools/rewards-injector?version=v2)
+2. If your new injector has been set up correctly, it will show up in the Injector v2 viewer [drop-down list](https://balancer.defilytica.tools/rewards-injector?version=v2)
+3. For the injector to properly work, set up Chainlink automation as outlined in the [injector documentation](https://github.com/BalancerMaxis/ChildGaugeInjectorV2?tab=readme-ov-file#setting-up-a-chainlink-automation-balancer-maxi-specific-notes). If this is not configured, the injector will not automatically trigger reward distributions to gauges.
 
-### Gauge configuration
+### Step 4: Gauge configuration
 #### Whitelisting reward tokens on a target gauge
 ::: tip
 Deploying secondary incentives on Balancer is not fully permissionless. For a token to be added as reward token, an authorized multi-sig needs to whitelist that token. The Balancer Maxis control this infrastructure and will facilitate whitelisting.
 :::
-Before a target pool can receive secondary token rewards, you need to make sure that the reward token has been registered with the correct distributor. On the gauge contract you can read the current configuration via the `reward_data` field by passing the reward token address as input argument. If your token is not whitelisted, follow these steps:
+A gauge can only receive secondary token rewards from a registered `distributor`. On the gauge contract you can read the current configuration via the `reward_data` field by passing the reward token address as input argument. If your reward token is not registered, follow these steps:
 1. Go to the [Add Reward Token to Gauge](https://balancer.defilytica.tools/payload-builder/add-reward-to-gauge) payload builder on the operations UI
 2. For the input arguments, do the following:
    * Target gauge: the gauge you want to whitelist
@@ -80,7 +82,7 @@ Before a target pool can receive secondary token rewards, you need to make sure 
 4. Generate payload and review / simulate via tenderly
 5. Do a pull request for the Balancer Maxis operations repository. A Maxi will review the payload and load it within 12h of receiving the request
 6. Once the payload has been executed by our managed multi-sig, you should see the reward token configuration by using the `reward_data` method
-### Rewards Injector Configuration
+### Step 5: Rewards Injector Configuration
 ::: info
 Be careful when setting up rewards schedules. If Chainlink automation and a program without a start timestamp are setup, this will mean that incentives will directly be distributed if they are present in the injector
 :::
@@ -102,22 +104,23 @@ Now you can create your own schedule with the [injector configuration tool](http
 4. Review if the Tenderly simulation passes correctly
 5. If the Balancer Maxis are set as manager, do a pull request to our repository. If you have set your own multi-sig or other EOA as manager, execute the payload via your safe.
 
-### Funding of the Rewards injector
+### Step 6: Funding of the Rewards injector
 Funding is straightforward: you can simply deposit funds into the injector contract. Rest assured that the configured `owner` can sweep any amounts left in the injector at any time.
+::: warning
+If you have set up a new injector, or if you have modified an incentive program, we advise to only fund it, when you are certain that the configuration will result in the desired outcome. Once an injector has an active program without any start date in the future, it will immediately release funds / start the program after receiving them.
+:::
 
 ## Secondary Reward Setup Checklist
-Given the many steps involved in setting up a secondary rewards program, we made this checklist for you to go through based on the above guides:
+Given the many steps involved in setting up a secondary rewards program, we made this checklist for you to go through based on the above step-by-step guide:
 
 <ClientOnly>
   <Checklist 
     :tasks="[
-      'The reward token is whitelisted (v2) in our [tokenlist](https://github.com/balancer/tokenlists)',
-      'Mainnet: Gauge created, L2: Childchain Gauge created utilizing the [gauge creator tool](https://balancer.defilytica.tools/gauge-creator)',
-      'Injector [created](incentive-management.md#rewards-injector-creation) and [configured](incentive-management.md#rewards-injector-configuration) (incl. Chainlink Automation)',
-      'Reward token on gauge [whitelisted](incentive-management.md#whitelisting-reward-tokens-on-a-target-gauge) while the correct distributor is set',
-      'Injector is correctly [configured](incentive-management.md#rewards-injector-configuration), e.g. target gauges, amounts per period and total amounts.',
-      'Injector configuration is loaded and shows up on the [operations UI](https://balancer.defilytica.tools/rewards-injector)',
-      'The correct amount of funds has been sent to the injector',
+      'Step 1: The reward token is whitelisted (v2) in our [tokenlist](https://github.com/balancer/tokenlists)',
+      'Step 2: Mainnet: Gauge created, L2: Childchain Gauge created utilizing the [gauge creator tool](https://balancer.defilytica.tools/gauge-creator)',
+      'Step 3: Injector [created](incentive-management.md#step-3-rewards-injector-creation) and [configured](incentive-management.md#step-5-rewards-injector-configuration) (incl. Chainlink Automation)',
+      'Step 4: Reward token on the gauge is [whitelisted](incentive-management.md#whitelisting-reward-tokens-on-a-target-gauge) while the correct distributor is set. Injector is correctly [configured](incentive-management.md#rewards-injector-configuration), e.g. target gauges, amounts per period and total amounts display correctly. Injector configuration is loaded and shows up on the [operations UI](https://balancer.defilytica.tools/rewards-injector)',
+      'Step 6: The correct amount of funds has been sent to the injector',
     ]"
     storage-key="gauge-setup-checklist"
   />
