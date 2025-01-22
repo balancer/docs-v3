@@ -48,7 +48,7 @@ Whitelist your token by doing a Pull-Request [here](https://github.com/balancer/
    e.g. `tokenlists/balancer/tokens/arbitrum/0x…`)
 
 #### Onboard to Balancer's gauge system
-If your project intends to receive BAL rewards, consult our [Gauge Onboarding](gauge-onboarding.md) docs guiding you through any further steps needed.
+If your project intends to receive BAL rewards, consult our [Gauge Onboarding](./../onboarding-overview/gauge-onboarding.md) docs guiding you through any further steps needed.
 ::: tip
 Are you interested in receiving core pool status? Read [here](./core-pools.md)
 :::
@@ -71,7 +71,7 @@ Balancer v2's tokenomics around veBAL encourage partaking in various voting ince
 ## Onboarding Guides
 - [Yield-bearing Token Onboarding](onboard-yb-token.md)
 - [Rate Provider Onboarding](../onboarding-overview/rate-providers.md)
-- [Gauge Onboarding](gauge-onboarding.md)
+- [Gauge Onboarding](./../onboarding-overview/gauge-onboarding.md)
 - [Core Pool Framework](core-pools.md)
 
 

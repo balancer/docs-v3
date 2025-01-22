@@ -1,6 +1,6 @@
 ---
 title: Rate Providers
-order: 1
+order: 4
 ---
 
 # Rate Providers
