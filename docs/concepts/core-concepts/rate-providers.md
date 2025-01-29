@@ -58,3 +58,5 @@ struct PoolData {
 ```
 
 Each time a `swap`, `addLiquidity` or `removeLiquidity` operation is performed, the token's rate is read to guarantee accurate results. The `tokenRates` from `PoolData` are internally updated through the `reloadBalancesAndRates` function, which is called as needed by all `swap`, `addLiquidity`, and `removeLiquidity` operations. As mentioned in [token scaling](/concepts/vault/token-scaling.html), data from the external Rate Provider contract is read and stored.
+
+* [API3](https://api3.org/) price feeds supports pools on Arbitrum, Base, Fraxtal and Mode networks
