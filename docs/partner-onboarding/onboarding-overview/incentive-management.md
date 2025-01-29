@@ -126,4 +126,7 @@ Given the many steps involved in setting up a secondary rewards program, we made
   />
 </ClientOnly>
 
+## Direct Incentives on Aura Finance
+Aura Finance is a yield aggregator protocol built on top of Balancer. It allows to configure and stream rewards to their staking contracts (gauges) through their UI. Consult [their docs](https://docs.aura.finance/developers/how-to-___/add-extra-incentives-to-aura-pools) on how to set up direct incentives. Note that incentives placed on the AURA UI will only be streamed to AURA staking gauges and not Balancer gauges!
+
 
