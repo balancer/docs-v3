@@ -19,77 +19,98 @@ export const partnerDecisionTreeConfig: Step[] = [
       'What best describes your current product needs or primary use-case?',
     options: [
       {
-        text: 'Correlated / Yield-Bearing Asset Liquidity',
-        nextStep: 'step1',
+        text: 'Yield Optimization & Liquidity Provision',
+        nextStep: 'yield_step',
       },
       {
-        text: 'Optimised Liquidity for Governance Tokens',
+        text: 'Governance Token Liquidity',
         nextStep: 'resultD',
       },
-      { text: 'Index-Fund Like Products', nextStep: 'resultC' },
       {
-        text: 'Customised Pool Logic',
+        text: 'Index Products or Multi-Token Pools',
+        nextStep: 'resultC',
+      },
+      {
+        text: 'Custom Pool Logic or Extensions',
         nextStep: 'resultE',
       },
       {
-        text: 'Liquidity for LVR Protection',
-        nextStep: 'resultF',
+        text: 'Stablecoin or Correlated Asset Liquidity',
+        nextStep: 'stable_step',
       },
       {
-        text: 'Stable Coin Liquidity',
-        nextStep: 'step2',
+        text: 'LVR Protection',
+        nextStep: 'resultF',
       },
     ],
   },
   {
-    id: 'step1',
-    title: 'Step 1',
-    question:
-      'What feature do you need for correlated asset or yield-bearing liquidity?',
+    id: 'yield_step',
+    title: 'Yield Strategy',
+    question: 'What type of yield strategy are you looking to implement?',
     options: [
       {
-        text: 'Deep liquidity pool for highly-correlated assets containing 50% yield-bearing tokens',
-        nextStep: 'resultA',
+        text: 'Maximum yield with 100% capital efficiency (v3)',
+        nextStep: 'boosted_step',
       },
       {
-        text: 'Deep liquidity for highly correlated assets which do not contain yield-bearing tokens',
+        text: 'Traditional yield-bearing token pool (v2)',
+        nextStep: 'resultA',
+      },
+    ],
+  },
+  {
+    id: 'boosted_step',
+    title: 'Boosted Pools (v3)',
+    question: 'What type of assets are you looking to boost?',
+    options: [
+      {
+        text: 'Stablecoins with Lending Market integration',
+        nextStep: 'resultI',
+      },
+      {
+        text: 'Other yield-generating strategies',
+        nextStep: 'resultJ',
+      },
+    ],
+  },
+  {
+    id: 'stable_step',
+    title: 'Stablecoin Strategy',
+    question:
+      'What is your primary goal for stablecoin or correlated asset liquidity?',
+    options: [
+      {
+        text: 'Maximize yield while maintaining deep liquidity (v3)',
+        nextStep: 'boosted_step',
+      },
+      {
+        text: 'Optimized trading efficiency',
+        nextStep: 'resultH',
+      },
+      {
+        text: 'Traditional stable pool (v2)',
         nextStep: 'resultB',
       },
     ],
   },
   {
-    id: 'step2',
-    title: 'Step 2',
-    question:
-      'What feature do you need for hosting your stable coin liquidity?',
-    options: [
-      {
-        text: 'Maximizing token utilization with additional yield generation of stable coins',
-        nextStep: 'resultG',
-      },
-      {
-        text: 'Customized invariant for highly efficient trading',
-        nextStep: 'resultH',
-      },
-    ],
-  },
-  {
     id: 'resultA',
-    title: 'Composable Stable Pools',
+    title: 'Composable Stable Pools (v2)',
     result:
-      'A <a href="https://docs.balancer.fi/concepts/pools/composable-stable.html#composable-stable-pools" target="_blank" rel="noopener noreferrer">composable stable pool</a> with a rate provider setup will best suit your needs. Consult <a href="/partner-onboarding/balancer-v2/onboard-yb-token.html" target="_blank" rel="noopener noreferrer">our v2 onboarding guide</a> for more details.',
+      'A <a href="https://docs-v2.balancer.fi/concepts/pools/composable-stable.html#composable-stable-pools" target="_blank" rel="noopener noreferrer">composable stable pool</a> with a rate provider setup will best suit your needs. Consult <a href="/partner-onboarding/balancer-v2/onboard-yb-token.html" target="_blank" rel="noopener noreferrer">our v2 onboarding guide</a> for more details.',
   },
   {
     id: 'resultB',
-    title: 'Composable Stable Pools',
+    title: 'Composable Stable Pools (v2)',
     result:
-      'A <a href="https://docs.balancer.fi/concepts/pools/composable-stable.html#composable-stable-pools" target="_blank" rel="noopener noreferrer">composable stable pool</a> without any special requirements. Use <a href="https://app.balancer.fi/#/ethereum/pool/create" target="_blank" rel="noopener noreferrer">this community tool</a> to create a pool. ',
+      'A <a href="https://docs-v2.balancer.fi/concepts/pools/composable-stable.html#composable-stable-pools" target="_blank" rel="noopener noreferrer">composable stable pool</a> without any special requirements. Use <a href="https://balancer.defilytica.tools/pool-creator-v2" target="_blank" rel="noopener noreferrer">this community tool</a> to create a pool.',
   },
   {
     id: 'resultC',
-    title: 'A multi-token pool',
+    title: 'Weighted Pools',
     result:
-      'A multi-token pool with up to 8 tokens will suit best your needs. <a href="https://app.balancer.fi/#/ethereum/pool/create" target="_blank" rel="noopener noreferrer">Create a pool</a> now!',
+      'A weighted pool with up to 8 tokens will best suit your needs for creating index-like products. <a href="https://balancer.defilytica.tools/pool-creator-v2" target="_blank" rel="noopener noreferrer">Create a pool</a> now!',
   },
   {
     id: 'resultD',
@@ -99,26 +120,32 @@ export const partnerDecisionTreeConfig: Step[] = [
   },
   {
     id: 'resultE',
-    title: 'Pools with Hooks',
+    title: 'Pools with Hooks (v3)',
     result:
-      'A Balancer v3 pool with <a href="/concepts/core-concepts/hooks.html" target="_blank" rel="noopener noreferrer">custom hook</a> logic sounds like a perfect fit for your needs. Explore hooks now!',
+      'Balancer v3\'s <a href="/concepts/core-concepts/hooks.html" target="_blank" rel="noopener noreferrer">hooks system</a> allows you to extend existing pool types with custom logic. Perfect for implementing unique features while maintaining core pool efficiency.',
   },
   {
     id: 'resultF',
-    title: 'CowAMM liquidity pool',
+    title: 'CowAMM Liquidity Pool',
     result:
-      'A CowAMM liquidity pool based on their custom implementation based on Balancer might be best suited for your needs',
-  },
-  {
-    id: 'resultG',
-    title: 'Boosted Pools',
-    result:
-      'A <a href="/partner-onboarding/onboarding-overview/products/boostedpools.html" target="_blank" rel="noopener noreferrer">boosted pool</a>  on Balancer v3 will guarantee additional yield generation and high utilization rates of stable coin pairings',
+      'A CowAMM liquidity pool based on their custom implementation might be best suited for your LVR protection needs.',
   },
   {
     id: 'resultH',
     title: 'Gyroscope E-CLPs',
     result:
-        '<a href="https://app.gyro.finance/" target="_blank" rel="noopener noreferrer">Gyroscopes</a> elliptical concentrated liquidity pools offer the best trading efficiency for highly correlated assets with customized trading curves.',
+      '<a href="https://app.gyro.finance/" target="_blank" rel="noopener noreferrer">Gyroscope\'s</a> elliptical concentrated liquidity pools offer the best trading efficiency for highly correlated assets with customized trading curves.',
+  },
+  {
+    id: 'resultI',
+    title: 'Lending Market Boosted Pools (v3)',
+    result:
+      'A v3 <a href="/partner-onboarding/onboarding-overview/products/boostedpools.html" target="_blank" rel="noopener noreferrer">Boosted Pool</a> is perfect for your needs. It offers 100% capital efficiency, maximizing yield through e.g. lending markets while maintaining deep liquidity for trades via an efficient buffer system.',
+  },
+  {
+    id: 'resultJ',
+    title: 'Custom Boosted Pools (v3)',
+    result:
+      'A v3 <a href="/partner-onboarding/onboarding-overview/products/boostedpools.html" target="_blank" rel="noopener noreferrer">Boosted Pool</a> can be integrated with your chosen yield strategy. The buffer system ensures gas-efficient swaps while maintaining 100% capital utilization in your yield-generating protocol.',
   },
 ];
