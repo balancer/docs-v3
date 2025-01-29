@@ -10,7 +10,7 @@ Weighted Math is designed to allow for swaps between any assets whether or not t
 
 Balancer's Weighted Math equation is a generalization of the $x*y=k$ constant product formula, accounting for cases with $n \geq2$ tokens as well as weightings that are not an even 50/50 split.
 
-For more formulas and derivations of the below formulas, please refer to the [Balancer Whitepaper](https://balancer.fi/whitepaper.pdf).
+For more formulas and derivations of the below formulas, please refer to the [Balancer Whitepaper](/whitepaper.pdf).
 
 ## Implementations
 
