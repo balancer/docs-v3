@@ -184,7 +184,7 @@ The trade will execute regardless of whether the Buffer has enough liquidity or 
 
 ### Swapping DAI to USDC via 3 hops.
 
-Let's consider a swap from 10k DAI to USDC. the exchangeRate of 1waDAI - DAI is 1.1 & exchangeRate for waUSDC - USDC is 1.1. Involved pools & Buffers are:
+Let's consider a swap from 10k DAI to USDC. The exchangeRate of 1waDAI - DAI is 1.1 & exchangeRate for waUSDC - USDC is 1.1. Involved pools & Buffers are:
 
 - DAI - waDAI Buffer
 - waDAI - waUSDC Boosted Pool (100% boosted)
@@ -212,9 +212,16 @@ Balances of pool & buffers before the batch swap:
 | ----------------------------- | ----------------------------------------------------- | ------------------------------- | ----------------------------------------------------------------- |
 | 100k USDC                     | 90000 USDC <span style="color:red">(-10k USDC)</span> | 91k waUSDC                      | 100090.9 waUSDC <span style="color:green">(+9090.9 waUSDC)</span> |
 
-### Balances without enough buffer liquidity available in DAI - waDAI buffer
+#### Balances without enough buffer liquidity available in DAI - waDAI buffer
 
-Consider now an EXACT_IN trade of 60k DAI to USDC. The DAI - waDAI buffer does not have enough liquidity to support the trade from its reserves, so it calls into the waDAI contract to wrap DAI to waDAI (amount) and additionally rebalances the buffer to balanced reserves.
+Consider now an EXACT_IN trade of 60k DAI to USDC. The DAI - waDAI buffer does not have enough liquidity to support the trade from its reserves, so it calls into the waDAI contract to wrap DAI to waDAI (amount) and additionally rebalances the buffer to balanced reserves. The exchangeRate of 1waDAI - DAI is 1.1 & exchangeRate for waUSDC - USDC is 1.1.
+
+With the incoming 60000 DAI the buffer wraps 63000 DAI in total as it:
+
+- Needs to give out 54545 waDAI to faciliate the 60k USDC out trade eventually
+- Needs to be balances based on the 1 waDAI = 1.1 DAI exchange rate
+
+Wrapping 63000 DAI gives 57272 waDAI out. The final waDAIBufferBalances after the swap are calculated as 40000 initialBalance + 57272 waDAI from wrapping - 54545 waDAI to faciliate the trade.
 
 | DAIBufferBalance before Swap | DAIBufferBalance after Swap                          | waDAIBufferBalance before Swap | waDAIBufferBalance after Swap                              |
 | ---------------------------- | ---------------------------------------------------- | ------------------------------ | ---------------------------------------------------------- |
