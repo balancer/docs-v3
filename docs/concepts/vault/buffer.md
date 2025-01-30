@@ -21,11 +21,11 @@ It's important to note that ERC4626 liquidity buffers are not Balancer Pools. Th
 If your organization is a DAO and you're seeking to enhance liquidity for your ERC4626 compliant token, Balancer's ERC4626 liquidity buffers can be a valuable tool. By providing POL to these buffers, you can enable LPs of your token to gain increased access to yield-bearing tokens. This arrangement allows LPs to concentrate on [boosted pools](/concepts/explore-available-balancer-pools/boosted-pool.html), while your DAO contributes POL to the buffer.
 :::
 
-
 ## Adding liquidity to a buffer
+
 Liquidity can be added to a buffer for a specific token pair. Buffers must be initialized before use, by invoking the `initializeBuffer` function in the [Buffer Router](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BufferRouter.sol). Initialization is the only operation that can be done "unbalanced," and sets the initial proportions of wrapped and underlying tokens. Thereafter, liquidity can only be added and removed proportionally. This is for simplicity and security reasons, as allowing ongoing unbalanced adds/removes would mean supporting implicit wrap/unwrap operations (in the same way unbalanced liquidity operations on pools involve an implicit swap).
 
-it is strongly recommended to initialize ERC4626 buffers *before* deploying any pools with corresponding wrapped tokens. To ensure the pools work as intended, buffers should be created and funded by sponsors prior to deploying pools designed to use them.
+it is strongly recommended to initialize ERC4626 buffers _before_ deploying any pools with corresponding wrapped tokens. To ensure the pools work as intended, buffers should be created and funded by sponsors prior to deploying pools designed to use them.
 
 Note that from an economic perspective, there is no intrinsic benefit to being an LP in a buffer. Buffers aren’t pools, so there are no swap fees, no yield participation (compared to simply HODLing), and no connection to the LM system. Funding them is permissionless, but who would do it?
 
@@ -60,6 +60,7 @@ function initializeBuffer(
 ```
 
 Thereafter, additional liquidity can be added by invoking the `addLiquidityToBuffer` function in the [Buffer Router](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BufferRouter.sol), where you designate the ERC4626 Token as the buffer reference. Note that for security reasons, liquidity can only be added (or removed) proportionally. It's important to note that a buffer can still function with zero liquidity. It can be used to wrap and unwrap assets, meaning that even an empty buffer can facilitate swaps through the Vault.
+
 ```solidity
 /**
  * @notice Adds liquidity proportionally to an internal ERC4626 buffer in the Vault.
@@ -85,8 +86,9 @@ function addLiquidityToBuffer(
 ) external returns (uint256 amountUnderlyingIn, uint256 amountWrappedIn);
 ```
 
-## Removing liquidity from a buffer 
-After you've added liquidity to a buffer, you have the option to remove a specified amount based on the share amount. This is done by invoking the function `removeLiquidityFromBuffer` on the Vault. This function will subsequently burn a specified amount of your bufferShares and return the corresponding amount of tokens that you had previously provided. 
+## Removing liquidity from a buffer
+
+After you've added liquidity to a buffer, you have the option to remove a specified amount based on the share amount. This is done by invoking the function `removeLiquidityFromBuffer` on the Vault. This function will subsequently burn a specified amount of your bufferShares and return the corresponding amount of tokens that you had previously provided.
 
 Note that in contrast to adding liquidity, removing liquidity depends critically on knowing the identity of the sender - otherwise, a malicious actor could withdraw liquidity belonging to another address. Since the Router must be trusted to send the correct sender to the Vault, removing liquidity through the Router would require governance to grant permission to that Router to perform the operation. This is not ideal, as it's a potential vector to lock funds (if governance revoked the permission), or even steal funds (if governance approved a malicious Router).
 
@@ -118,14 +120,15 @@ function removeLiquidityFromBuffer(
     uint256 minAmountUnderlyingOutRaw,
     uint256 minAmountWrappedOutRaw
 ) external returns (uint256 removedUnderlyingBalanceRaw, uint256 removedWrappedBalanceRaw);
-``` 
+```
 
+## Using a buffer to swap.
 
-## Using a buffer to swap. 
 The swapper has the responsibility to decide whether a specific swap route should use Buffers by indicating if a given `pool` is a buffer. Remember: You can always use a buffer even it is does not have liquidity (instead it will simply wrap or unwrap). This is done by setting the boolean entry in the `SwapPathStep` struct.
 
-The `pool` param in this particular case is the wrapped Tokens entrypoint, meaning the address on which the user would call deposit. In the case of Aave, this would be waUSDC. 
-``` solidity
+The `pool` param in this particular case is the wrapped Tokens entrypoint, meaning the address on which the user would call deposit. In the case of Aave, this would be waUSDC.
+
+```solidity
 struct SwapPathStep {
     address pool;
     IERC20 tokenOut;
@@ -136,9 +139,10 @@ struct SwapPathStep {
 
 The availability of sufficient liquidity in the buffer affects the gas cost of the swap. If the buffer lacks enough liquidity, the gas cost increases. This is because the Vault has to get the additional liquidity from the lending protocol, which involves either depositing into or withdrawing from it.
 
-Buffers aim to streamline the majority of trades by eliminating the need to wrap or unwrap the swapper's tokens. Instead, they route these tokens through the Balancer trade paths. 
+Buffers aim to streamline the majority of trades by eliminating the need to wrap or unwrap the swapper's tokens. Instead, they route these tokens through the Balancer trade paths.
 
 In the case of trading DAI to USDC via (DAI-waDAI Buffer, waDAI - waUSDC Boosted pool, USDC-waUSDC Buffer) for a 3 hop trade the `SwapPathExactAmountIn` would look like:
+
 ```solidity
 struct SwapPathExactAmountIn {
         IERC20 tokenIn;
@@ -179,7 +183,9 @@ SwapPathExactAmountIn({
 The trade will execute regardless of whether the Buffer has enough liquidity or not. Remember: If the buffer does not have enough liquidity it will simply additionally wrap or unwrap (and incur additional gas cost).
 
 ### Swapping DAI to USDC via 3 hops.
+
 Let's consider a swap from 10k DAI to USDC. the exchangeRate of 1waDAI - DAI is 1.1 & exchangeRate for waUSDC - USDC is 1.1. Involved pools & Buffers are:
+
 - DAI - waDAI Buffer
 - waDAI - waUSDC Boosted Pool (100% boosted)
 - USDC - waUSDC Buffer
@@ -194,38 +200,35 @@ Considering these three pools only, the way to swap through them is via a `swapE
 
 Balances of pool & buffers before the batch swap:
 
-| DAIBufferBalance before Swap         | DAIBufferBalance after Swap                                      | waDAIBufferBalance before Swap         | waDAIBufferBalance after Swap |
-| --------                             | -----------------------------------------------------            | --------                               | -  |
-| 110k DAI                             | 120k DAI <span style="color:green">(+10k DAI)</span>             | 91k waDAI                              | 81909.1 waDAI  <span style="color:red">(-9090.9 waDAI)</span> |
+| DAIBufferBalance before Swap | DAIBufferBalance after Swap                          | waDAIBufferBalance before Swap | waDAIBufferBalance after Swap                                |
+| ---------------------------- | ---------------------------------------------------- | ------------------------------ | ------------------------------------------------------------ |
+| 110k DAI                     | 120k DAI <span style="color:green">(+10k DAI)</span> | 91k waDAI                      | 81909.1 waDAI <span style="color:red">(-9090.9 waDAI)</span> |
 
-| BoostedPool waDAI Balance before Swap|  BoostedPool waDAI Balance after Swap                            | BoostedPool waUSDC Balance before Swap | BoostedPool waUSDC Balance after Swap |
-| --------                             | -----------------------------------------------------            | --------                               | - |
-| 900k waDAI                           | 909090.9 waDAI  <span style="color:green">(+9090.9 waDAI)</span> | 900k waUSDC                            | 890909.1 waUSDC <span style="color:red">(-9090.9 waUSDC)</span> |
+| BoostedPool waDAI Balance before Swap | BoostedPool waDAI Balance after Swap                            | BoostedPool waUSDC Balance before Swap | BoostedPool waUSDC Balance after Swap                           |
+| ------------------------------------- | --------------------------------------------------------------- | -------------------------------------- | --------------------------------------------------------------- |
+| 900k waDAI                            | 909090.9 waDAI <span style="color:green">(+9090.9 waDAI)</span> | 900k waUSDC                            | 890909.1 waUSDC <span style="color:red">(-9090.9 waUSDC)</span> |
 
-| USDCBufferBalance before Swap        | USDCBufferBalance after Swap                                     | waUSDCBufferBalance before Swap        | waUSDCBufferBalance after Swap |
-| --------                             | -----------------------------                                    | --------                               | - |
-| 100k USDC                            | 90000 USDC <span style="color:red">(-10k USDC)</span>            | 91k waUSDC                             | 100090.9 waUSDC <span style="color:green">(+9090.9 waUSDC)</span> |
-
+| USDCBufferBalance before Swap | USDCBufferBalance after Swap                          | waUSDCBufferBalance before Swap | waUSDCBufferBalance after Swap                                    |
+| ----------------------------- | ----------------------------------------------------- | ------------------------------- | ----------------------------------------------------------------- |
+| 100k USDC                     | 90000 USDC <span style="color:red">(-10k USDC)</span> | 91k waUSDC                      | 100090.9 waUSDC <span style="color:green">(+9090.9 waUSDC)</span> |
 
 ### Balances without enough buffer liquidity available in DAI - waDAI buffer
 
 Consider now an EXACT_IN trade of 60k DAI to USDC. The DAI - waDAI buffer does not have enough liquidity to support the trade from its reserves, so it calls into the waDAI contract to wrap DAI to waDAI (amount) and additionally rebalances the buffer to balanced reserves.
 
-| DAIBufferBalance before Swap         | DAIBufferBalance after Swap                                              | waDAIBufferBalance before Swap         | waDAIBufferBalance after Swap |
-| --------                             | -----------------------------------------------------                    | --------                               | -  |
-| 50k  DAI                             | 44761 DAI <span style="color:red">(-5239 DAI)</span>                     | 40k waDAI                              | 40692 waDAI  <span style="color:green">(+692 waDAI)</span> |
+| DAIBufferBalance before Swap | DAIBufferBalance after Swap                          | waDAIBufferBalance before Swap | waDAIBufferBalance after Swap                              |
+| ---------------------------- | ---------------------------------------------------- | ------------------------------ | ---------------------------------------------------------- |
+| 50k DAI                      | 47000 DAI <span style="color:red">(-3000 DAI)</span> | 40k waDAI                      | 42727 waDAI <span style="color:green">(+2727 waDAI)</span> |
 
-| BoostedPool waDAI Balance before Swap|  BoostedPool waDAI Balance after Swap                                    | BoostedPool waUSDC Balance before Swap | BoostedPool waUSDC Balance after Swap |
-| --------                             | -----------------------------------------------------                    | --------                               | - |
-| 900k waDAI                           | 954545.45 waDAI  <span style="color:green">(+54545.45 waDAI)</span>      | 900k waUSDC                            | 845454.55 waUSDC <span style="color:red">(-54545.45 waUSDC)</span> |
+| BoostedPool waDAI Balance before Swap | BoostedPool waDAI Balance after Swap                               | BoostedPool waUSDC Balance before Swap | BoostedPool waUSDC Balance after Swap                              |
+| ------------------------------------- | ------------------------------------------------------------------ | -------------------------------------- | ------------------------------------------------------------------ |
+| 900k waDAI                            | 954545.45 waDAI <span style="color:green">(+54545.45 waDAI)</span> | 900k waUSDC                            | 845454.55 waUSDC <span style="color:red">(-54545.45 waUSDC)</span> |
 
-| USDCBufferBalance before Swap        | USDCBufferBalance after Swap                                             | waUSDCBufferBalance before Swap        | waUSDCBufferBalance after Swap |
-| --------                             | -----------------------------                                            | --------                               | - |
-| 100k USDC                            | 40000 USDC <span style="color:red">(-60000 USDC)</span>                  | 91k waUSDC                             | 145545.45 waUSDC <span style="color:green">(+54545.45 waUSDC)</span> |
+| USDCBufferBalance before Swap | USDCBufferBalance after Swap                            | waUSDCBufferBalance before Swap | waUSDCBufferBalance after Swap                                       |
+| ----------------------------- | ------------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------- |
+| 100k USDC                     | 40000 USDC <span style="color:red">(-60000 USDC)</span> | 91k waUSDC                      | 145545.45 waUSDC <span style="color:green">(+54545.45 waUSDC)</span> |
 
 Even though the DAI - waDAI buffer did not have enough liquidity the trade was successfully routed via Balancer. The difference now is that the Vault utilized the buffer internal wrapping capability to wrap DAI into waDAI & rebalanced itself.
-
-
 
 <style scoped>
 table {
