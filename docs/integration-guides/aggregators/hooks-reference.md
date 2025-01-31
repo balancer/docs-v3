@@ -1,42 +1,42 @@
 ---
-order: 5
-title: Pool Types - Maths And Details
+order: 6
+title: Hook Ref - Maths And Details
 ---
 
-# Pool Maths Reference
+# Hooks Reference
 
-Explore our [GitHub repository](https://github.com/balancer/balancer-maths) containing reference mathematical implementations, in Javascript and Python, for supported Balancer pool types. Designed to assist developers and integrators in understanding the underlying swap calculations, these implementations can be imported as a packages into your project or serve as a reference for your own implementation.
+Explore our [GitHub repository](https://github.com/balancer/balancer-maths) containing reference mathematical implementations, in Javascript and Python, for supported Balancer hook types. Designed to assist developers and integrators in understanding the underlying swap calculations, these implementations can be imported as a packages into your project or serve as a reference for your own implementation.
 
-# Supported Pool Types
+For more details about Balancer V3 Hooks implementation see [Hooks Core Concepts](/concepts/core-concepts/hooks.md).
 
-## Weighted Pool
+# Supported Hook Types
 
-Pools that swap tokens by enforcing a Constant Weighted Product invariant.
+## Stable Surge Hook
 
-See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-weighted).
+[Intro blog post](https://medium.com/balancer-protocol/balancers-stablesurge-hook-09d2eb20f219).
 
-[Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/weighted)
+Pools with StableSurge hook will be deployed from a [factory](https://github.com/balancer/balancer-v3-monorepo/blob/2f088c6b8f66ad55885d257c1e3debe2a6e21e97/pkg/pool-hooks/contracts/StableSurgePoolFactory.sol).
 
-[Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/weighted.py)
+See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/2f088c6b8f66ad55885d257c1e3debe2a6e21e97/pkg/pool-hooks/contracts/StableSurgeHook.sol).
 
-[Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `WeightedPoolFactory`
+[Typescript maths reference](https://github.com/balancer/balancer-maths/blob/eeff3ef8cf1105a0aaa6d96a4c0f8b7a62135256/typescript/src/hooks/stableSurgeHook.ts)
 
-## Stable Pool
+Python maths reference - WIP.
 
-Pools that swap tokens by enforcing a Stable Math invariant, based on Curve.
-
-See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-stable).
-
-[Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/stable)
-
-[Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/stable.py)
-
-[Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `StablePoolFactory`
+[Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `StableSurgePoolFactory` WIP
 
 Notes:
-* Amplification factor can be dynamic see:
-  * getAmplificationParameter() view function
-  * AmpUpdateStarted & AmpUpdateStopped events
+* This uses the [onComputeDynamicSwapFeePercentage](/developer-reference/contracts/hooks-api.md#oncomputedynamicswapfeepercentage) hook.
+* Maths requires the configurable `maxSurgeFeePercentage` and `thresholdPercentage` values which can be fetched and tracked using the following functions and events:
+```solidity
+function getMaxSurgeFeePercentage(address pool) external view returns (uint256);
+
+event ThresholdSurgePercentageChanged(address indexed pool, uint256 newSurgeThresholdPercentage);
+
+function getSurgeThresholdPercentage(address pool) external view returns (uint256);
+
+event MaxSurgeFeePercentageChanged(address indexed pool, uint256 newMaxSurgeFeePercentage);
+```
 
 ## Gyro 2CLP
 
