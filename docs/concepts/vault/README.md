@@ -31,3 +31,4 @@ The result is pool contracts that are compact and much easier to reason about.
   - [Swap fee](/concepts/vault/swap-fee.html)
   - [Live balances](/concepts/vault/token-scaling.html#live-balances)
   - [Liquidity invariant approximation](./features/liquidity-invariant-approximation.html)
+  - [Flash Loans](./features/flash-loans.html)
