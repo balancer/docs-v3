@@ -75,6 +75,6 @@ contract BalancerFlashLoan {
 Key Considerations when using Flash Loans:
 - Ensure Approval: If interacting with other contracts, ensure the Balancer Vault has sufficient token allowance.
 - Transaction Atomicity: The entire flash loan execution and repayment must occur within the same transaction.
-- Settlement Accuracy: The `settle()` function is required to inform the Vault that the borrowed funds have been repaid.
+- Settlement Accuracy: The `settle()` function is required to inform the Vault that the borrowed funds have been repaid and to settle the balances.
 :::
 
