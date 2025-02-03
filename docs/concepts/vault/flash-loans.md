@@ -48,17 +48,17 @@ contract BalancerFlashLoan {
     function executeFlashLoan(uint256 amount) external onlyOwner {
         // Prepare calldata for the vault callback
         bytes memory userData = abi.encode(amount);
-        balancerVault.unlock(abi.encodeWithSelector(this.flashLoanCallback.selector, userData));
+        balancerVault.unlock(abi.encodeWithSelector(this.receiveFlashLoan.selector, userData));
     }
 
-    function flashLoanCallback(bytes memory userData) external {
+    function receiveFlashLoan(bytes memory userData) external {
         require(msg.sender == address(balancerVault), "Unauthorized callback");
 
         // Decode flash loan amount
         uint256 amount = abi.decode(userData, (uint256));
 
-        // Receive the borrowed tokens
-        IERC20(loanToken).transferFrom(address(balancerVault), address(this), amount);
+        // Send some tokens from the vault to this contract (taking a flash loan)
+        balancerVault.sendTo(IERC20(loanToken), address(this), amount);
 
         // Execute any logic with the borrowed funds (e.g., arbitrage, liquidation, etc.)
 
