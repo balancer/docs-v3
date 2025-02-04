@@ -1,15 +1,28 @@
 <template>
   <div class="decision-tree">
-    <div class="step-container" v-if="currentStep">
+    <div v-if="currentStep" class="step-container">
       <h2 class="step-title">{{ currentStep.title }}</h2>
-      <p class="step-question" v-if="currentStep.question">{{ currentStep.question }}</p>
-      <div class="options-container" v-if="currentStep.options">
-        <button class="option-button" v-for="option in currentStep.options" :key="option.text" @click="goToStep(option.nextStep)">
+      <p v-if="currentStep.question" class="step-question">
+        {{ currentStep.question }}
+      </p>
+      <div v-if="currentStep.options" class="options-container">
+        <button
+          v-for="option in currentStep.options"
+          :key="option.text"
+          class="option-button"
+          @click="goToStep(option.nextStep)"
+        >
           {{ option.text }}
         </button>
       </div>
-      <p class="step-result" v-if="currentStep.result" v-html="currentStep.result"></p>
-      <button class="reset-button" v-if="isResult" @click="reset">Restart</button>
+      <p
+        v-if="currentStep.result"
+        class="step-result"
+        v-html="currentStep.result"
+      ></p>
+      <button v-if="isResult" class="reset-button" @click="reset">
+        Restart
+      </button>
     </div>
   </div>
 </template>
@@ -25,7 +38,7 @@ export default defineComponent({
   data() {
     return {
       currentStepId: 'start',
-      steps: partnerDecisionTreeConfig
+      steps: partnerDecisionTreeConfig,
     };
   },
   computed: {
@@ -34,7 +47,7 @@ export default defineComponent({
     },
     isResult(): boolean {
       return !!this.currentStep?.result;
-    }
+    },
   },
   methods: {
     goToStep(stepId: string) {
@@ -42,8 +55,8 @@ export default defineComponent({
     },
     reset() {
       this.currentStepId = 'start';
-    }
-  }
+    },
+  },
 });
 </script>
 

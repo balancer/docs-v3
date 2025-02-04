@@ -3,93 +3,75 @@ title: Yield-bearing Asset Onboarding
 order: 2
 ---
 
-# Onboard your Yield-bearing Asset to Balancer v2
-Onboarding of your yield-bearing asset involves a few steps to fully leverage Balancer tech. These steps include
-whitelisting of your token, provision of a rate provider for optimized trading as well as applying to a Balancer gauge
-to receive BAL rewards if your project wishes to do so.
-The following chapters outline the steps needed and points towards all relevant resources to deploy your liquidity on
-Balancer v2.
+# Onboarding Yield-bearing Assets
 
-## Token Whitelisting
+This guide outlines the process of onboarding yield-bearing assets to Balancer v2. To fully leverage Balancer's technology, you'll need to complete several key steps including token setup, rate provider implementation, pool creation, and optional gauge setup for BAL rewards.
 
-Whitelist your token by doing a Pull-Request [here](https://github.com/balancer/tokenlists). This is needed to fully enable trading of your token on our platform.
+## Step-by-Step Onboarding Process
 
-1. Provide token images and store png files with the token address like `0xba100000625a3754423978a60c9317c58a424e3D.png`
-2. Update `tokenlists/balancer/tokens` and the corresponding network typescript file by adding your token address (
-   e.g. `tokenlists/balancer/tokens/arbitrum/0x…`)
+### 1. Token Setup
+First, ensure your token is properly whitelisted on Balancer. See our [token whitelisting guide](./token-whitelisting.md) for detailed instructions.
 
-## Rate Provider
-::: tip
-Consult our [rate provider onboarding FAQ](../onboarding-overview/rate-providers.md) for more details
-:::
-Given you want to onboard a yield-bearing asset stable pair with a stable pool, it is required that you provide a vetted
-in rate provider upon pool creation.
-For security reasons and to make sure your rate provider adheres to
-Balancer’s standards, please initiate a rate provider review [here](https://github.com/balancer/code-review/issues)
-
-::: info
-Depending on the complexity of your rate provider, reviews usually take up to 1-2 weeks for Balancer labs to complete.
-Consult the [issue board](https://github.com/balancer/code-review/issues) for the review status
+### 2. Rate Provider Implementation
+::: tip Documentation
+For detailed information, see our [rate provider onboarding FAQ](../onboarding-overview/rate-providers.md)
 :::
 
+For yield-bearing asset stable pairs using a stable pool, you must provide a vetted rate provider during pool creation:
 
-A registry of already reviewed providers can be
-found [here](https://github.com/balancer/code-review/tree/main/rate-providers)
+1. Review existing rate providers in our [registry](https://github.com/balancer/code-review/tree/main/rate-providers)
+2. If needed, submit your rate provider for review [here](https://github.com/balancer/code-review/issues)
 
-## Pool Creation and Initialization
-
-Create the pool (with the help from Balancer contributors)
-
-- Go to the [community pool creator tool](https://pool-creator.web.app/)
-- Choose ComposableStable Pool and make sure `Yield Protocol Fee Exempt` is `false`
-- Approve and Add your token and your rate provider that has been approved in step 2
-- Add any other token (and rate providers) for up to 5 tokens
-- Create the pool
-
-After successful pool creation, make sure to perform an init join for this pool type to seed initial liquidity
-
-## Data Endpoints for Yield metrics (APR)
-
-Provide an API endpoint for your yield bearing token, ideally with <code>api-yourtoken</code> and the APR as one of the
-return values. Contributors
-will make sure the APR is propagated in our front-end.
-You can provide your endpoint in our [yield token registry](https://github.com/balancer/yield-tokens). This will
-guarantee that our backend will pick up token yield correctly and ultimately display the rate correctly on our front-end
-deployments.
-
-## BAL Rewards and Gauges
-
-If you want to receive BAL rewards, set up a proper root gauge on the network your pool was deployed and [apply for a
-gauge](./../onboarding-overview/gauge-onboarding.md)
-
-#### Create a gauge
-
-:::info
-A detailed overview of target chain gauge creation endpoints can be
-found [here](https://forum.balancer.fi/t/instructions-overview/2674)
+::: info Review Timeline
+Rate provider reviews typically take 1-2 weeks for Balancer Labs to complete. Monitor the [issue board](https://github.com/balancer/code-review/issues) for review status.
 :::
 
-Depending on the network you want to create a gauge, several steps are needed to onboard your pool to receive BAL
-rewards. In essence following steps need to be performed in terms of gauge creation
+### 3. Pool Creation and Initialization
 
-### Apply for receiving BAL rewards through Balancer governance
+Use the [community pool creator tool](https://balancer.defilytica.tools/pool-creator-v2) to create your pool:
 
-For more details, consult our [gauge onboarding guide](./../onboarding-overview/gauge-onboarding.md). The timeline to onboard a gauge is as follows:
+1. Select ComposableStable Pool type
+2. Set `Yield Protocol Fee Exempt` to `false`
+3. Add your token and approved rate provider
+4. Add additional tokens (up to 5) with their rate providers
+5. Create the pool
+6. Perform an init join to seed initial liquidity
 
-1. Post a proposal based on the gauge
-   proposal [instruction set](https://forum.balancer.fi/t/instructions-overview/2674/2)
-2. Balancer contributors will make sure all criteria are met and post votes by Thursdays
-3. The voting round lasts from Thursday 8PM CET until the following Monday 8PM CET
-4. After a successful vote, an on-chain transaction to add gauges to the gauge controller has to be executed. This
-   usually happens until Tuesday evening CET
-5. The newly voted in gauge should be visible to vote for on
-   the [veBAL voting page](https://app.balancer.fi/#/ethereum/vebal)
+### 4. APR Data Integration
 
-::: tip
-If your gauge is deployed on Ethereum mainnet, BAL rewards will flow shortly after the last voting round concludes. If
-you deployed a gauge on any L2 network (e.g. Arbitrum, Polygon POS) there is a one week delay until rewards are streamed
-to the corresponding gauge.
+To ensure accurate yield metrics display:
+
+1. Provide an API endpoint for your yield-bearing token
+   - Format: `api-yourtoken`
+   - Include APR in return values
+2. Register your endpoint in the [yield token registry](https://github.com/balancer/yield-tokens)
+3. This ensures correct APR display across Balancer frontend deployments
+
+### 5. BAL Rewards Setup (Optional)
+
+If you want to receive BAL rewards, you'll need to set up a gauge and apply through governance.
+
+#### Gauge Creation
+::: info Network-Specific Instructions
+Find detailed gauge creation endpoints for different networks in our [instructions overview](https://forum.balancer.fi/t/instructions-overview/2674)
 :::
 
+#### Governance Application Timeline
 
+1. Submit proposal following the [instruction set](https://forum.balancer.fi/t/instructions-overview/2674/2)
+2. Contributor review by Thursday
+3. Voting period: Thursday 8PM CET to Monday 8PM CET
+4. On-chain gauge controller transaction by Tuesday evening CET
+5. Gauge appears on [veBAL voting page](https://app.balancer.fi/#/ethereum/vebal)
 
+::: tip Reward Distribution
+- Ethereum mainnet: BAL rewards begin after voting round
+- L2 networks (Arbitrum, Polygon POS): One week delay before reward streaming
+  :::
+
+## Additional Resources
+
+- [Gauge Onboarding Guide](../onboarding-overview/gauge-onboarding.md)
+- [Rate Provider Documentation](../onboarding-overview/rate-providers.md)
+- [Core Pool Framework](../onboarding-overview/core-pools.md)
+- [Protocol Fees Documentation](../../concepts/governance/protocol-fees.md)

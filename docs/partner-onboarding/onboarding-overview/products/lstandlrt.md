@@ -11,13 +11,13 @@ counterparts. These tokenised assets allow users to gain exposure to both on-cha
 compounded within a single token. Compared to traditional AMM design, Balancer uses a variety of new concepts to leverage yield-bearing token liquidity while offering optimal results to liquidity providers (LPs) and traders by optimizing trade routes and exchange rates between assets.
 This is achieved by utilizing three core components:
 1. [Rate provider](../rate-providers.md) technology
-2. [Core Pool Dynamics](../../balancer-v2/core-pools.md)
+2. [Core Pool Dynamics](../core-pools.md)
 3. [Boosted pools](../products/boostedpools.md)
 
 #### Rate provider technology
 By utilizing [rate provider](../rate-providers.md) technology, Balancer guarantees optimal swaps for traders by quoting an on-chain rate of the yield-bearing asset. As a result a trader gets the most up-to-date quote and trading amount when routed through Balancer while LPs get more trading volume by optimizing and rebalancing the token composition in stableswap pools.
 #### Revenue Share Model: Core Pool Dynamics
-To align token emissions with asset performance, Balancer governance introduced the [core pool framework](../../balancer-v2/core-pools.md). In short, if a pool consists of at least 50% yield-bearing assets it qualifies for receiving a share of the fees that the DAO collects on secondary layers such as voting markets which then increase token emissions to pools.
+To align token emissions with asset performance, Balancer governance introduced the [core pool framework](../core-pools.md). In short, if a pool consists of at least 50% yield-bearing assets it qualifies for receiving a share of the fees that the DAO collects on secondary layers such as voting markets which then increase token emissions to pools.
 #### Boosted Pools
 With Balancer v3, you have the opportunity to combine your yield-bearing asset with boosted pool tokens to maximize yield for liquidity providers. Balancers [vault architecture](../../../concepts/vault/) guarantees deep liquidity out of the box. This is an optional but additional attractive feature that can be leveraged when onboarding your token to Balancer.
 
