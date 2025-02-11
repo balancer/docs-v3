@@ -33,7 +33,7 @@ Incentives on mainnet are now accrued each block. Protocol fees are distributed 
 
 ### Is there a way to view how much total veBAL there is?
 
-Yes, that information can be found on the [veBAL Dune Dashboard](https://dune.xyz/balancerlabs/veBAL)
+Yes, that information can be found on the [veBAL Dune Dashboard](https://dune.com/balancer/veBAL)
 
 ### How much BPT (B-80BAL-20WETH) do I stake to maximize my multiplier? What amount do you need to stake at 1 year to hit the 2.5x boost for liquidity incentives?
 
