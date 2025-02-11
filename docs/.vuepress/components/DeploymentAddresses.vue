@@ -128,6 +128,15 @@ const CONTRACT_GROUPS = {
       );
     },
   },
+  routers: {
+    requireV3: true,
+    contracts: [
+      'Router',
+      'BatchRouter',
+      'BufferRouter',
+      'CompositeLiquidityRouter',
+    ],
+  },
 };
 
 export default defineComponent({

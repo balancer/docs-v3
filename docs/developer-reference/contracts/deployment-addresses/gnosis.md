@@ -10,6 +10,10 @@ For more information on specific deployments as well as changelogs for different
 
 <DeploymentAddresses chain="gnosis" :active="true" group="core" />
 
+### Routers
+
+<DeploymentAddresses chain="gnosis" :active="true" group="routers" />
+
 ### Pool Factories
 
 <DeploymentAddresses chain="gnosis" :active="true" group="poolfactory" />
