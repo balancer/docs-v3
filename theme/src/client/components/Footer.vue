@@ -30,7 +30,7 @@
                 <li><a href="https://balancer.fi/pools" target="_blank" rel="noopener noreferrer">Explore pools</a></li>
                 <li><a href="https://pool-creator.balancer.fi/" target="_blank" rel="noopener noreferrer">Create pools</a></li>
                 <li><a href="https://balancer.fi/swap/ethereum/ETH" target="_blank" rel="noopener noreferrer">Swap tokens</a></li>
-                <li><a href="https://app.balancer.fi/#/vebal" target="_blank" rel="noopener noreferrer">Get veBAL</a></li>
+                <li><a href="https://app.balancer.fi/#/ethereum/vebal" target="_blank" rel="noopener noreferrer">Get veBAL</a></li>
                 <li><a href="https://dune.com/balancer" target="_blank" rel="noopener noreferrer">Dune Dashboards</a></li>
             </ul>
             </div>
