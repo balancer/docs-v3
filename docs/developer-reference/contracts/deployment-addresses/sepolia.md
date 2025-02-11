@@ -10,6 +10,10 @@ For more information on specific deployments as well as changelogs for different
 
 <DeploymentAddresses chain="sepolia" :active="true" group="core" />
 
+### Routers
+
+<DeploymentAddresses chain="sepolia" :active="true" group="routers" />
+
 ### Pool Factories
 
 <DeploymentAddresses chain="sepolia" :active="true" group="poolfactory" />

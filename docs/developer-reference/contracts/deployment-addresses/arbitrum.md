@@ -10,6 +10,10 @@ For more information on specific deployments as well as changelogs for different
 
 <DeploymentAddresses chain="arbitrum" :active="true" group="core" />
 
+### Routers
+
+<DeploymentAddresses chain="arbitrum" :active="true" group="routers" />
+
 ### Pool Factories
 
 <DeploymentAddresses chain="arbitrum" :active="true" group="poolfactory" />
