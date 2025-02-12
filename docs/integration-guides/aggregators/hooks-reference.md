@@ -13,20 +13,13 @@ For more details about Balancer V3 Hooks implementation see [Hooks Core Concepts
 
 ## Stable Surge Hook
 
-[Intro blog post](https://medium.com/balancer-protocol/balancers-stablesurge-hook-09d2eb20f219).
-
-Pools with StableSurge hook will be deployed from a [factory](https://github.com/balancer/balancer-v3-monorepo/blob/2f088c6b8f66ad55885d257c1e3debe2a6e21e97/pkg/pool-hooks/contracts/StableSurgePoolFactory.sol).
-
-See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/2f088c6b8f66ad55885d257c1e3debe2a6e21e97/pkg/pool-hooks/contracts/StableSurgeHook.sol).
-
-[Typescript maths reference](https://github.com/balancer/balancer-maths/blob/eeff3ef8cf1105a0aaa6d96a4c0f8b7a62135256/typescript/src/hooks/stableSurgeHook.ts)
-
-Python maths reference - WIP.
-
-[Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `StableSurgePoolFactory` WIP
-
-Notes:
 * This uses the [onComputeDynamicSwapFeePercentage](/developer-reference/contracts/hooks-api.md#oncomputedynamicswapfeepercentage) hook.
+* [Intro blog post](https://medium.com/balancer-protocol/balancers-stablesurge-hook-09d2eb20f219).
+* Pools with StableSurge hook will be deployed from a dedicated [factory](https://github.com/balancer/balancer-v3-monorepo/blob/2f088c6b8f66ad55885d257c1e3debe2a6e21e97/pkg/pool-hooks/contracts/StableSurgePoolFactory.sol).
+* [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories).
+* See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/2f088c6b8f66ad55885d257c1e3debe2a6e21e97/pkg/pool-hooks/contracts/StableSurgeHook.sol).
+* [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/eeff3ef8cf1105a0aaa6d96a4c0f8b7a62135256/typescript/src/hooks/stableSurgeHook.ts)
+* [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/hooks/stable_surge_hook.py).
 * Maths requires the configurable `maxSurgeFeePercentage` and `thresholdPercentage` values which can be fetched and tracked using the following functions and events:
 ```solidity
 function getMaxSurgeFeePercentage(address pool) external view returns (uint256);
@@ -36,4 +29,21 @@ event ThresholdSurgePercentageChanged(address indexed pool, uint256 newSurgeThre
 function getSurgeThresholdPercentage(address pool) external view returns (uint256);
 
 event MaxSurgeFeePercentageChanged(address indexed pool, uint256 newMaxSurgeFeePercentage);
+```
+* API Support: Can use the filter: `includeHooks: [STABLE_SURGE]`, to include all pools using this hook type:
+```graphql
+query MyQuery {
+  aggregatorPools(
+    where: {chainIn: SEPOLIA, includeHooks: [STABLE_SURGE], protocolVersionIn: 3}
+  ) {
+    address
+    type
+    hook {
+      dynamicData {
+        maxSurgeFeePercentage
+        surgeThresholdPercentage
+      }
+    }
+  }
+}
 ```
