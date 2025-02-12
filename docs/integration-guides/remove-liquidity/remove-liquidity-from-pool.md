@@ -1,5 +1,5 @@
 ---
-order: 2
+order: 1
 title: Remove liquidity from a pool
 ---
 

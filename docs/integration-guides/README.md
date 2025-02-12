@@ -4,11 +4,16 @@ order: 0
 
 features:
 
-  - title: Adding & Removing Liquidity
+  - title: Add Liquidity
     icon: /images/build.svg
     iconDark: /images/build-dark.svg
-    details: How to add & remove tokens to a pool
-    link: /integration-guides/add-and-remove-liquidity/add-liquidity-to-pool.md
+    details: How to add tokens to a pool
+    link: /integration-guides/add-liquidity/overview.md
+  - title: Remove Liquidity
+    icon: /images/build.svg
+    iconDark: /images/build-dark.svg
+    details: How to remove tokens from a pool
+    link: /integration-guides/remove-liquidity/remove-liquidity-from-pool.md
   - title: Swapping
     icon: /images/build.svg
     iconDark: /images/build-dark.svg
@@ -17,7 +22,7 @@ features:
   - title: Aggregators
     icon: /images/build.svg
     iconDark: /images/build-dark.svg
-    details: How to integrate with Balancer v3 liquidity
+    details: How to integrate with v3 liquidity
     link: /integration-guides/aggregators/introduction.md
 
 ---
