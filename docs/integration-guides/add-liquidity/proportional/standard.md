@@ -5,6 +5,23 @@ title: Standard
 
 # Standard add liquidity proportional
 
+```solidity
+/**
+* @notice Queries an `addLiquidityProportional` operation without actually executing it.
+* @param pool Address of the liquidity pool
+* @param exactBptAmountOut Exact amount of pool tokens to be received
+* @param sender The sender passed to the operation. It can influence results (e.g., with user-dependent hooks)
+* @param userData Additional (optional) data sent with the query request
+* @return amountsIn Expected amounts of tokens to add, sorted in token registration order
+*/
+function queryAddLiquidityProportional(
+    address pool,
+    uint256 exactBptAmountOut,
+    address sender,
+    bytes memory userData
+) external returns (uint256[] memory amountsIn);
+```
+
 ## Javascript With SDK
 The following hardhat script shows how to use our SDK to do a standard proportional add liquidity 
 

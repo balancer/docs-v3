@@ -5,6 +5,26 @@ title: Standard
 
 # Standard add liquidity unbalanced
 
+```solidity
+/**
+* @notice Adds liquidity to a pool with arbitrary token amounts.
+* @param pool Address of the liquidity pool
+* @param exactAmountsIn Exact amounts of tokens to be added, sorted in token registration order
+* @param minBptAmountOut Minimum amount of pool tokens to be received
+* @param wethIsEth If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH
+* @param userData Additional (optional) data sent with the request to add liquidity
+* @return bptAmountOut Actual amount of pool tokens received
+*/
+function addLiquidityUnbalanced(
+    address pool,
+    uint256[] memory exactAmountsIn,
+    uint256 minBptAmountOut,
+    bool wethIsEth,
+    bytes memory userData
+) external payable returns (uint256 bptAmountOut);
+```
+
+
 ## Javascript With SDK
 The following hardhat script shows how to use our SDK to do a standard add liquidity to a pool
 
