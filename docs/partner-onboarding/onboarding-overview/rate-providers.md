@@ -22,6 +22,10 @@ The primary use-case of a rate provider is the deployment of liquidity in a comp
 - Should not be susceptible to donation attacks.
 - Should be monotonic (up only) in nature.
 
+::: warning Warning
+It is essential for the rate provider to behave in the expected way at all times. Scenarios where for example an upgrade 
+makes the `getRate` call revert, swaps through the pool will revert. If the rate provider returns unexpected values the pool can get drained.
+:::
 
 ## What are the steps needed to set up a rate provider with Balancer?
 1. Build a rate provider based on the above mentioned requirements and consult the Balancer RP registry
