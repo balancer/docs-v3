@@ -157,7 +157,6 @@ By default the API will return the swap that gives the best result from either v
 
 ```typescript
 const updated = await swap.query(RPC_URL) as ExactInQueryOutput;
-// updated.expectedAmountOut
 ```
 An onchain call is used to find an updated result for the swap paths, `expectedAmountOut`.
 
