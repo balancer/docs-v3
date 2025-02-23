@@ -6,7 +6,7 @@ export const navbar: NavbarConfig = [
     link: '/concepts/core-concepts/introduction.md',
   },
   {
-    text: 'Integrate',
+    text: 'Guides',
     link: '/integration-guides/README.md',
   },
   {

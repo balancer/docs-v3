@@ -1,9 +1,12 @@
 ---
 order: 2
-title: Solidity Guide
+title: Solidity Tutorial
 ---
 
-## Solidity Guide
+## Remove Liquidity with Solidity
+
+::: info This page is a work in progress
+:::
 
 The following code snippet shows how to remove liquidity from a smart contract.
 
