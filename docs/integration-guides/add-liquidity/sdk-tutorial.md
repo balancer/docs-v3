@@ -34,7 +34,7 @@ npm install @balancer/sdk
 
 :::
 
-### Example script
+### Example Script
 
 Run this example script on a local fork of Ethereum mainnet using our [v3 pool operation examples repo](https://github.com/MattPereira/v3-pool-operation-examples/tree/main?tab=readme-ov-file#balancer-v3-pool-operation-examples)
 
@@ -45,7 +45,7 @@ The four main helper classes we use from the SDK are:
 - `BalancerApi` - to simplify retrieving pool data from the Pools API
 - `AddLiquidity` - to build addLiquidity queries and transactions
 - `Slippage` - to simplify creating limits with user defined slippage
-- `Permit2Helpter` - to simplify creating a permit2 signature
+- `Permit2Helper` - to simplify creating a permit2 signature
 
 ### Fetch pool data
 
@@ -71,7 +71,7 @@ The Routers [queryAddLiquidityUnbalanced](../../developer-reference/contracts/ro
 
 ### Build the call with permit2 and slippage
 
-The `Permit2Helper` assists by abstracting away much of the complexity involved with creating a permit2 signature
+The `Permit2Helper` abstracts away the complexity involved with creating a permit2 signature
 
 ```typescript
 const permit2 = await Permit2Helper.signAddLiquidityApproval({

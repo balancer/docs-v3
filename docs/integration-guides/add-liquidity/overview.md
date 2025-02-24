@@ -3,25 +3,21 @@ order: 0
 title: Overivew
 
 features:
-  - title: SDK Tutorial
+  - title: Add Liquidity with Typescript
     icon: /images/build.svg
     iconDark: /images/build-dark.svg
-    details: Step by step walkthrough for using our Typescript SDK
+    details: Walkthrough a simple unbalanced add using the SDK
     link: /integration-guides/add-liquidity/sdk-tutorial.md
-  - title: Solidity Tutorial
+  - title: Add Liquidity with Solidity
     icon: /images/build.svg
     iconDark: /images/build-dark.svg
-    details: Step by step walkthrough for using a Foundry script
+    details: Walkthrough a simple unbalanced add using a Foundry script
     link: /integration-guides/add-liquidity/solidity-tutorial.md
 ---
 
 # Add Liquidity Guide
 
-Balancer v3 supports several different [types of add liquidity operations](https://docs.balancer.fi/concepts/vault/add-remove-liquidity-types.html#add-remove-liquidity-types). This guide section focuses on the most common types, which are unbalanced and proportional.
-
-:::info Adding liquidity to a boosted pool
-If a pool's tokens include an ERC4626 with an intialized buffer, you have the option to add liquidity using the `asset()` of the ERC4626, which we refer to as the "underlying" token.
-:::
+Balancer v3 supports several different [types of add liquidity operations](https://docs.balancer.fi/concepts/vault/add-remove-liquidity-types.html#add-remove-liquidity-types)
 
 ## Core Concepts
 
@@ -29,6 +25,7 @@ The core concepts of adding liquidity are the same for any programming language 
 
 - The sender must do a permit2 approval with the Router as the spender for each token
 - Token amount inputs/outputs are always in the raw token scale, e.g. `1 USDC` should be sent as `1000000` because it has 6 decimals
+- If a pool's tokens include an ERC4626 with an intialized buffer, you have the option to add liquidity using the `asset()` of the ERC4626, which we refer to as the "underlying" token.
 - Transactions are always sent to the appropriate [Router](../../concepts/router/overview.md)
   - Use the standard `Router` to add liquidity with pool tokens
   - Use the `CompositeLiquidityRouter` to add liqudity with a pool's underlying tokens
@@ -36,21 +33,21 @@ The core concepts of adding liquidity are the same for any programming language 
 
 ## Example Scripts
 
-Run any script against a local fork of Ethereum mainnet using our [v3 pool operation examples repo](https://github.com/MattPereira/v3-pool-operation-examples/tree/main?tab=readme-ov-file#balancer-v3-pool-operation-examples)
+Run any of the scripts listed below against a local fork of Ethereum mainnet using the [v3 pool operation examples repo](https://github.com/MattPereira/v3-pool-operation-examples/tree/main?tab=readme-ov-file#balancer-v3-pool-operation-examples)
 
 #### TypeScript SDK
 
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/add-liquidity/addLiquidityUnbalanced.ts">addLiquidityUnbalanced.ts</a>
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/add-liquidity/addLiquidityProportional.ts">addLiquidityProportional.ts</a>
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/add-liquidity/addLiquidityUnbalancedToERC4626Pool.ts">addLiquidityUnbalancedToERC4626.ts</a>
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/add-liquidity/addLiquidityProportionalToERC4626Pool.ts">addLiquidityProportionalToERC4626.ts</a>
+- [addLiquidityUnbalanced.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/add-liquidity/addLiquidityUnbalanced.ts)
+- [addLiquidityProportional.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/add-liquidity/addLiquidityProportional.ts)
+- [addLiquidityUnbalancedToERC4626.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/add-liquidity/addLiquidityUnbalancedToERC4626Pool.ts)
+- [addLiquidityProportionalToERC4626.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/add-liquidity/addLiquidityProportionalToERC4626Pool.ts)
 
 #### Solidity
 
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/add-liquidity/AddLiquidityUnbalanced.s.sol">AddLiquidityUnbalanced.s.sol</a>
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/add-liquidity/AddLiquidityProportional.s.sol">AddLiquidityProportional.s.sol</a>
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/add-liquidity/AddLiquidityUnbalancedToERC4626Pool.s.sol">AddLiquidityUnbalancedToERC4626.s.sol</a>
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/add-liquidity/AddLiquidityProportionalToERC4626Pool.s.sol">AddLiquidityProportionalToERC4626.s.sol</a>
+- [AddLiquidityUnbalanced.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/add-liquidity/AddLiquidityUnbalanced.s.sol)
+- [AddLiquidityProportional.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/add-liquidity/AddLiquidityProportional.s.sol)
+- [AddLiquidityUnbalancedToERC4626.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/add-liquidity/AddLiquidityUnbalancedToERC4626Pool.s.sol)
+- [AddLiquidityProportionalToERC4626.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/add-liquidity/AddLiquidityProportionalToERC4626Pool.s.sol)
 
 ## Beginner Tutorials
 

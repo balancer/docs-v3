@@ -3,46 +3,51 @@ order: 0
 title: Overview
 
 features:
-  - title: SDK Tutorial
+  - title: Remove Liqudity with Typescript
     icon: /images/build.svg
     iconDark: /images/build-dark.svg
-    details: Step by step walkthrough for using our Typescript SDK
+    details: Walkthrough a simple proportional remove using the SDK
     link: /integration-guides/remove-liquidity/sdk-tutorial.md
-  - title: Solidity Tutorial
+  - title: Remove Liquidity with Solidity
     icon: /images/build.svg
     iconDark: /images/build-dark.svg
-    details: Step by step walkthrough for using a Foundry script
+    details: Walkthrough a simple proportional remove using a Foundry script
     link: /integration-guides/remove-liquidity/solidity-tutorial.md
 ---
 
 # Remove Liquidity Guide
 
-This guide demonstrates how to remove liquidity from a pool. We will use the preferred function for removing liquidity, `removeLiquidityProportional`. Tokens are removed from the pool in proportional amounts, causing zero price impact and avoiding the swap fee charged when exiting non-proportional. Specifying an exactBptAmountIn ensures that the user will not be left with any dust. See the [Router API](../router/overview.html) for other supported remove methods.
+Balancer v3 supports several different [types of remove liquidity operations](https://docs.balancer.fi/concepts/vault/add-remove-liquidity-types.html#remove-liquidity)
 
 ## Core Concepts
 
 The core concepts of removing liquidity are the same for any programming language or framework:
 
 - When removing liquidity the user sends [Balancer Pool Tokens](../../concepts/core-concepts/balancer-pool-tokens.md) (BPTs), and will receive pool tokens
-- Unlike standard ERC20s, the vault has control over the supply of BPT, so there is no need for the sender to make approvals when sending BPTs. For more info see: [Balancer Pool Token](../../concepts/core-concepts/balancer-pool-tokens.md)
+- Use a `permit` signature to approve the Router to spend BPT
 - Token amount inputs/outputs are always in the raw token scale, e.g. `1 USDC` should be sent as `1000000` because it has 6 decimals
-- Transactions are always sent to the [Router](../../concepts/router/overview.md)
+- If a pool's tokens include an ERC4626 with an intialized buffer, you have the option to receive the `asset()` of the ERC4626 when removing liquidity.
+- Transactions are always sent to a [Router](../../concepts/router/overview.md)
+  - Use the standard `Router` to receive standard pool tokens
+  - Use the `CompositeLiquidityRouter` to receive a pool's underlying tokens
 
 ## Example Scripts
 
+Run example scripts against a local fork of Ethereum mainnet using the [v3 pool operation examples repo](https://github.com/MattPereira/v3-pool-operation-examples/tree/main?tab=readme-ov-file#balancer-v3-pool-operation-examples)
+
 #### TypeScript SDK
 
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/remove-liquidity/removeLiquidityProportional.ts">removeLiquidityProportional.ts</a>
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/remove-liquidity/removeLiquidityProportionalFromERC4626Pool.ts">removeLiquidityProportionalFromERC4626Pool.ts</a>
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/remove-liquidity/removeLiquiditySingleTokenExactIn.ts">removeLiquiditySingleTokenExactIn.ts</a>
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/remove-liquidity/removeLiquiditySingleTokenExactOut.ts">removeLiquiditySingleTokenExactOut.ts</a>
+- [removeLiquidityProportional.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/remove-liquidity/removeLiquidityProportional.ts)
+- [removeLiquidityProportionalFromERC4626Pool.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/remove-liquidity/removeLiquidityProportionalFromERC4626Pool.ts)
+- [removeLiquiditySingleTokenExactIn.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/remove-liquidity/removeLiquiditySingleTokenExactIn.ts)
+- [removeLiquiditySingleTokenExactOut.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/remove-liquidity/removeLiquiditySingleTokenExactOut.ts)
 
 #### Solidity
 
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/remove-liquidity/RemoveLiquidityProportional.s.sol">RemoveLiquidityProportional.s.sol</a>
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/remove-liquidity/RemoveLiquidityProportionalFromERC4626Pool.s.sol">RemoveLiquidityProportionalFromERC4626Pool.s.sol</a>
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/remove-liquidity/RemoveLiquiditySingleTokenExactIn.s.sol">RemoveLiquiditySingleTokenExactIn.s.sol</a>
-- <a href="https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/remove-liquidity/RemoveLiquiditySingleTokenExactOut.s.sol">RemoveLiquiditySingleTokenExactOut.s.sol</a>
+- [RemoveLiquidityProportional.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/remove-liquidity/RemoveLiquidityProportional.s.sol)
+- [RemoveLiquidityProportionalFromERC4626Pool.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/remove-liquidity/RemoveLiquidityProportionalFromERC4626Pool.s.sol)
+- [RemoveLiquiditySingleTokenExactIn.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/remove-liquidity/RemoveLiquiditySingleTokenExactIn.s.sol)
+- [RemoveLiquiditySingleTokenExactOut.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/remove-liquidity/RemoveLiquiditySingleTokenExactOut.s.sol)
 
 ## Beginner Tutorials
 
