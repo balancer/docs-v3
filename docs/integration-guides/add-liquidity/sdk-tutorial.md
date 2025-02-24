@@ -5,9 +5,9 @@ title: Typescript SDK Tutorial
 
 ## Add Liquidity with Typescript SDK
 
-This example demonstrates the full flow for adding liquidity to a given pool. The SDK provides functionality to easily fetch pool data from the [Balancer Pools API](https://docs.balancer.fi/guides/API/) and create a transaction with user defined slippage protection.
+This guide demonstrates how to add liquidity to a pool. We will use the addLiquidityUnbalanced method, since it allows exact amounts of any pool token to be added to a pool, avoiding unnecessary dust in the user's wallet. See the [Router API](/developer-reference/contracts/router-api.html) for other supported add methods.
 
-_This guide is for adding liquidity to Balancer v3 with the [b-sdk](https://github.com/balancer/b-sdk). This sdk supports adding liquidity to Balancer v3, Balancer v2 as well as Cow-AMMs._
+_This guide is for adding liquidity to Balancer v3 with the [b-sdk](https://github.com/balancer/b-sdk). This sdk supports adding liquidity to Balancer v3, Balancer v2 as well as Cow-AMMs_
 
 ### Install the Balancer SDK
 
@@ -34,6 +34,10 @@ npm install @balancer/sdk
 
 :::
 
+### Example script
+
+Run this example script on a local fork of Ethereum mainnet using our [v3 pool operation examples repo](https://github.com/MattPereira/v3-pool-operation-examples/tree/main?tab=readme-ov-file#balancer-v3-pool-operation-examples)
+
 <GithubCode language="typescript" url="https://raw.githubusercontent.com/MattPereira/v3-pool-operation-examples/refs/heads/main/scripts/hardhat/add-liquidity/addLiquidityUnbalanced.ts" />
 
 The four main helper classes we use from the SDK are:
@@ -43,7 +47,7 @@ The four main helper classes we use from the SDK are:
 - `Slippage` - to simplify creating limits with user defined slippage
 - `Permit2Helpter` - to simplify creating a permit2 signature
 
-### Fetching Pool Data
+### Fetch pool data
 
 In this example we use the BalancerApi `fetchPoolState` function to fetch the pool data required for the addLiquidityUnbalanced `poolState` parameter.
 
@@ -54,7 +58,7 @@ const poolState = await balancerApi.pools.fetchPoolState(pool);
 
 To see the full query used to fetch pool state refer to the code [here](https://github.com/balancer/b-sdk/blob/41d2623743ab7fa466ed4d0f5f5c7e5aa16b7d91/src/data/providers/balancer-api/modules/pool-state/index.ts#L7).
 
-### Queries and safely setting slippage limits
+### Query add liquidity
 
 [Router queries](../../concepts/router/queries.md) allow for simulation of operations without execution. In this example, when the `query` function is called:
 
@@ -65,15 +69,26 @@ const queryOutput = await addLiquidity.query(addLiquidityInput, poolState);
 
 The Routers [queryAddLiquidityUnbalanced](../../developer-reference/contracts/router-api.md#queryaddliquidityunbalanced) function is used to find the amount of BPT that would be received, `bptOut`.
 
-In the next step `buildCall` uses the `bptOut` and the user defined `slippage` to calculate the `minBptAmountOut`:
+### Build the call with permit2 and slippage
+
+The `Permit2Helper` assists by abstracting away much of the complexity involved with creating a permit2 signature
 
 ```typescript
-const call = addLiquidity.buildCall({
+const permit2 = await Permit2Helper.signAddLiquidityApproval({
   ...queryOutput,
   slippage,
-  chainId,
-  wethIsEth: false,
+  client: walletClient.extend(publicActions),
+  owner: walletClient.account,
 });
+```
+
+Then `buildCallWithPermit2` uses the `bptOut` and the user defined `slippage` to calculate the `minBptAmountOut`:
+
+```typescript
+const call = addLiquidity.buildCallWithPermit2(
+  { ...queryOutput, slippage },
+  permit2
+);
 ```
 
 In the full example above, we defined our slippage as `Slippage.fromPercentage('1')`, meaning that we if we do not receive at least 99% of our expected `bptOut`, the transaction should revert.
@@ -95,7 +110,7 @@ public applyTo(amount: bigint, direction: 1 | -1 = 1): bigint {
 }
 ```
 
-### Constructing the call
+### Send the call
 
 The output of the `buildCall` function provides all that is needed to submit the addLiquidity transaction:
 
@@ -104,3 +119,12 @@ The output of the `buildCall` function provides all that is needed to submit the
 - `value` - the native asset value to be sent
 
 It also returns the `minBptOut` amount which can be useful to display/validation purposes before the transaction is sent.
+
+```typescript
+const hash = await walletClient.sendTransaction({
+  account: walletClient.account,
+  data: call.callData,
+  to: call.to,
+  value: call.value,
+});
+```

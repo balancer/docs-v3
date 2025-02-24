@@ -17,13 +17,17 @@ features:
 
 # Add Liquidity Guide
 
-The following guides and examples illustrate how easy it is to perform different [types of add liquidity](/concepts/vault/add-remove-liquidity-types.html#add-remove-liquidity-types) operations on Balancer V3.
+Balancer v3 supports several different [types of add liquidity operations](https://docs.balancer.fi/concepts/vault/add-remove-liquidity-types.html#add-remove-liquidity-types). This guide section focuses on the most common types, which are unbalanced and proportional.
+
+:::info Adding liquidity to a boosted pool
+If a pool's tokens include an ERC4626 with an intialized buffer, you have the option to add liquidity using the `asset()` of the ERC4626, which we refer to as the "underlying" token.
+:::
 
 ## Core Concepts
 
 The core concepts of adding liquidity are the same for any programming language or framework:
 
-- The sender must approve the Vault (not the Router) for each token they wish to add to the pool
+- The sender must do a permit2 approval with the Router as the spender for each token
 - Token amount inputs/outputs are always in the raw token scale, e.g. `1 USDC` should be sent as `1000000` because it has 6 decimals
 - Transactions are always sent to the appropriate [Router](../../concepts/router/overview.md)
   - Use the standard `Router` to add liquidity with pool tokens
@@ -31,6 +35,8 @@ The core concepts of adding liquidity are the same for any programming language 
 - In exchange for providing liquidity the sender will receive [Balancer Pool Tokens](../../concepts/core-concepts/balancer-pool-tokens.md) (BPTs) which represents their share of the pool and can be used to remove liquidity at any time
 
 ## Example Scripts
+
+Run any script against a local fork of Ethereum mainnet using our [v3 pool operation examples repo](https://github.com/MattPereira/v3-pool-operation-examples/tree/main?tab=readme-ov-file#balancer-v3-pool-operation-examples)
 
 #### TypeScript SDK
 
