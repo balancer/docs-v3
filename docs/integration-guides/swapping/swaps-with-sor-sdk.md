@@ -11,16 +11,16 @@ _This guide uses the Balancer API SOR which will find the best result using v2 a
 
 ```typescript
 import {
-  BalancerApi,
-  ChainId,
-  Slippage,
-  SwapKind,
-  Token,
-  TokenAmount,
-  Swap,
-  SwapBuildOutputExactIn,
-  SwapBuildCallInput,
-  ExactInQueryOutput
+    BalancerApi,
+    ChainId,
+    Slippage,
+    SwapKind,
+    Token,
+    TokenAmount,
+    Swap,
+    SwapBuildOutputExactIn,
+    SwapBuildCallInput,
+    ExactInQueryOutput
 } from "@balancer/sdk";
 
 // User defined
@@ -73,11 +73,11 @@ console.log(
 
 // Get up to date swap result by querying onchain
 const updated = await swap.query(RPC_URL) as ExactInQueryOutput;
-console.log(`Updated amount: ${updated.expectedAmountOut}`);
+console.log(`Updated amount: ${updated.expectedAmountOut.amount}`);
 
 let buildInput: SwapBuildCallInput;
 // In v2 the sender/recipient can be set, in v3 it is always the msg.sender
-if (swap.vaultVersion === 2) {
+if (swap.protocolVersion === 2) {
     buildInput = {
         slippage,
         deadline,
@@ -94,7 +94,6 @@ if (swap.vaultVersion === 2) {
         wethIsEth,
     };
 }
-
 const callData = swap.buildCall(buildInput) as SwapBuildOutputExactIn;
 
 console.log(
@@ -149,7 +148,7 @@ const sorPaths = await balancerApi.sorSwapPaths.fetchSorSwapPaths({
 To see the full query used to fetch pool state refer to the code [here](https://github.com/balancer/b-sdk/blob/main/src/data/providers/balancer-api/modules/sorSwapPaths/index.ts#L19).
 
 :::tip Liquidity Source
-By default the API will return the swap that gives the best result from either v2 or v3 liquidity. The version can be forced by setting the optional `fetchSorSwapPaths`, `useVaultVersion` input parameter.
+By default the API will return the swap that gives the best result from either v2 or v3 liquidity. The version can be forced by setting the optional `fetchSorSwapPaths`, `useProtocolVersion` input parameter.
 :::
 
 ### Queries and safely setting slippage limits
@@ -158,7 +157,6 @@ By default the API will return the swap that gives the best result from either v
 
 ```typescript
 const updated = await swap.query(RPC_URL) as ExactInQueryOutput;
-// updated.expectedAmountOut
 ```
 An onchain call is used to find an updated result for the swap paths, `expectedAmountOut`.
 
@@ -187,12 +185,12 @@ public applyTo(amount: bigint, direction: 1 | -1 = 1): bigint {
 ```
 
 ::: tip v2 vs v3 differences
-In Balancer v2 the swap functions required the user to define the `sender` and `recipient` as part of the [FundManagement](https://docs.balancer.fi/reference/swaps/batch-swaps.html#fundmanagement-struct) parameter. In v3 this is no longer an option and the msg.sender is always the sender/recipient. `swap.vaultVersion` is used to correctly construct the parameters for the `buildCall` function:
+In Balancer v2 the swap functions required the user to define the `sender` and `recipient` as part of the [FundManagement](https://docs.balancer.fi/reference/swaps/batch-swaps.html#fundmanagement-struct) parameter. In v3 this is no longer an option and the msg.sender is always the sender/recipient. `swap.protocolVersion` is used to correctly construct the parameters for the `buildCall` function:
 
 ```typescript
 let buildInput: SwapBuildCallInput;
 // In v2 the sender/recipient can be set, in v3 it is always the msg.sender
-if (swap.vaultVersion === 2) {
+if (swap.protocolVersion === 2) {
     buildInput = {
         slippage,
         deadline,
