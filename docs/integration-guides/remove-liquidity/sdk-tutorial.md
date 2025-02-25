@@ -38,7 +38,7 @@ npm install @balancer/sdk
 
 Run this example script on a local fork of Ethereum mainnet using our [v3 pool operation examples repo](https://github.com/MattPereira/v3-pool-operation-examples/tree/main?tab=readme-ov-file#balancer-v3-pool-operation-examples)
 
-<GithubCode language="typescript" url="https://raw.githubusercontent.com/MattPereira/v3-pool-operation-examples/refs/heads/main/scripts/hardhat/remove-liquidity/removeLiquidityProportional.ts" />
+<GithubCode url="https://raw.githubusercontent.com/MattPereira/v3-pool-operation-examples/refs/heads/main/scripts/hardhat/remove-liquidity/removeLiquidityProportional.ts" clipEndLines=8 clipStartLines=4 />
 
 The four main helper classes we use from the SDK are:
 

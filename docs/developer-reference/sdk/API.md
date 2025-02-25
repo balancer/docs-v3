@@ -17,7 +17,7 @@ This class provides functionality to:
 
 ### Example
 
-See the [addLiquidity guide](../../integration-guides/add-and-remove-liquidity/add-liquidity-to-pool.md) and the [addLiquidity example](https://github.com/balancer/b-sdk/tree/main/examples/addLiquidity/addLiquidity.ts).
+See the [addLiquidity guide](/integration-guides/add-liquidity/overview.md) and the [addLiquidity example](/integration-guides/add-liquidity/sdk-tutorial.html#example-script).
 
 ### Constructor
 
@@ -119,7 +119,7 @@ This class provides functionality to:
 
 ### Example
 
-See the [removeLiquidity guide](../../integration-guides/add-and-remove-liquidity/remove-liquidity-from-pool.md) and the [removeLiquidity example](ttps://github.com/balancer/b-sdk/tree/main/examples/removeLiquidity/removeLiquidity.ts).
+See the [removeLiquidity guide](/integration-guides/remove-liquidity/overview.md) and the [removeLiquidity example](/integration-guides/remove-liquidity/sdk-tutorial.html#example-script).
 
 ### Constructor
 
@@ -253,7 +253,7 @@ This class provides functionality to:
 
 ### Example
 
-See the [swap guide](../../integration-guides/swapping/swaps-with-sor-sdk.md) [swap example](https://github.com/balancer/b-sdk/tree/main/examples/swaps/swap.ts).
+See the [swap guide](../../integration-guides/swapping/swaps-with-sor-sdk.md) and [swap examples](https://github.com/MattPereira/v3-pool-operation-examples/tree/main/scripts/hardhat/swap).
 
 ### Constructor
 
