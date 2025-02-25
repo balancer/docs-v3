@@ -2,7 +2,7 @@
 
 ## Overview
 
-Queries provide the ability to simulate an operation and find its result without executing a transaction. [Balancer Routers](./overview.md#balancer-routers) provide a query for all state changing liquidity operations. An example of how this is useful can be seen when [setting slippage limits](/integration-guides/add-and-remove-liquidity/add-liquidity-to-pool.md#queries-and-safely-setting-slippage-limits).
+Queries provide the ability to simulate an operation and find its result without executing a transaction. [Balancer Routers](./overview.md#balancer-routers) provide a query for all state changing liquidity operations. An example of how this is useful can be seen when [setting slippage limits](/integration-guides/add-liquidity/sdk-tutorial.html#query-add-liquidity).
 
 ## Router queries
 The detailed Router API description can be found in the [Router API section](/developer-reference/contracts/router-api.html).

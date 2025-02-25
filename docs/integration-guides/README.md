@@ -4,11 +4,16 @@ order: 0
 
 features:
 
-  - title: Adding & Removing Liquidity
+  - title: Add Liquidity
     icon: /images/build.svg
     iconDark: /images/build-dark.svg
-    details: How to add & remove tokens to a pool
-    link: /integration-guides/add-and-remove-liquidity/add-liquidity-to-pool.md
+    details: How to add tokens to a pool
+    link: /integration-guides/add-liquidity/overview.md
+  - title: Remove Liquidity
+    icon: /images/build.svg
+    iconDark: /images/build-dark.svg
+    details: How to remove tokens from a pool
+    link: /integration-guides/add-and-remove-liquidity/remove-liquidity.md
   - title: Swapping
     icon: /images/build.svg
     iconDark: /images/build-dark.svg
