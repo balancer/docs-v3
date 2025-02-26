@@ -41,7 +41,6 @@ order: 4
 | DynamicSwapFeeHookFailed             |                                                              | `0x8a47a7a4`    |
 | ElementNotFound                      |                                                              | `0x0982bb23`    |
 | ElementNotFound                      |                                                              | `0x0982bb23`    |
-| Error Name                           | Parameters                                                   | Error Signature |
 | ErrorSelectorNotFound                |                                                              | `0x275f4d09`    |
 | EthTransfer                          |                                                              | `0x9c3c0d41`    |
 | ExitHookFeeAboveLimit                | uint256 fee, uint256 limit                                   | `0x2656e014`    |
