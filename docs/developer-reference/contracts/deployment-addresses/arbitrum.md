@@ -18,6 +18,10 @@ For more information on specific deployments as well as changelogs for different
 
 <DeploymentAddresses chain="arbitrum" :active="true" group="poolfactory" />
 
+### Hooks and Peripherals
+
+<DeploymentAddresses chain="arbitrum" :active="true" group="hooksAndPeripherals" />
+
 ### Authorization Contracts
 
 <DeploymentAddresses chain="arbitrum" :active="true" group="authorizations" />
@@ -41,6 +45,10 @@ If you can only find the contract you are looking for in the deprecated section 
 ### Pool Factories
 
 <DeploymentAddresses chain="arbitrum" :active="false" group="poolfactory" />
+
+### Routers
+
+<DeploymentAddresses chain="arbitrum" :active="false" group="routers" />
 
 ### Authorization Contracts
 
