@@ -65,7 +65,7 @@ const EXPLORER_URLS = {
   optimism: 'https://optimistic.etherscan.io/address/',
   arbitrum: 'https://arbiscan.io/address/',
   zkevm: 'https://zkevm.polygonscan.com/address/',
-  avalanche: 'https://snowtrace.io/address/'
+  avalanche: 'https://snowtrace.io/address/',
 };
 
 const CONTRACT_GROUPS = {
@@ -77,6 +77,7 @@ const CONTRACT_GROUPS = {
       'BatchRelayerLibrary',
       'BalancerQueries',
       'ProtocolFeePercentagesProvider',
+      'ProtocolFeeController',
     ],
   },
   poolfactory: {
@@ -88,6 +89,15 @@ const CONTRACT_GROUPS = {
         (nameLower.includes('mock') && nameLower.includes('pool'))
       );
     },
+  },
+  hooksAndPeripherals: {
+    requireV3: false,
+    contracts: [
+      'BalancerContractRegistry',
+      'StableSurgePoolFactory',
+      'StableSurgeHook',
+      'MevCaptureHook',
+    ],
   },
   authorizations: {
     requireV3: false,
