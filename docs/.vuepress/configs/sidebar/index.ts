@@ -17,6 +17,7 @@ const getName = (path: string) => {
   const name = path.split(sep).pop();
   if (!name) return;
   if (name === 'veBAL') return name;
+  if (name === 'vebal-and-gauges') return "veBAL And Gauges";
   return titleize(name.replace(/-/g, ' '));
 };
 
