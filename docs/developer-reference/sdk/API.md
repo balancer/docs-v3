@@ -253,7 +253,7 @@ This class provides functionality to:
 
 ### Example
 
-See the [swap guide](../../integration-guides/swapping/swaps-with-sor-sdk.md) and [swap examples](https://github.com/MattPereira/v3-pool-operation-examples/tree/main/scripts/hardhat/swap).
+See the [swap guide](../../integration-guides/swapping/swaps-with-sor-sdk.md) and [swap examples](https://github.com/balancer/balancer-v3-sdk-examples/tree/main/scripts/swap).
 
 ### Constructor
 

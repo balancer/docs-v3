@@ -36,9 +36,9 @@ npm install @balancer/sdk
 
 ### Example Script
 
-Run this example script on a local fork of Ethereum mainnet using our [v3 pool operation examples repo](https://github.com/MattPereira/v3-pool-operation-examples/tree/main?tab=readme-ov-file#balancer-v3-pool-operation-examples)
+Run this example script on a local fork of Ethereum mainnet using our [SDK examples repo](https://github.com/balancer/balancer-v3-sdk-examples/tree/main)
 
-<GithubCode url="https://raw.githubusercontent.com/MattPereira/v3-pool-operation-examples/refs/heads/main/scripts/hardhat/add-liquidity/addLiquidityUnbalanced.ts" clipEndLines=8 clipStartLines=4 />
+<GithubCode url="https://raw.githubusercontent.com/balancer/balancer-v3-sdk-examples/refs/heads/main/scripts/add-liquidity/addLiquidityUnbalanced.ts" clipEndLines=8 clipStartLines=11 />
 
 The four main helper classes we use from the SDK are:
 

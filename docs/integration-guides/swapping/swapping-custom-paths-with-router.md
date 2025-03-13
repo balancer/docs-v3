@@ -30,67 +30,7 @@ The following sections provide specific implementation details for Javascript (w
 
 The SDK `Swap` object provides functionality to easily fetch updated swap quotes and create swap transactions with user defined slippage protection.
 
-```typescript
-import {
-  ChainId,
-  Slippage,
-  SwapKind,
-  Swap,
-  SwapBuildOutputExactIn,
-  ExactInQueryOutput
-} from "@balancer/sdk";
-import { Address } from "viem";
-
-// User defined
-const swapInput = {
-  chainId: ChainId.SEPOLIA,
-  swapKind: SwapKind.GivenIn,
-  paths: [
-    {
-      pools: ["0x1e5b830439fce7aa6b430ca31a9d4dd775294378" as Address],
-      tokens: [
-        {
-          address: "0xb19382073c7a0addbb56ac6af1808fa49e377b75" as Address,
-          decimals: 18,
-        }, // tokenIn
-        {
-          address: "0xf04378a3ff97b3f979a46f91f9b2d5a1d2394773" as Address,
-          decimals: 18,
-        }, // tokenOut
-      ],
-      vaultVersion: 3 as const,
-      inputAmountRaw: 1000000000000000000n,
-      outputAmountRaw: 990000000000000000n,
-    },
-  ],
-};
-
-// Swap object provides useful helpers for re-querying, building call, etc
-const swap = new Swap(swapInput);
-
-console.log(
-  `Input token: ${swap.inputAmount.token.address}, Amount: ${swap.inputAmount.amount}`
-);
-console.log(
-  `Output token: ${swap.outputAmount.token.address}, Amount: ${swap.outputAmount.amount}`
-);
-
-// Get up to date swap result by querying onchain
-const updatedOutputAmount = await swap.query(RPC_URL) as ExactInQueryOutput;
-console.log(`Updated amount: ${updatedOutputAmount.expectedAmountOut}`);
-
-// Build call data using user defined slippage
-const callData = swap.buildCall({
-    slippage: Slippage.fromPercentage("0.1"), // 0.1%,
-    deadline: 999999999999999999n, // Deadline for the swap, in this case infinite
-    queryOutput: updatedOutputAmount,
-    wethIsEth: false
-  }) as SwapBuildOutputExactIn;
-
-console.log(
-  `Min Amount Out: ${callData.minAmountOut.amount}\n\nTx Data:\nTo: ${callData.to}\nCallData: ${callData.callData}\nValue: ${callData.value}`
-);
-```
+<GithubCode url="https://raw.githubusercontent.com/balancer/balancer-v3-sdk-examples/refs/heads/main/scripts/swap/swapCustomPath.ts" clipStartLines=9 clipEndLines=8 />
 
 ### Install the Balancer SDK
 
@@ -149,28 +89,22 @@ type Path = {
 
 Using the input given above as an illustrative example:
 ```typescript
-const swapInput = {
-  chainId: ChainId.SEPOLIA,
-  swapKind: SwapKind.GivenIn,
-  paths: [
-    {
-      pools: ["0x1e5b830439fce7aa6b430ca31a9d4dd775294378" as Address],
-      tokens: [
-        {
-          address: "0xb19382073c7a0addbb56ac6af1808fa49e377b75" as Address,
-          decimals: 18,
-        }, // tokenIn
-        {
-          address: "0xf04378a3ff97b3f979a46f91f9b2d5a1d2394773" as Address,
-          decimals: 18,
-        }, // tokenOut
-      ],
-      vaultVersion: 3 as const,
-      inputAmountRaw: 1000000000000000000n,
-      outputAmountRaw: 990000000000000000n,
-    },
-  ],
-};
+  const swapInput = {
+    chainId: ChainId.SEPOLIA,
+    swapKind: SwapKind.GivenIn,
+    paths: [
+      {
+        pools: [aaveLidowETHwstETHPool],
+        tokens: [
+          { address: waEthLidowETH, decimals: 18 }, // tokenIn
+          { address: waEthLidowstETH, decimals: 18 }, // tokenOut
+        ],
+        inputAmountRaw: parseUnits('1', 18),
+        outputAmountRaw: parseUnits('1', 18),
+        protocolVersion: 3 as const,
+      },
+    ],
+  };
 ```
 We can infer:
 * The swap is of the GivenIn type and is valid for Balancer v3 on Sepolia
