@@ -9,13 +9,13 @@ The Balancer ecosystem is utilizing a modified version of Curve's vyper gauge in
 ## BAL Incentives through veBAL Gauges
 BAL is emitted to staking gauges that have been added to our veBAL system. For a pool to be eligible for BAL rewards, it needs to be voted in by governance. A guide on how to set up a gauge can be found in the gauge creation [section](incentive-management.md#gauge-creation)
 ::: info
-For a gauge to be active in Balancer's veBAL voting list, it needs to be added to / enabled via the Gauge Controller. Therefore, a governance proposal has to be put forward to enable a guage to receive BAL rewards from veBAL voters. Consult the [gauge onboarding FAQ](./../onboarding-overview/gauge-onboarding.md) for more details.
+For a gauge to be active in Balancer's veBAL voting list, it needs to be added to / enabled via the Gauge Controller. Therefore, a governance proposal has to be put forward to enable a gauge to receive BAL rewards from veBAL voters. Consult the [gauge onboarding FAQ](./../onboarding-overview/gauge-onboarding.md) for more details.
 :::
 
 ## Secondary Reward Token Incentives
 The Balancer Maxis have built a sophisticated infrastructure to create and manage secondary reward campaigns for Balancer staking gauges. To make full use of this system, the Maxis provide tooling to facilitate the setup.
 ::: info
-To facilitate the management and configuration of seconary reward programs, the Balancer Maxis have built a [DAO Operations UI](https://balancer.defilytica.tools/). It serves as an entry-point to configure, view and modify secondary reward programs and other related DAO payloads.
+To facilitate the management and configuration of secondary reward programs, the Balancer Maxis have built a [DAO Operations UI](https://balancer.defilytica.tools/). It serves as an entry-point to configure, view and modify secondary reward programs and other related DAO payloads.
 :::
 For secondary reward distributions on Balancer, following limitations apply (given Balancer's staking gauges are based on Curve's Vyper implementation):
 1. A staking gauge can have up to 6 reward tokens. The Maxis recommend to use less than 3 to avoid issues if a gauge will receive BAL (and subsequently AURA) rewards.
@@ -77,7 +77,7 @@ A gauge can only receive secondary token rewards from a registered `distributor`
 2. For the input arguments, do the following:
    * Target gauge: the gauge you want to whitelist
    * Reward token: your desired reward token
-   * Distributor addresse: your injector or alternative reward distributor
+   * Distributor address: your injector or alternative reward distributor
 3. Click "Add Reward"
 4. Generate payload and review / simulate via tenderly
 5. Do a pull request for the Balancer Maxis operations repository. A Maxi will review the payload and load it within 12h of receiving the request

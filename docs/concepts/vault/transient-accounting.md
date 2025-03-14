@@ -7,7 +7,7 @@ order: 1
 
 Transient accounting shifts the validation of accurate token accounting to the start and conclusion of a Vault interaction. This is achieved by initiating a transient state that monitors the debt and credit created during vault interactions. This transient state guarantees the atomic execution of operations within it and confirms the proper settlement of all debt and credit at the end of the execution, prior to exiting the transient state.
 
-Upon activation of the transient state, the vault is unlocked and permissions to to certain Vault functions are opened up. The Vault then returns execution control back to the Router through a hook. Anyone is now authorized to call:
+Upon activation of the transient state, the vault is unlocked and permissions to certain Vault functions are opened up. The Vault then returns execution control back to the Router through a hook. Anyone is now authorized to call:
 
 - `sendTo`: Sends tokens from the Vault to a recipient.
 - `settle`: Balances the changes for a token.

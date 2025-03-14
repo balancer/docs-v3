@@ -10,7 +10,7 @@ Welcome to the Balancer Explained section, where we delve deep into the design a
 If you're eager to jump into development and start building with Balancer, we've got you covered as well! Check out our [Integration Guides](../../integration-guides/README.md) for step-by-step instructions, explore the [Building An AMM](../../build/README.md) section for creating your own automated market maker, or consult the [Developer Reference](../../developer-reference/README.md) docs for comprehensive technical details.
 
 ::: info
-Please note these docs cover V3. For anything V2 related please vist [here](https://docs-v2.balancer.fi).
+Please note these docs cover V3. For anything V2 related please visit [here](https://docs-v2.balancer.fi).
 :::
 
 ## What is Balancer?

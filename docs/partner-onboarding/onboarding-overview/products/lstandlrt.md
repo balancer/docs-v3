@@ -23,7 +23,7 @@ With Balancer v3, you have the opportunity to combine your yield-bearing asset w
 
 ## Yield-Bearing Token Onboarding
 
-Do you want to onboard your yield-bearing token to Balancer and leverage its core advantages? You have several options on how to onboard your liquidity depending on which Balancer deployment you like to choose:
+Do you want to onboard your yield-bearing token to Balancer and leverage its core advantages? You have several options on how to onboard your liquidity depending on which Balancer deployment you would like to choose:
 - [Go here](/partner-onboarding/balancer-v2/onboard-yb-token) if you want to onboard your liquidity to Balancer v2 and take part of the core pool flywheel.
 - Explore [Gyroscope pools](https://app.gyro.finance/) for highly customized trading curves utilizing Balancer v2 at its core
 

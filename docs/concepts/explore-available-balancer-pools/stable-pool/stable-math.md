@@ -29,7 +29,7 @@ $$
 Where:
 
 - $n$ is the number of tokens
-- $x_i$ is is balance of token $i$
+- $x_i$ is balance of token $i$
 - $A$ is the amplification parameter
 
 ## Swap Equations

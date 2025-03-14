@@ -1,6 +1,6 @@
 ---
 order: 0
-title: Overivew
+title: Overview
 
 features:
   - title: Add Liquidity with Typescript
@@ -25,10 +25,10 @@ The core concepts of adding liquidity are the same for any programming language 
 
 - The sender must do a permit2 approval with the Router as the spender for each token
 - Token amount inputs/outputs are always in the raw token scale, e.g. `1 USDC` should be sent as `1000000` because it has 6 decimals
-- If a pool's tokens include an ERC4626 with an intialized buffer, you have the option to add liquidity using the `asset()` of the ERC4626, which we refer to as the "underlying" token.
+- If a pool's tokens include an ERC4626 with an initialized buffer, you have the option to add liquidity using the `asset()` of the ERC4626, which we refer to as the "underlying" token.
 - Transactions are always sent to the appropriate [Router](../../concepts/router/overview.md)
   - Use the standard `Router` to add liquidity with pool tokens
-  - Use the `CompositeLiquidityRouter` to add liqudity with a pool's underlying tokens
+  - Use the `CompositeLiquidityRouter` to add liquidity with a pool's underlying tokens
 - In exchange for providing liquidity the sender will receive [Balancer Pool Tokens](../../concepts/core-concepts/balancer-pool-tokens.md) (BPTs) which represents their share of the pool and can be used to remove liquidity at any time
 
 ## Example Scripts

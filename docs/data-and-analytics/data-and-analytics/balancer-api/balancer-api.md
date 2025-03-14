@@ -6,7 +6,7 @@ order: 3
 Balancer's API exposes data on Balancer's smart contracts accessible via graphql. The API is running as a graphql server and is deployed at [https://api-v3.balancer.fi](https://api-v3.balancer.fi).
 
 :::info Want to keep up with changes to the API?
-You can subscribe to the [Telegram channel](https://t.me/BalBeetsApi) or check out the [repo](https://github.com/balancer/backend) stay updated. 
+You can subscribe to the [Telegram channel](https://t.me/BalBeetsApi) or check out the [repo](https://github.com/balancer/backend) to stay updated. 
 :::
 
 Queries are organized around these main domains:

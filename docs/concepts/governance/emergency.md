@@ -21,7 +21,7 @@ The Balancer Emergency subDAO is a 4-of-7 multisig with the following members as
 
 ## Multisigs
 
-The Balancer Emergency subDAO operates through the following multsigs which are authorized to kill gauges.
+The Balancer Emergency subDAO operates through the following multisigs which are authorized to kill gauges.
 
 | Gauge     | Address                                                                                                                                                                                    |
 |:----------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -45,7 +45,7 @@ As per [this vote](https://forum.balancer.fi/t/form-the-emergency-subdao/3197)
 | denylistToken | [ProtocolFeeWithdrawer](https://etherscan.io/address/0x5ef4c5352882b10893b70DbcaA0C000965bd23c5) | Instructs the ProtocolFeeWithdrawer to blacklist fee collection of a specific token. |
 
 As per [BIP-139](https://forum.balancer.fi/t/bip-139-update-emergency-subdao-permissions/4174)
-The Emergency DAO Multsigis are authorized to make the following calls to protocol contracts:
+The Emergency DAO Multisigs are authorized to make the following calls to protocol contracts:
 
 | Call               | Contract(s)            | Purpose                                                                                                                               |
 | :----------------- | :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------ |

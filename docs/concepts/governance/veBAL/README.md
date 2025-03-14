@@ -27,7 +27,7 @@ Implications:
 
 - veBAL is the governance token of Balancer, used in Snapshot voting to authorize changes to the DAO including the management (adding/removing) of gauges and funding of service providers.
   - veBAL does have a gauge to direct emissions to the holders if chosen. This option is capped at 10% of total emissions of BAL at a given time in the inflation schedule. The overflow, if a vote goes over 10%, will go to the DAO treasury, where governance will have ownership of it.
-  - As demonstrated by BIP-161 the handling and amount of protocol fees are subject to change based on [Balancer Govnernace Process](../process.md)
+  - As demonstrated by BIP-161 the handling and amount of protocol fees are subject to change based on the [Balancer Governance Process](../process.md)
 
 This gives veBAL holders the option to choose pools for which they have liquidity positions for increased emissions or a potential for "bribing" battles can ensue. Numerous vote markets including [Hiddenhand](https://hiddenhand.finance/balancer), [Warden](https://app.warden.vote/dashboard/), and [votemarket](https://votemarket.stakedao.org/) allow projects to provide veBAL holders an incentivize to vote in a direction they prefer, hence the term “bribe”.
 

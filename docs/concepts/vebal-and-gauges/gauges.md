@@ -77,7 +77,7 @@ On Polygon and Arbitrum, the Gauges treat BAL the same as any other liquidity mi
 
 ## Claim Pending Tokens for a Pool
 
-### Mainnet Ethereum
+### Ethereum Mainnet
 
 Use the [`claim_rewards()`](https://github.com/balancer/balancer-v2-monorepo/blob/master/pkg/liquidity-mining/contracts/gauges/ethereum/LiquidityGaugeV5.vy#L440-L450) function on the pool's gauge contract.
 

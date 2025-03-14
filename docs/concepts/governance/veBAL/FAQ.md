@@ -71,7 +71,7 @@ Need to make a governance proposal. See [Governance Process](../process.md) and 
 
 ### Does veBAL support Gnosis Safe?
 
-It's normal for vote escrowed (ve) systems to not allow arbitrary contracts to lock as otherwise it's easy to tokenize the ve tokens which defeats the point if the tokenomics of said derivitive does not require appropriate locking. Users can lock up veBAL from an EOA and delegate it to your Gnosis Safe to earn boosts. Entities interested in making a large investment in veBAL may appeal to governance to have a multisig whitelisted for veBAL participation.
+It's normal for vote escrowed (ve) systems to not allow arbitrary contracts to lock as otherwise it's easy to tokenize the ve tokens which defeats the point if the tokenomics of said derivative does not require appropriate locking. Users can lock up veBAL from an EOA and delegate it to your Gnosis Safe to earn boosts. Entities interested in making a large investment in veBAL may appeal to governance to have a multisig whitelisted for veBAL participation.
 
 ### Is there a repository for the contract addresses of all the new staking contracts and veBAL contracts?
 

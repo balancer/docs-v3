@@ -36,7 +36,7 @@ As of [BIP-371](https://forum.balancer.fi/t/bip-371-adjust-protocol-fee-split/49
 [BIP-19](https://forum.balancer.fi/t/bip-19-incentivize-core-pools-l2-usage/3329), revised by [BIP-457](https://forum.balancer.fi/t/bip-457-core-pool-incentive-program-automation/5254) concerns redirecting fees destine for veBAL lockers. It's purpose is 2 fold:
 
 1. Incentive/encourage veBAL voters to vote for pools that are generating revenue for the DAO by requiring them to do so to capture a portion of fee sharing.
-2. Create a compelling economic proposition for Liquid Staked Tokens(LSTs), Lending Protocols and other DAOs with interest baring assets by enabling pools that support their own yields with staking and trade fees.
+2. Create a compelling economic proposition for Liquid Staked Tokens(LSTs), Lending Protocols and other DAOs with interest bearing assets by enabling pools that support their own yields with staking and trade fees.
 
 Pools have been designated as Core in the past for the following reasons:
 

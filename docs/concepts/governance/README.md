@@ -13,7 +13,7 @@ Various components of Balancer Governance are described in brief below.  Click o
 
 ## [BAL Token](./bal-token)
 
-The BAL token is the primary component of veBAL. Due to the fact that veBAL allows for swapping between BAL and ETH, BAL liquidty scales with Governance. Due to the fact that veBAL liquidty is locked, the market can easily understandhow BAL liquidty depth will scale over time by analyizing the unlock schedule of veBAL.
+The BAL token is the primary component of veBAL. Due to the fact that veBAL allows for swapping between BAL and ETH, BAL liquidity scales with Governance. Due to the fact that veBAL liquidity is locked, the market can easily understand how BAL liquidity depth will scale over time by analyzing the unlock schedule of veBAL.
 
 ## [Governable Protocol Fees](./protocol-fees)
 
@@ -21,7 +21,7 @@ Balancer Governors have the power to enable and modify Governable Protocol Fees.
 
 ## [Governance Process](process.md)
 
-Changes to the Balancer Protocol and allocations of community funds are made through a governance process, which includes:  A proposal, a prepaird transaction payload for onchain execution via gnosis-safe, and a snapshot vote validating the proposal with a quorum that currently stands at at least 2 million veBAL voting.
+Changes to the Balancer Protocol and allocations of community funds are made through a governance process, which includes:  A proposal, a prepared transaction payload for onchain execution via gnosis-safe, and a snapshot vote validating the proposal with a quorum that currently stands at least 2 million veBAL voting.
 
 
 ## [Snapshot](./snapshot)
