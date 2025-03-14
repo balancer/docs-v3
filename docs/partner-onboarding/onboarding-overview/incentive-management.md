@@ -60,7 +60,7 @@ The Balancer Maxis are the primary POC for incentive management and are happy to
 :::
 Depending on your use-case you want to create a rewards injector for your reward token. In that case, you need to follow a series of configuration steps outlined below. A rewards injector has the purpose of streamlining the distribution of rewards to gauges on Balancer. It takes care of correct token deposits and timely execution based on Chainlink automation. Furthermore, our rewards injector infrastructure is fully customizable and manageable through our [operations UI](https://balancer.defilytica.tools/rewards-injector) overall streamlining the process. Follow these steps if you want to utilize our infrastructure:
 
-1. Create a new rewards injector from the factory following the [documentation](https://github.com/BalancerMaxis/ChildGaugeInjectorV2?tab=readme-ov-file#deploying-an-injector-using-the-factory). Depending on your needs, choose different initial configuration parameters
+1. Create a new rewards injector from the factory using the Injector Creator [interface](https://balancer.defilytica.tools/injector-creator-v2). Depending on your needs, choose different initial configuration parameters
 ::: tip
 The canonical factory for injectors v2 can be accessed via `0x6142582f8946bf192a4f80ed643a5856d18a7060` on all networks Balancer is currently deployed to.
 :::
