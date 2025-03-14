@@ -4,7 +4,7 @@ order: 0
 ---
 
 ::: info
-Retail users should not interact directly with the Vault should not be interacted with directly. [Routers](../router/overview.md) serve as the entry point for all user actions.
+Retail users should not interact directly with the Vault. [Routers](../router/overview.md) serve as the entry point for all user actions.
 :::
 
 # The Vault

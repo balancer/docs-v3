@@ -82,7 +82,7 @@ The Snapshot process is started when an address with at least 200,000 veBAL in d
 - Barring clear community consensus otherwise the vote Should be of Type “Basic Voting” and the choices should be one of [Yes, let’s do it - No, This is not the way - Abstain].
 - Runs for 96 hours starting on a **Thursday (GMT)**.
 - Has a quorum of 2 million veBAL.
-- The linked payload matches the english specification and fails review and is in a recognizable/verifible form by the Maxis.
+- The linked payload matches the english specification and fails review and is in a recognizable/verifiable form by the Maxis.
 - The linked payload simulates successfully in tenderly and/or produce the desired results on fork.
 
 **IMPORTANT:** A Snapshot voting that does not meet all of the above requirements will not be valid even if it wins a majority of the votes. Please take your time when posting Snapshots. A number of the Balancer Maxis have delegations of over 200k veBAL and would be happy to help you post your Snapshot if you are unsure and it has some community support.
@@ -91,10 +91,10 @@ If a Snapshot is approved by governance but rejected for technical reasons, the 
 
 ### Step 5: Results and Execution
 
-If the vote fails in an approve/reject vote it will not be executed on. Proposes are encouraged to wait at least 30 days and/or until something significant has changed before posting another vote, and delegates with sufficient veBAL to post votes are asked to be considerate about creating governance noise and SPAM by reposting failed votes in rapid succession.
+If the vote fails in an approve/reject vote it will not be executed on. Proposers are encouraged to wait at least 30 days and/or until something significant has changed before posting another vote, and delegates with sufficient veBAL to post votes are asked to be considerate about creating governance noise and SPAM by reposting failed votes in rapid succession.
 
 If the vote succeeds or a result has been chosen, follow through to make sure that it is properly executed. Depending on what the vote is about, it may require an action by the [multisig](multisig.md). The Balancer Maxis are currently responsible for organizing the onchain execution of governance and are working toward making their process as transparent as possible in the public [Balancer Multisig Ops Github Repo](https://github.com/BalancerMaxis/multisig-ops)
 
-Assuming all reviews are finished and dependencies are met, the Maxis will make every effort to execute on finished in the same week that governance concludes. Note that it some cases complex BIPs may require more time for final multisigner review.
+Assuming all reviews are finished and dependencies are met, the Maxis will make every effort to execute on finished in the same week that governance concludes. Note that in some cases complex BIPs may require more time for final multisigner review.
 
 The Maxis will endeavor to post a comment to the Forum post with a link to the execution TX upon execution.

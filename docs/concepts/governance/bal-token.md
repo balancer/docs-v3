@@ -36,7 +36,7 @@ You can see the emission rate (getInflationRate = 0.239 BAL/second = 145k BAL/we
 
 And the RATE_REDUCTION_COEFFICIENT 1.189 = 2^(1/4)
 
-This is applied to the inflation rate every year so as to achieve the emission scheduled approved by governance
+This is applied to the inflation rate every year so as to achieve the emission schedule approved by governance
 
 This results in the following emissions schedule:
 
@@ -211,7 +211,7 @@ This chart outlines the allocation amounts. More details below.
 
 #### Liquidity Providers
 
-Emissions to liquidty providers are decided by a combination of the emissions schedule described above, and [veBAL](veBAL) voting to determine the allocations that flow to each authorized pool.
+Emissions to liquidity providers are decided by a combination of the emissions schedule described above, and [veBAL](veBAL) voting to determine the allocations that flow to each authorized pool.
 
 #### Founders, Options, Advisors, Investors
 
