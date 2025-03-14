@@ -654,7 +654,7 @@ Queries a `removeLiquidityRecovery` operation without actually executing it.
 | Name              | Type           | Description                                            |
 |-------------------|----------------|--------------------------------------------------------|
 | pool              | address        | Address of the liquidity pool                          |
-| exactBptAmountIn  | uint256        | MExact amount of pool tokens provided for the query    |
+| exactBptAmountIn  | uint256        | Exact amount of pool tokens provided for the query    |
 
 **Returns:**
 
