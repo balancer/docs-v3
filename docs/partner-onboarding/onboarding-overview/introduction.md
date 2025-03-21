@@ -32,8 +32,11 @@ Balancer Technology provides innovative AMM designs such as
 
 Onboarding into Balancer varies depending on the AMM technology you want to use. Some components are simple and straightforward to use, while others may require expert assistance from our core contributors.
 
-Learn more about our onboarding journey, use the Balancer Tech Product Wizard to find the best solution for your needs, or check out our product case studies  below.
+Learn more about our onboarding journey, use the Balancer Tech Product Wizard to find the best solution for your needs, or check out our product case studies below.
 
+:::info
+When adding new tokens to Balancer pools, keep in mind the [Vault compatibility requirements](../../partner-onboarding/onboarding-overview/core-pools.md#token-requirements).
+:::
 
 ### Onboarding Journey
 Onboarding your asset onto Balancer involves three main steps:
