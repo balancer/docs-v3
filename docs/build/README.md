@@ -34,5 +34,9 @@ necessary organic flow to compete effectively.
 
 Our aim is to simplify the development process and facilitate the creation of novel AMMs with minimal friction.
 
+:::info
+When adding new tokens to Balancer pools, keep in mind the [Vault compatibility requirements](../partner-onboarding/onboarding-overview/core-pools.md#token-requirements).
+:::
+
 When building on Balancer, there are three paths to explore:
 
