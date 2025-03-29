@@ -26,7 +26,7 @@ export const llmsTxtPlugin = (): Plugin => ({
     const glob = `${docsDir}/**/*.md`
     const files = await globby(glob);
 
-    const llmsTxtContent = ['## Docs'];
+    const llmsTxtContent = [...content, '## Docs', ''];
     const llmsFullTxtContent = content;
 
     for (const file of files) {
