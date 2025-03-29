@@ -8,6 +8,7 @@ import { registerComponentsPlugin } from '@vuepress/plugin-register-components';
 import { getDirname, path } from '@vuepress/utils';
 import { balancerTheme } from '../../theme/';
 import { navbar, sidebar } from './configs/index.js';
+import { llmsTxtPlugin } from './plugins/llmsTxtPlugin.js';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -72,6 +73,7 @@ export default defineUserConfig({
 
   // use plugins
   plugins: [
+    llmsTxtPlugin(),
     registerComponentsPlugin({
       componentsDir: path.resolve(__dirname, './components'),
     }),
