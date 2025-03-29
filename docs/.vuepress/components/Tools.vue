@@ -54,24 +54,6 @@ import DocsCard from './DocsCardTools.vue';
 
 const coreTools = [
   {
-    title: 'Batch Swaps',
-    icon: '/images/logo-balancer-white-512x512.svg',
-    details: 'Batch Swap Queries',
-    link: '/tools/core/batch-swap.html',
-  },
-  {
-    title: 'Pools',
-    icon: '/images/hero-circles.png',
-    details: 'Pool Swap, Join and Exit Queries',
-    link: '/tools/core/pools.html',
-  },
-  {
-    title: 'Smart Order Router',
-    icon: '/images/quick-link-guides.svg',
-    details: 'Query swap routes through the SOR ',
-    link: '/tools/core/smart-order-router.html',
-  },
-  {
     title: 'Maxis Operations UI',
     icon: '/images/toolshub/defilytica_simple.png',
     details:
