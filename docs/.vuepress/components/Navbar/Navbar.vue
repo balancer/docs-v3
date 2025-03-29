@@ -1,5 +1,4 @@
 <script setup>
-import NetworkSelect from './NetworkSelect.vue';
 
 defineProps({
   selectedPage: {
@@ -40,7 +39,6 @@ defineProps({
         Smart Order Router (SOR)
       </button>
     </div>
-    <NetworkSelect />
   </nav>
 </template>
 <style scoped>
