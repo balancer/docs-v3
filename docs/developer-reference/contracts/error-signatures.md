@@ -4,6 +4,8 @@ order: 4
 
 # Error signatures
 
+Catalogue for decoding custom error signatures into their associated error names
+
 | Error Name                           | Parameters                                                   | Error Signature |
 | ------------------------------------ | ------------------------------------------------------------ | --------------- |
 | AfterAddLiquidityHookFailed          |                                                              | `0x1f11c6e8`    |

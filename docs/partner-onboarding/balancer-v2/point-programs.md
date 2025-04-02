@@ -6,6 +6,7 @@ order: 7
 # Setting Up a Partner Points Program Category on the Balancer UI
 
 This guide will walk you through the process of setting up a category for your partner points program in the Balancer protocol. By following these steps, you'll be able to tag sets of pools in the Balancer API and frontend, allowing users to earn points for providing liquidity to specific pools.
+
 :::info
 All information provided herein is referencing how to make changes to the [metadata repository ](https://github.com/balancer/metadata/) to register a points program on the Balancer Zen UI.
 :::
