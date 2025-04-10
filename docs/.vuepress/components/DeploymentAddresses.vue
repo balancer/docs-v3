@@ -78,6 +78,7 @@ const CONTRACT_GROUPS = {
       'BalancerQueries',
       'ProtocolFeePercentagesProvider',
       'ProtocolFeeController',
+      'ProtocolFeeSweeper',
     ],
   },
   poolfactory: {
