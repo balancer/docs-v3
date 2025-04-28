@@ -10,7 +10,7 @@ references:
 
 ## Overview
 
-StableSurge Math leverages [Stable Math](./stable-math.md) for the pool invariant, and the hook itself only affects the swap fee. The swap fee is calculated linearly based on the absolute delta values of pool token balances based on a add, remove, or swap event resulting in a fee increase when the criteria is met.
+StableSurge Math leverages [Stable Math](./stable-math.md) for the pool invariant, and the hook itself only affects the swap fee. The swap fee is calculated linearly based on the absolute delta values of pool token balances based on an add, remove, or swap event, resulting in a fee increase when the surge criteria are met.
 
 The hook utilizes all parameters which inherited from the traditional stable pool but introduces 2 new variables which are mutable and controlled by the swap fee manager:
 
