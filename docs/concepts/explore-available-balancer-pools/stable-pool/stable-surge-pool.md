@@ -46,7 +46,7 @@ One of the key advantages to having StableSurge Pools on Balancer specifically i
 
 #### Example
 
-Alternative decentralized exchanges only permit `[GHO, USDC, USDT]` with a only a static or non-directional fee algorithm. Many exchanges do not even permit more than 2 tokens in a pool. On Balancer the pool can be `StableSurge [Aave-GHO, Aave-USDC, Aave-USDT]` meaning liquidity providers earn the yield from Aave's Core stablecoin lending markets, and only traders who oversell one of the tokens will pay an increased trading fee. Any market makers or traders reinforcing the parity of the assets will only pay the set base fee.
+Alternative decentralized exchanges only permit `[GHO, USDC, USDT]` with a static or non-directional fee algorithm. Many exchanges do not even support more than 2 tokens. On Balancer you can have a `StableSurge [Aave-GHO, Aave-USDC, Aave-USDT]` pool, meaning liquidity providers earn the yield from Aave's Core stablecoin lending markets, and only traders who oversell one of the tokens pay an increased trading fee. Any market makers or traders reinforcing the parity of the assets will pay only the standard static fee percentage.
 
 
 ## Use Cases
