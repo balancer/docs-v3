@@ -22,7 +22,21 @@ But if the pool becomes unbalanced—meaning one asset makes up more than a conf
 
 This increase happens gradually (linearly) up to a maximum fee (like 0.50%) as the imbalance grows.
 
-For example, if the pool gets to 55% one token and 45% the other, the fee starts increasing. The more unbalanced it becomes, the higher the fee—until it hits the max.
+For example, consider a two-token pool with 1000 of each token. A 300 token trade would result in a 30% imbalance: the balances would be 700 / 1300, or 35% / 65%. If the threshold were 20%, the pool would impose a surge fee.
+
+The formula is:
+$$
+\text{surgeFee} = \text{staticFee} + \left( \text{maxFee} - \text{staticFee} \right) \cdot \frac{\text{pctImbalance} - \text{pctThreshold}}{1 - \text{pctThreshold}}
+$$
+
+With a maximum of 50%, the fee would increase linearly from the base static fee of 1%, up to a maximum of 50%, starting at a 20% imbalance level. So in this example, the surge fee would be:
+
+1% + (50% - 1%) * \frac{30% - 20%}{100% - 20%) = 7.125% (much higher than the standard 1%).
+
+Exactly at the threshold, the "surge" term is zero, and the user pays only the static fee.
+
+As the unbalanced proportion term approaches 1, the surge fee approaches:
+static + max - static ~ max fee.
 
 One important note: if a trade helps rebalance the pool (brings the asset split closer to 50/50), it only gets charged the lower base fee, encouraging balanced trading.
 
