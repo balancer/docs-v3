@@ -26,7 +26,7 @@ Specific to StableSurge:
 
 
 
-## Implementations
+## Implementation
 
 ```solidity
 function calculateImbalance(uint256[] memory balances) internal pure returns (uint256) {
