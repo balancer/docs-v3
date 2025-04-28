@@ -16,7 +16,7 @@ The hook utilizes all parameters which inherited from the traditional stable poo
 
 Inherited: 
 - `Number of tokens (n)`: Nominal amount of unique assets in the pool; not balances. For example for wETH/wstETH, n=2
-- `staticSwapFeePercentage`: The base fee a trade will be charged when the pool is within the surge threshold range, or whenever a trade pushes to ratio of assets towards parity.
+- `staticSwapFeePercentage`: The base fee a trade will be charged when the pool is within the surge threshold range, or whenever a trade pushes the ratio of assets towards parity.
 
 Specific to StableSurge:
 - `surgeThresholdPercentage`: This value is the percentage away from parity (50:50) at which a pool will begin to charge traders surging fees. For example if set to 10% the fee will begin to increase once the pool balance percentages reach (55:45)
