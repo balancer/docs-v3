@@ -16,7 +16,7 @@ StableSurge Pools are a type of Stable Pool designed for assets that usually tra
 
 Here’s how it works:
 
-Normally, swaps pay a base fee (like 0.05%).
+Normally, swaps pay a base fee known as the "static swap fee," such as 1%.
 
 But if the pool becomes unbalanced—meaning one asset makes up more than a set percentage—the fee starts increasing.
 
