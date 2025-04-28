@@ -22,10 +22,6 @@ Specific to StableSurge:
 - `surgeThresholdPercentage`: This value is the percentage away from parity (50:50) at which a pool will begin to charge traders surging fees. For example if set to 10% the fee will begin to increase once the pool balance percentages reach (55:45)
 - `maxSurgeFeePercentage`: This is the maximum fee the pool can experience, which would happen if the asset ratios strayed as close to 99%/1% as technically possible. This setting defines how quickly the fee will surge up from the base fee, once the threshold is hit.
 
-## Example
-
-
-
 ## Implementation
 
 ```solidity
