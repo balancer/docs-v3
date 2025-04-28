@@ -29,14 +29,82 @@ Specific to StableSurge:
 ## Implementation
 
 ```solidity
+Here is the main function in `StableSurgeHook` that calculations the surge fee:
+
+function _getSurgeFeePercentage(
+    PoolSwapParams calldata params,
+    address pool,
+    uint256 staticFeePercentage,
+    uint256[] memory newBalances
+) internal view returns (uint256 surgeFeePercentage) {
+    SurgeFeeData memory surgeFeeData = _surgeFeePoolData[pool];
+   
+    // No matter where the imbalance is, the fee can never be smaller than the static fee.
+    if (surgeFeeData.maxSurgeFeePercentage < staticFeePercentage) {
+        return staticFeePercentage;
+    }
+
+    uint256 newTotalImbalance = StableSurgeMedianMath.calculateImbalance(newBalances);
+
+    bool isSurging = _isSurging(surgeFeeData, params.balancesScaled18, newTotalImbalance);
+    if (isSurging) {
+        surgeFeePercentage =
+            staticFeePercentage +
+            (surgeFeeData.maxSurgeFeePercentage - staticFeePercentage).mulDown(
+                (newTotalImbalance - surgeFeeData.thresholdPercentage).divDown(
+                    uint256(surgeFeeData.thresholdPercentage).complement()
+                )
+            );
+    } else {
+        surgeFeePercentage = staticFeePercentage;
+    }
+}
+
+function _isSurging(
+    SurgeFeeData memory surgeFeeData,
+    uint256[] memory currentBalances,
+    uint256 newTotalImbalance
+) internal pure returns (bool isSurging) {
+    if (newTotalImbalance == 0) {
+        return false;
+    }
+
+    uint256 oldTotalImbalance = StableSurgeMedianMath.calculateImbalance(currentBalances);
+
+    // Surging if imbalance grows and we're currently above the threshold.
+    return (newTotalImbalance > oldTotalImbalance && newTotalImbalance > surgeFeeData.thresholdPercentage);
+}
+
+The `StableSurgeMedianMath` library contains the functions that calculate the imbalance. Note that though the examples use two-token pools for simplicity, the imbalance calculation applies to any stable pool (up to 5 tokens). Essentially, it is measuring the total deviation from a perfectly balance pool (where all balances are equal).
+
 function calculateImbalance(uint256[] memory balances) internal pure returns (uint256) {
     uint256 median = findMedian(balances);
+
     uint256 totalBalance = 0;
     uint256 totalDiff = 0;
+
     for (uint i = 0; i < balances.length; i++) {
         totalBalance += balances[i];
         totalDiff += absSub(balances[i], median);
     }
+
     return totalDiff.divDown(totalBalance);
+}
+
+function findMedian(uint256[] memory balances) internal pure returns (uint256) {
+    uint256[] memory sortedBalances = balances.sort();
+    uint256 mid = sortedBalances.length / 2;
+
+    if (sortedBalances.length % 2 == 0) {
+        return (sortedBalances[mid - 1] + sortedBalances[mid]) / 2;
+    } else {
+        return sortedBalances[mid];
+    }
+}
+
+function absSub(uint256 a, uint256 b) internal pure returns (uint256) {
+    unchecked {
+        return a > b ? a - b : b - a;
+    }
 }
 ```
