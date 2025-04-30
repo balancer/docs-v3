@@ -28,6 +28,7 @@ Gyro 2-CLPs are always two token pools.
 Note that the swap fee and invariant limits are defined in `Gyro2CLPPool` through implementing the `ISwapFeePercentageBounds` and `IUnbalancedLiquidityInvariantRatioBounds` interfaces, which are included in `IBasePool`.
 
 ![2-CLP price curve illustration](/images/2-clp-v2.gif)
+Source: https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/2-clps
 
 ## Advantages
 
