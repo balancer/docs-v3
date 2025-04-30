@@ -26,20 +26,74 @@ Pools that swap tokens by enforcing a Stable Math invariant, based on Curve.
 * [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/stable)
 * [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/stable.py)
 * [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `StablePoolFactory`
-* Amplification factor can be dynamic see:
+* Amplification factor can be dynamic; see:
   * `getAmplificationParameter()` view function
   * `AmpUpdateStarted` & `AmpUpdateStopped` events
 
-## Gyro ECLP
+## Stable Surge Pool
 
-Elliptic CLPs, or E-CLPs, allow trading along the curve of an ellipse.
+Stable Pools that use the Stable Surge Hook, a dynamic fee implementation that increases fees on transactions that unbalance the pool. The pool itself is exactly the same - a standard Stable Pool. The only difference is the hook, which is attached to the pool by the factory.
+
+* See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-hooks/contracts/StableSurgePoolFactory.sol).
+* [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/stable)
+* [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/stable.py)
+* [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `StableSurgePoolFactory`
+* Amplification factor can be dynamic; see:
+  * `getAmplificationParameter()` view function
+  * `AmpUpdateStarted` & `AmpUpdateStopped` events
+
+## Gyro 2-CLP
+
+Gyroscope two-token pools that concentrate liquidity in a fungible manner, and can have uncorrelated assets.
+
+* [Gyro Docs](https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/2-clps)
+* See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/Gyro2CLPPool.sol)
+* [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/gyro/gyro2CLPPool.ts)
+* [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/gyro/gyro2CLP.py)
+* [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `Gyro2CLPPoolFactory`
+* [Gyro pools on Balancer App](https://balancer.fi/pools?poolTypes=GYRO&protocolVersion=3)
+* Maths requires the following pool specific immutable parameters:
+```
+paramsAlpha
+paramsBeta
+``` 
+
+  * These are set at creation and are immutable.
+  * Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/Gyro2CLPPool.sol#L224-L235) and [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/Gyro2CLPPool.sol#L238-L243)):
+```solidity
+function getGyro2CLPPoolDynamicData() external view returns (Gyro2CLPPoolDynamicData memory data);
+
+struct Gyro2CLPPoolDynamicData {
+    uint256[] balancesLiveScaled18;
+    uint256[] tokenRates;
+    uint256 staticSwapFeePercentage;
+    uint256 totalSupply;
+    uint256 bptRate;
+    bool isPoolInitialized;
+    bool isPoolPaused;
+    bool isPoolInRecoveryMode;
+}
+
+function getGyro2CLPPoolImmutableData() external view returns (Gyro2CLPPoolImmutableData memory data);
+
+struct Gyro2CLPPoolImmutableData {
+    IERC20[] tokens;
+    uint256[] decimalScalingFactors;
+    uint256 sqrtAlpha;
+    uint256 sqrtBeta;
+}
+```
+
+## Gyro E-CLP
+
+Elliptic CLPs, or E-CLPs, allow trading along the curve of an ellipse. Suitable for correlated assets that would be used with Stable Pools.
 
 * [Gyro Docs](https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/e-clps)
 * See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/GyroECLPPool.sol)
 * [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/gyro/gyroECLPPool.ts)
 * [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/gyro/gyroECLP.py)
 * [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `GyroECLPPoolFactory`
-* [GyroE pools on Balancer App](https://balancer.fi/pools?poolTypes=GYRO&protocolVersion=3)
+* [Gyro pools on Balancer App](https://balancer.fi/pools?poolTypes=GYRO&protocolVersion=3)
 * Maths requires the following pool specific immutable parameters:
 ```
 paramsAlpha
