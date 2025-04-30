@@ -23,9 +23,3 @@ Any token that complies with the ERC4626 standard can easily become an asset wit
 
 #### Great way for a DAO to facilitate liquidity for their token product
 Boosted pools are an excellent method for introducing LSTs and yield-bearing tokens to the market. As a DAO, you can fund [liquidity buffers](/concepts/vault/buffer.html#erc4626-liquidity-buffers) with yield-bearing assets and base assets, allowing your users to benefit from the advantages of 100% boosted pools. This also provides the same "entry" price for your LST or yield-bearing token that a user would get when entering natively.
-
-### Examples
-
-:::info
-Once v3 launches this will be updated.
-:::
