@@ -19,7 +19,8 @@ Gyro E-CLPs are always two token pools.
 - The maximum swap fee is not constrained (i.e., 100%)
 - The invariant cannot decrease below 60% or increase beyond 500% on liquidity operations (same limits as the standard Stable Pool)
 - The key parameters are Alpha (α), the lower bound of the E-CLP price curve, and Beta (β), the upper limit of the price interval.
-- The lambda parameter (>= 1) determines the "stretch" of the curve. It behaves like the reciprocal of the eccentricity: 1 would be a perfect circle.
+- The lambda parameter (>= 1) determines the "stretch" of the curve. It behaves like the reciprocal of the eccentricity. 1 would be a perfect circle = price-bounded StableSwap. Higher values increasingly concentrate the liquidity around the center (e.g., $1), with less and less in other regions of the bounded price curve.
+- 
 - The phi parameter measure the "rotation" of the curve. Other parameters (documented in the code), are combinations or functions of these fundamentals. For instance, c = cos(-phi).
 :::
 
