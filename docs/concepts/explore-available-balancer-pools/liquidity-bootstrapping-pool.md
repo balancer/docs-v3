@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 4
 title: Liquidity Bootstrapping Pool
 ---
 # Liquidity Bootstrapping Pools (LBPs)
