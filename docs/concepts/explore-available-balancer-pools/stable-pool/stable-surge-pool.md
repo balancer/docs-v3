@@ -25,13 +25,16 @@ This increase happens gradually (linearly) up to a maximum fee (like 0.50%) as t
 For example, consider a two-token pool with 1000 of each token. A 300 token trade would result in a 30% imbalance: the balances would be 700 / 1300, or 35% / 65%. If the threshold were 20%, the pool would impose a surge fee.
 
 The formula is:
+
 $$
 \text{surgeFee} = \text{staticFee} + \left( \text{maxFee} - \text{staticFee} \right) \cdot \frac{\text{pctImbalance} - \text{pctThreshold}}{1 - \text{pctThreshold}}
 $$
 
 With a maximum of 50%, the fee would increase linearly from the base static fee of 1%, up to a maximum of 50%, starting at a 20% imbalance level. So in this example, the surge fee would be:
 
-1% + (50% - 1%) * \frac{30% - 20%}{100% - 20%) = 7.125% (much higher than the standard 1%).
+$$
+1\% + (50\% - 1\%) \cdot \frac{30\% - 20\%}{100\% - 20\%} = 7.125\% \text{ (much higher than the standard 1\%).}
+$$
 
 Exactly at the threshold, the "surge" term is zero, and the user pays only the static fee.
 
@@ -40,7 +43,7 @@ static + max - static ~ max fee.
 
 One important note: if a trade helps rebalance the pool (brings the asset split closer to 50/50), it only gets charged the lower base fee, encouraging balanced trading.
 
-StableSurge Pools use [Stable Math](./stable-math.md) (based on StableSwap, popularized by Curve) as well as the [StableSurge Math](./stablesurge-math.md) which 
+StableSurge Pools use [Stable Math](./stable-math.md) (based on StableSwap, popularized by Curve) as well as the [StableSurge Math](./stablesurge-math.md) which
 
 ::: info info
 Balancer v3 pools are limited at the Vault level to 8 tokens. Stable Pools have a safe maximum of 5 tokens, due to the constraints of Stable Math (same as in v2).
@@ -57,11 +60,9 @@ Standard Stable Pools support 5 tokens.
 
 One of the key advantages to having StableSurge Pools on Balancer specifically is that they are plugged into the same protocol as all other pools. Swapping between stablecoins is frequently used for arbitrage when one token is paired with two different stablecoins in different pools. By leveraging Batch Swaps on Balancer, these swaps can be combined into a single, gas-efficient transaction. Furthermore, utilizing StableSurge in combination with [Boosted Pool](../boosted-pool.md) technology makes Balancer pools the best option for correlated assets when compared to any other DEX.
 
-
 #### Example
 
 Alternative decentralized exchanges only permit `[GHO, USDC, USDT]` with a static or non-directional fee algorithm. Many exchanges do not even support more than 2 tokens. On Balancer you can have a `StableSurge [Aave-GHO, Aave-USDC, Aave-USDT]` pool, meaning liquidity providers earn the yield from Aave's Core stablecoin lending markets, and only traders who oversell one of the tokens pay an increased trading fee. Any market makers or traders reinforcing the parity of the assets will pay only the standard static fee percentage.
-
 
 ## Use Cases
 
@@ -71,4 +72,4 @@ Alternative decentralized exchanges only permit `[GHO, USDC, USDT]` with a stati
 
 stETH is a token that represents **Staked Ether**, combining the value of deposited ETH with staking returns. As an ERC20, stETH tokens can be swapped as one would swap WETH, allowing the benefits of ETH 2.0 staking while allowing users to continue using their staked Ether on decentralized finance products.
 
-Balancer StableSurge Pools are ideal for the wstETH-WETH pair as the stETH asset is highly correlated but not pegged 1:1 to ETH as it accrues staking returns. By rehypothecating these assets into Fluid, a higher capital efficiency is achieved by earning Balancer liquidity providers higher returns on their position, and offers Fluid borrowers more idle assets to utilize in their strategies. 
+Balancer StableSurge Pools are ideal for the wstETH-WETH pair as the stETH asset is highly correlated but not pegged 1:1 to ETH as it accrues staking returns. By rehypothecating these assets into Fluid, a higher capital efficiency is achieved by earning Balancer liquidity providers higher returns on their position, and offers Fluid borrowers more idle assets to utilize in their strategies.
