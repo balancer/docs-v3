@@ -28,6 +28,11 @@ Note that the swap fee and invariant limits are defined in `GyroECLPPool` throug
 See [here](../../../../integration-guides/aggregators/pool-maths-and-details.html#gyro-eclp) for a more detailed reference.
 
 ![E-CLP price curve illustration](/images/E-CLP-v1.gif)
+
+Using rate providers, which (depending on their sensitivity and tracking speed) can track the price much more closely, preserving capital by reducing or eliminating arbitrage opportunities caused by lagging prices.
+
+![Rate providers](/images/Rate-providers-v8.gif)
+
 Source: [Gyroscope Docs](https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/e-clps)
 
 ## Advantages
