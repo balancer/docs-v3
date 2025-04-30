@@ -12,7 +12,7 @@ references:
 
 These pools use the following invariant: (x + a)(y + b) = $L^2$.
 
-Given quantities of real reserves (x,y) in the pool and the pool’s pricing range [α,β], these "offsets" a and b can be calculated as $a = \frac{L}{\sqrt{\beta}}$, $b = \frac{L}{\sqrt{\alpha}}$. They describe the amount of "virtual reserves" the pool adds to real reserves to generate the curve defining the price range. In the code, the sum of the real balance and offset is known as the "virtual balance" of each token.
+Given quantities of real reserves (x,y) in the pool and the pool’s price range [α,β], these "offsets" a and b can be calculated as $a = \frac{L}{\sqrt{\beta}}$, $b = \frac{L}{\sqrt{\alpha}}$. They describe the amount of "virtual reserves" the pool adds to real reserves to generate the curve defining the price range. In the code, the sum of the real balance and offset is known as the "virtual balance" of each token.
 
 Note that native Gyro pools also have a 3-CLP, 3-token version of the pool, which uses a cubic invariant - (x + a)(y + a)(z + a) = $L^3$ - that essentially amplifies the capital efficiency benefits, vs. a corresponding pair of 2-CLPs.
 
