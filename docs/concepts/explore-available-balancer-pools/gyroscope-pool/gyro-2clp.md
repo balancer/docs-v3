@@ -23,7 +23,7 @@ Gyro 2-CLPs are always two token pools.
 - The maximum swap fee is not constrained (i.e., 100%)
 - The invariant growth ratios are unconstrained
 - The key parameters are Alpha (α), the lower bound of the 2-CLP price curve, and Beta (β), the upper limit of the price interval.
-:::
+  :::
 
 Note that the swap fee and invariant limits are defined in `Gyro2CLPPool` through implementing the `ISwapFeePercentageBounds` and `IUnbalancedLiquidityInvariantRatioBounds` interfaces, which are included in `IBasePool`.
 
@@ -42,6 +42,6 @@ Another effect of concentration is effectively "deeper" liquidity for traders, w
 
 ## Impermanent Loss
 
-[Impermanent Loss](./impermanent-loss.md) is the difference in value between holding a set of assets and providing liquidity for those same assets.
+[Impermanent Loss](../weighted-pool/impermanent-loss.md) is the difference in value between holding a set of assets and providing liquidity for those same assets.
 
 This can occur with these pools, and the liquidity concentration somewhat increases this risk, especially with narrow price range settings.

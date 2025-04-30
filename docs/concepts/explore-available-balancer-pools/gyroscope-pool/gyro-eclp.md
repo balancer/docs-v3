@@ -21,7 +21,7 @@ Gyro E-CLPs are always two token pools.
 - The key parameters are Alpha (α), the lower bound of the E-CLP price curve, and Beta (β), the upper limit of the price interval.
 - The lambda parameter (>= 1) determines the "stretch" of the curve. It behaves like the reciprocal of the eccentricity. 1 would be a perfect circle = price-bounded StableSwap. Higher values increasingly concentrate the liquidity around the center (e.g., $1), with less and less in other regions of the bounded price curve.
 - The phi parameter measures the "rotation" of the curve. Other parameters (documented in the code), are combinations or functions of these fundamentals. For instance, c = cos(-phi).
-:::
+  :::
 
 Note that the swap fee and invariant limits are defined in `GyroECLPPool` through implementing the `ISwapFeePercentageBounds` and `IUnbalancedLiquidityInvariantRatioBounds` interfaces, which are included in `IBasePool`.
 
@@ -42,6 +42,6 @@ Another effect of concentration is effectively "deeper" liquidity for traders, w
 
 ## Impermanent Loss
 
-[Impermanent Loss](./impermanent-loss.md) is the difference in value between holding a set of assets and providing liquidity for those same assets.
+[Impermanent Loss](../weighted-pool/impermanent-loss.md) is the difference in value between holding a set of assets and providing liquidity for those same assets.
 
 This can occur with these pools, and the liquidity concentration somewhat increases this risk, especially with narrow price range settings.
