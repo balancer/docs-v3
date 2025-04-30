@@ -34,7 +34,7 @@ Source: https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pool
 
 ### Higher Fees for LPs
 
-Concentrated liquidity allows the LPs' entire contributions to be used within a relatively narrow expected price range, as opposed to distributing it along the entire price curve - where most of it would be idle. Since the price range is fixed and common to all LPs, there is no individual variation (as there would be in NFT-based CL AMMs like Uniswap, where each LP's position is tracked individually), but these pools are more capital efficient than, for instance, regular Weighted Pools.
+Concentrated liquidity allows the LPs' entire contributions to be used within a relatively narrow expected price range, as opposed to distributing it along the entire price curve, where most of it would be idle. Since the price range is fixed and common to all LPs, there is no individual variation (as there would be in NFT-based CL AMMs like Uniswap, where each LP's position is tracked individually), but these pools are more capital efficient than, for instance, regular Weighted Pools.
 
 ### Better execution for traders
 
