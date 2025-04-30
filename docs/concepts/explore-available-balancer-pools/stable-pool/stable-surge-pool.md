@@ -42,7 +42,7 @@ One important note: if a trade helps rebalance the pool (brings the asset split 
 
 StableSurge Pools use [Stable Math](./stable-math.md) (based on StableSwap, popularized by Curve) as well as the [StableSurge Math](./stablesurge-math.md) which 
 
-::: info info
+::: info
 Balancer v3 pools are limited at the Vault level to 8 tokens. Stable Pools have a safe maximum of 5 tokens, due to the constraints of Stable Math (same as in v2).
 Standard Stable Pools support 5 tokens.
 :::
