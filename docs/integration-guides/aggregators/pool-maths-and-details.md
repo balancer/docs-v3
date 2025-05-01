@@ -173,3 +173,69 @@ query MyQuery {
   }
 }
 ```
+
+## ReClamm Pools
+
+ReClamm Pools are two-token concentrated liquidity pools conceptually similar to 2-CLPs, but the parameters are not immutable. They can be changed not only by admins, but also by the pool itself, as it automatically adjusts virtual balances to shift the price range as necessary to keep the pool balanced (and earning fees for LPs).
+
+* See SC code implementation in this [dedicated repo](https://github.com/balancer/reclamm/blob/main/contracts/ReClammPool.sol)
+* [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/reClamm/reClammPool.ts)
+* [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `ReClammPoolFactory`
+* Maths requires the following pool specific parameters:
+```
+dailyPriceShiftExponent;
+centerednessMargin;
+initialMinPrice;
+initialMaxPrice;
+initialTargetPrice;
+``` 
+  * The "initial params" are set at creation and are immutable. They are only used to facilitate initializing the pool with correct token amounts to avoid arbitration losses.
+  * The `dailyPriceShiftExponent` and `centerednessMargin` can be changed by admins after deployment.
+  * The price shift exponent affects how quickly the pool is allowed to automatically shift the price range to keep the pool in balance. Faster = more responsive to volatility, but also more vulnerable to manipulation.
+  * The centeredness margin determines how sensitive the pool is to swaps that move it toward a more unbalanced state. Higher values mean greater sensitivity: the pool will react quicker to becoming unbalanced (e.g., at 60/40 vs. 80/20). A zero margin is essentially equivalent to a fixed 2-CLP Gyro pool.
+  * Admins can change the sensitivity and behavior of the pool after deployment by setting the margin or price shift exponent. While the price range cannot be set directly while the pool is in operation, it can be narrowed or widened (slowly over time, to prevent manipulation), by changing the ratio of the bounds.
+  * Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/reclamm/blob/main/contracts/ReClammPool.sol#L522-L546) and [here](https://github.com/balancer/reclamm/blob/main/contracts/ReClammPool.sol#L549-L564)):
+```solidity
+function getReClammPoolDynamicData() external view returns (ReClammPoolDynamicData memory data);
+
+struct ReClammPoolDynamicData {
+    // Base Pool
+    uint256[] balancesLiveScaled18;
+    uint256[] tokenRates;
+    uint256 staticSwapFeePercentage;
+    uint256 totalSupply;
+    // ReClamm
+    uint256 lastTimestamp;
+    uint256[] lastVirtualBalances;
+    uint256 dailyPriceShiftBase;
+    uint256 centerednessMargin;
+    uint256 currentFourthRootPriceRatio;
+    uint256 startFourthRootPriceRatio;
+    uint256 endFourthRootPriceRatio;
+    uint32 priceRatioUpdateStartTime;
+    uint32 priceRatioUpdateEndTime;
+    // Pool State
+    bool isPoolInitialized;
+    bool isPoolPaused;
+    bool isPoolInRecoveryMode;
+}
+
+function getReClammPoolImmutableData() external view returns (ReClammPoolImmutableData memory data);
+
+struct ReClammPoolImmutableData {
+    IERC20[] tokens;
+    uint256[] decimalScalingFactors;
+    uint256 initialMinPrice;
+    uint256 initialMaxPrice;
+    uint256 initialTargetPrice;
+    uint256 initialDailyPriceShiftExponent;
+    uint256 initialCenterednessMargin;
+    uint256 minCenterednessMargin;
+    uint256 maxCenterednessMargin;
+    uint256 minTokenBalanceScaled18;
+    uint256 minPoolCenteredness;
+    uint256 maxDailyPriceShiftExponent;
+    uint256 minPriceRatioUpdateDuration;
+    uint256 minFourthRootPriceRatioDelta;
+}
+```
