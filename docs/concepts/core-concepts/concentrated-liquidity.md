@@ -40,7 +40,7 @@ Uniswap uses a "tick" system to manage the granularity of liquidity provision. T
 
 Uniswap pools also have discrete fees, and to keep fee allocation fairly uniform, higher fees mean wider tick spacing. At the lowest fee tier (0.01%), a tick simply equals one basis point, and liquidity can be provided at that level of granularity. At the highest tier (1%), the resolution is 100 basis points.
 
-<p style="text-align:center">![Non-fungible CL illustration](/images/cl-illustration.png)</p>
+![Non-fungible CL illustration](/images/cl-illustration.png)
 
 Though we at Balancer, noting the importance and prominence of concentrated liquidity in Defi, (very) briefly considered trying to support this sort of liquidity in the v3 Vault, we quickly realized that this was incompatible with our long-term goals. Balancer is optimized for fungibility, with a focus on native support for yield-bearing tokens and "long-tail" liquidity, so we stayed in our lane, between the ticks. In the NFT-based CL space, the Unicorn stands alone.
 
@@ -58,7 +58,7 @@ Used for stable assets (such as Gyroscope’s own GYD), they “stretch” the f
 
 When using with yield-bearing assets and rate providers, the precision can be increased even further, helping mitigate LVR (loss vs. rebalancing), and automating liquidity management. Performance can be further enhanced with “re-hype” E-CLPS (using auto-rehypothecation - basically, depositing underlying assets supplied to E-CLPs on lending markets). See details [here](https://docs.gyro.finance/pools/rehype-e-clps). 
 
-<p style="text-align:center">![Non-fungible CL illustration](/images/rehype.png)</p>
+![Non-fungible CL illustration](/images/rehype.png)
 
 ### Readjusting Concentrated Liquidity AMM (ReClamm) Pools
 
