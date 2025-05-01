@@ -133,9 +133,7 @@ As noted above, the main idea of this pool is to manage the price interval such 
 
 ## Pool Centeredness Margin
 
-We could wait for the centeredness to be zero before moving the price interval, but that means we would wait for one of the real balances to be zero, which in practice means no exposure to one of the assets of the pool, and lost trade opportunities. The balance doesn't have to literally go to zero for the pool to get "stuck"; there could also be a dust balance worth less than the gas required to arb it. To avoid this situation, we introduce the concept of Centeredness Margin (see the same image from above, used to illustrate the concept of virtual balances, and here demonstrating the margins).
-
-![ReClamm price curve illustration](/images/reclamm-initial-state.png)
+We could wait for the centeredness to be zero before moving the price interval, but that means we would wait for one of the real balances to be zero, which in practice means no exposure to one of the assets of the pool, and lost trade opportunities. The balance doesn't have to literally go to zero for the pool to get "stuck"; there could also be a dust balance worth less than the gas required to arb it. To avoid this situation, we introduce the concept of Centeredness Margin (see the image above used to illustrate the concept of virtual balances).
 
 Margin is a number (also a percentage) from 0 to 1, very similar to pool centeredness, and helps calculate whether the pool is `IN RANGE` (Pool Centeredness > Margin) or `OUT OF RANGE` (Pool Centeredness ≤ Margin). If the pool is `OUT OF RANGE` , the price interval will be recalculated (which, in practice, means that we will recalculate the virtual balances).
 

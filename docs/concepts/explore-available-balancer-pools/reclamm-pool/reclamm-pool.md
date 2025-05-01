@@ -59,7 +59,9 @@ Given this information, we can calculate the "centeredness" of the pool (defined
 
 The next step is to "scale" the virtual balances. This is basically the inverse of the operation above that calculated the theoretical virtual balances from arbitrary real balances. Now that we know the real token balances the initializer intends to deposit, we can use the ratios determined above to calculate the actual initial virtual balances.
 
-Finally, we validate that the final ratio of the real balances corresponds to the theoretical ratio arising from the initial inputs, and that the actual price after initialization closely matches the initial target price. These values might not match exactly, due to rounding or precision errors, so there is a built-in tolerance of 0.01%. If any of these validations fail, initialization reverts, insuring the user against configuration errors. We provide a helper function, `computeInitialBalances`, to assist with these calculations. Given the actual intended deposit amount of one of the tokens - and the initial parameters set on deployment - the contract can calculate how much of the other token must be supplied to pass all the initialization checks.
+Finally, we validate that the ratio of the real balances corresponds to the theoretical ratio arising from the initial inputs, and that the actual price after initialization closely matches the initial target price. These values might not match exactly, due to rounding or precision errors, so there is a built-in tolerance of 0.01%. If any of these validations fail, initialization reverts, insuring the user against configuration errors.
+
+We provide a helper function, `computeInitialBalances`, to assist with these calculations. Given the actual intended deposit amount of one of the tokens - and the initial parameters set on deployment - the contract can calculate how much of the other token must be supplied to pass all the initialization checks.
 
 ## Centeredness Margin
 
@@ -77,7 +79,7 @@ This is also a percentage, and it controls the "doubling rate" of the price shif
 
 ## Admin actions
 
-ReClamm Pool admins can do three things: 1) change the centeredness margin (the threshold for updates); 2) change the daily price shift exponent (the speed of updates); and 3) change the price interval (i.e., the distance, or ratio, between the minimum and maximum price bounds), or simply stop an ongoing update. All of these changes will update the virtual balances (and potentially slightly change the price).
+ReClamm Pool admins can do three things: 1) change the centeredness margin (the threshold for updates); 2) change the daily price shift exponent (the speed of updates); and 3) initiate an update to the price interval (i.e., the distance, or ratio, between the minimum and maximum price bounds), or simply stop an ongoing update. All of these changes will update the virtual balances (and potentially slightly change the price).
 
 All of these functions require the pool to be initialized.
 
@@ -85,7 +87,9 @@ To prevent manipulation, changing the margin also requires the Vault to be locke
 
 Similarly, the daily price shift exponent can only be changed when the Vault is locked. As it is only altering the speed of the update, it does not check for centeredness. The price shift exponent is capped at 500% (corresponding to 32x in a day).
 
-Admins can also change the price ratio (actually supplying its fourth root), supplying the new ratio and a start and end time. There is a minimum duration of the update (6 hours), and a minimum amount of ratio change: 1000 wei. (This is loosely analogous to Uniswap's "tick" resolution limit, introduced for similar reasons.) These are "best effort" checks to keep the pool well-behaved, but are not hard guarantees. There is also a way to simply stop an ongoing update, which will fix the price ratio at its current value. Note that it is not necessary to stop an ongoing update before starting a new one. Starting an update while one is ongoing is equivalent to stopping and immediately restarting with the new parameters.
+Admins can also change the price ratio (actually its fourth root), supplying the new ratio and a start and end time. There is a minimum duration for the update (6 hours), and a minimum amount of ratio change: 1000 wei. (This is loosely analogous to Uniswap's "tick" resolution limit, introduced for similar reasons.)
+
+These are "best effort" checks to keep the pool well-behaved, but are not hard guarantees. There is also a way to simply stop an ongoing update, which will fix the price ratio at its current value. Note that it is not necessary to stop an ongoing update before starting a new one. Starting an update while one is ongoing is equivalent to stopping and immediately restarting with the new parameters.
 
 Note that it is possible for the price range to be both shifting up or down and expanding or contracting at the same time. Gas costs will be higher during these operations, compared to "in range" swaps with no ongoing price ratio update.
 

@@ -6,11 +6,11 @@ title: Concentrated Liquidity
 
 ## Introduction
 
-In traditional automated market makers (AMMs) like Uniswap v2 or Balancer v1, liquidity providers (LPs) deposit tokens across the entire possible price range: i.e., from $0 to ∞ for ETH/USDC. Yet in practice, most trading happens within a narrow price range that shifts relatively slowly along with the market price. That means most of the liquidity sits idle: earning no fees for LPs.
+In traditional automated market makers (AMMs) like Uniswap v2 or Balancer v1, liquidity providers (LPs) deposit tokens across the entire possible price range: i.e., from $0 to ∞ for ETH/USDC. Yet in practice, most trading happens within a narrow price range that shifts relatively slowly along with the market price. That means most of the liquidity sits idle, earning no fees for LPs.
 
 Concentrated liquidity cuts off the "long tail" of increasingly unlikely price points, and lets LPs allocate their liquidity to a restricted range. When the market price is within that range (say, $1,500 - $2,500), the liquidity is "deeper" there, which has positive effects for both retail traders and LPs. Traders get the benefit of trading in a pool with effectively higher liquidity, enabling larger trades with less slippage. For the same reason, LPs earn more fees per dollar invested from the increased trade volume.
 
-Imagine liquidity as the “water level” in a pool. Providing liquidity over the full range is like filling the whole pool uniformly: all LPs participate equally, the total value (and fee revenue) is effectively the same for each LP, regardless of price.
+Imagine liquidity as the “water level” in a pool. Providing liquidity over the full range is like filling the whole pool uniformly: all LPs participate equally, with the total value (and fee revenue) effectively the same for each LP, regardless of price.
 
 Concentrated liquidity is like adding dividers to section the pool into shallow and deep areas. Instead of just dumping their liquidity into one big Olympic-sized space, they can effectively pour it into just one part of the pool, so that the “water” is much deeper there: deep enough for even the whales to trade freely. And since the fees are also proportional to the “height” of the water, those who contributed to the “deep end” earn a higher portion of the total fees.
 
@@ -24,17 +24,17 @@ For example, say an LP opens a position in the pool described above when ETH is 
 
 The concentrated liquidity approach improves capital efficiency (more fees for less capital), and lets pool designers (and in some cases the LPs themselves) tailor their strategies. But it also introduces the need for active position management - particularly with volatile assets or narrow price ranges. In some protocols, LPs can adjust their positions directly. In others, they might need to migrate between pools.
 
-AMM design generally, and concentrated liquidity implementation in particular, is a hot topic in DeFi, and has inspired much innovation. The following sections trace the part of that history most relevant to the development of "fungible" concentrated liquidity solutions on Balancer.
+AMM design generally - and concentrated liquidity implementation in particular - is a hot topic in DeFi, and has inspired much innovation. The following sections trace the part of that history most relevant to the development of "fungible" concentrated liquidity solutions on Balancer.
 
 Source of illustrations: [Coinsbench](https://coinsbench.com/uniswap-v3-part-1-concept-cpmm-0db9872d60e6?gi=88f7de5e6eb6).
 
 ## Non-fungible (NFT-based) Concentrated Liquidity
 
-### Rise of the Unicorn (Non-fungible CL)
+### Rise of the Unicorn
 
-There are two main approaches to implementing concentrated. The first was pioneered by Uniswap v3 in 2021. This is the most flexible approach in some ways, and certainly allows the most granular control over liquidity. With this approach, each LP individually decides the price range over which they would like to provide liquidity, and receives an NFT token with these configuration details. LPs are able to modify their positions over time to keep them "in range" and earning fees, and since pools are typically supplied by a large number of LPs with widely varying price ranges, they can remain in operation with some level of liquidity even through large price swings in volatile markets.
+There are two main approaches to implementing concentrated liquidity. The first was pioneered by Uniswap v3 in 2021. This is the most flexible approach in some ways, and certainly allows the most granular control over liquidity. With this approach, each LP individually decides the price range over which they would like to provide liquidity, and receives an NFT token with these configuration details. LPs are able to modify their positions over time to keep them "in range," earning fees, and since pools are typically supplied by a large number of LPs with widely varying price ranges, they can remain in operation with some level of liquidity even through large price swings in volatile markets.
 
-Of course, there is a natural trade-off here between fee potential and position maintenance. The narrower the price range, the higher the fees. However, a narrow range also means the price is more likely to move beyond it, requiring more frequent position adjustments. Otherwise, frequent "no fee" periods could make the position underperform those with wider ranges.
+Of course, there is a natural trade-off here between potential revenue and position maintenance. The narrower the price range, the higher the fees. However, a narrow range also means the price is more likely to move beyond it, requiring more frequent position adjustments. Otherwise, frequent "no fee" periods could make the position underperform those with wider ranges.
 
 Uniswap uses a "tick" system to manage the granularity of liquidity provision. To ensure smooth pool operation (and well-behaved math), user-defined price ranges cannot be arbitrarily narrow. A tick corresponds to one "basis point" (i.e., a price range where the difference between the bounds is 0.01%). These are like the distance marks along the bottom of a swimming pool. Continuing the analogy from above, the liquidity "dividers" can only be placed on those marks.
 
@@ -42,13 +42,13 @@ Uniswap pools also have discrete fees, and to keep fee allocation fairly uniform
 
 ![Non-fungible CL illustration](/images/cl-illustration.png)
 
-Though we at Balancer, noting the importance and prominence of concentrated liquidity in Defi, (very) briefly considered trying to support this sort of liquidity in the v3 Vault, we quickly realized that this was incompatible with our long-term goals. Balancer is optimized for fungibility, with a focus on native support for yield-bearing tokens and "long-tail" liquidity, so we stayed in our lane, between the ticks. In the NFT-based CL space, the Unicorn stands alone.
+Though we at Balancer, noting the importance and prominence of concentrated liquidity in Defi, (very) briefly considered trying to support this sort of liquidity in the v3 Vault, we quickly realized that this was incompatible with our long-term goals. Balancer is optimized for fungibility, with a focus on native support for yield-bearing tokens and "long-tail" liquidity, so we stayed between the ticks, in our swim lane. In the NFT-based concentrated liquidity space, the Unicorn stands alone.
 
 ## Fungible (LP-token-based) Concentrated Liquidity
 
-### Concentrated Liquidity on Balancer - Gyroscope Pools (Fungible CL)
+### Concentrated Liquidity on Balancer - Gyroscope Pools
 
-[Gyro pools](../explore-available-balancer-pools/gyroscope-pool/README.md) take a different approach to concentrated liquidity. First, it is “fungible” - instead of NFTs, users receive regular AMM LP tokens. This makes positions composable, and plays well with the rest of Balancer and other AMMs. It is a sort of specialization of Uniswap v3, which gives up the generality and precision of the tick system in exchange for a simpler pool architecture.
+[Gyro pools](../explore-available-balancer-pools/gyroscope-pool/README.md) take a different approach to concentrated liquidity. First, it is “fungible." Instead of NFTs, users receive regular AMM LP tokens. This makes positions composable, and plays well with the rest of Balancer and other AMMs. It is a sort of specialization of Uniswap v3, which gives up the generality and precision of the tick system in exchange for a simpler pool architecture.
 
 2-CLP pools are a bit like a Uniswap v3 pool where everyone added liquidity in exactly the same range (and couldn’t update it). Since the alpha and beta parameters cannot be changed after deployment, there is no position management within pools; users wishing to reallocate must withdraw from one pool and deposit to another in a different range. Accordingly, the price ranges tend to be somewhat wider and require less frequent attention, in exchange for somewhat lower (but still significant) benefits of concentration.
 
@@ -72,6 +72,6 @@ ReClamm pools offer fungible concentrated liquidity similar to 2-CLPs - but as t
 
 Triggered by swaps or liquidity operations, the pool can adjust the price range automatically to keep itself “in range” (i.e., maintain the price within the liquidity bounds), whichever way the market moves. The pool creator can set the initial price range, as well as the margin - the “sensitivity” of the pool - which determines how quickly the pool responds to market price changes.
 
-Generally, the higher the volatility, the lower the margin, which makes the pool less sensitive to price changes, and more gas-efficient. (If necessary, these can even be changed after deployment - but only slowly, to prevent manipulation.)
+Generally, the higher the volatility, the lower the margin, which makes the pool less sensitive to price changes and more gas-efficient. (If necessary, these can even be changed after deployment - but only slowly, to prevent manipulation.)
 
 The goal of ReClamm pools is to remove the burden of active user management, without sacrificing capital efficiency: a true "fire-and-forget" concentrated liquidity position.
