@@ -14,13 +14,13 @@ Imagine liquidity as the “water level” in a pool. Providing liquidity over t
 
 Concentrated liquidity is like adding dividers to section the pool into shallow and deep areas. Instead of just dumping their liquidity into one big Olympic-sized space, they can effectively pour it into just one part of the pool, so that the “water” is much deeper there: deep enough for even the whales to trade freely. And since the fees are also proportional to the “height” of the water, those who contributed to the “deep end” earn a higher portion of the total fees.
 
-<p style="text-align:center">![Concentrated liquidity illustration](/images/capital-efficiency.gif)</p>
+![Concentrated liquidity illustration](/images/capital-efficiency.gif)
 
 Of course, these benefits come at a cost. If the price moves outside the defined range, LPs allocated to that range stop earning fees. That might mean all of them or only a subset, depending on how concentrated liquidity is implemented on a particular protocol. For pools with a single defined range shared by all LPs, trading through that pool might be halted.
 
 For example, say an LP opens a position in the pool described above when ETH is trading at $2,000, using 50/50 ETH/USDC. If the ETH price dropped below the lower bound of the range (say, to $1,200), that LP's position would be 100% ETH - which was "bought high" between $1,500 and $2,000. Conversely, if the ETH price rose to $3,000, an LP liquidating that position would get 100% USDC - which was "sold low" between $2,000 and $2,500. The same applies to pools with correlated assets and much tighter price ranges (see below).
 
-<p style="text-align:center">![Range trading fees illustration](/images/liquidity-range-fees.gif)</p>
+![Range trading fees illustration](/images/liquidity-range-fees.gif)
 
 The concentrated liquidity approach improves capital efficiency (more fees for less capital), and lets pool designers (and in some cases the LPs themselves) tailor their strategies. But it also introduces the need for active position management - particularly with volatile assets or narrow price ranges. In some protocols, LPs can adjust their positions directly. In others, they might need to migrate between pools.
 
