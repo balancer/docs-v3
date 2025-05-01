@@ -192,7 +192,7 @@ initialTargetPrice;
   * The "initial params" are set at creation and are immutable. They are only used to facilitate initializing the pool with correct token amounts to avoid arbitration losses.
   * The `dailyPriceShiftExponent` and `centerednessMargin` can be changed by admins after deployment.
   * The price shift exponent affects how quickly the pool is allowed to automatically shift the price range to keep the pool in balance. Faster = more responsive to volatility, but also more vulnerable to manipulation.
-  * The centeredness margin determines how sensitive the pool is to swaps that move it toward a more unbalanced state. Higher values mean greater sensitivity: the pool will react quicker to becoming unbalanced (e.g., at 60/40 vs. 80/20). A zero margin is essentially equivalent to a fixed 2-CLP Gyro pool.
+  * The centeredness margin determines how sensitive the pool is to swaps that move it toward a more unbalanced state. Higher values mean greater sensitivity: the pool will react quicker to becoming unbalanced (e.g., at 60/40 vs. 80/20). A zero margin is essentially equivalent to a 2-CLP Gyro pool constructed with the same price range.
   * Admins can change the sensitivity and behavior of the pool after deployment by setting the margin or price shift exponent. While the price range cannot be set directly while the pool is in operation, it can be narrowed or widened (slowly over time, to prevent manipulation), by changing the ratio of the bounds.
   * Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/reclamm/blob/main/contracts/ReClammPool.sol#L522-L546) and [here](https://github.com/balancer/reclamm/blob/main/contracts/ReClammPool.sol#L549-L564)):
 ```solidity

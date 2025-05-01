@@ -67,7 +67,7 @@ We provide a helper function, `computeInitialBalances`, to assist with these cal
 
 The centeredness margin is another parameter that must be set on deployment. Unlike the initial target and range, it is not immutable, and can be changed later by admin action.
 
-This is a percentage value in the range of 0 - 50%. A value of 0 would mean there is effectively no margin - real balances can go to 0, and the pool will never readjust. (This degenerate case is effectively the same as a Gyro 2-CLP: completely insensitive to price movement, until the pool goes out of range and effectively halts.)
+This is a percentage value in the range of 0 - 50%. A value of 0 would mean there is effectively no margin - real balances can go to 0, and the pool will never readjust. This degenerate case is effectively the same as a Gyro 2-CLP: completely insensitive to price movement, until the pool goes out of range and effectively halts. (Technically, ReClamm pools act like 2-CLPs constructed with the current range whenever they're in range and not updating the price ratio.)
 
 A value of 50% means the pool is always "out of range," unless it is *perfectly* balanced. This is maximal sensitivity to price changes; essentially it would always be shifting the range (and incurring somewhat higher gas costs). We expect most pools to be configured somewhere in the middle.
 
