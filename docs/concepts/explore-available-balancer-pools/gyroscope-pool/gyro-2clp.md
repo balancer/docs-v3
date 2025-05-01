@@ -17,7 +17,7 @@ Given quantities of real reserves (x,y) in the pool and the pool’s price range
 Note that native Gyro pools also have a 3-CLP, 3-token version of the pool, which uses a cubic invariant - (x + a)(y + a)(z + a) = $L^3$ - that essentially amplifies the capital efficiency benefits, vs. a corresponding pair of 2-CLPs.
 
 ::: info
-Gyro 2-CLPs are always two token pools.
+Gyro 2-CLPs are always two-token pools.
 
 - The minimum swap fee percentage is 0.0001%
 - The maximum swap fee is not constrained (i.e., 100%)
@@ -26,6 +26,8 @@ Gyro 2-CLPs are always two token pools.
   :::
 
 Note that the swap fee and invariant limits are defined in `Gyro2CLPPool` through implementing the `ISwapFeePercentageBounds` and `IUnbalancedLiquidityInvariantRatioBounds` interfaces, which are included in `IBasePool`.
+
+See [here](../../../../integration-guides/aggregators/pool-maths-and-details.html) for a more detailed reference.
 
 ![2-CLP price curve illustration](/images/2-clp-v2.gif)
 Source: [Gyroscope Docs](https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/2-clps)
