@@ -14,8 +14,15 @@ Imagine liquidity as the “water level” in a pool. Providing liquidity over t
 
 Concentrated liquidity is like adding dividers to section the pool into shallow and deep areas. Instead of just dumping their liquidity into one big Olympic-sized space, they can effectively pour it into just one part of the pool, so that the “water” is much deeper there: deep enough for even the whales to trade freely. And since the fees are also proportional to the “height” of the water, those who contributed to the “deep end” earn a higher portion of the total fees.
 
-![Concentrated liquidity illustration](/images/capital-efficiency.gif)
-Source: [Coinsbench](https://coinsbench.com/uniswap-v3-part-1-concept-cpmm-0db9872d60e6?gi=88f7de5e6eb6)
+To quantify the degree of concentration (sometimes called the "gain"), we must first define a reference range. Theoretically the "full range" would be zero to infinity, but we cannot actually use that, as neither the pool math nor the analytical math formula can handle zeroes or infinities. For the ETH price, the all-time recorded low was around 43 cents, and the all-time recorded high was over $4,800. So a good "reference range" would be $0.50 to ~10x the ATH, or $50,000. This gives a full range ratio of 50,000 / 0.5 = 100,000.
+
+$concentration = \frac{ln(ReferenceRangeRatio)}{ln(ConcentratedRangeRatio)}$
+​
+Restricting the range to $1,000 - $4,000, we have:
+
+$concentration = \frac{ln(100,000)}{ln(4,000/1,000)}$ ~ 8.3x
+
+![Concentrated liquidity illustration](/images/eth-concentrated.gif)
 
 Of course, these benefits come at a cost. If the price moves outside the defined range, LPs allocated to that range stop earning fees. That might mean all of them or only a subset, depending on how concentrated liquidity is implemented on a particular protocol. For pools with a single defined range shared by all LPs, trading through that pool might be halted.
 
