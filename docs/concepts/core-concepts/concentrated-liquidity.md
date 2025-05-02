@@ -48,7 +48,7 @@ Uniswap pools also have discrete fees, and to keep fee allocation fairly uniform
 
 ![Non-fungible CL illustration](/images/cl-illustration.png)
 
-Though we at Balancer, noting the importance and prominence of concentrated liquidity in Defi, (very) briefly considered trying to support this sort of liquidity in the v3 Vault, we quickly realized that this was incompatible with our long-term goals. Balancer is optimized for fungibility, with a focus on native support for yield-bearing tokens and "long-tail" liquidity, so we stayed between the ticks, in our swim lane. In the NFT-based concentrated liquidity space, the Unicorn stands alone.
+Though we at Balancer, noting the importance and prominence of concentrated liquidity in Defi, (very) briefly considered trying to support this sort of liquidity in the v3 Vault, we quickly realized that this was incompatible with our long-term goals. Balancer is optimized for fungibility, with a focus on native support for yield-bearing tokens and "long-tail" liquidity, so we stayed in our swim lane — between the ticks, as it were. In the NFT-based concentrated liquidity space, the Unicorn stands alone.
 
 ## Fungible (LP-token-based) Concentrated Liquidity
 
