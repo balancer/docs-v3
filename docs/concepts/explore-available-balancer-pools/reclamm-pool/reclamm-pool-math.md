@@ -205,9 +205,9 @@ $R_a' = \frac{R_b' + V_b' - V_a'P_{target}}{P_{target}}$
 
 Calculate the pool centeredness using the parameters above, and check if the pool centeredness is above the margin. If not, reverts.
 
-### Proportion Getter
+### Balance Ratio Getter
 
-Between pool creation and initialization, the user must be able to calculate the correct token proportions needed to ensure the target price is respected. This proportion is $\frac{R_b'}{R_a'}$.
+Between pool creation and initialization, the user must be able to calculate the correct token proportions (i.e., the Balance Ratio) needed to ensure the target price is respected. This balance ratio is given by: $\frac{R_b'}{R_a'}$.
 
 ### Pool initialization
 
@@ -226,7 +226,7 @@ When executing onSwap, three steps must be performed:
     
     $\sqrt{Q_{0_{current}}} = \sqrt{Q_{0_{initial}}}(\frac{\sqrt{Q_{0_{target}}}}{\sqrt{Q_{0_{initial}}}})^{\frac{blockTimestamp - startQ0Time}{endQ0Time - startQ0Time}}$
     
-2. Check whether Q0 (the price range) is updating. If so, adjust the virtual balances as follows, keeping the pool centeredness constant. This won't move the pool `OUT OF RANGE` if there's no swap, which makes off-chain calculations more reliable and optimizes the price interval calculation when the pool is `OUT OF RANGE`.
+2. Update the virtual balances as follows, keeping the pool centeredness constant. This won't move the pool `OUT OF RANGE` if there's no swap, which makes off-chain calculations more reliable and optimizes the price interval calculation when the pool is `OUT OF RANGE`.
 
     1. Calculate the `centerednessFactor` ($C_f$). It's given as:
         
