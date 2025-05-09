@@ -27,6 +27,14 @@ Note that the swap fee and invariant limits are defined in `ReclammPool` through
 
 See [here](../../../integration-guides/aggregators/pool-maths-and-details.md) for a more detailed reference.
 
+## Advantages of Reclamm Pools
+
+- All the benefits of concentrated liquidity: higher fees and better capital efficiency
+- None of the maintenance required with traditional concentrated liquidity pools: LP-and-forget
+- Calculations simplified by having all LPs share the same price range
+- ReClamm Pools automatically adjust to market conditions; LPs should always be earning fees
+- While designed to be maintenance-free, ReClamm Pools are tunable by admins if necessary in extreme conditions
+
 ## Price range mechanism
 
 One fundamental thing to understand is how the price range is defined and enforced in the first place, given that the price curve is essentially "weighted math" (constant product), and the price is normally determined by the token balances, which are unconstrained (beyond needing to be greater than 0).
