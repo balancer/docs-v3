@@ -228,22 +228,23 @@ When executing onSwap, three steps must be performed:
     
 2. Update the virtual balances as follows, keeping the pool centeredness constant. This won't move the pool `OUT OF RANGE` if there's no swap, which makes off-chain calculations more reliable and optimizes the price interval calculation when the pool is `OUT OF RANGE`.
 
-    1. Calculate the `centerednessFactor` ($C_f$). It's given as:
+    a. Calculate the `centerednessFactor` ($C_f$) using the method described in the [Pool Centeredness](#pool-centeredness) section above.
         
-        If $\frac{R_a}{R_b} < \frac{V_a}{V_b}$, $C_f = \frac{1}{poolCenteredness}$
-        
-        Otherwise, $C_f = poolCenteredness$  
-        
-    2. Calculate $V_b$. It's a Bhaskara formula (notice that there's no minus sign, to avoid issues with unsigned math):
+    b. Calculate $V_b$. It's a Bhaskara formula (notice that there's no minus sign, to avoid issues with unsigned math):
         - $a = Q_{0_{current}} - 1$
         - $b = R_b(1 + C_f)$
         - $c = R_b^2C_f$
         - $V_{b_{new}} = \frac{b + \sqrt{b^2 + 4ac}}{2a}$
-    3. Calculate $V_a=\frac{R_aV_{b_{new}}}{R_b * C_f}$
+    
+    c. Calculate $V_a=\frac{R_aV_{b_{new}}}{R_b * C_f}$. Notice that $C = \frac{R_aV_{b_{old}}}{R_bV_{a_{old}}}$, so the $V_{a_{new}}$ equation can be simplified to $V_{a_{new}} = \frac{V_{a_{old}}V_{b_{new}}}{V_{b_{old}}}$. This simplification is useful, since it allows $V_{a_{new}}$ to be calculated with $R_a = 0$ or $R_b = 0$.
 
 3. Check whether the pool is `OUT OF RANGE`
 
-    If so, update the virtual balances using the formulas from the `Daily Price Shift Exponent` section above. If the virtual balances were updated due to Q0 updating, use the new virtual balances.
+    If so, update the virtual balances using the formulas from the [Daily Price Shift Exponent](#daily-price-shift-exponent) section above. If the virtual balances were updated due to Q0 updating, use the new virtual balances.
+
+**IMPORTANT:** Notice that Virtual Balances are not recalculated on every swap. This is because rounding issues in the calculation of virtual balances may lead to inconsistencies with the pool invariant and return more tokens to the user, potentially draining the pool.
+
+Since we do not update the virtual balances on swaps, fee collection causes the invariant to grow slowly as the virtual balances remain constant. This slowly increases the price ratio, which has the effect of de-concentrating liquidity. Note that under these conditions, the price ratio will slowly diverge from what was set by the admin. If this is undesirable, the admin can always reset it to the original value, and it will slowly reconcentrate liquidity to the original range.
 
 ### On Add/Remove Liquidity
 
@@ -256,3 +257,81 @@ $proportion = \frac{bpt[Out|In]}{totalSupply}$
 Use `bptOut` when adding liquidity, and `bptIn` when removing it.
 
 Finally, scale virtual balances A and B by this proportion ($V_{new} = V_{old} * (1 ± proportion)$)
+
+# Calculation of Swap Result
+
+In the equations below, we will replace `Token A` and `Token B` by `Token In`  and `Token Out` .
+
+So, the invariant can be described as
+
+$$
+L = (R_i + V_i)(R_o + V_o)
+$$
+
+When a swap occurs, the invariant $L$ is constant, so
+
+$$
+L= (R_i + V_i + amountIn)(R_o + V_o - amountOut)
+$$
+
+Isolating amountIn and amountOut in the equation above is a prerequisite for calculating the swap result. Notice that all swaps are calculated after the virtual balances are updated (when the price ratio is changing or the pool is out of range). 
+
+## Exact In
+
+$$
+(R_i + V_i)(R_o + V_o) = (R_i + V_i + amountIn)(R_o + V_o - amountOut)
+$$
+
+So, isolating `amountOut` we have:
+
+$$
+amountOut = (R_o + V_o) - \frac{(R_i + V_i)(R_o + V_o)}{R_i + V_i + amountIn}
+$$
+
+We can use the same denominator on the right:
+
+$$
+amountOut = \frac{(R_o + V_o)(R_i + V_i + amountIn) - (R_i + V_i)(R_o + V_o)}{R_i + V_i + amountIn}
+$$
+
+Now, if we expand the multiplications, we have:
+
+$$
+amountOut = \frac{R_oR_i + R_oV_i + R_oamountIn + V_oR_i + V_oV_i + V_oamountIn - R_oR_i - R_oV_i - V_oR_i - V_oV_i}{R_i + V_i + amountIn}
+$$
+
+All terms except those involving amountIn cancel out, so the final equation is:
+
+$$
+amountOut = \frac{(R_o + V_o)amountIn}{R_i + V_i + amountIn}
+$$
+
+## Exact Out
+
+$$
+(R_i + V_i)(R_o + V_o) = (R_i + V_i + amountIn)(R_o + V_o - amountOut)
+$$
+
+So, isolating `amountIn` we have:
+
+$$
+amountIn = \frac{(R_i + V_i)(R_o + V_o)}{R_o + V_o - amountOut} - (R_i + V_i)
+$$
+
+We can use the same denominator on the right:
+
+$$
+amountIn = \frac{(R_i + V_i)(R_o + V_o) - (R_i + V_i)(R_o + V_o - amountOut)}{R_o + V_o - amountOut}
+$$
+
+Now, if we expand the multiplications, we have:
+
+$$
+amountIn = \frac{R_oR_i + R_oV_i  + V_oR_i + V_oV_i - R_oR_i - R_oV_i + R_iamountOut - V_oR_i - V_oV_i + V_iamountOut}{R_o + V_o - amountOut}
+$$
+
+All terms except those involving amountOut cancel out, so the final equation is:
+
+$$
+amountIn = \frac{(R_i + V_i)amountOut}{R_o + V_o - amountOut}
+$$
