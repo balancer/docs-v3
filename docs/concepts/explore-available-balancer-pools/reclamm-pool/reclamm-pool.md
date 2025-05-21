@@ -29,17 +29,23 @@ See [here](../../../integration-guides/aggregators/pool-maths-and-details.md) fo
 
 ## Advantages of Reclamm Pools
 
-- All the benefits of concentrated liquidity: higher fees and better capital efficiency
+- All the benefits of concentrated liquidity: higher fees and better capital efficiency (when in range, same math as UniV3)
 - None of the maintenance required with traditional concentrated liquidity pools: LP-and-forget
+- Moreover, unlike third party ALMs, the rebalancing is entirely transparent
+- Fungible positions can be incentivized, making them ideal for guaranteeing deep DAO token liquidity
 - Calculations simplified by having all LPs share the same price range
 - ReClamm Pools automatically adjust to market conditions; LPs should always be earning fees
 - While designed to be maintenance-free, ReClamm Pools are tunable by admins if necessary in extreme conditions
+
+These are designed for maintaining deep liquidity, and should not be used for token launches, or with tokens that have low liquidity or otherwise manipulable prices (e.g., using direct collateral or relying on non-aggregated on-chain oracles).
 
 ## Price range mechanism
 
 One fundamental thing to understand is how the price range is defined and enforced in the first place, given that the price curve is essentially "weighted math" (constant product), and the price is normally determined by the token balances, which are unconstrained (beyond needing to be greater than 0).
 
 The answer is the introduction of "offsets" to the real balances called "virtual" balances, such that the token balances used to calculate the invariant are redefined as the sum of the real and virtual balances. These virtual balances fix the price curve on both ends, cutting off the long tail and ensuring non-zero minimum and maximum prices, even as the real balances approach zero. (This mechanism is shared by Gyro pools, but the terminology here is very slightly different.)
+
+Higher virtual balances (relative to the real balances) means higher concentration. 
 
 ## Initialization
 
