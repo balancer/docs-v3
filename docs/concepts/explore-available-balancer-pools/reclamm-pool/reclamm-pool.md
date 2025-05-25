@@ -91,7 +91,7 @@ Note that the centeredness measure is symmetric around the center point. On init
 
 When the centeredness falls below 50%, the market price point will be above the upper or below the lower price margin on the curve, heading toward one of the edges of the price range (where one of the real token balances would be 0).
 
-![Centeredness illustration](/images/centeredness-56.gif)
+![Centeredness illustration](/images/centeredness-56.png)
 
 ## Daily price shift exponent
 
