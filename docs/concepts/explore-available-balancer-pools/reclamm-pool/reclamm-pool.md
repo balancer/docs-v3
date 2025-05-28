@@ -83,13 +83,13 @@ One final twist involves the handling of wrapped tokens with rate providers, whi
 
 The centeredness margin is another parameter that must be set on deployment. Unlike the initial target and range, it is not immutable, and can be changed later by admin action.
 
-This is a percentage value in the range of 0 - 50%. A value of 0 would mean there is effectively no margin - real balances can go to 0, and the pool will never readjust. This degenerate case is effectively the same as a Gyro 2-CLP at the full price range: completely insensitive to price movement, until the pool goes out of range and effectively halts. (Technically, ReClamm pools act like 2-CLPs constructed with the current range whenever they're in range and not updating the price ratio.)
+This is a percentage value in the range of 0 - 100%. A value of 0 would mean there is effectively no margin - real balances can go to 0, and the pool will never readjust. This degenerate case is effectively the same as a Gyro 2-CLP at the full price range: completely insensitive to price movement, until the pool goes out of range and effectively halts. (Technically, ReClamm pools act like 2-CLPs constructed with the current range whenever they're in range and not updating the price ratio.)
 
-A value of 100% would mean the pool is always "out of range," unless it is *perfectly* balanced. This is maximal sensitivity to price changes; essentially it would always be shifting the range (and incurring somewhat higher gas costs). We expect most pools to be configured somewhere in the middle. In production ReClamm pools, the maximum is set to 50%, so the valid range is 0% - 50%, corresponding to points "halfway" between the center and either end of the price range.
+A value of 100% would mean the pool is always "out of range," unless it is *perfectly* balanced. This is maximal sensitivity to price changes; essentially it would always be shifting the range (and incurring somewhat higher gas costs). We expect most pools to be configured somewhere in the middle.
 
 ![Centeredness margin illustration](/images/centeredness.gif)
 
-Note that the centeredness measure is symmetric around the center point. On initialization, the pool centeredness should be very close to 1. As swaps move the real balances (with constant virtual balances), the centeredness will move up or down the price curve *away* from 1 and toward the margins (for these examples, we are using the maximum margin of 50%).
+Note that the centeredness measure is symmetric around the center point. On initialization, the pool centeredness should be very close to 1. As swaps move the real balances (with constant virtual balances), the centeredness will move up or down the price curve *away* from 1 and toward the margins (for these examples, we are using margins from 0 to 50%).
 
 When the centeredness falls below 50%, the market price point will be above the upper or below the lower price margin on the curve, heading toward one of the edges of the price range (where one of the real token balances would be 0).
 
@@ -107,7 +107,7 @@ ReClamm Pool admins can do three things: 1) change the centeredness margin (the 
 
 All of these functions require the pool to be initialized.
 
-To prevent manipulation, changing the margin also requires the Vault to be locked (i.e., not in the middle of a transaction, which could transiently set balances to arbitrary values), and the pool to be "in range" both before and after. It is not possible to "move the goal posts" by admin action in such a way as to make the pool start or stop an update. Otherwise, it is capped at 50%, as described above.
+To prevent manipulation, changing the margin also requires the Vault to be locked (i.e., not in the middle of a transaction, which could transiently set balances to arbitrary values), and the pool to be "in range" both before and after. It is not possible to "move the goal posts" by admin action in such a way as to make the pool start or stop an update.
 
 Similarly, the daily price shift exponent can only be changed when the Vault is locked. As it is only altering the speed of the update, it does not check for centeredness. The price shift exponent is capped at 500% (corresponding to 32x in a day).
 
