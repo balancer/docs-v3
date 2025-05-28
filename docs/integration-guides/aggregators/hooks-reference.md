@@ -47,3 +47,38 @@ query MyQuery {
   }
 }
 ```
+
+## AkronWeightedLVRFee Hook
+
+* This uses the [onComputeDynamicSwapFeePercentage](/developer-reference/contracts/hooks-api.md#oncomputedynamicswapfeepercentage) hook.
+* Uses adapted weighted maths to calculate fee - does not need to track any hook state.
+* Only used with Weighted pools.
+* [Pools](https://balancer.fi/pools?textSearch=akron)
+* [Akron Docs](https://crocus-sidewalk-9c5.notion.site/Balancer-Weighted-Pool-implementing-Akron-LVR-linked-Dynamic-Swap-Fee-Hook-integration-guide-inclu-1697cd41d8b880e1840be00404df2e3a).
+* See SC code implementation [here](https://github.com/Akron-admin/balancer-v3-monorepo/blob/Weighted-Hook/pkg/pool-hooks/contracts/AkronWeightedLVRFeeHook.sol)
+* [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/hooks/akron)
+* Deployment Addresses:
+```
+Base:
+hookAddress: '0xA45570815dbE7BF7010c41f1f74479bE322D02bd'
+
+Arbitrum:
+hookAddress: '0xD221aFFABdD3C1281ea14C5781DEc6B0fCA8937E'
+```
+* API Support: Can use the filter: `includeHooks: [AKRON]`, to include all pools using this hook type:
+```graphql
+query MyQuery {
+  aggregatorPools(
+    where: {chainIn: BASE, includeHooks: [AKRON], protocolVersionIn: 3}
+  ) {
+    address
+    type
+    hook {
+      type
+    }
+    dynamicData {
+      swapFee
+    }
+  }
+}
+```
