@@ -17,7 +17,7 @@ The following diagram shows a pool that is `OUT OF RANGE`. The current price is 
 ::: info
 ReClamm Pools are always two-token pools.
 
-- The minimum swap fee percentage is 0.1% (note - much higher than the Weighted Pool, reflecting the greater number of moving parts, especially those involving exponential functions)
+- The minimum swap fee percentage is 0.001% (note - same as the Weighted Pool)
 - The maximum swap fee is 10%
 - The invariant bounds are unused in this pool, as liquidity can only be added or removed proportionally
 - The initialization and other parameters are described in detail below
@@ -111,7 +111,7 @@ To prevent manipulation, changing the margin also requires the Vault to be locke
 
 Similarly, the daily price shift exponent can only be changed when the Vault is locked. As it is only altering the speed of the update, it does not check for centeredness. The price shift exponent is capped at 500% (corresponding to 32x in a day).
 
-Admins can also change the price ratio (actually its fourth root), supplying the new ratio and a start and end time. There is a minimum duration for the update (6 hours), and a minimum amount of ratio change: 1000 wei. (This is loosely analogous to Uniswap's "tick" resolution limit, introduced for similar reasons.)
+Admins can also change the price ratio, supplying the new ratio and a start and end time. There is a minimum duration for the update (1 day), and a minimum amount of ratio change: 1e6 wei. (This is loosely analogous to Uniswap's "tick" resolution limit, introduced for similar reasons.)
 
 These are "best effort" checks to keep the pool well-behaved, but are not hard guarantees. There is also a way to simply stop an ongoing update, which will fix the price ratio at its current value. Note that it is not necessary to stop an ongoing update before starting a new one. Starting an update while one is ongoing is equivalent to stopping and immediately restarting with the new parameters.
 
