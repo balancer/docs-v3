@@ -19,6 +19,11 @@ features:
     iconDark: /images/build-dark.svg
     details: How to swap tokens
     link: /integration-guides/swapping/swaps-with-sor-sdk.md
+  - title: Price Impact
+    icon: /images/build.svg
+    iconDark: /images/build-dark.svg
+    details: How calculate price impact for swap, add & remove actions
+    link: /integration-guides/price-impact/price-impact.md
   - title: Aggregators
     icon: /images/build.svg
     iconDark: /images/build-dark.svg

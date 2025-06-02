@@ -249,3 +249,80 @@ struct ReClammPoolImmutableData {
     uint256 balanceRatioAndPriceTolerance;
 }
 ```
+## QuantAMM BTFs
+
+BTFs by QuantAMM dynamically adjust pool weights to capitalize on price movements. For example, a BTF pool can automatically increase its WBTC allocation when the BTF strategy thinks the value will rise faster than ETH. This allows LPs to earn both trading fees and profits from underlying asset appreciation through continuous, responsive, fully on-chain TradFi-style strategies.
+
+* [QuantAMM Docs](https://quantamm.fi/documentation)
+* See SC code implementation [here](https://github.com/QuantAMMProtocol/QuantAMM-V1)
+* [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/quantAmm)
+* Python maths reference - WIP
+* [BTF pools on Balancer App](https://balancer.fi/pools?poolTypes=QUANT_AMM_WEIGHTED)
+* [Deployment Addresses](https://mono-test-v3-git-feat-quantamm-support-balancer.vercel.app/pools/ethereum/v3/0xd4ed17bbf48af09b87fd7d8c60970f5da79d4852):
+```
+Mainnet:
+* UpdateWeightRunner: 0x21Ae9576a393413D6d91dFE2543dCb548Dbb8748
+* QuantAMMWeightedPoolFactory: 0xD5c43063563f9448cE822789651662cA7DcD5773
+
+Arbitrum:
+* UpdateWeightRunner: 0x8Ca4e2a74B84c1feb9ADe19A0Ce0bFcd57e3f6F7
+* QuantAMMWeightedPoolFactory: 0x62B9eC6A5BBEBe4F5C5f46C8A8880df857004295
+  
+Base:
+* UpdateWeightRunner: 0x8Ca4e2a74B84c1feb9ADe19A0Ce0bFcd57e3f6F7
+* QuantAMMWeightedPoolFactory: 0x62B9eC6A5BBEBe4F5C5f46C8A8880df857004295
+```
+* Maths requires the following dynamic data:
+```
+firstFourWeightsAndMultipliers
+secondFourWeightsAndMultipliers
+lastUpdateTime
+lastInterpolationTimePossible
+```
+* Event tracking systems can use the `UpdateWeightRunner`, `WeightsUpdated` [event](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/UpdateWeightRunner.sol#L93). The UpdateWeight runner is a single contract that controls weight changes for all pools.
+* Data can also be fetched onchain using the following helpers (see [here](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/QuantAMMWeightedPool.sol#L595) and [here](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/QuantAMMWeightedPool.sol#L615)):
+```solidity
+function getQsecondFourWeightsAndMultipliersuantAMMWeightedPoolDynamicData() external view returns (QuantAMMWeightedPoolDynamicData memory data);
+
+struct QuantAMMWeightedPoolDynamicData {
+    uint256[] balancesLiveScaled18;
+    uint256[] tokenRates;
+    uint256 totalSupply;
+    bool isPoolInitialized;
+    bool isPoolPaused;
+    bool isPoolInRecoveryMode;
+    int256[] firstFourWeightsAndMultipliers;
+    int256[] ;
+    uint40 lastUpdateTime;
+    uint40 lastInteropTime;
+}
+
+function getQuantAMMWeightedPoolImmutableData() external view returns (QuantAMMWeightedPoolImmutableData memory data);
+
+struct QuantAMMWeightedPoolImmutableData {
+  IERC20[] tokens;
+  uint oracleStalenessThreshold;
+  uint256 poolRegistry;
+  int256[][] ruleParameters;
+  uint64[] lambda;
+  uint64 epsilonMax;
+  uint64 absoluteWeightGuardRail;
+  uint64 updateInterval;
+  uint256 maxTradeSizeRatio;
+}
+```
+
+* [API](/integration-guides/aggregators/fetching-pools-and-data.md#using-balancers-api) Support: Pool will show as `QUANT_AMM_WEIGHTED` type:
+
+```graphql
+query MyQuery {
+  aggregatorPools(
+    where: {chainIn: MAINNET, protocolVersionIn: 3, poolTypeIn: QUANT_AMM_WEIGHTED}
+  ) {
+    address
+    type
+  }
+}
+```
+
+* Max trade size: Each BTF pool has a `maxTradeSizeRatio` that is set on [pool creation](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/interfaces/contracts/pool-quantamm/IQuantAMMWeightedPool.sol#L105). This determines the max amount that can be traded.
