@@ -6,7 +6,7 @@ title: Concentrated Liquidity
 
 ## Introduction
 
-In traditional automated market makers (AMMs) like Uniswap v2 or Balancer v1, liquidity providers (LPs) deposit tokens across the entire possible price range: i.e., from $0 to ∞ for ETH/USDC. Yet in practice, most trading happens within a narrow price range that shifts relatively slowly along with the market price. That means most of the liquidity sits idle, earning no fees for LPs.
+In traditional automated market makers (AMMs), liquidity providers (LPs) deposit tokens across the entire possible price range: i.e., from $0 to ∞ for ETH/USDC. Yet in practice, most trading happens within a narrow price range that shifts relatively slowly along with the market price. That means most of the liquidity sits idle, earning no fees for LPs.
 
 Concentrated liquidity cuts off the "long tail" of increasingly unlikely price points, and lets LPs allocate their liquidity to a restricted range. When the market price is within that range (say, $1,500 - $2,500), the liquidity is "deeper" there, which has positive effects for both retail traders and LPs. Traders get the benefit of trading in a pool with effectively higher liquidity, enabling larger trades with less slippage. For the same reason, LPs earn more fees per dollar invested from the increased trade volume.
 
