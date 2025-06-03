@@ -35,7 +35,7 @@ $P_a = \frac{R_b + V_b}{R_a + V_a}$
 
 Note that we have (arbitrarily) defined it as B/A (i.e., prices represent the value of token A denominated in token B. In other words, how many B tokens equal the value of one A token.)
 
-Given the price formula, we know that the minimum price happens when the denominator takes on its maximum value: $R_a = R_{a_{max}}$. In this state, $R_b = 0$. (At the edges, one of the balances will be maximum, and the other balance will be 0). Of course there isn't really a "maximum" balance - this is an arbitrary placeholder that will "cancel out" later by getting scaled according to the real initialization balances. For this purpose, we can set it to an arbitrary value, such as 1000. It then follows that:
+Given the price formula, we know that the minimum price happens when the denominator takes on its maximum value: $R_a = R_{a_{max}}$. In this state, $R_b = 0$. (At the edges, one of the balances will be maximum, and the other balance will be 0). Before the initialization of the pool the "maximum" balance is not known - so, to calculate the initial balances of the pool, we set the maximum balance of token A to an arbitrary value, and then we can scale accordingly when the initialization amounts are known:
 
 $P_{a_{min}} = \frac{V_b}{R_{a_{max}} + V_a}, P_{a_{max}} = \frac{R_{b_{max}} + V_b}{V_a}$
 
