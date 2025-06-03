@@ -6,16 +6,16 @@ title: Readjusting Concentrated Liquidity AMM Pool
 
 ## Overview
 
-ReClamm Pools are conceptually similar to [Gyro 2-CLPs](../gyroscope-pool/gyro-2clp.md). They are pools that concentrate liquidity (for all LPs) in a certain price range, so this range is one of the critical initialization parameters. However, unlike Gyro Pools, this price range is not fixed at deployment time. It can "shift" from the initialized values; i.e., move up or down along the constant product price curve, maintaining the same interval, in response to price changes that "unbalance" the pool. This happens automatically, without user or admin intervention, when triggered by the results of swaps or liquidity operations.
+reCLAMM Pools are conceptually similar to [Gyro 2-CLPs](../gyroscope-pool/gyro-2clp.md). They are pools that concentrate liquidity (for all LPs) in a certain price range, so this range is one of the critical initialization parameters. However, unlike Gyro Pools, this price range is not fixed at deployment time. It can "shift" from the initialized values; i.e., move up or down along the constant product price curve, maintaining the same interval, in response to price changes that "unbalance" the pool. This happens automatically, without user or admin intervention, when triggered by the results of swaps or liquidity operations.
 
 The pool is initialized with a price range and target price (= market price at deployment time), which is typically near the center of the range, but doesn't strictly need to be. The pool creator also sets the margin - a symmetrical "distance" from the edges of the price range, expressed as a percentage, which determines how much imbalance is required to trigger the start of a price range adjustment. For instance, a margin of 20% means the pool will react to an imbalance greater than 60/40: 10% on either side. Finally, the pool creator must specify the daily price shift exponent, which determines how fast the price range shifts when triggered.
 
 The following diagram shows a pool that is `OUT OF RANGE`. The current price is within the price range (as it must be), but above the margin. In this state, the pool will be shifting the price range "up" toward higher prices, following the market, and attempting to bring the market price back inside the margins.
 
-![ReClamm out of range](/images/PoolRange.png)
+![reCLAMM out of range](/images/PoolRange.png)
 
 ::: info
-ReClamm Pools are always two-token pools.
+reCLAMM Pools are always two-token pools.
 
 - The minimum swap fee percentage is 0.001% (note - same as the Weighted Pool)
 - The maximum swap fee is 10%
@@ -23,19 +23,19 @@ ReClamm Pools are always two-token pools.
 - The initialization and other parameters are described in detail below
   :::
 
-Note that the swap fee and invariant limits are defined in `ReclammPool` through implementing the `ISwapFeePercentageBounds` and `IUnbalancedLiquidityInvariantRatioBounds` interfaces, which are included in `IBasePool`.
+Note that the swap fee and invariant limits are defined in `ReClammPool` through implementing the `ISwapFeePercentageBounds` and `IUnbalancedLiquidityInvariantRatioBounds` interfaces, which are included in `IBasePool`.
 
 See [here](../../../integration-guides/aggregators/pool-maths-and-details.md) for a more detailed reference.
 
-## Advantages of Reclamm Pools
+## Advantages of reCLAMM Pools
 
 - All the benefits of concentrated liquidity: higher fees and better capital efficiency (when in range, same math as UniV3)
 - None of the maintenance required with traditional concentrated liquidity pools: LP-and-forget
 - Moreover, unlike third party ALMs, the rebalancing is entirely transparent
 - Fungible positions can be incentivized, making them ideal for guaranteeing deep DAO token liquidity
 - Calculations simplified by having all LPs share the same price range
-- ReClamm Pools automatically adjust to market conditions; LPs should always be earning fees
-- While designed to be maintenance-free, ReClamm Pools are tunable by admins if necessary in extreme conditions
+- reCLAMM Pools automatically adjust to market conditions; LPs should always be earning fees
+- While designed to be maintenance-free, reCLAMM Pools are tunable by admins if necessary in extreme conditions
 
 These are designed for maintaining deep liquidity, and should not be used for token launches, or with tokens that have low liquidity or otherwise manipulable prices (e.g., using direct collateral or relying on non-aggregated on-chain oracles).
 
@@ -77,13 +77,13 @@ Finally, we validate that the ratio of the real balances corresponds to the theo
 
 We provide a helper function, `computeInitialBalancesRaw`, to assist with these calculations. Given the actual intended deposit amount of one of the tokens - and the initial parameters set on deployment - the contract can calculate how much of the other token must be supplied to pass all the initialization checks.
 
-One final twist involves the handling of wrapped tokens with rate providers, which are expected to be commonly used in ReClamm Pools. Recall that the prices are passed in during initialization - but how were they calculated? It's possible the pool creator wants to use the direct price of the wrapped token (e.g., for non-boosted pools with tokens like wstETH). In this case, the price does not include the rate provider, even though the token has one. In other cases (e.g., boosted pools with tokens like waUSDC), the creator might want to use the price of the underlying token instead. In that case, the price does incorporate the rate, and the initialization calculation must accommodate that. Accordingly, along with the price range and target values, the pool is deployed with flags indicating whether to use the rate provider for each token during initialization.
+One final twist involves the handling of wrapped tokens with rate providers, which are expected to be commonly used in reCLAMM Pools. Recall that the prices are passed in during initialization - but how were they calculated? It's possible the pool creator wants to use the direct price of the wrapped token (e.g., for non-boosted pools with tokens like wstETH). In this case, the price does not include the rate provider, even though the token has one. In other cases (e.g., boosted pools with tokens like waUSDC), the creator might want to use the price of the underlying token instead. In that case, the price does incorporate the rate, and the initialization calculation must accommodate that. Accordingly, along with the price range and target values, the pool is deployed with flags indicating whether to use the rate provider for each token during initialization.
 
 ## Centeredness Margin
 
 The centeredness margin is another parameter that must be set on deployment. Unlike the initial target and range, it is not immutable, and can be changed later by admin action.
 
-This is a percentage value in the range of 0 - 100%. A value of 0 would mean there is effectively no margin - real balances can go to 0, and the pool will never readjust. This degenerate case is effectively the same as a Gyro 2-CLP at the full price range: completely insensitive to price movement, until the pool goes out of range and effectively halts. (Technically, ReClamm pools act like 2-CLPs constructed with the current range whenever they're in range and not updating the price ratio.)
+This is a percentage value in the range of 0 - 100%. A value of 0 would mean there is effectively no margin - real balances can go to 0, and the pool will never readjust. This degenerate case is effectively the same as a Gyro 2-CLP at the full price range: completely insensitive to price movement, until the pool goes out of range and effectively halts. (Technically, reCLAMM pools act like 2-CLPs constructed with the current range whenever they're in range and not updating the price ratio.)
 
 A value of 100% would mean the pool is always "out of range," unless it is *perfectly* balanced. This is maximal sensitivity to price changes; essentially it would always be shifting the range (and incurring somewhat higher gas costs). We expect most pools to be configured somewhere in the middle.
 
@@ -97,13 +97,13 @@ When the centeredness falls below 50%, the market price point will be above the 
 
 ## Daily price shift exponent
 
-The centeredness margin is the final parameter (relating to ReClamm functionality) that must be set on deployment. Unlike the initial target and range, it is not immutable, and can be changed later by admin action.
+The centeredness margin is the final parameter (relating to reCLAMM functionality) that must be set on deployment. Unlike the initial target and range, it is not immutable, and can be changed later by admin action.
 
 This is also a percentage, and it controls the "doubling rate" of the price shift. At 100%, the prices will double (or halve) in one day. This rate is non-linear, and means that the prices will be multiplied (or divided) by 2^(`dailyPriceShiftExponent`) per day. So 200% corresponds to 2^2 or 4x, and 300% corresponds to 2^3 or 8x.
 
 ## Admin actions
 
-ReClamm Pool admins can do three things: 1) change the centeredness margin (the threshold for updates); 2) change the daily price shift exponent (the speed of updates); and 3) initiate an update to the price interval (i.e., the distance, or ratio, between the minimum and maximum price bounds), or simply stop an ongoing update. All of these changes will update the virtual balances (and potentially slightly change the price).
+reCLAMM Pool admins can do three things: 1) change the centeredness margin (the threshold for updates); 2) change the daily price shift exponent (the speed of updates); and 3) initiate an update to the price interval (i.e., the distance, or ratio, between the minimum and maximum price bounds), or simply stop an ongoing update. All of these changes will update the virtual balances (and potentially slightly change the price).
 
 All of these functions require the pool to be initialized.
 
@@ -119,6 +119,6 @@ Note that it is possible for the price range to be both shifting up or down and 
 
 ## Simulator
 
-A simulator is deployed [here](https://aclamm.web.app/reclamm). You can set the initial parameters manually - or load them from a real deployed ReClamm pool, then change the settings to see how a real pool would respond (including simulating swaps).
+A simulator is deployed [here](https://aclamm.web.app/reclamm). You can set the initial parameters manually - or load them from a real deployed reCLAMM pool, then change the settings to see how a real pool would respond (including simulating swaps).
 
 See [this page](./reclamm-pool-math.md) for details of the math.

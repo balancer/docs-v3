@@ -1,13 +1,13 @@
 ---
 order: 7
-title: ReClamm Pool Math
+title: reCLAMM Pool Math
 ---
 
 # Readjusting Concentrated Liquidity AMM Pool Math
 
 ## Intro
 
-The `Readjusting Concentrated Liquidity AMM` (ReClamm) is a pool based on a "constant product," essentially equivalent to standard weighted math (with a clever redefinition of the token balances). The idea is to concentrate liquidity by adding price bounds to the constant product curve using virtual balances: $L = (R_a + V_a)(R_b + V_b)$, where $R_a$ and $R_b$ are the real balances of the token, and $V_a$ and $V_b$ are the virtual balances of the token.
+The `Readjusting Concentrated Liquidity AMM` (reCLAMM) is a pool based on a "constant product," essentially equivalent to standard weighted math (with a clever redefinition of the token balances). The idea is to concentrate liquidity by adding price bounds to the constant product curve using virtual balances: $L = (R_a + V_a)(R_b + V_b)$, where $R_a$ and $R_b$ are the real balances of the token, and $V_a$ and $V_b$ are the virtual balances of the token.
 
 Currently, in fungible concentrated liquidity pools with fixed price intervals, LPs may need to actively migrate liquidity between CL pools to avoid losing fee revenue to pools that have gone out of range. The `Readjusting CL AMM` is a pool that automatically readjusts the price interval, so that a retail LP can confidently deposit assets and rely on the pool to manage them efficiently and profitably.
 
@@ -19,13 +19,13 @@ Virtual Balances can be understood as offsets to the real token balances, so tha
 
 Therefore, even if the real balance of a token goes to zero, the virtual balance will keep the token balance (and therefore price) above zero. In practice, it restricts the token price between two bounds, defined by the virtual balances of each token. The image below illustrates a constant product price curve with hard price limits, "soft" margins (described later - basically the threshold where the pool will begin self-adjusting), and the "target" price, usually close to the middle of the range.
 
-![ReClamm price curve illustration](/images/reclamm-initial-state.png)
+![reCLAMM price curve illustration](/images/reclamm-initial-state.png)
 
 ### Initial Virtual Balances
 
 During pool creation, the pool creator will define the `minimum price` ($P_{a_{min}}$) and the `maximum price` ($P_{a_{max}}$). Given these three parameters, we can calculate the initial virtual balances.
 
-The invariant of a ReClamm Pool is calculated as follows:
+The invariant of a reCLAMM Pool is calculated as follows:
 
 $L = (R_a + V_a)(R_b + V_b)$
 
@@ -105,7 +105,7 @@ The Price Ratio is the ratio between the high and low price bounds of the range.
 
 The highest price of A ($P_{max_A}$) is reached when the real balance of A is 0. So, the price is defined as:
 
-![ReClamm price equation](/images/reclamm-price-equation.png)
+![reCLAMM price equation](/images/reclamm-price-equation.png)
 
 The Price Ratio is calculated as $Q_0^2 = \frac{P_{max_A}}{P_{min_A}}$.
 
