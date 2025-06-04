@@ -36,9 +36,9 @@ LBPs often start with intentionally high prices. This strongly disincentivizes w
 
 Teams who use LBPs to kickstart the liquidity of a token that has not been well distributed yet can do so with minimal starting capital. For a team running an LBP with their TOKEN and DAI, starting with 10% or 20% DAI, as opposed to 50% DAI ** like they might need on another platform, significantly reduces their starting capital requirements. Shifting from 80/20 TOKEN/DAI ** to 20/80 would look like this:
 
-![](https://lh3.googleusercontent.com/jJSoUvPnPwQFAEemsJlKZctFspEJrRQhRIncmoaaq5a6_CzyXssVwokti4HQQyIBqVcv5GG9bMKDplrAaDIC3MkdFoVJAprLHu_NhTSWW4GEoMRe3mUhFnB0lG3kVqIGvjK7aGJD=s0)
+![Liquidity Bootstrapping pool weight shifts](/images/pool_LBP.webp)
 
-and would ultimately result in the team holding far more DAI \_\_ at the end of their LBP while reducing the (sometimes extreme) price volatility that teams experience when just launching a 50/50 pool.
+and would ultimately result in the team holding far more DAI at the end of their LBP while reducing the (sometimes extreme) price volatility that teams experience when just launching a 50/50 pool.
 
 ### Immediate liquidity
 
