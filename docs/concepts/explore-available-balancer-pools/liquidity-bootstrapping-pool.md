@@ -16,6 +16,8 @@ Liquidity Bootstrapping Pools (LBPs) are pools that can dynamically change token
 - [Create a LBP with a foundry script](https://github.com/balancer/balancer-v3-foundry-starter/pull/5/files)
   :::
 
+Once the LBP has concluced, the token can be easily migrated to a standard pool on Balancer with this [tool]().
+
 ### Mental Model
 
 You can think of the starting price of your LBP as the ceiling you would want to set for the token sale. This may seem counterintuitive, but since LBPs work differently than other token sales, your starting price should be set much higher than what you believe is the fair price.
