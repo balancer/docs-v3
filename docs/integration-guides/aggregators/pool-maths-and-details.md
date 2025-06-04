@@ -126,7 +126,7 @@ projectTokenEndWeight
 
 - [API](/integration-guides/aggregators/fetching-pools-and-data.md#using-balancers-api) Support: Pool will show as `LIQUIDITY_BOOTSTRAPPING` type and immutable params are available:
 
-A sample graphql query is below returning information about a LBP.
+A sample graphql query is below returning information about a LBP and docs on the `GqlPoolLiquidityBootstrapping` is available at [https://api-v3.balancer.fi/](https://api-v3.balancer.fi/).
 
 ```graphql
 query {
