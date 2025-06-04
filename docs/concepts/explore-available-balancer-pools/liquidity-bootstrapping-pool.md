@@ -2,11 +2,19 @@
 order: 3
 title: Liquidity Bootstrapping Pool
 ---
+
 # Liquidity Bootstrapping Pools (LBPs)
 
 ## Overview
 
 Liquidity Bootstrapping Pools (LBPs) are pools that can dynamically change token weighting (e.g 1/99 to 99/1 for TokenA/TokenB). LBPs use [Weighted Math](./weighted-pool/weighted-math.md) with time-dependent weights. The starting and end weights and times are selected by the pool owner, who also has the power to pause swaps. The pool owner is the only address that can join the pool.
+
+::: info Create an LBP
+
+- [Create a LBP on Balancer Homepage](https://balancer.fi/lbp/create)
+- [Create a LBP with the balancer SDK](https://github.com/balancer/b-sdk/blob/main/examples/createAndInitPool/createAndInitLBPoolV3.ts)
+- [Create a LBP with a foundry script](https://github.com/balancer/balancer-v3-foundry-starter/pull/5/files)
+  :::
 
 ### Mental Model
 
@@ -31,3 +39,29 @@ Teams who use LBPs to kickstart the liquidity of a token that has not been well 
 ![](https://lh3.googleusercontent.com/jJSoUvPnPwQFAEemsJlKZctFspEJrRQhRIncmoaaq5a6_CzyXssVwokti4HQQyIBqVcv5GG9bMKDplrAaDIC3MkdFoVJAprLHu_NhTSWW4GEoMRe3mUhFnB0lG3kVqIGvjK7aGJD=s0)
 
 and would ultimately result in the team holding far more DAI \_\_ at the end of their LBP while reducing the (sometimes extreme) price volatility that teams experience when just launching a 50/50 pool.
+
+### Immediate liquidity
+
+Once the LBP concludes, immediate access to the funds raised is available. The new token holders can immediately trade their token, providing instant liquidity without lengthy lock-up periods.
+
+## Pool Settings
+
+LBPs are highly configurable. Here are the key parameters and settings, as defined in the pool implementation:
+
+- **Tokens**: LBPs are always two-token pools: the project token (being launched) and the reserve token (e.g., a stablecoin or WETH).
+- **Weights**: The pool owner specifies the starting and ending weights for both tokens. These weights change linearly over the sale period.
+- **Sale Period**: The pool owner sets the `startTime` and `endTime` (timestamps) for the sale. Swaps are only enabled between these times.
+- **Liquidity Provision**: Only the owner can add liquidity, and only before the sale starts.
+- **Swaps**: Optionally, the pool can block selling the project token back into the pool (`blockProjectTokenSwapsIn`).
+- **Trusted Router**: All pool interactions must go through a trusted router to ensure correct sender reporting and security.
+
+**Technical Parameters (from the implementation):**
+
+- `projectToken` / `reserveToken`: ERC20 addresses for the tokens.
+- `projectTokenStartWeight` / `reserveTokenStartWeight`: Initial weights (scaled).
+- `projectTokenEndWeight` / `reserveTokenEndWeight`: Final weights (scaled).
+- `startTime` / `endTime`: UNIX timestamps for the sale window.
+- `blockProjectTokenSwapsIn`: Boolean to restrict project token sales.
+- Only two tokens are allowed per pool.
+
+---
