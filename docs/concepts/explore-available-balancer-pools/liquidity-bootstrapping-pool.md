@@ -14,9 +14,9 @@ Liquidity Bootstrapping Pools (LBPs) are pools that can dynamically change token
 - [Create a LBP on Balancer Homepage](https://balancer.fi/lbp/create)
 - [Create a LBP with the balancer SDK](https://github.com/balancer/b-sdk/blob/main/examples/createAndInitPool/createAndInitLBPoolV3.ts)
 - [Create a LBP with a foundry script](https://github.com/balancer/balancer-v3-foundry-starter/pull/5/files)
-  :::
+- Once the LBP has concluced, the token can be easily migrated to a standard pool on Balancer with this [tool]().
 
-Once the LBP has concluced, the token can be easily migrated to a standard pool on Balancer with this [tool]().
+  :::
 
 ### Mental Model
 

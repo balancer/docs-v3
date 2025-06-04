@@ -13,53 +13,164 @@ Explore our [GitHub repository](https://github.com/balancer/balancer-maths) cont
 
 Pools that swap tokens by enforcing a Constant Weighted Product invariant.
 
-* See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-weighted).
-* [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/weighted)
-* [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/weighted.py)
-* [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `WeightedPoolFactory`
+- See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-weighted).
+- [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/weighted)
+- [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/weighted.py)
+- [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `WeightedPoolFactory`
 
 ## Stable Pool
 
 Pools that swap tokens by enforcing a Stable Math invariant, based on Curve.
 
-* See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-stable).
-* [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/stable)
-* [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/stable.py)
-* [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `StablePoolFactory`
-* Amplification factor can be dynamic; see:
-  * `getAmplificationParameter()` view function
-  * `AmpUpdateStarted` & `AmpUpdateStopped` events
+- See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-stable).
+- [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/stable)
+- [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/stable.py)
+- [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `StablePoolFactory`
+- Amplification factor can be dynamic; see:
+  - `getAmplificationParameter()` view function
+  - `AmpUpdateStarted` & `AmpUpdateStopped` events
 
 ## Stable Surge Pool
 
 Stable Pools that use the Stable Surge Hook, a dynamic fee implementation that increases fees on transactions that unbalance the pool. The pool itself is exactly the same - a standard Stable Pool. The only difference is the hook, which is attached to the pool by the factory.
 
-* See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-hooks/contracts/StableSurgePoolFactory.sol).
-* [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/stable)
-* [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/stable.py)
-* [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `StableSurgePoolFactory`
-* Amplification factor can be dynamic; see:
-  * `getAmplificationParameter()` view function
-  * `AmpUpdateStarted` & `AmpUpdateStopped` events
+- See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-hooks/contracts/StableSurgePoolFactory.sol).
+- [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/stable)
+- [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/stable.py)
+- [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `StableSurgePoolFactory`
+- Amplification factor can be dynamic; see:
+  - `getAmplificationParameter()` view function
+  - `AmpUpdateStarted` & `AmpUpdateStopped` events
+
+## Liquidity Bootstrapping Pool
+
+Liquidity Bootstrapping pools have linearly changing weights but use weighted math to determine prices.
+
+- [LBP docs](https://docs.balancer.fi/concepts/explore-available-balancer-pools/liquidity-bootstrapping-pool)
+- See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/lbp/LBPool.sol)
+- [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/liquidityBootstrapping/liquidityBootstrapping.ts)
+- [Python maths reference]()
+- [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `LBPoolFactory	`
+- [LB pools on Balancer App](https://balancer.fi/pools?poolTypes=LBP&protocolVersion=3)
+- weight calculation requires the following parameters:
+
+```
+projectTokenIndex
+currentTime
+startTime
+endTime
+projectTokenStartWeight
+projectTokenEndWeight
+```
+
+- pool tokens are always sorted alphanumerically.
+- Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/lbp/LBPool.sol#L265-L282) and [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/lbp/LBPool.sol#L251-L262)):
+- The pool interface is available [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/pool-weighted/ILBPool.sol).
+
+```solidity
+    function getLBPoolDynamicData() external view override returns (LBPoolDynamicData memory data) {
+        data.balancesLiveScaled18 = _vault.getCurrentLiveBalances(address(this));
+        data.normalizedWeights = _getNormalizedWeights();
+        data.staticSwapFeePercentage = _vault.getStaticSwapFeePercentage((address(this)));
+        data.totalSupply = totalSupply();
+
+        PoolConfig memory poolConfig = _vault.getPoolConfig(address(this));
+        data.isPoolInitialized = poolConfig.isPoolInitialized;
+        data.isPoolPaused = poolConfig.isPoolPaused;
+        data.isPoolInRecoveryMode = poolConfig.isPoolInRecoveryMode;
+        data.isSwapEnabled = _isSwapEnabled();
+    }
+
+    struct LBPoolDynamicData {
+    uint256[] balancesLiveScaled18;
+    uint256[] normalizedWeights;
+    uint256 staticSwapFeePercentage;
+    uint256 totalSupply;
+    bool isPoolInitialized;
+    bool isPoolPaused;
+    bool isPoolInRecoveryMode;
+    bool isSwapEnabled;
+    }
+
+    /// @inheritdoc ILBPool
+    function getLBPoolImmutableData() external view override returns (LBPoolImmutableData memory data) {
+        data.tokens = _vault.getPoolTokens(address(this));
+        data.projectTokenIndex = _projectTokenIndex;
+        data.reserveTokenIndex = _reserveTokenIndex;
+
+        (data.decimalScalingFactors, ) = _vault.getPoolTokenRates(address(this));
+        data.isProjectTokenSwapInBlocked = _blockProjectTokenSwapsIn;
+        data.startTime = _startTime;
+        data.endTime = _endTime;
+
+        data.startWeights = new uint256[](_TWO_TOKENS);
+        data.startWeights[_projectTokenIndex] = _projectTokenStartWeight;
+        data.startWeights[_reserveTokenIndex] = _reserveTokenStartWeight;
+
+        data.endWeights = new uint256[](_TWO_TOKENS);
+        data.endWeights[_projectTokenIndex] = _projectTokenEndWeight;
+        data.endWeights[_reserveTokenIndex] = _reserveTokenEndWeight;
+    }
+    struct LBPoolImmutableData {
+    IERC20[] tokens;
+    uint256[] decimalScalingFactors;
+    uint256[] startWeights;
+    uint256[] endWeights;
+    uint256 startTime;
+    uint256 endTime;
+    uint256 projectTokenIndex;
+    uint256 reserveTokenIndex;
+    bool isProjectTokenSwapInBlocked;
+    }
+```
+
+- [API](/integration-guides/aggregators/fetching-pools-and-data.md#using-balancers-api) Support: Pool will show as `LIQUIDITY_BOOTSTRAPPING` type and immutable params are available:
+
+A sample graphql query is below returning information about a LBP.
+
+```graphql
+query {
+  poolGetPool(id: "0x812C1217EA39c5242eD1C6D1015EbeD31261E28A", chain: BASE) {
+    id
+    ... on GqlPoolLiquidityBootstrapping {
+      address
+      startTime
+      endTime
+      isProjectTokenSwapInBlocked
+      lbpOwner
+      projectTokenIndex
+      projectToken
+      reserveToken
+      reserveTokenIndex
+      projectTokenStartWeight
+      reserveTokenStartWeight
+      projectTokenEndWeight
+      reserveTokenEndWeight
+    }
+  }
+}
+```
 
 ## Gyro 2-CLP
 
 Gyroscope two-token pools that concentrate liquidity in a fungible manner, and can have uncorrelated assets.
 
-* [Gyro Docs](https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/2-clps)
-* See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/Gyro2CLPPool.sol)
-* [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/gyro/gyro2CLPPool.ts)
-* [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/gyro/gyro2CLP.py)
-* [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `Gyro2CLPPoolFactory`
-* [Gyro pools on Balancer App](https://balancer.fi/pools?poolTypes=GYRO&protocolVersion=3)
-* Maths requires the following pool specific immutable parameters:
+- [Gyro Docs](https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/2-clps)
+- See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/Gyro2CLPPool.sol)
+- [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/gyro/gyro2CLPPool.ts)
+- [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/gyro/gyro2CLP.py)
+- [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `Gyro2CLPPoolFactory`
+- [Gyro pools on Balancer App](https://balancer.fi/pools?poolTypes=GYRO&protocolVersion=3)
+- Maths requires the following pool specific immutable parameters:
+
 ```
 paramsAlpha
 paramsBeta
-``` 
+```
 
-  * These are set at creation and are immutable.
-  * Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/Gyro2CLPPool.sol#L224-L235) and [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/Gyro2CLPPool.sol#L238-L243)):
+- These are set at creation and are immutable.
+- Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/Gyro2CLPPool.sol#L224-L235) and [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/Gyro2CLPPool.sol#L238-L243)):
+
 ```solidity
 function getGyro2CLPPoolDynamicData() external view returns (Gyro2CLPPoolDynamicData memory data);
 
@@ -88,13 +199,14 @@ struct Gyro2CLPPoolImmutableData {
 
 Elliptic CLPs, or E-CLPs, allow trading along the curve of an ellipse. Suitable for correlated assets that would be used with Stable Pools.
 
-* [Gyro Docs](https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/e-clps)
-* See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/GyroECLPPool.sol)
-* [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/gyro/gyroECLPPool.ts)
-* [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/gyro/gyroECLP.py)
-* [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `GyroECLPPoolFactory`
-* [Gyro pools on Balancer App](https://balancer.fi/pools?poolTypes=GYRO&protocolVersion=3)
-* Maths requires the following pool specific immutable parameters:
+- [Gyro Docs](https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/e-clps)
+- See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/GyroECLPPool.sol)
+- [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/gyro/gyroECLPPool.ts)
+- [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/gyro/gyroECLP.py)
+- [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `GyroECLPPoolFactory`
+- [Gyro pools on Balancer App](https://balancer.fi/pools?poolTypes=GYRO&protocolVersion=3)
+- Maths requires the following pool specific immutable parameters:
+
 ```
 paramsAlpha
 paramsBeta
@@ -110,9 +222,11 @@ v
 w
 z
 dSq
-``` 
-  * These are set at creation and are immutable.
-  * Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/GyroECLPPool.sol#L238C66-L238C89) and [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/GyroECLPPool.sol#L252)):
+```
+
+- These are set at creation and are immutable.
+- Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/GyroECLPPool.sol#L238C66-L238C89) and [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/GyroECLPPool.sol#L252)):
+
 ```solidity
 function getGyroECLPPoolDynamicData() external view returns (GyroECLPPoolDynamicData memory data);
 
@@ -148,11 +262,13 @@ struct GyroECLPPoolImmutableData {
     int256 dSq;
 }
 ```
-  * [API](/integration-guides/aggregators/fetching-pools-and-data.md#using-balancers-api) Support: Pool will show as `GYROE` type and immutable params are available:
+
+- [API](/integration-guides/aggregators/fetching-pools-and-data.md#using-balancers-api) Support: Pool will show as `GYROE` type and immutable params are available:
+
 ```graphql
 query MyQuery {
   aggregatorPools(
-    where: {chainIn: ARBITRUM, protocolVersionIn: 3, poolTypeIn: GYROE}
+    where: { chainIn: ARBITRUM, protocolVersionIn: 3, poolTypeIn: GYROE }
   ) {
     address
     type
@@ -178,12 +294,13 @@ query MyQuery {
 
 BTFs by QuantAMM dynamically adjust pool weights to capitalize on price movements. For example, a BTF pool can automatically increase its WBTC allocation when the BTF strategy thinks the value will rise faster than ETH. This allows LPs to earn both trading fees and profits from underlying asset appreciation through continuous, responsive, fully on-chain TradFi-style strategies.
 
-* [QuantAMM Docs](https://quantamm.fi/documentation)
-* See SC code implementation [here](https://github.com/QuantAMMProtocol/QuantAMM-V1)
-* [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/quantAmm)
-* Python maths reference - WIP
-* [BTF pools on Balancer App](https://balancer.fi/pools?poolTypes=QUANT_AMM_WEIGHTED)
-* [Deployment Addresses](https://mono-test-v3-git-feat-quantamm-support-balancer.vercel.app/pools/ethereum/v3/0xd4ed17bbf48af09b87fd7d8c60970f5da79d4852):
+- [QuantAMM Docs](https://quantamm.fi/documentation)
+- See SC code implementation [here](https://github.com/QuantAMMProtocol/QuantAMM-V1)
+- [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/quantAmm)
+- Python maths reference - WIP
+- [BTF pools on Balancer App](https://balancer.fi/pools?poolTypes=QUANT_AMM_WEIGHTED)
+- [Deployment Addresses](https://mono-test-v3-git-feat-quantamm-support-balancer.vercel.app/pools/ethereum/v3/0xd4ed17bbf48af09b87fd7d8c60970f5da79d4852):
+
 ```
 Mainnet:
 * UpdateWeightRunner: 0x21Ae9576a393413D6d91dFE2543dCb548Dbb8748
@@ -192,20 +309,24 @@ Mainnet:
 Arbitrum:
 * UpdateWeightRunner: 0x8Ca4e2a74B84c1feb9ADe19A0Ce0bFcd57e3f6F7
 * QuantAMMWeightedPoolFactory: 0x62B9eC6A5BBEBe4F5C5f46C8A8880df857004295
-  
+
 Base:
 * UpdateWeightRunner: 0x8Ca4e2a74B84c1feb9ADe19A0Ce0bFcd57e3f6F7
 * QuantAMMWeightedPoolFactory: 0x62B9eC6A5BBEBe4F5C5f46C8A8880df857004295
 ```
-* Maths requires the following dynamic data:
+
+- Maths requires the following dynamic data:
+
 ```
 firstFourWeightsAndMultipliers
 secondFourWeightsAndMultipliers
 lastUpdateTime
 lastInterpolationTimePossible
 ```
-* Event tracking systems can use the `UpdateWeightRunner`, `WeightsUpdated` [event](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/UpdateWeightRunner.sol#L93). The UpdateWeight runner is a single contract that controls weight changes for all pools.
-* Data can also be fetched onchain using the following helpers (see [here](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/QuantAMMWeightedPool.sol#L595) and [here](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/QuantAMMWeightedPool.sol#L615)):
+
+- Event tracking systems can use the `UpdateWeightRunner`, `WeightsUpdated` [event](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/UpdateWeightRunner.sol#L93). The UpdateWeight runner is a single contract that controls weight changes for all pools.
+- Data can also be fetched onchain using the following helpers (see [here](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/QuantAMMWeightedPool.sol#L595) and [here](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/QuantAMMWeightedPool.sol#L615)):
+
 ```solidity
 function getQsecondFourWeightsAndMultipliersuantAMMWeightedPoolDynamicData() external view returns (QuantAMMWeightedPoolDynamicData memory data);
 
@@ -237,12 +358,16 @@ struct QuantAMMWeightedPoolImmutableData {
 }
 ```
 
-* [API](/integration-guides/aggregators/fetching-pools-and-data.md#using-balancers-api) Support: Pool will show as `QUANT_AMM_WEIGHTED` type:
+- [API](/integration-guides/aggregators/fetching-pools-and-data.md#using-balancers-api) Support: Pool will show as `QUANT_AMM_WEIGHTED` type:
 
 ```graphql
 query MyQuery {
   aggregatorPools(
-    where: {chainIn: MAINNET, protocolVersionIn: 3, poolTypeIn: QUANT_AMM_WEIGHTED}
+    where: {
+      chainIn: MAINNET
+      protocolVersionIn: 3
+      poolTypeIn: QUANT_AMM_WEIGHTED
+    }
   ) {
     address
     type
@@ -250,4 +375,4 @@ query MyQuery {
 }
 ```
 
-* Max trade size: Each BTF pool has a `maxTradeSizeRatio` that is set on [pool creation](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/interfaces/contracts/pool-quantamm/IQuantAMMWeightedPool.sol#L105). This determines the max amount that can be traded.
+- Max trade size: Each BTF pool has a `maxTradeSizeRatio` that is set on [pool creation](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/interfaces/contracts/pool-quantamm/IQuantAMMWeightedPool.sol#L105). This determines the max amount that can be traded.
