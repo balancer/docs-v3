@@ -7,14 +7,14 @@ title: Liquidity Bootstrapping Pool
 
 ## Overview
 
-Liquidity Bootstrapping Pools (LBPs) are pools that can dynamically change token weighting (e.g 1/99 to 99/1 for TokenA/TokenB). LBPs use [Weighted Math](./weighted-pool/weighted-math.md) with time-dependent weights. The starting and end weights and times are selected by the pool owner. The pool owner is the only address that can join the pool and only remove liquidity after end time.
+Liquidity Bootstrapping Pools (LBPs) are pools that can dynamically change token weighting (e.g 1/99 to 99/1 for TokenA/TokenB). LBPs use [Weighted Math](./weighted-pool/weighted-math.md) with time-dependent weights. The starting and end weights and times are selected by the pool owner. The pool owner is the only address that can add liquidity to the pool, which must be done prior to the start of the sale. Furthermore, the proceeds can only be removed after the end time.
 
 ::: info Create an LBP
 
-- [Create a LBP on Balancer Homepage](https://balancer.fi/lbp/create)
-- [Create a LBP with the balancer SDK](https://github.com/balancer/b-sdk/blob/main/examples/createAndInitPool/createAndInitLBPoolV3.ts)
-- [Create a LBP with a foundry script](https://github.com/balancer/balancer-v3-foundry-starter/pull/5/files)
-- Once the LBP has concluced, the token can be easily migrated to a standard pool on Balancer with this [tool]().
+- [Create an LBP on Balancer Homepage](https://balancer.fi/lbp/create)
+- [Create an LBP with the balancer SDK](https://github.com/balancer/b-sdk/blob/main/examples/createAndInitPool/createAndInitLBPoolV3.ts)
+- [Create an LBP with a foundry script](https://github.com/balancer/balancer-v3-foundry-starter/pull/5/files)
+- Once the LBP has concluded, the token can be easily migrated to a standard pool on Balancer with this [tool]().
 
   :::
 
