@@ -36,3 +36,41 @@ By doing this, the BalancerPoolToken contract ensures that Balancer Pool Tokens 
 ## Composability
 
 As BPTs adhere to the ERC20 standard, they can seamlessly integrate as pool tokens in other pools. For instance, the BPT of an ERC4626 pool comprising wrapped versions of DAI, USDC, and USDT can be paired with tokens from new projects. This composability ensures the maintenance of deep and capital-efficient stable liquidity, while simultaneously creating efficient swap paths for the project token.
+
+## Oracle
+
+BPTs can also be priced in USD terms with this [oracle contract](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/standalone-utils/contracts/WeightedLPOracle.sol) which implements [this interface](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/standalone-utils/IWeightedLPOracle.sol). In order to deploy a BPT oracle for a specific pool's BPT, USD denominated price feeds (like Chainlin, Redstone, ...) for all pool tokens need to be available onchain.
+
+### Weighted Pool TVL Valuation Formula
+
+The Total Value Locked (TVL) for a Weighted Pool is calculated using the following formula:
+
+$$
+\text{TVL} = k \times \prod_{i=1}^n \left(\frac{P_i}{W_i}\right)^{W_i}
+$$
+
+Where:
+
+- \( k \) is the pool invariant, computed from the current token balances and weights.
+- \( n \) is the number of tokens in the pool.
+- \( P_i \) is the price of token \( i \).
+- \( W_i \) is the normalized weight of token \( i \).
+
+**Mathematical Approach:**
+
+To determine the TVL of a weighted pool, the approach is to first calculate the pool's invariant, which is a function of the token balances and their respective weights. Then, for each token in the pool, its price is compared to its normalized weight, and these ratios are combined in a weighted product. The final TVL is obtained by multiplying the invariant by this product of price-to-weight ratios, each raised to the power of the token's weight. This method ensures that the TVL reflects both the current market prices of the tokens and the pool's configuration.
+
+**Solidity Implementation:**
+
+```solidity
+uint256 k = pool.computeInvariant(lastBalancesLiveScaled18, Rounding.ROUND_UP);
+
+tvl = FixedPoint.ONE;
+for (uint256 i = 0; i < totalTokens; i++) {
+    tvl = tvl.mulDown(prices[i].toUint256().divDown(weights[i]).powDown(weights[i]));
+}
+
+tvl = tvl.mulDown(k);
+```
+
+This code computes the TVL by multiplying the invariant \( k \) by the product of each token's price-to-weight ratio raised to the power of its weight, as described in the formula above.
