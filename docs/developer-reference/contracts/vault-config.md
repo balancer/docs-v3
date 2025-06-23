@@ -141,7 +141,7 @@ v3 uses the same Weighted Math as v2, and the same minimum weight, so the same l
 
 ## Minimum/Maximum Amplification Parameter
 
-`MIN_AMP` is 1; `MAX_AMP` is 50000, same as v2. These values ultimately arise from the math in Curve's StableSwap. Higher values "flatten" the price curve (i.e., have a greater range were the tokens trade at essentially 1:1), and lower values make it more sensitive to the balances, and behave more like the Weighted Math price curve. Higher liquidity and lower volatility pools can generally have higher Amplification Parameters.
+`MIN_AMP` is 1; `MAX_AMP` is 50,000 (previously, and in v2, the limit was 5,000). These values ultimately arise from the math in Curve's StableSwap. Higher values "flatten" the price curve (i.e., have a greater range were the tokens trade at essentially 1:1), and lower values make it more sensitive to the balances, and behave more like the Weighted Math price curve. Higher liquidity and lower volatility pools can generally have higher Amplification Parameters.
 
 There is also an `AMP_PRECISION` constant, set to 1000. The integer 1-5000 values are multiplied by this factor for greater precision in calculation; the Amplification Parameter is used for the invariant computation.
 
