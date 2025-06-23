@@ -149,7 +149,7 @@ There is also an `AMP_PRECISION` constant, set to 1000. The integer 1-5000 value
 
 `_MIN_UPDATE_TIME` is set to 1 day, and `_MAX_AMP_UPDATE_DAILY_RATE` to 2, same as v2.
 
-Stable Pools allow changing the Amplification Parameter, but limit the rate of change, as instantaneous changes would allow price manipulation. These limits mean that any change must take at least one day, and the Amplification Parameter cannot change more than a factor of two in a single day, in either direction. In other words, if the initial parameter is 200, it cannot decrease below 100 (200 / 2) or above 400 (200 \* 2) within a day.
+Stable Pools allow changing the Amplification Parameter, but limit the rate of change, as instantaneous changes would allow price manipulation. These limits mean that any change must take at least one day, and the Amplification Parameter cannot change more than a factor of two in a single day, in either direction. In other words, if the initial parameter is 200, it cannot decrease below 100 (200 / 2) or above 400 (200 * 2) within a day.
 
 ## Minimum Swap Fee Percentage
 
