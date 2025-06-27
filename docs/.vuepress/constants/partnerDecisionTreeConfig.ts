@@ -42,6 +42,10 @@ export const partnerDecisionTreeConfig: Step[] = [
         text: 'LVR Protection',
         nextStep: 'resultF',
       },
+      {
+        text: 'Token launch',
+        nextStep: 'resultG',
+      },
     ],
   },
   {
@@ -125,10 +129,10 @@ export const partnerDecisionTreeConfig: Step[] = [
       'Balancer v3\'s <a href="/concepts/core-concepts/hooks.html" target="_blank" rel="noopener noreferrer">hooks system</a> allows you to extend existing pool types with custom logic. Perfect for implementing unique features while maintaining core pool efficiency.',
   },
   {
-    id: 'resultF',
-    title: 'CowAMM Liquidity Pool',
+    id: 'resultG',
+    title: 'Liquidity Bootstrapping Pool',
     result:
-      'A CowAMM liquidity pool based on their custom implementation might be best suited for your LVR protection needs.',
+      'A <a href="https://docs.balancer.fi/concepts/explore-available-balancer-pools/liquidity-bootstrapping-pool.html" target="_blank" rel="noopener noreferrer"> pool with changing weights, ideal for token launches or price discovery.',
   },
   {
     id: 'resultH',

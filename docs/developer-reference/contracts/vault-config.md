@@ -47,15 +47,15 @@ This does apply to pools, since they use the Vault's buffer period.
 
 This was set to 4 years.
 
-The Vault can be reversibly paused (i.e., all state-changing operations blocked, except recovery mode withdrawals) at any time during the pause window. The idea is to enable fast action if we *suspect* something is going on. We can pause for safety, investigate the issue, and unpause at leisure if it turns out to be a false alarm.
+The Vault can be reversibly paused (i.e., all state-changing operations blocked, except recovery mode withdrawals) at any time during the pause window. The idea is to enable fast action if we _suspect_ something is going on. We can pause for safety, investigate the issue, and unpause at leisure if it turns out to be a false alarm.
 
 While it's certainly important for security to be able to pause the Vault, it must also be non-custodial and permissionless: that is a core feature of Balancer, and just as important. If governance could pause the Vault forever, it would undermine this principle, as we can't know how governance might evolve over long time periods, and can't be sure it will never be compromised in some way. Accordingly, the pause window is not perpetual. After it expires, the Vault can no longer be paused, and will remain permissionless forever.
 
 In v2, we thought of this as the "burn in" period, during which we could pause the Vault in case we discovered a critical vulnerability after launch. It seems hopelessly naive in retrospect, but we thought 3 months would be sufficient: surely any serious vulnerabilities would be found within three months!
 
-One of the big lessons from v2 was that vulnerabilities can be found *much* later than three months after launch (for v2, it took over two years). Based on that, we set the pause window to equal the maximum expected life of v3.
+One of the big lessons from v2 was that vulnerabilities can be found _much_ later than three months after launch (for v2, it took over two years). Based on that, we set the pause window to equal the maximum expected life of v3.
 
-We also strengthened the non-custodial guarantees in v3, by building Recovery Mode (can't fail proportional withdrawal) into the Vault, so that it is supported for all current and future pools. (In v2, it was done at the pool level, and only added in later versions, so a new pool type could implement it differently, or opt out entirely.) Not only that, Recovery Mode becomes permissionless if the Vault or Pool is paused, so that funds can never be locked by governance action (e.g., if a compromised governance were to pause the Vault but *not* enable Recovery Mode; on v2, this would lock funds).
+We also strengthened the non-custodial guarantees in v3, by building Recovery Mode (can't fail proportional withdrawal) into the Vault, so that it is supported for all current and future pools. (In v2, it was done at the pool level, and only added in later versions, so a new pool type could implement it differently, or opt out entirely.) Not only that, Recovery Mode becomes permissionless if the Vault or Pool is paused, so that funds can never be locked by governance action (e.g., if a compromised governance were to pause the Vault but _not_ enable Recovery Mode; on v2, this would lock funds).
 
 `_vaultPauseWindowEndTime` and `_vaultBufferPeriodEndTime` are set based on the pause window and buffer period; the pause window duration itself isn't stored directly.
 
@@ -63,7 +63,7 @@ We also strengthened the non-custodial guarantees in v3, by building Recovery Mo
 
 `_vaultBufferPeriodDuration` was set to 6 months (twice the v2 value of 3 months).
 
-What if a vulnerability is found one day before the pause window expires? We could pause the Vault on the last day - but we'd only have one day to fix the issue before the Vault became permanently unpaused. This is the purpose of the Buffer Period. If the Vault is in the paused state when the window expires, it will *remain* paused for this additional buffer period, to allow enough time to investigate and correct whatever led to the pause. The Vault can still be unpaused at any point (and will unpause itself when the buffer expires), but it can no longer be *paused*, since the primary window has expired.
+What if a vulnerability is found one day before the pause window expires? We could pause the Vault on the last day - but we'd only have one day to fix the issue before the Vault became permanently unpaused. This is the purpose of the Buffer Period. If the Vault is in the paused state when the window expires, it will _remain_ paused for this additional buffer period, to allow enough time to investigate and correct whatever led to the pause. The Vault can still be unpaused at any point (and will unpause itself when the buffer expires), but it can no longer be _paused_, since the primary window has expired.
 
 There was no particular reason for setting this to 6 months; it was just thought that given the longer pause window, the buffer period should also be longer: and it does make sense. We have had issues in the past where the problem is an interaction between the Vault and another protocol (e.g., the Synthetix double-entry point vulnerability). If we need to wait for another protocol to change something, that could easily be a lengthy process.
 
@@ -75,7 +75,7 @@ Along with minimum pool fees and other similar measures, it is a "guardrail" - a
 
 In practice, there is really no valid use case for trading tiny values. It obviously makes no sense to buy $0.00001 of ETH with USDC, as the gas costs would swamp any profits. If someone is trying to do this, either 1) they are using Etherscan and forgot about token decimals; or 2) it's some kind of attack. Accordingly, we simply disallow it.
 
-Note that this is a "scaled" value - a number of Wei *after* token decimal and rate scaling, and it applies to either side of a swap. It also applies to adding/removing liquidity (with the caveat that for single or exact token operations, 0 is allowed for tokens that aren't participating).
+Note that this is a "scaled" value - a number of Wei _after_ token decimal and rate scaling, and it applies to either side of a swap. It also applies to adding/removing liquidity (with the caveat that for single or exact token operations, 0 is allowed for tokens that aren't participating).
 
 ## Minimum wrap amount
 
@@ -141,9 +141,9 @@ v3 uses the same Weighted Math as v2, and the same minimum weight, so the same l
 
 ## Minimum/Maximum Amplification Parameter
 
-`MIN_AMP` is 1; `MAX_AMP` is 5000, same as v2. These values ultimately arise from the math in Curve's StableSwap. Higher values "flatten" the price curve (i.e., have a greater range were the tokens trade at essentially 1:1), and lower values make it more sensitive to the balances, and behave more like the Weighted Math price curve. Higher liquidity and lower volatility pools can generally have higher Amplification Parameters.
+`MIN_AMP` is 1; `MAX_AMP` is 50,000 (previously, and in v2, the limit was 5,000). These values ultimately arise from the math in Curve's StableSwap. Higher values "flatten" the price curve (i.e., have a greater range were the tokens trade at essentially 1:1), and lower values make it more sensitive to the balances, and behave more like the Weighted Math price curve. Higher liquidity and lower volatility pools can generally have higher Amplification Parameters.
 
-There is also an `AMP_PRECISION` constant, set to 1000. The integer 1-5000 values are multiplied by this factor for greater precision in calculation; the Amplification Parameter is used for the invariant computation. 
+There is also an `AMP_PRECISION` constant, set to 1000. The integer 1-5000 values are multiplied by this factor for greater precision in calculation; the Amplification Parameter is used for the invariant computation.
 
 ## Minimum Amplification Parameter Update Time, and Maximum Daily Rate
 
@@ -183,6 +183,6 @@ This is the maximum balance of a token within a pool, which is constrained by th
 
 These were set to 4 years for both Weighted and Stable pools.
 
-This is the same value as the Vault, as was done in v2. Note that the pause window is factory-specific, and the time period is relative to the *factory* deployment (not the pool). All pools become permissionless at the same time. New pool factories can use different values, or even opt out by setting it to zero (not recommended).
+This is the same value as the Vault, as was done in v2. Note that the pause window is factory-specific, and the time period is relative to the _factory_ deployment (not the pool). All pools become permissionless at the same time. New pool factories can use different values, or even opt out by setting it to zero (not recommended).
 
 Note also that the buffer period duration is not configurable at the pool factory level: the pools always use the Vault's buffer period.
