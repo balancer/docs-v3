@@ -2,13 +2,26 @@
 order: 6
 title: Readjusting Concentrated Liquidity AMM Pool
 ---
+
 # Readjusting Concentrated Liquidity AMM Pools
 
 ## Overview
 
-reCLAMM Pools concentrate liquidity (for all LPs) in a certain price range, so this range is one of the critical initialization parameters. However, this price range is not fixed at deployment time. It can "shift" from the initialized values; i.e., move up or down along the constant product price curve, maintaining the same interval, in response to price changes that "unbalance" the pool. This happens automatically, without user or admin intervention, when triggered by the results of swaps or liquidity operations.
+reCLAMM Pools are a type of **concentrated liquidity pool** that focus liquidity within a predefined price range, allowing LPs to earn greater fees with less capital—especially when the market price remains within that range. This concentration is initialized with a **target price** and **range bounds**, enabling the pool to deliver capital efficiency over traditional constant-product models.
 
-The pool is initialized with a price range and target price (= market price at deployment time), which is typically near the center of the range, but doesn't strictly need to be. The pool creator also sets the margin - a symmetrical "distance" from the edges of the price range, expressed as a percentage, which determines how much imbalance is required to trigger the start of a price range adjustment. For instance, a margin of 20% means the pool will react to an imbalance greater than 60/40: 10% on either side. Finally, the pool creator must specify the daily price shift exponent, which determines how fast the price range shifts when triggered.
+What sets reCLAMM apart is its **adaptive nature**. As trading activity or liquidity operations shift the market price, reCLAMM Pools are able to **automatically move** their price range—up or down the price curve—without any intervention from users or governance. This "re-centering" behavior activates only when the pool becomes sufficiently unbalanced, based on a margin threshold defined at deployment. Once triggered, the pool begins gradually shifting its range in the direction of market pressure, ensuring liquidity stays useful and active.
+To enable this adaptive behavior, reCLAMM Pools are configured with a few key parameters:
+
+- A **target price**, often set near the current market price at deployment.
+- A **price range**, where all the pool’s liquidity is initially concentrated.
+- A **margin**, expressed as a percentage, defining how much imbalance is tolerated before the range begins shifting.
+- A **daily shift exponent**, which controls how quickly the pool adjusts its range when out of balance.
+
+For example, if the margin is set at 20%, the pool tolerates up to a 60/40 imbalance (±10% deviation from a 50/50 balance). Once this threshold is crossed, the pool begins migrating its range incrementally over time, following the market.
+
+This design offers LPs the benefit of concentrated liquidity **without the need for manual range resets**. It suits passive LPs seeking to stay aligned with market trends while still capturing the fee benefits of a tighter range.
+
+Those familiar with other concentrated liquidity designs may notice echoes of similar mechanisms—like pools that start with fixed ranges around a target price—but unlike those, reCLAMM’s range is not locked. Instead, it evolves in response to the market, maintaining efficiency over time without additional user action.
 
 The following diagram shows a pool that is `OUT OF RANGE`. The current price is within the price range (as it must be), but above the margin. In this state, the pool will be shifting the price range "up" toward higher prices, following the market, and attempting to bring the market price back inside the margins.
 
@@ -45,13 +58,13 @@ One fundamental thing to understand is how the price range is defined and enforc
 
 The answer is the introduction of "offsets" to the real balances called "virtual" balances, such that the token balances used to calculate the invariant are redefined as the sum of the real and virtual balances. These virtual balances fix the price curve on both ends, cutting off the long tail and ensuring non-zero minimum and maximum prices, even as the real balances approach zero. (This mechanism is shared by Gyro pools, but the terminology here is very slightly different.)
 
-Higher virtual balances (relative to the real balances) means higher concentration. 
+Higher virtual balances (relative to the real balances) means higher concentration.
 
 ## Initialization
 
 What we really need internally is the "ratio" of the minimum and maximum prices, but since calculating this is unintuitive and a lot to ask of integrators, we created an initialization mechanism that takes very simple input: the actual minimum and maximum prices, and a target price. Two additional parameters are required to specify the behavior of the pool after initialization (margin and price shift exponent); those are described below.
 
-One question that arises immediately is: how do we define the price? There are after all *two* ways to define the price of a 2-token pool: A in terms of B, or B in terms of A. We have chosen to define the prices as B/A; i.e., prices represent the value of token A denominated in token B. In other words, how many B tokens equal the value of one A token. Since Balancer pool tokens must be registered in numerical order, the "direction" of the ratio is deterministic.
+One question that arises immediately is: how do we define the price? There are after all _two_ ways to define the price of a 2-token pool: A in terms of B, or B in terms of A. We have chosen to define the prices as B/A; i.e., prices represent the value of token A denominated in token B. In other words, how many B tokens equal the value of one A token. Since Balancer pool tokens must be registered in numerical order, the "direction" of the ratio is deterministic.
 
 When the pool is created from the factory, these initial values are stored immutably; they are only used during initialization.
 
@@ -65,7 +78,7 @@ And the price, recalling that it is defined as B/A:
 
 $P_a = \frac{R_b + V_b}{R_a + V_a}$
 
-We know the desired price *ratio* (max/min), and we see that these values can be derived by setting each real balance to 0. At the edges, one of the balances will be the maximum value, and the other will be 0. The "maximum balance" is really a placeholder needed for intermediate calculations (it will cancel out later), so we can assign it a convenient arbitrary value (e.g., 1000). Given the invariant and these price bounds, we can derive initial values for the virtual balances.
+We know the desired price _ratio_ (max/min), and we see that these values can be derived by setting each real balance to 0. At the edges, one of the balances will be the maximum value, and the other will be 0. The "maximum balance" is really a placeholder needed for intermediate calculations (it will cancel out later), so we can assign it a convenient arbitrary value (e.g., 1000). Given the invariant and these price bounds, we can derive initial values for the virtual balances.
 
 Recall that the total balances (which determine the actual price) are defined as the sum of the real and virtual balances. We know the virtual balances and the target price, so it is now possible to calculate the "theoretical" real balances that would result in the target price.
 
@@ -85,11 +98,11 @@ The centeredness margin is another parameter that must be set on deployment. Unl
 
 This is a percentage value in the range of 0 - 100%. A value of 0 would mean there is effectively no margin - real balances can go to 0, and the pool will never readjust. This degenerate case is effectively the same as a Gyro 2-CLP at the full price range: completely insensitive to price movement, until the pool goes out of range and effectively halts. (Technically, reCLAMM pools act like 2-CLPs constructed with the current range whenever they're in range and not updating the price ratio.)
 
-A value of 100% would mean the pool is always "out of range," unless it is *perfectly* balanced. This is maximal sensitivity to price changes; essentially it would always be shifting the range (and incurring somewhat higher gas costs). We expect most pools to be configured somewhere in the middle.
+A value of 100% would mean the pool is always "out of range," unless it is _perfectly_ balanced. This is maximal sensitivity to price changes; essentially it would always be shifting the range (and incurring somewhat higher gas costs). We expect most pools to be configured somewhere in the middle.
 
 ![Centeredness margin illustration](/images/centeredness.gif)
 
-Note that the centeredness measure is symmetric around the center point. On initialization, the pool centeredness should be very close to 1. As swaps move the real balances (with constant virtual balances), the centeredness will move up or down the price curve *away* from 1 and toward the margins (for these examples, we are using margins from 0 to 50%).
+Note that the centeredness measure is symmetric around the center point. On initialization, the pool centeredness should be very close to 1. As swaps move the real balances (with constant virtual balances), the centeredness will move up or down the price curve _away_ from 1 and toward the margins (for these examples, we are using margins from 0 to 50%).
 
 When the centeredness falls below 50%, the market price point will be above the upper or below the lower price margin on the curve, heading toward one of the edges of the price range (where one of the real token balances would be 0).
 
