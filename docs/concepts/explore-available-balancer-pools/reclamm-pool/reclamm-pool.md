@@ -98,7 +98,7 @@ The centeredness margin is another parameter that must be set on deployment. Unl
 
 This is a percentage value in the range of 0 - 90%. A value of 0 would mean there is effectively no margin - real balances can go to 0, and the pool will never readjust. This degenerate case is effectively the same as a Gyro 2-CLP at the full price range: completely insensitive to price movement, until the pool goes out of range and effectively halts. (Technically, reCLAMM pools act like 2-CLPs constructed with the current range whenever they're in range and not updating the price ratio.)
 
-A value of 100% would mean the pool is always "out of range," unless it is _perfectly_ balanced. This is maximal sensitivity to price changes; essentially it would always be shifting the range (and incurring somewhat higher gas costs). 100% causes some issues with the math in certain edge cases, which is why the maximum was set to 90%. We expect most pools to be configured somewhere in the middle.
+A value of 100% would mean the pool is always "out of range," unless it is _perfectly_ balanced. This is maximal sensitivity to price changes; essentially it would always be shifting the range (and incurring somewhat higher gas costs). Since the margin can only be changed when the pool is in range both before and after, it would be very difficult to lower it from 100%. Mainly for this reason, the maximum was set to 90%. We expect most pools to be configured somewhere in the middle.
 
 ![Centeredness margin illustration](/images/centeredness.gif)
 
