@@ -13,7 +13,7 @@ references:
 Elliptic CLPs, or E-CLPs, allow trading along the curve of an ellipse. Similar to other CLPs, E-CLPs are designed to concentrate liquidity within price bounds. However, E-CLP liquidity is much more flexible. Just as 2-CLP pools concentrate liquidity over a range, vs. spreading it uniformly over the entire (infinite) price range, E-CLP pools can focus liquidity asymmetrically over the already restricted range defined by the alpha and beta parameters.
 
 ::: info
-Gyro E-CLPs are always two token pools.
+Gyro E-CLPs are always two-token pools.
 
 - The minimum swap fee percentage is 0.000001% (note - lower than the Stable Pool minimum by an order of magnitude)
 - The maximum swap fee is not constrained (i.e., 100%)
@@ -25,9 +25,14 @@ Gyro E-CLPs are always two token pools.
 
 Note that the swap fee and invariant limits are defined in `GyroECLPPool` through implementing the `ISwapFeePercentageBounds` and `IUnbalancedLiquidityInvariantRatioBounds` interfaces, which are included in `IBasePool`.
 
-See [here](../../../../integration-guides/aggregators/pool-maths-and-details.html#gyro-eclp) for a more detailed reference.
+See [here](../../../../integration-guides/aggregators/pool-maths-and-details.html) for a more detailed reference.
 
 ![E-CLP price curve illustration](/images/E-CLP-v1.gif)
+
+Using rate providers, which (depending on their sensitivity and tracking speed) can track the price much more closely, preserving capital by reducing or eliminating arbitrage opportunities caused by lagging prices.
+
+![Rate providers](/images/Rate-providers-v8.gif)
+
 Source: [Gyroscope Docs](https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/e-clps)
 
 ## Advantages
