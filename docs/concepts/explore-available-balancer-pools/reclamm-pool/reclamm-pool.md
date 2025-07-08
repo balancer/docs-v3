@@ -114,6 +114,8 @@ The centeredness margin is the final parameter (relating to reCLAMM functionalit
 
 This is also a percentage, and it controls the "doubling rate" of the price shift. At 100%, the prices will double (or halve) in one day. This rate is non-linear, and means that the prices will be multiplied (or divided) by 2^(`dailyPriceShiftExponent`) per day. So 200% corresponds to 2^2 or 4x, and 300% corresponds to 2^3 or 8x. (The maximum is 100%, or doubling once per day.)
 
+Note that the math prevents the price from "overshooting" in either direction due to inactivity (i.e., shifting past the center point, where centeredness equals 1, if there is an extended period with no swaps).
+
 ## Admin actions
 
 reCLAMM Pool admins can do three things: 1) change the centeredness margin (the threshold for updates); 2) change the daily price shift exponent (the speed of updates); and 3) initiate an update to the price interval (i.e., the distance, or ratio, between the minimum and maximum price bounds), or simply stop an ongoing update. All of these changes will update the virtual balances (and potentially slightly change the price).
