@@ -163,6 +163,10 @@ Using $\tau$ and the seconds passed since the last swap ($n$) we can calculate t
     
 In the code, we store $1 - \tau$ for convenient, and refer to it as the `dailyPriceShiftBase`, as it is the base of the exponential function used to update the virtual balances.
 
+If there are no swaps that bring the pool back into range, we need an additional guardrail to prevent the range from shifting “past” the center point. We do this by imposing a minimum value on the “overvalued” token (i.e., the one with the lower balance: `o` = `b` in case 1 above, and `a` in case 2), given by the virtual balance when centeredness = 1:
+
+    $V_{o_{min}} = \frac{R_{o}}{\sqrt Q_0-1)}$
+
 ## Price Interval Update
 
 Given the new price ratio ($Q_{0_{new}}$), we can calculate the new virtual balances. There are several ways to do this, and we decided to update it keeping the pool centeredness constant. That's because, if pool centeredness is not constant, an update in the price ratio can take the pool from an `IN RANGE`state to an `OUT OF RANGE` state without a user action, so it can introduce inconsistencies when moving the price interval to follow the market price.
