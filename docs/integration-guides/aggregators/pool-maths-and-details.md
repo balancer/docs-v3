@@ -294,8 +294,14 @@ query MyQuery {
 
 reCLAMM Pools are two-token concentrated liquidity pools conceptually similar to 2-CLPs, but the parameters are not immutable. They can be changed not only by admins, but also by the pool itself, as it automatically adjusts virtual balances to shift the price range as necessary to keep the pool balanced (and earning fees for LPs).
 
+::: warning V2 Changes
+V1 reCLAMM pools are deprecated in favour of V2. 
+V2 has a small maths fix to handle an edge case when pool is out of range.
+They have independent factories. If using the API please use `version` to differentiate. 
+:::
+
 * See SC code implementation in this [dedicated repo](https://github.com/balancer/reclamm/blob/main/contracts/ReClammPool.sol)
-* [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/reClamm/reClammPool.ts)
+* [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/reClammV2/reClammV2Pool.ts)
 * [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `ReClammPoolFactory`
 * Maths requires the following pool specific parameters:
 ```
