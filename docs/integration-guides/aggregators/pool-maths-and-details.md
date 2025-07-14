@@ -15,7 +15,7 @@ Pools that swap tokens by enforcing a Constant Weighted Product invariant.
 
 - See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-weighted).
 - [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/weighted)
-- [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/weighted.py)
+- [Python maths reference](https://github.com/balancer/balancer-maths/tree/main/python/src/pools/weighted)
 - [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `WeightedPoolFactory`
 
 ## Stable Pool
@@ -24,7 +24,7 @@ Pools that swap tokens by enforcing a Stable Math invariant, based on Curve.
 
 - See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-stable).
 - [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/stable)
-- [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/stable.py)
+- [Python maths reference](https://github.com/balancer/balancer-maths/tree/main/python/src/pools/stable)
 - [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `StablePoolFactory`
 - Amplification factor can be dynamic; see:
   - `getAmplificationParameter()` view function
@@ -36,7 +36,7 @@ Stable Pools that use the Stable Surge Hook, a dynamic fee implementation that i
 
 - See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/tree/main/pkg/pool-hooks/contracts/StableSurgePoolFactory.sol).
 - [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/stable)
-- [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/stable.py)
+- [Python maths reference](https://github.com/balancer/balancer-maths/tree/main/python/src/pools/stable)
 - [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `StableSurgePoolFactory`
 - Amplification factor can be dynamic; see:
   - `getAmplificationParameter()` view function
@@ -48,8 +48,8 @@ Liquidity Bootstrapping pools have linearly changing weights but use weighted ma
 
 - [LBP docs](https://docs.balancer.fi/concepts/explore-available-balancer-pools/liquidity-bootstrapping-pool)
 - See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/lbp/LBPool.sol)
-- [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/liquidityBootstrapping/liquidityBootstrapping.ts)
-- [Python maths reference]()
+- [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/liquidityBootstrapping)
+- [Python maths reference](https://github.com/balancer/balancer-maths/tree/main/python/src/pools/liquidity_bootstrapping)
 - [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `LBPoolFactory	`
 - [LB pools on Balancer App](https://balancer.fi/pools?poolTypes=LBP&protocolVersion=3)
 - weight calculation requires the following parameters:
@@ -158,7 +158,7 @@ Gyroscope two-token pools that concentrate liquidity in a fungible manner, and c
 - [Gyro Docs](https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/2-clps)
 - See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/Gyro2CLPPool.sol)
 - [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/gyro/gyro2CLPPool.ts)
-- [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/gyro/gyro2CLP.py)
+- [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/gyro/gyro_2clp.py)
 - [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `Gyro2CLPPoolFactory`
 - [Gyro pools on Balancer App](https://balancer.fi/pools?poolTypes=GYRO&protocolVersion=3)
 - Maths requires the following pool specific immutable parameters:
@@ -378,7 +378,7 @@ BTFs by QuantAMM dynamically adjust pool weights to capitalize on price movement
 - [QuantAMM Docs](https://quantamm.fi/documentation)
 - See SC code implementation [here](https://github.com/QuantAMMProtocol/QuantAMM-V1)
 - [Typescript maths reference](https://github.com/balancer/balancer-maths/tree/main/typescript/src/quantAmm)
-- Python maths reference - WIP
+- [Python maths reference](https://github.com/balancer/balancer-maths/tree/main/python/src/pools/quantamm)
 - [BTF pools on Balancer App](https://balancer.fi/pools?poolTypes=QUANT_AMM_WEIGHTED)
 - [Deployment Addresses](https://mono-test-v3-git-feat-quantamm-support-balancer.vercel.app/pools/ethereum/v3/0xd4ed17bbf48af09b87fd7d8c60970f5da79d4852):
 
