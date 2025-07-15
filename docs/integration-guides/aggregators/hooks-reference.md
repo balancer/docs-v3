@@ -19,7 +19,7 @@ For more details about Balancer V3 Hooks implementation see [Hooks Core Concepts
 * [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories).
 * See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/2f088c6b8f66ad55885d257c1e3debe2a6e21e97/pkg/pool-hooks/contracts/StableSurgeHook.sol).
 * [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/eeff3ef8cf1105a0aaa6d96a4c0f8b7a62135256/typescript/src/hooks/stableSurgeHook.ts)
-* [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/hooks/stable_surge_hook.py).
+* [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/hooks/stable_surge/stable_surge_hook.py).
 * Maths requires the configurable `maxSurgeFeePercentage` and `thresholdPercentage` values which can be fetched and tracked using the following functions and events:
 ```solidity
 function getMaxSurgeFeePercentage(address pool) external view returns (uint256);
