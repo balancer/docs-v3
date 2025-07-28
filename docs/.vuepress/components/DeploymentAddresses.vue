@@ -66,6 +66,7 @@ const EXPLORER_URLS = {
   arbitrum: 'https://arbiscan.io/address/',
   zkevm: 'https://zkevm.polygonscan.com/address/',
   avalanche: 'https://snowtrace.io/address/',
+  hyperevm: 'https://hyperevmscan.io/address/',
 };
 
 const CONTRACT_GROUPS = {
@@ -73,6 +74,9 @@ const CONTRACT_GROUPS = {
     requireV3: true,
     contracts: [
       'Vault',
+      'VaultFactory',
+      'VaultAdmin',
+      'VaultExtension',
       'BalancerRelayer',
       'BatchRelayerLibrary',
       'BalancerQueries',
@@ -98,6 +102,8 @@ const CONTRACT_GROUPS = {
       'StableSurgePoolFactory',
       'StableSurgeHook',
       'MevCaptureHook',
+      'PoolPauseHelper',
+      'PoolSwapFeeHelper',
     ],
   },
   authorizations: {
