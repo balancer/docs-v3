@@ -115,6 +115,8 @@ The price is then simply TVL / totalSupply.
 
 ## References
 
+See the [contracts](./bpt-oracles-contracts.md) page for practical examples of using the oracles.
+
 For a more detailed mathematical description of how this is applied to Stable Pools, see the [Pricing Stable Pool BPTs](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/standalone-utils/docs/StableOracle.md) document in the V3 monorepo.
 
 True nerds can review the [Pricing StableSwap pools](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/standalone-utils/docs/pricing_stableSwap_pools.pdf) paper by Sergio A. Yuhjtman, our resident mathematician.

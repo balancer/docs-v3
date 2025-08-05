@@ -43,4 +43,4 @@ If Chainlink price feeds are available for all tokens, Weighted and Stable Pool 
 
 Note that it would be possible to generalize these contracts to support other kinds of price feeds; the only function of the price oracle is to fetch the current market prices. The pricing algorithm and all logic is contained in the LP oracle code (and mostly all in the base contracts).
 
-The most common use for these contracts is enabling Balancer BPT to be used as collateral on lending platforms. See the [BPT as Collateral](./bpt-oracles.md) docs for more details.
+The most common use for these contracts is enabling Balancer BPT to be used as collateral on lending platforms. See the [BPT as Collateral](./bpt-oracles/bpt-oracles.md) docs for more details.
