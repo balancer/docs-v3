@@ -31,7 +31,11 @@ We can then solve this system of linear gradient equations, and express the theo
 
 Then the real magic happens - we can substitute those xⱼ expressions into the invariant equation, and reduce the system to a single equation in k̃. On chain, this equation can be solved for k̃ using Newton's method. Once we have k̃, we can compute the theoretical balances, sum the product of each token balance and oracle price to get the total pool value, then divide by the total supply to derive the final BPT price.
 
+See [this page](./bpt-oracles-contracts.md) for references to the BPT Oracle contracts.
+
 ## Derivation
+
+The following applies to Stable Pools, using the StableSwap invariant equation. (See below for a discussion of weighted pools.)
 
 With x̃ representing the vector of theoretical token balances, the pool constraint can be expressed mathematically as: F(x̃, D) = 0
 This means that the theoretical balances must reproduce the real invariant.
@@ -90,6 +94,24 @@ In summary:
 * Once we find the right k̃, we can calculate the fair balances x̃ⱼ, and price the LP token
 
 See [this page](./bpt-oracles-example.md) for a numerical example.
+
+## Weighted Pools
+
+Weighted and Stable Pools use the same general algorithm. While the complex StableSwap invariant necessitates Newton's method to find the scaling parameter k̃, then calculate effective balances and total value, the power-law invariant of the Weighted Pool allows us to solve the gradient and invariant conditions simultaneously, giving us TVL = k × Π((Pᵢ/Wᵢ)^Wᵢ) in one step.
+
+In particular, "mapping" the weighted pool solution onto the equivalent terms used above:
+
+* The theoretical balances x̃ᵢ = (TVL × Wᵢ)/Pᵢ, where TVL is the total pool value (referred to as Bᵢ in the WeightedLPOracle code docs).
+* The Weighted invariant D = Π(Bᵢ^Wᵢ), computed directly using theoretical balances and weights (referred to as k in the WeightedLPOracle code docs).
+* The scaling parameter k̃ is in the Weighted case simply equal to the TVL (C in the code docs).
+
+So, positing a normalization constant C such that C = (Pᵢ × Bᵢ / Wᵢ) for every token, the gradient "price constraint" is: Bᵢ = (C × Wᵢ)/Pᵢ
+
+We can then substitute this directly into the invariant (no complex polynomials here): D = Π((C × Wᵢ/Pᵢ)^Wᵢ) = C × Π((Wᵢ/Pᵢ)^Wᵢ)
+
+And then solve for C directly: C = k × Π((Pᵢ/Wᵢ)^Wᵢ) = TVL = Total pool value
+
+The price is then simply TVL / totalSupply.
 
 ## References
 
