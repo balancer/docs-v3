@@ -47,9 +47,7 @@ This means that the theoretical balances must reproduce the real invariant.
 
 The price constraint can be expressed mathematically as:
 
-$$
-\\nabla f(\\tilde{x}) = \\tilde{k} \\cdot \\rho
-$$
+∇f(x̃) = k̃ · ρ
 
 This means that the internal prices must match (i.e., be proportional to) the oracle prices. ρ (rho) is a "critical boundary" constraint on k̃. We can derive a minimum valid value of k̃ from the oracle prices and degree of price curvature: at this value or below, the "T curve" (described below) goes to infinity and the equation is no longer soluble.
 
@@ -61,9 +59,7 @@ To calculate ρ:
 
 Given these constraints, the key is to find k̃. To understand how, we start with the invariant equation for the pool:
 
-$$
-f(x_1, x_2, \\dots, x_n) = D
-$$
+f(x₁, x₂, ..., xₙ) = D
 
 This is some function which, operating on the real balances, produces a single invariant value D, representing the total value of the pool. The details vary, but the Balancer Vault requires this to be defined for every pool type. So far, we have implemented oracles for both Weighted and Stable Balancer pools. (ReCLAMM pools should also work, as they are fundamentally Weighted pools, just incorporating virtual balances.)
 
@@ -71,71 +67,31 @@ The partial derivative ∂f/∂xⱼ represents how much the invariant changes pe
 
 The n gradient equations look like:
 
-$$
-\\frac{\\partial F}{\\partial x_1} = \\tilde{k} \\cdot p_1
-$$
+∂F/∂x₁ = k̃ · p₁
 
-$$
-\\frac{\\partial F}{\\partial x_2} = \\tilde{k} \\cdot p_2
-$$
+∂F/∂x₂ = k̃ · p₂
 
 ...
 
-$$
-\\frac{\\partial F}{\\partial x_n} = \\tilde{k} \\cdot p_n
-$$
-
-Since k̃ is constant, these equations are linear in xⱼ, so can be solved for each token:
-
-$$
-x_1 = \\text{[function of } \\tilde{k} \\text{]}
-$$
-
-$$
-x_2 = \\text{[function of } \\tilde{k} \\text{]}
-$$
-
-...
+∂F/∂xₙ = k̃ · p₂
 
 We now apply the second constraint, substituting the x expressions into the pool constraint F(x̃, D) = 0. Since all the x expressions are functions of k̃, we now have a single equation in terms of k̃: one equation, one unknown.
 
 After a lot of algebra, the single equation can be written as:
 
-$$
-T(\\tilde{k})^{n+1} \\cdot P(\\tilde{k}) = \\alpha
-$$
+T(k̃)^(n+1) · P(k̃) = α; where
 
-where:
+T(k̃) = Σ(1/(k̃rᵢ - 1)) - 1; from the gradient equations, where the r values are the scaled prices described above;
 
-$$
-T(\\tilde{k}) = \\sum \\left( \\frac{1}{\\tilde{k} r_i - 1} \\right) - 1
-$$
+P(k̃) = ∏(k̃rᵢ - 1); also from the gradient equations; and
 
-from the gradient equations, where the \\( r_i \\) are the scaled prices described above;
+α = a·c^(n+1); a constant derived from the pool parameters, where
 
-$$
-P(\\tilde{k}) = \\prod (\\tilde{k} r_i - 1)
-$$
+a = A·n^(2n);
 
-also from the gradient equations; and
+b = a - n^n; and
 
-$$
-\\alpha = a \\cdot c^{n+1}
-$$
-
-a constant derived from the pool parameters, where
-
-$$
-a = A \\cdot n^{2n}
-$$
-
-$$
-b = a - n^n
-$$
-
-$$
-c = \\frac{b}{a}
-$$
+c = b/a
 
 Unfortunately this "T equation" is non-linear in k̃, so it must be solved numerically. On-chain, we use Newton's method to find the root (= the value of k̃ that satisfies both constraints). In the mathematical paper referenced below, we prove that when n is even (e.g.; in the most common case of 2-token pools), there is a single root. If n is odd, there are two roots, where the correct one is the smaller.
 
