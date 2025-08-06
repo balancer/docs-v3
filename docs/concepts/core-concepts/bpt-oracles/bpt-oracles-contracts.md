@@ -16,7 +16,7 @@ Oracles are created from the corresponding pool factories using the create funct
 
 `AggregatorV3Interface` is a Chainlink price feed.
 
-This first computes an "OracleID" as the hash of the pool and price feed addresses. Since the tokens must be ordered, we know the price feed addresses will also be in the same order, so a given combination of the pool and price feeds is guaranteed unique, then calls an internal `_create` (implemented by derived contracts) to deploy the oracle with the given configuration, and registers it with the factory.
+This first computes an "OracleID" as the hash of the pool and price feed addresses. Since the tokens must be ordered, we know the price feed addresses will also be in the same order, so a given combination of the pool and price feeds is guaranteed unique. It then calls an internal `_create` (implemented by derived contracts) to deploy the oracle with the given configuration, and registers it with the factory.
 
 The base factory contract [interface](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/standalone-utils/ILPOracleFactoryBase.sol) defines functions to find an oracle given pool and feed addresses, and check whether a given oracle was deployed by the official factory:
 
