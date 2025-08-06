@@ -26,8 +26,8 @@ Choose the starting point: k₀ = (1 + 1/(1+b)) × ρ
 
 k₀ = (1 + 1/(1+1596)) × 1633 = (1 + 1/1597) × 1633 ≈ 1634.02
 
-Newton's method:
-k_{n+1} = k_n - G(k_n)/G'(k_n); where
+Newton's method:<br>
+kₙ₊₁ = kₙ − G(kₙ) / G′(kₙ); where
 
 G(k) = T(k)³ × P(k) - α<br>
 G'(k) = T²(k) × P(k) × [(3T'(k) × P(k) + T(k) × P'(k))/P(k)]
@@ -37,6 +37,7 @@ T'(k) = -r₁/(kr₁-1)² - r₂/(kr₂-1)²<br>
 P'(k) = P(k) × [r₁/(kr₁-1) + r₂/(kr₂-1)]
 
 First iteration (k₀ = 1634.02)
+
 Calculate T(1634.02):
 
 T = 1/(1634.02×0.000625-1) + 1/(1634.02×0.0006125-1) - 1<br>
