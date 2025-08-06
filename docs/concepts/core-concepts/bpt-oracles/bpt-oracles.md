@@ -67,12 +67,9 @@ The partial derivative ∂f/∂xⱼ represents how much the invariant changes pe
 
 The n gradient equations look like:
 
-∂F/∂x₁ = k̃ · p₁
-
-∂F/∂x₂ = k̃ · p₂
-
-...
-
+∂F/∂x₁ = k̃ · p₁<br>
+∂F/∂x₂ = k̃ · p₂<br>
+...<br>
 ∂F/∂xₙ = k̃ · p₂
 
 We now apply the second constraint, substituting the x expressions into the pool constraint F(x̃, D) = 0. Since all the x expressions are functions of k̃, we now have a single equation in terms of k̃: one equation, one unknown.
@@ -85,12 +82,10 @@ T(k̃) = Σ(1/(k̃rᵢ - 1)) - 1; from the gradient equations, where the r value
 
 P(k̃) = ∏(k̃rᵢ - 1); also from the gradient equations; and
 
-α = a·c^(n+1); a constant derived from the pool parameters, where
+α = a·c^(n+1); a constant derived from the pool parameters, where:
 
-a = A·n^(2n);
-
-b = a - n^n; and
-
+a = A·n^(2n);<br>
+b = a - n^n; and<br>
 c = b/a
 
 Unfortunately this "T equation" is non-linear in k̃, so it must be solved numerically. On-chain, we use Newton's method to find the root (= the value of k̃ that satisfies both constraints). In the mathematical paper referenced below, we prove that when n is even (e.g.; in the most common case of 2-token pools), there is a single root. If n is odd, there are two roots, where the correct one is the smaller.
