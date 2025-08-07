@@ -88,7 +88,7 @@ a = A·n^(2n);<br>
 b = a - n^n; and<br>
 c = b/a
 
-Unfortunately this "T equation" is non-linear in k̃, so it must be solved numerically. On-chain, we use Newton's method to find the root (= the value of k̃ that satisfies both constraints). In the mathematical paper referenced below, we prove that when n is even (e.g.; in the most common case of 2-token pools), there is a single root. If n is odd, there are two roots, where the correct one is the smaller.
+Unfortunately this "T equation" is non-linear in k̃, so it must be solved numerically. On-chain, we use Newton's method to find the root (= the value of k̃ that satisfies both constraints). In the mathematical paper referenced below, we prove that given the specified starting point, it will converge to the correct solution. There may be many roots, especially with higher numbers of tokens. The correct one is the smallest non-negative root, closest to the origin.
 
 In summary:
 
