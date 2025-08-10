@@ -7,28 +7,30 @@ title: Fetching Pools And Data
 
 ## Using Balancers API
 
-The [Balancer API](/data-and-analytics/data-and-analytics/balancer-api/balancer-api.md ) can be used to retrieve a list of v3 pools and immutable data for calculating swaps. The API is running as a graphql server and is deployed at [https://test-api-v3.balancer.fi](https://test-api-v3.balancer.fi).
+The [Balancer API](/data-and-analytics/data-and-analytics/balancer-api/balancer-api.md ) can be used to retrieve a list of v3 pools and immutable data for calculating swaps. The API is running as a graphql server and is deployed at [https://api-v3.balancer.fi](https://api-v3.balancer.fi).
 
-The following query can be used to fetch v3 pools with the required immutable data used for swap calculations:
+The following query can be used to fetch any pools with the required immutable data used for swap calculations:
 
 ```
 query MyQuery {
-    poolGetAggregatorPools(
-    where: {chainIn: SEPOLIA, protocolVersionIn: 3, hasHook:false}
-    ) {
+  aggregatorPools(
+    where: {chainIn: [BASE], protocolVersionIn: [3], includeHooks: [STABLE_SURGE]}
+  ) {
     id
     type
     poolTokens {
+      address
+      weight
+      isErc4626
+      underlyingToken {
         address
-        weight
-        isErc4626
-        underlyingToken {
-        address
-        }
+      }
     }
-    }
+  }
 }
 ```
+
+Various filters can be applied. 
 
 ## Onchain
 
