@@ -27,17 +27,29 @@ Instead of using the actual balances to derive the overall price, Balancer BPT o
 * The "pool constraint": the theoretical balance invariant must equal the real balance invariant, so that the value of the pool is equivalent and can legitimately be scaled by the supply.
 * The "price constraint": the token prices derived from the theoretical balances must be proportional to the oracle prices, so that the internal token prices correctly reflect the current state of the market.
 
+See [this page](./bpt-oracles-contracts.md) for references to the BPT Oracle contracts.
+
+## Usage with Rate Providers
+
+In practical usage with different kinds of pools, there are some subtleties. For boosted pools, or other pools where tokens have rate providers, it's very important to choose a compatible price feed. There are several cases:
+
+1) Regular tokens, no rate providers. This is the simplest case (e.g., BAL/WETH or WETH/USDC). We just need price feeds corresponding to the USD prices of ETH, BAL, and USDC. Of course, the price feeds could also have some other reference (e.g., EUR), as long as they are all consistent.
+
+2) Boosted pools with yield-bearing tokens (e.g., wstETH/USDC, or waWETH/waUSDC). Here we would typically have rate providers that converted the wrapped tokens to the underlying value tokens: wstETH -> ETH, waWETH -> ETH, waUSDC -> USDC. Since calculations use "live balances," which incorporate the rates, balances are always expressed in underlying tokens. Therefore, the price feeds should also correspond to the underlying tokens: ETH and USDC, in this case, same as in the "regular token" case above.
+
+3) Pools with double-wrapped tokens, such as waWstETH. What to use here depends on the details of the rate provider. Essentially, the price feed needs to match the target of the rate provider. If the rate provider itself converts waWstETH -> WETH, then the price feed should just be the regular underlying WETH/ETH price (since WETH is pegged 1-to-1 to ETH by definition). However, if the rate provider converts waWstETH -> wstETH, you would need a price feed for wstETH: not ETH.
+
+4) Pools with RWA / commodity tokens, like XAUt. Here the rate provider is already effectively a price feed, converting XAUt -> USD directly. If you combined this rate provider with an XAUt price feed, it would do the conversion twice. So in this case, you would need a "constant price" price feed, that always returned 1.
+
+## Mathematical Derivation
+
+### Stable Pools
+
 We begin with a system of n+1 equations: n "gradient" equations (relating the internal prices to the oracle prices), plus the invariant equation. So, that's n+1 equations with n unknowns: the theoretical token balances we are trying to find. We can linearize the gradient equations by introducing k̃, a sort of scaling factor that converts internal to external prices. Since by definition the prices are proportional, we can define k̃ as this constant of proportionality.
 
 We can then solve this system of linear gradient equations, and express the theoretical balances xⱼ in terms of k̃.
 
 Then the real magic happens - we can substitute those xⱼ expressions into the invariant equation, and reduce the system to a single equation in k̃. On chain, this equation can be solved using Newton's method. Once we have k̃, we can compute the theoretical balances, sum the product of each token balance and oracle price to get the total pool value, then divide by the total supply to derive the final BPT price.
-
-See [this page](./bpt-oracles-contracts.md) for references to the BPT Oracle contracts.
-
-## Derivation
-
-The following applies to Stable Pools, using the StableSwap invariant equation. (See below for a discussion of the simpler weighted pools.)
 
 With x̃ representing the vector of theoretical token balances, the pool constraint can be expressed mathematically as:
 
@@ -100,7 +112,7 @@ In summary:
 
 See [this page](./bpt-oracles-example.md) for a numerical example.
 
-## Weighted Pools
+### Weighted Pools
 
 Weighted and Stable Pools use the same general algorithm. While the complex StableSwap invariant requires Newton's method to find the scaling parameter k̃, then calculate effective balances and total value, the power-law invariant of the Weighted Pool allows us to solve the gradient and invariant conditions simultaneously, giving us:
 
