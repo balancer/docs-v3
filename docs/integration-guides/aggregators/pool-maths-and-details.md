@@ -64,7 +64,7 @@ projectTokenEndWeight
 ```
 
 - pool tokens are always sorted alphanumerically.
-- Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/lbp/LBPool.sol#L265-L282) and [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/lbp/LBPool.sol#L251-L262)):
+- Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/lbp/LBPool.sol#L267-L279) and [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-weighted/contracts/lbp/LBPool.sol#L282-L306)):
 - The pool interface is available [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/pool-weighted/ILBPool.sol).
 
 ```solidity
@@ -155,7 +155,7 @@ query {
 
 Gyroscope two-token pools that concentrate liquidity in a fungible manner, and can have uncorrelated assets.
 
-- [Gyro Docs](https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/2-clps)
+- [Gyro Docs](https://docs.gyro.finance/pools/2-clps.html)
 - See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/Gyro2CLPPool.sol)
 - [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/gyro/gyro2CLPPool.ts)
 - [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/gyro/gyro_2clp.py)
@@ -199,10 +199,10 @@ struct Gyro2CLPPoolImmutableData {
 
 Elliptic CLPs, or E-CLPs, allow trading along the curve of an ellipse. Suitable for correlated assets that would be used with Stable Pools.
 
-- [Gyro Docs](https://docs.gyro.finance/gyroscope-protocol/concentrated-liquidity-pools/e-clps)
+- [Gyro Docs](https://docs.gyro.finance/pools/e-clps.html)
 - See SC code implementation [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/GyroECLPPool.sol)
 - [Typescript maths reference](https://github.com/balancer/balancer-maths/blob/main/typescript/src/gyro/gyroECLPPool.ts)
-- [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/gyro/gyroECLP.py)
+- [Python maths reference](https://github.com/balancer/balancer-maths/blob/main/python/src/pools/gyro/gyro_eclp.py)
 - [Factory Deployment Addresses](https://docs.balancer.fi/developer-reference/contracts/deployment-addresses/mainnet.html#pool-factories) - See `GyroECLPPoolFactory`
 - [Gyro pools on Balancer App](https://balancer.fi/pools?poolTypes=GYRO&protocolVersion=3)
 - Maths requires the following pool specific immutable parameters:
@@ -225,7 +225,7 @@ dSq
 ```
 
 - These are set at creation and are immutable.
-- Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/GyroECLPPool.sol#L238C66-L238C89) and [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/GyroECLPPool.sol#L252)):
+- Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/GyroECLPPool.sol#L246-L258) and [here](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/pool-gyro/contracts/GyroECLPPool.sol#L260-L278)):
 
 ```solidity
 function getGyroECLPPoolDynamicData() external view returns (GyroECLPPoolDynamicData memory data);
@@ -319,7 +319,7 @@ tokenBPriceIncludesRate;
   * The centeredness margin determines how sensitive the pool is to swaps that move it toward a more unbalanced state. Higher values mean greater sensitivity: the pool will react quicker to becoming unbalanced (e.g., at 60/40 vs. 80/20). A zero margin is essentially equivalent to a 2-CLP Gyro pool constructed with the same price range.
   * Many common use cases involved wrapped tokens with rate providers. The rate flags allow the price to be specified using either the wrapped or underlying token prices
   * Admins can change the sensitivity and behavior of the pool after deployment by setting the margin or price shift exponent. While the price range cannot be set directly while the pool is in operation, it can be narrowed or widened (slowly over time, to prevent manipulation), by changing the ratio of the bounds.
-  * Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/reclamm/blob/main/contracts/ReClammPool.sol#L522-L546) and [here](https://github.com/balancer/reclamm/blob/main/contracts/ReClammPool.sol#L549-L564)):
+  * Data can be fetched onchain using the following helpers (see [here](https://github.com/balancer/reclamm/blob/main/contracts/ReClammPool.sol#L709-L738) and [here](https://github.com/balancer/reclamm/blob/main/contracts/ReClammPool.sol#L740-L765)):
 ```solidity
 function getReClammPoolDynamicData() external view returns (ReClammPoolDynamicData memory data);
 
@@ -406,7 +406,7 @@ lastInterpolationTimePossible
 ```
 
 - Event tracking systems can use the `UpdateWeightRunner`, `WeightsUpdated` [event](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/UpdateWeightRunner.sol#L93). The UpdateWeight runner is a single contract that controls weight changes for all pools.
-- Data can also be fetched onchain using the following helpers (see [here](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/QuantAMMWeightedPool.sol#L595) and [here](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/QuantAMMWeightedPool.sol#L615)):
+- Data can also be fetched onchain using the following helpers (see [here](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/QuantAMMWeightedPool.sol#L594-L612) and [here](https://github.com/QuantAMMProtocol/QuantAMM-V1/blob/main/pkg/pool-quantamm/contracts/QuantAMMWeightedPool.sol#L614-L629)):
 
 ```solidity
 function getQsecondFourWeightsAndMultipliersuantAMMWeightedPoolDynamicData() external view returns (QuantAMMWeightedPoolDynamicData memory data);
