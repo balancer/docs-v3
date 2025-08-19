@@ -23,6 +23,10 @@ Because of the constraints imposed by the Proxy pattern, the Vault contract itse
 To provide access to the Vault through Etherscan in a user-friendly manner, there is a Vault "wrapper" contract called the `VaultExplorer`. This contract allows calling all permissionless Vault functions (e.g., `getPoolTokens`) through Etherscan.
 
 The explorer can also be used to call non-view permissionless functions that are defined in the code extensions. The most important use case is `enableRecoveryMode`, which can be called by any account whenever a pool is paused.
+
+All normal state-changing operations are disabled when a pool is paused, but Recovery Mode enables a simple proportional withdrawal path that cannot fail, so that LPs can always withdraw their funds: even under emergency conditions.
+
+Normally governance (or the pool's pause manager) should enable recovery mode in the same transaction as pausing, but in case they don't, the normally permissioned `enableRecoveryMode` function becomes permissionless whenever a pool is paused.
 :::
 
 ## Transient accounting
