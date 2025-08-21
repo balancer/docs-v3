@@ -21,6 +21,12 @@ When interacting with the Balancer Vault via solidity, it is recommended to cast
 Because of the constraints imposed by the Proxy pattern, the Vault contract itself doesn't expose much to blockchain explorers like Etherscan. You can see the extended functions by visiting the `VaultExtension` and `VaultAdmin` contracts, but any direct call on those contracts will revert.
 
 To provide access to the Vault through Etherscan in a user-friendly manner, there is a Vault "wrapper" contract called the `VaultExplorer`. This contract allows calling all permissionless Vault functions (e.g., `getPoolTokens`) through Etherscan.
+
+The explorer can also be used to call non-view permissionless functions that are defined in the code extensions. The most important use case is `enableRecoveryMode`, which can be called by any account whenever a pool is paused.
+
+All normal state-changing operations are disabled when a pool is paused, but Recovery Mode enables a simple proportional withdrawal path that cannot fail, so that LPs can always withdraw their funds: even under emergency conditions.
+
+Normally governance (or the pool's pause manager) should enable recovery mode in the same transaction as pausing, but in case they don't, the normally permissioned `enableRecoveryMode` function becomes permissionless whenever a pool is paused.
 :::
 
 ## Transient accounting
@@ -1427,6 +1433,8 @@ This `VaultExtension` function removes liquidity from a pool specifying exact po
 function enableRecoveryMode(address pool) external;
 ```
 This `VaultAdmin` function enables recovery mode for a pool. This is a permissioned function, but becomes permissionless if the Vault or pool is paused.
+
+Hint: this function will not show in some block explorers in the `Vault` page because it's defined in the `VaultExtension`. But it still can be easily called via a block explorer using the `VaultExplorer` contract.
 
 **Parameters:**
 
