@@ -14,7 +14,7 @@ Oracles are created from the corresponding pool factories using the create funct
 
 `function create(IBasePool pool, AggregatorV3Interface[] memory feeds) external returns (ILPOracleBase oracle);`
 
-`AggregatorV3Interface` is a Chainlink price feed. Note that this assumes the feed array is parallel to the pool tokens; i.e., the feed at each position is the correct one for the corresponding pool token. There is no way for the code to check this, so responsibility falls on the caller to ensure that this is the case. See the [Usage with Rate Providers](./bpt-oracles.md#usage-with-rate-providers) section for further considerations.
+`AggregatorV3Interface` is a Chainlink price feed. Note that this assumes the feed array is parallel to the pool tokens; i.e., the feed at each position is the correct one for the corresponding pool token. There is no way for the code to check this, so responsibility falls on the caller to ensure that this is the case. See the [Usage with Rate Providers](./bpt-oracles.md#usage-with-rate-providers) section for further considerations. Note that there are no restrictions in the factories that limit oracle creation, so any mistakes can be remedied by simply calling create again with correct values.
 
 This first computes an "OracleID" as the hash of the pool and price feed addresses. Since the tokens must be ordered, we know the price feed addresses will also be in the same order, so a given combination of the pool and price feeds is guaranteed unique. It then calls an internal `_create` (implemented by derived contracts) to deploy the oracle with the given configuration, and registers it with the factory.
 
