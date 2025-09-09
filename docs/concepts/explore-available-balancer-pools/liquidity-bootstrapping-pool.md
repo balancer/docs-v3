@@ -57,6 +57,18 @@ LBPs are highly configurable. Here are the key parameters and settings, as defin
 - **Swaps**: Optionally, the pool can block selling the project token back into the pool (`blockProjectTokenSwapsIn`).
 - **Trusted Router**: All pool interactions must go through a trusted router to ensure correct sender reporting and security.
 
+## Pool migration
+
+It is possible to either create a standalone LBP or create one that can easily be migrated to a weighted pool after the sale has commended. To use this feature the pool factory offers a `createWithMigration` function. For this additional parameters are required:
+
+- `bptLockDuration`: The time in seconds the BPT of the created weighted pool is locked before the liquidity can be removed from the created weighted pool. 
+- `bptPercentageToMigrate`: The percentage of the liquidity to be migrated from the LBP to the created weighted pool.
+- `migrationWeightProjectToken`: Defines the weight of the project token in the created weighted pool.
+- `migrationWeightReserveToken`: Defines the weight of the reserve token in the created weighted pool.
+
+The migration happens via the [`LBPMigrationRouter`](https://github.com/balancer/balancer-deployments/tree/master/v3/tasks/20250701-v3-liquidity-bootstrapping-pool-v2).
+
+
 **Technical Parameters (from the implementation):**
 
 - `projectToken` / `reserveToken`: ERC20 addresses for the tokens.
@@ -64,6 +76,7 @@ LBPs are highly configurable. Here are the key parameters and settings, as defin
 - `projectTokenEndWeight` / `reserveTokenEndWeight`: Final weights (scaled).
 - `startTime` / `endTime`: UNIX timestamps for the sale window.
 - `blockProjectTokenSwapsIn`: Boolean to restrict project token sales.
+- `poolCreator`: The account accrueing [pool creator fees](../core-concepts/pool-creator-fee.md) 
 - Only two tokens are allowed per pool.
 
 ---
