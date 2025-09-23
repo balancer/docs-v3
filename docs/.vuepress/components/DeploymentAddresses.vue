@@ -67,6 +67,7 @@ const EXPLORER_URLS = {
   zkevm: 'https://zkevm.polygonscan.com/address/',
   avalanche: 'https://snowtrace.io/address/',
   hyperevm: 'https://hyperevmscan.io/address/',
+  plasma: 'https://plasmascan.to//address/',
 };
 
 const CONTRACT_GROUPS = {
