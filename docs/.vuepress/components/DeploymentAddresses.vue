@@ -100,11 +100,15 @@ const CONTRACT_GROUPS = {
     requireV3: false,
     contracts: [
       'BalancerContractRegistry',
+      'BalancerContractRegistryInitializer',
       'StableSurgePoolFactory',
       'StableSurgeHook',
       'MevCaptureHook',
       'PoolPauseHelper',
       'PoolSwapFeeHelper',
+      'BalancerFeeBurner',
+      'CowSwapFeeBurner',
+      'ERC4626CowSwapFeeBurner',
     ],
   },
   authorizations: {
@@ -149,10 +153,11 @@ const CONTRACT_GROUPS = {
   routers: {
     requireV3: true,
     contracts: [
-      'Router',
+      'AggregatorRouter',
       'BatchRouter',
       'BufferRouter',
       'CompositeLiquidityRouter',
+      'Router',
     ],
   },
 };

@@ -7,4 +7,6 @@ This section includes all of the permissions currently setup in the Authorizer f
 - [Base](base.md)
 - [Avalanche](avalanche.md)
 - [Optimism](optimism.md)
+- [HyperEVM](hyperevm.md)
+- [Plasma](plasma.md)
 - [Sepolia](sepolia.md)
