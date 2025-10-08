@@ -16,7 +16,7 @@ by [this vote](https://forum.balancer.fi/t/form-the-emergency-subdao/3197):
 |:------------|:---------------------------------------------|
 | Mike B      | `0xF01Cc7154e255D20489E091a5aEA10Bc136696a8` |
 | Zen Dragon  | `0x7c2eA10D3e5922ba3bBBafa39Dc0677353D2AF17` |
-| Juani       | `0xB5485e0F543eE6e01e221A57e58ED95268215Ac9` |
+| Juani       | `0xDA07B188daE2ee63B2eC61Ee4cdB9673C03d2293` |
 | Hypernative | `0x202B1AA0d702898CA474aB6ED31d53BA309308D9` |
 | Franz       | `0x89c7D6ABA9Cd18D8A93571E583EEAc58Da75acE6` |
 | Daniel      | `0x606681E47afC7869482660eCD61bd45B53523D83` |
