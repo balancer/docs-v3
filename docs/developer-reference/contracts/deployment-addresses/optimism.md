@@ -12,7 +12,7 @@ For more information on specific deployments as well as changelogs for different
 
 ### Routers
 
-<DeploymentAddresses chain="base" :active="true" group="routers" />
+<DeploymentAddresses chain="optimism" :active="true" group="routers" />
 
 ### Pool Factories
 
