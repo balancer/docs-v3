@@ -78,10 +78,6 @@ const CONTRACT_GROUPS = {
       'VaultFactory',
       'VaultAdmin',
       'VaultExtension',
-      'BalancerRelayer',
-      'BatchRelayerLibrary',
-      'BalancerQueries',
-      'ProtocolFeePercentagesProvider',
       'ProtocolFeeController',
       'ProtocolFeeSweeper',
     ],
@@ -97,10 +93,11 @@ const CONTRACT_GROUPS = {
     },
   },
   hooksAndPeripherals: {
-    requireV3: false,
+    requireV3: true,
     contracts: [
       'BalancerContractRegistry',
       'BalancerContractRegistryInitializer',
+      'VaultExplorer',
       'StableSurgePoolFactory',
       'StableSurgeHook',
       'MevCaptureHook',
