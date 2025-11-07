@@ -185,7 +185,7 @@ public applyTo(amount: bigint, direction: 1 | -1 = 1): bigint {
 ```
 
 ::: tip v2 vs v3 differences
-In Balancer v2 the swap functions required the user to define the `sender` and `recipient` as part of the [FundManagement](https://docs.balancer.fi/reference/swaps/batch-swaps.html#fundmanagement-struct) parameter. In v3 this is no longer an option and the msg.sender is always the sender/recipient. `swap.protocolVersion` is used to correctly construct the parameters for the `buildCall` function:
+In Balancer v2 the swap functions required the user to define the `sender` and `recipient` as part of the [FundManagement](https://docs-v2.balancer.fi/reference/swaps/batch-swaps.html#fundmanagement-struct) parameter. In v3 this is no longer an option and the msg.sender is always the sender/recipient. `swap.protocolVersion` is used to correctly construct the parameters for the `buildCall` function:
 
 ```typescript
 let buildInput: SwapBuildCallInput;
