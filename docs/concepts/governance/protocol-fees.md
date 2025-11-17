@@ -15,7 +15,7 @@ The Protocol Fees for swaps can be collected as a percentage of the swap fees al
 
 ### Wrapped Token Yield Fees
 
-Balancer currently applies the protocol fee of 50% not only to swaps but also to any yield earned and recorded by a [rate provider](https://docs.balancer.fi/reference/contracts/rate-providers.html). [BIP-19](https://forum.balancer.fi/t/bip-19-incentivize-core-pools-l2-usage/3329) introduces the idea of core pools which are typically pools that are at least 50% yield bearing. Fees earned from core pools are redirected to support liquidity in the protocol they are generated from as [described below](#fee-redirection).
+Balancer currently applies the protocol fee of 50% not only to swaps but also to any yield earned and recorded by a [rate provider](https://docs.balancer.fi/concepts/core-concepts/rate-providers.html#rate-providers). [BIP-19](https://forum.balancer.fi/t/bip-19-incentivize-core-pools-l2-usage/3329) introduces the idea of core pools which are typically pools that are at least 50% yield bearing. Fees earned from core pools are redirected to support liquidity in the protocol they are generated from as [described below](#fee-redirection).
 
 ### Flash Loan Fees
 
