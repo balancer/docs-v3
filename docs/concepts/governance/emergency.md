@@ -34,7 +34,7 @@ The Balancer Emergency subDAO operates through the following multisigs which are
 | Optimism  | <span class="address-link">[0xd4c87b33afcE39F1E3F4aF1ce8fFFF7241d9128B](https://app.safe.global/home?safe=oeth:0xd4c87b33afcE39F1E3F4aF1ce8fFFF7241d9128B)</span>                          |
 | Gnosis    | <span class="address-link">[0xd6110A7756080a4e3BCF4e7EBBCA8E8aDFBC9962](https://app.safe.global/home?safe=gno:0xd6110A7756080a4e3BCF4e7EBBCA8E8aDFBC9962)</span>                           |
 | Avalanche | <span class="address-link">[0x308f8d3536261C32c97D2f85ddc357f5cCdF33F0](https://app.safe.global/transactions/queue?safe=avax:0x308f8d3536261C32c97D2f85ddc357f5cCdF33F0)</span>            |
-| zkEVM     | <span class="address-link">[0x79b131498355daa2cC740936fcb9A7dF76A86223](https://zksafe.quickswap.exchange/transactions/queue?safe=zkEVM:0x79b131498355daa2cC740936fcb9A7dF76A86223)</span> |
+| zkEVM     | <span class="address-link">[0x79b131498355daa2cC740936fcb9A7dF76A86223](https://app.safe.global/home?safe=zkevm:0x79b131498355daa2cC740936fcb9A7dF76A86223)</span> |
 | Base      | <span class="address-link">[0x183C55A0dc7A7Da0f3581997e764D85Fd9E9f63a](https://app.safe.global/transactions/queue?safe=base:0x183C55A0dc7A7Da0f3581997e764D85Fd9E9f63a)</span>            |
 | Fraxtal   | <span class="address-link">[0xC66d0Ba27b8309D27cCa70064dfb40b73DB6de9E](https://safe.mainnet.frax.com/home?safe=fraxtal:0xC66d0Ba27b8309D27cCa70064dfb40b73DB6de9E)</span>                 |
 | Mode      | <span class="address-link">[0x66C4b8Ba38a7B57495b7D0581f25784E629516c2](https://safe.optimism.io/home?safe=mode:0x66C4b8Ba38a7B57495b7D0581f25784E629516c2)</span>                         |
