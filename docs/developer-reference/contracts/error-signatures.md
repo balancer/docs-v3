@@ -1,8 +1,8 @@
 ---
-order: 13
+order: 12
 ---
 
-# Error signatures
+# Error Signatures
 
 Catalogue for decoding custom error signatures into their associated error names
 
