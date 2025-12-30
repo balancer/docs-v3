@@ -718,10 +718,10 @@ Pool management dapp for creating and managing pools.
 
 ## By Version:
 - **V3 Repositories:** 10 core development + 7 templates = **17 total**
-- **V2 Repositories:** 3 core + SOR + 3 maintained legacy = **7 total**
+- **V2 Repositories:** 3 core + SOR + 3 maintained legacy = **6 total**
 - **V1 Repositories:** **10 legacy** (deprecated, historical reference only)
 - **Shared/Infrastructure:** **32 repos** (frontend, SDK, backend, deployment, metadata, governance, cross-chain, utilities)
-- **Archived/Deprecated:** **26 repos** (19 original + 6 newly added + metastable-rate-providers)
+- **Archived/Deprecated:** **26 repos**
 
 **Total: 82 public repositories**
 
@@ -753,18 +753,19 @@ Pool management dapp for creating and managing pools.
 
 # Version Timeline
 
-- **V1:** Launched 2020 (Bronze release)
-  - Revolutionary constant function market maker
+- **V1:** Launched February 2020 (Bronze release)
+  - Groundbreaking constant function market maker
   - Up to 8 tokens per pool with flexible weights
-  - Now deprecated but foundational to DeFi
+  - Now deprecated (no UI)
 
-- **V2:** Launched 2021
+- **V2:** Launched April 2021
   - Introduced the Vault architecture
   - Protocol-level flash loans
   - Asset Managers for capital efficiency
-  - Currently in production alongside V3
+  - Currently in production alongside V3 (BAL and LM architecture only)
 
-- **V3:** Launched 2024
+- **V3:** Launched December 2024
+  - Complexity moved out of the pools to the Vault (3 contracts using the Proxy pattern)
   - Hooks system for extensibility
   - Improved gas efficiency
   - Native yield support (ERC4626)
