@@ -2,7 +2,7 @@
 title: Balancer Repositories
 order: 5
 ---
-A comprehensive catalog of all public Balancer repositories (82 total) organized by purpose and version.
+A comprehensive catalog of all public Balancer repositories (82 total) organized by purpose and version. See [below](#repository-statistics) for statistics and specific guidance.
 
 ---
 
