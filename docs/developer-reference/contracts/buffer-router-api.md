@@ -1,15 +1,13 @@
 ---
-order: 0
+order: 4
 title: Buffer Router API
 ---
 
-# Buffer Router API
+### BufferRouter ([IBufferRouter](https://github.com/balancer/balancer-v3-monorepo/blob/cdb5d86cf458362538ada1ba24ff33506c74ed94/pkg/interfaces/contracts/vault/IBufferRouter.sol))
 
-The Buffer Router can be used to interact with Balancer onchain for buffer operations.
+Manages liquidity for internal ERC4626 buffers in the Vault. Buffers enable efficient wrapping/unwrapping of yield-bearing tokens by maintaining liquidity pools of both underlying and wrapped tokens.
 
-## ERC4626 Buffers
-
-### `initializeBuffer`
+#### Initialize Buffer
 
 ```solidity
 function initializeBuffer(
@@ -19,126 +17,80 @@ function initializeBuffer(
     uint256 minIssuedShares
 ) external returns (uint256 issuedShares);
 ```
-Adds liquidity for the first time to one of the Vault's internal ERC4626 buffers. Buffer operations will revert until the buffer is initialized. To avoid unexpected behavior, always initialize buffers before creating or initializing any pools that contain the wrapped tokens to be used with them.
+
+Initializes a buffer for the first time. This binds the wrapped token to its underlying asset permanently.
+
+**Important:** Always initialize buffers before creating or initializing pools that contain the wrapped tokens.
 
 **Parameters:**
+- `wrappedToken`: ERC4626 wrapped token address (e.g., waDAI)
+- `exactAmountUnderlyingIn`: Amount of underlying token to deposit (e.g., DAI)
+- `exactAmountWrappedIn`: Amount of wrapped token to deposit (e.g., waDAI)
+- `minIssuedShares`: Minimum buffer shares to receive (in underlying decimals)
 
-| Name  | Type  | Description  |
-|---|---|---|
-| wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626 |
-| exactAmountUnderlyingIn  | uint256  | Amount of underlying tokens that will be deposited into the buffer |
-| exactAmountWrappedIn  | uint256  | Amount of wrapped tokens that will be deposited into the buffer |
-| minIssuedShares | uint256 | Minimum amount of shares to receive, in underlying token native decimals |
-**Returns:**
+**Returns:** `issuedShares` - Buffer shares minted (denominated in underlying token decimals)
 
-| Name  | Type  | Description  |
-|---|---|---|
-| issuedShares  | uint256  | The amount of tokens sharesOwner has in the buffer, denominated in underlying tokens (This is the BPT of an internal ERC4626 token buffer) |
+**Query equivalent:**
+```solidity
+function queryInitializeBuffer(
+    IERC4626 wrappedToken,
+    uint256 exactAmountUnderlyingIn,
+    uint256 exactAmountWrappedIn
+) external returns (uint256 issuedShares);
+```
 
-### `addLiquidityToBuffer`
+#### Add Liquidity to Buffer
 
 ```solidity
 function addLiquidityToBuffer(
     IERC4626 wrappedToken,
     uint256 maxAmountUnderlyingIn,
     uint256 maxAmountWrappedIn,
-    uint256 exactSharesToIssue,
-) external returns (uint256 amountUnderlyingRaw, uint256 amountWrappedRaw);
+    uint256 exactSharesToIssue
+) external returns (
+    uint256 amountUnderlyingIn,
+    uint256 amountWrappedIn
+);
 ```
-Adds liquidity proportionally to a yield-bearing buffer (one of the Vault's internal ERC4626 token buffers). This limitation is necessary to avoid having multiple "wrap/unwrap" paths.
+
+Adds liquidity proportionally to an existing buffer.
+
+**Note:** Buffer additions must be proportional (matching current buffer composition). For unbalanced additions, interact with the wrapper contract directly.
 
 **Parameters:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626 |
-| maxAmountUnderlyingIn | uint256 | Maximum amount of underlying tokens to add to the buffer. It is expressed in underlying token native decimals |
-| maxAmountWrappedIn | uint256 | Maximum amount of wrapped tokens to add to the buffer. It is expressed in wrapped token native decimals |
-| exactSharesToIssue  | uint256  | The value in underlying tokens that `sharesOwner` wants to add to the buffer, in underlying token decimals |
+- `exactSharesToIssue`: Exact buffer shares to mint (in underlying decimals)
 
 **Returns:**
+- `amountUnderlyingIn`: Underlying tokens deposited
+- `amountWrappedIn`: Wrapped tokens deposited
 
-| Name  | Type  | Description  |
-|---|---|---|
-| amountUnderlyingRaw  | uint256  | Amount of underlying tokens deposited into the buffer |
-| amountWrappedRaw  | uint256  | Amount of wrapped tokens deposited into the buffer |
-
-## Queries
-
-### `queryInitializeBuffer`
-
+**Query equivalent:**
 ```solidity
-function initializeBuffer(
+function queryAddLiquidityToBuffer(
     IERC4626 wrappedToken,
-    uint256 exactAmountUnderlyingIn,
-    uint256 exactAmountWrappedIn
-) external returns (uint256 issuedShares);
+    uint256 exactSharesToIssue
+) external returns (
+    uint256 amountUnderlyingIn,
+    uint256 amountWrappedIn
+);
 ```
-Query an `initializeBuffer` operation without actually executing it.
 
-**Parameters:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626 |
-| exactAmountUnderlyingIn  | uint256  | Amount of underlying tokens that will be deposited into the buffer |
-| exactAmountWrappedIn  | uint256  | Amount of wrapped tokens that will be deposited into the buffer |
-
-**Returns:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| issuedShares  | uint256  | The amount of tokens sharesOwner has in the buffer, denominated in underlying tokens (This is the BPT of an internal ERC4626 token buffer) |
-
-### `queryAddLiquidityToBuffer`
+#### Remove Liquidity from Buffer
 
 ```solidity
-function addLiquidityToBuffer(
-    IERC4626 wrappedToken,
-    uint256 exactSharesToIssue,
-) external returns (uint256 amountUnderlyingRaw, uint256 amountWrappedRaw);
-```
-Query an `addLiquidityToBuffer` operation without actually executing it.
-
-**Parameters:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626 |
-| maxAmountUnderlyingIn | uint256 | Maximum amount of underlying tokens to add to the buffer. It is expressed in underlying token native decimals |
-| maxAmountWrappedIn | uint256 | Maximum amount of wrapped tokens to add to the buffer. It is expressed in wrapped token native decimals |
-| exactSharesToIssue  | uint256  | The value in underlying tokens that `sharesOwner` wants to add to the buffer, in underlying token decimals |
-
-**Returns:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| amountUnderlyingRaw  | uint256  | Amount of underlying tokens deposited into the buffer |
-| amountWrappedRaw  | uint256  | Amount of wrapped tokens deposited into the buffer |
-
-### `queryRemoveLiquidityFromBuffer`
-
-```solidity
+// Query only - no execution function for buffer removal
 function queryRemoveLiquidityFromBuffer(
     IERC4626 wrappedToken,
-    uint256 exactSharesToRemove,
-) external returns (uint256 removedUnderlyingBalanceOut, uint256 removedWrappedBalanceOut);
+    uint256 exactSharesToRemove
+) external returns (
+    uint256 removedUnderlyingBalanceOut,
+    uint256 removedWrappedBalanceOut
+);
 ```
-Query an `removeLiquidityToBuffer` operation without actually executing it.
 
-**Parameters:**
+Simulates removing liquidity from a buffer.
 
-| Name  | Type  | Description  |
-|---|---|---|
-| wrappedToken  | IERC4626  | Address of the wrapped token that implements IERC4626 |
-| exactSharesToRemove  | uint256  | The amount of shares that would be burned, in underlying token decimals |
-
-**Returns:**
-
-| Name  | Type  | Description  |
-|---|---|---|
-| removedUnderlyingBalanceOut  | uint256  | Amount of underlying tokens that would be removed from the buffer |
-| removedWrappedBalanceOut  | uint256  | Amount of wrapped tokens that would be removed from the buffer |
+**Note:** The execution function `removeLiquidityFromBuffer` exists on the Vault, not the router.
 
 <style scoped>
 table {
