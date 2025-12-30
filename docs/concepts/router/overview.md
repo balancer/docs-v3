@@ -41,6 +41,11 @@ Balancer has developed, audited and deployed Router contracts with the goal of p
 - [API](../../developer-reference/contracts/composite-liquidity-router-api.md)
 - [Code](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/CompositeLiquidityRouter.sol)
 
+### Add Unbalanced Via Swap Router
+- Specialized router for adding unbalanced liquidity to two-token pools by combining a proportional add with a swap.
+- [API](../../developer-reference/contracts/unbalanced-add-via-swap-router-api.md)
+- [Code](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/UnbalancedAddViaSwapRouter.sol)
+
 Additionally all Routers expose [Query Functions](./queries.md) providing the ability to query the result of an operation using the latest onchain state.
 
 Latest deployment of the Routers can be found in the [deployments section](/developer-reference/contracts/deployment-addresses/mainnet.html).
