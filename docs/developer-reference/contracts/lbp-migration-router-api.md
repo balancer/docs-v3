@@ -1,28 +1,21 @@
 ---
 order: 6
-title: LBP Migration Router Router API
+title: LBP Migration Router API
 ---
 
-### LBPMigrationRouter ([ILBPMigrationRouter](https://github.com/balancer/balancer-v3-monorepo/blob/cdb5d86cf458362538ada1ba24ff33506c74ed94/pkg/interfaces/contracts/pool-weighted/ILBPMigrationRouter.sol))
+# LBP Migration Router API
+
+The LBP Migration Router can be used to interact with Balancer onchain via state changing operations or used to query operations in an off-chain context.
 
 Specialized router for migrating liquidity from a Liquidity Bootstrapping Pool (LBP) to a new Weighted Pool with custom parameters. Note that migration is optional, and unsupported for some LBP types (e.g., FixedPrice).
 
 **Use Case:** After an LBP concludes, the pool owner can migrate remaining liquidity to a standard weighted pool with the desired final weights and configuration.
 
-#### Migrate Liquidity
+## State-changing functions
+
+### `migrateLiquidity`
 
 ```solidity
-struct WeightedPoolParams {
-    string name;
-    string symbol;
-    PoolRoleAccounts roleAccounts;     // Pool admin roles
-    uint256 swapFeePercentage;
-    address poolHooksContract;
-    bool enableDonation;
-    bool disableUnbalancedLiquidity;
-    bytes32 salt;                      // For deterministic address
-}
-
 function migrateLiquidity(
     ILBPool lbp,
     address excessReceiver,
@@ -34,7 +27,7 @@ function migrateLiquidity(
 );
 ```
 
-Migrates liquidity from an LBP to a newly created weighted pool.
+Migrates liquidity from an LBP to a newly created weighted pool with custom parameters.
 
 **Requirements:**
 - Caller must be the LBP owner
@@ -49,16 +42,23 @@ Migrates liquidity from an LBP to a newly created weighted pool.
 6. Returns new pool address and migration details
 
 **Parameters:**
-- `lbp`: Address of the Liquidity Bootstrapping Pool to migrate
-- `excessReceiver`: Address to receive any excess tokens after migration
-- `params`: Configuration for the new weighted pool
+
+| Name           | Type                 | Description                                                    |
+|----------------|----------------------|----------------------------------------------------------------|
+| lbp            | ILBPool              | Address of the Liquidity Bootstrapping Pool to migrate         |
+| excessReceiver | address              | Address to receive any excess tokens after migration           |
+| params         | WeightedPoolParams   | Configuration for the new weighted pool                        |
 
 **Returns:**
-- `weightedPool`: Address of the newly created weighted pool
-- `exactAmountsIn`: Amounts used to initialize the new pool
-- `bptAmountOut`: BPT received from the new pool
+
+| Name          | Type             | Description                                            |
+|---------------|------------------|--------------------------------------------------------|
+| weightedPool  | IWeightedPool    | Address of the newly created weighted pool             |
+| exactAmountsIn | uint256[] memory | Amounts used to initialize the pool, sorted in token registration order |
+| bptAmountOut  | uint256          | BPT received from the new pool                         |
 
 **Events:**
+
 ```solidity
 event PoolMigrated(
     ILBPool indexed lbp,
@@ -68,7 +68,12 @@ event PoolMigrated(
 );
 ```
 
-**Query equivalent:**
+Emitted when a pool is successfully migrated from an LBP to a new weighted pool.
+
+## Queries
+
+### `queryMigrateLiquidity`
+
 ```solidity
 function queryMigrateLiquidity(
     ILBPool lbp,
@@ -80,6 +85,56 @@ function queryMigrateLiquidity(
     uint256 bptAmountOut
 );
 ```
+
+Simulates a liquidity migration to estimate results before execution.
+
+**Parameters:**
+
+| Name           | Type               | Description                                            |
+|----------------|--------------------|--------------------------------------------------------|
+| lbp            | ILBPool            | Liquidity Bootstrapping Pool                           |
+| sender         | address            | Sender address                                         |
+| excessReceiver | address            | Address to receive any excess tokens after migration   |
+| params         | WeightedPoolParams | Parameters for creating the new weighted pool          |
+
+**Returns:**
+
+| Name           | Type             | Description                                                         |
+|----------------|------------------|---------------------------------------------------------------------|
+| exactAmountsIn | uint256[] memory | The amounts of tokens used to initialize the pool, sorted in token registration order |
+| bptAmountOut   | uint256          | The amount of BPT tokens received from the weighted pool after migration |
+
+## Data Structures
+
+### `WeightedPoolParams`
+
+```solidity
+struct WeightedPoolParams {
+    string name;
+    string symbol;
+    PoolRoleAccounts roleAccounts;     // Pool admin roles
+    uint256 swapFeePercentage;
+    address poolHooksContract;
+    bool enableDonation;
+    bool disableUnbalancedLiquidity;
+    bytes32 salt;                      // For deterministic address
+}
+```
+
+Configuration parameters for creating a new weighted pool.
+
+**Fields:**
+
+| Name                       | Type             | Description                                                       |
+|----------------------------|------------------|-------------------------------------------------------------------|
+| name                       | string           | Name of the new weighted pool                                     |
+| symbol                     | string           | Symbol of the new weighted pool                                   |
+| roleAccounts               | PoolRoleAccounts | Pool admin roles (pause manager, swap fee manager, pool creator)  |
+| swapFeePercentage          | uint256          | Swap fee percentage for the new pool                              |
+| poolHooksContract          | address          | Address of the pool hooks contract (optional)                     |
+| enableDonation             | bool             | Whether to enable donation functionality                          |
+| disableUnbalancedLiquidity | bool             | Whether to disable unbalanced liquidity operations                |
+| salt                       | bytes32          | Salt for deterministic address generation (CREATE2)               |
 
 <style scoped>
 table {
