@@ -1,3 +1,9 @@
+---
+order: 6
+title: LBP Migration Router
+---
+# LBP Migration Router ABI
+
 ```json
 [
     {
