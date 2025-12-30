@@ -5,11 +5,11 @@ title: Existing Routers
 
 # Balancer Routers
 
-One of the major architectural changes from V2 to V3 is the introduction of Routers. In V2, the Vault was the "user interface" -- all swaps and liquidity operations were contract calls on the Vault itself. This design proved limiting when users, for instance, wanted to combine swaps and liquidity operations in a single call. Since the Vault is immutable, adding "new" operations required the use of relayers, or extensions to the already-complex pool design.
+One of the major architectural changes from V2 to V3 is the introduction of Routers. In V2, the Vault was the "user interface" -- all swaps and liquidity operations were contract calls on the Vault itself. This design proved limiting when users wanted to, for instance, combine swaps and liquidity operations in a single call. Since the Vault is immutable, adding "new" operations required the use of relayers, or extensions to the already-complex pool designs.
 
 Furthermore, the Vault only exposed a few simple primitives (e.g., join, exit, batchSwap), requiring users to "encode" the details as non-human-readable userData.
 
-In V3, these concerns are entirely separated. Users never call the Vault directly; instead, the user interface is implemented using Router contracts. There are several standard routers for different purposes, each of which exposes a clear and transparent set of functions. No computation is required; all can be used easily directly from Etherscan.
+In V3, these concerns are entirely separated. Users never call the Vault directly; instead, the user interface is implemented using Router contracts. There are several standard routers for different purposes, each of which exposes a clear and transparent set of functions. No computation is required; all can be used easily, directly from Etherscan.
 
 ---
 
@@ -65,7 +65,7 @@ Query functions use the same underlying logic as their execution counterparts, b
 
 ### ETH Handling
 
-All routers support native ETH through the `wethIsEth` parameter:
+Most routers support native ETH through the `wethIsEth` parameter:
 - When `true`: Automatically wraps incoming ETH to WETH and unwraps outgoing WETH to ETH
 - When `false`: Treats WETH as a regular ERC20 token
 
@@ -133,7 +133,7 @@ The router architecture is designed to be extensible. To create a custom router:
 2. **Implement RouterHooks**: Handle token transfers and Vault callbacks
 3. **Add your custom functions**: Expose user-friendly interfaces for your specific use case
 4. **Follow the hooks pattern**: Your functions should call the Vault, which calls back your hooks
-5. **Handle ETH wrapping**: Use `_takeTokenIn` and `_sendTokenOut` utilities
+5. **Handle token transfers and ETH wrapping**: Use `_takeTokenIn` and `_sendTokenOut` utilities, and `wethIsEth`
 6. **Implement query equivalents**: Allow users to simulate operations
 
 ### Example Custom Router Structure
@@ -178,20 +178,21 @@ See the [Create a Custom Router](./create-custom-router.md) guide for detailed i
 
 Routers require token approvals to transfer tokens on your behalf. Best practices:
 - Only approve the specific router you're using
-- Consider using Permit2 for more granular approval control
+- Routers configured for retail use Permit2 to transfer tokens
+- Routers configured for programmatic use (i.e., "prepaid"), assume transfers are done externally (no transfers needed, so no approvals)
 - Revoke unused approvals
 
 ### Query Safety
 
 Query functions are read-only and safe to call, but:
 - Results may change between query and execution due to other transactions
-- Always use appropriate slippage protection
+- Always use appropriate slippage protection for state-changing calls
 - Be aware of front-running risks on public mempools
 
 ### Hook Validation
 
 The Vault validates that hooks are called correctly:
-- Only the Vault can call hook functions (enforced by `onlyVault` modifier)
+- Only the Vault can call hook functions (enforced by the `onlyVault` modifier)
 - Routers cannot bypass Vault security
 - Hook execution is atomic with the main operation
 
