@@ -1,5 +1,5 @@
 ---
-order: 2
+order: 4
 title: Buffer Router
 ---
 
@@ -9,61 +9,125 @@ title: Buffer Router
 [
   {
     "inputs": [
-      { "internalType": "contract IVault", "name": "vault", "type": "address" },
-      { "internalType": "contract IWETH", "name": "weth", "type": "address" },
+      {
+        "internalType": "contract IVault",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IWETH",
+        "name": "weth",
+        "type": "address"
+      },
       {
         "internalType": "contract IPermit2",
         "name": "permit2",
         "type": "address"
       },
-      { "internalType": "string", "name": "version", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "routerVersion",
+        "type": "string"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "target", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "target",
+        "type": "address"
+      }
     ],
     "name": "AddressEmptyCode",
     "type": "error"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "account", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
     "name": "AddressInsufficientBalance",
     "type": "error"
   },
-  { "inputs": [], "name": "ErrorSelectorNotFound", "type": "error" },
-  { "inputs": [], "name": "EthTransfer", "type": "error" },
-  { "inputs": [], "name": "FailedInnerCall", "type": "error" },
-  { "inputs": [], "name": "InputLengthMismatch", "type": "error" },
-  { "inputs": [], "name": "InsufficientEth", "type": "error" },
-  { "inputs": [], "name": "ReentrancyGuardReentrantCall", "type": "error" },
+  {
+    "inputs": [],
+    "name": "ErrorSelectorNotFound",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "EthTransfer",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "FailedInnerCall",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InputLengthMismatch",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InsufficientEth",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReentrancyGuardReentrantCall",
+    "type": "error"
+  },
   {
     "inputs": [
-      { "internalType": "uint8", "name": "bits", "type": "uint8" },
-      { "internalType": "uint256", "name": "value", "type": "uint256" }
+      {
+        "internalType": "uint8",
+        "name": "bits",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
     ],
     "name": "SafeCastOverflowedUintDowncast",
     "type": "error"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "token", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
     ],
     "name": "SafeERC20FailedOperation",
     "type": "error"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "sender", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
     ],
     "name": "SenderIsNotVault",
     "type": "error"
   },
-  { "inputs": [], "name": "SwapDeadline", "type": "error" },
+  {
+    "inputs": [],
+    "name": "SwapDeadline",
+    "type": "error"
+  },
   {
     "inputs": [
       {
@@ -125,7 +189,11 @@ title: Buffer Router
         "name": "exactSharesToIssue",
         "type": "uint256"
       },
-      { "internalType": "address", "name": "sharesOwner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "sharesOwner",
+        "type": "address"
+      }
     ],
     "name": "addLiquidityToBufferHook",
     "outputs": [
@@ -146,7 +214,13 @@ title: Buffer Router
   {
     "inputs": [],
     "name": "getSender",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -175,7 +249,11 @@ title: Buffer Router
     ],
     "name": "initializeBuffer",
     "outputs": [
-      { "internalType": "uint256", "name": "issuedShares", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "issuedShares",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -202,22 +280,38 @@ title: Buffer Router
         "name": "minIssuedShares",
         "type": "uint256"
       },
-      { "internalType": "address", "name": "sharesOwner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "sharesOwner",
+        "type": "address"
+      }
     ],
     "name": "initializeBufferHook",
     "outputs": [
-      { "internalType": "uint256", "name": "issuedShares", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "issuedShares",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "bytes[]", "name": "data", "type": "bytes[]" }
+      {
+        "internalType": "bytes[]",
+        "name": "data",
+        "type": "bytes[]"
+      }
     ],
     "name": "multicall",
     "outputs": [
-      { "internalType": "bytes[]", "name": "results", "type": "bytes[]" }
+      {
+        "internalType": "bytes[]",
+        "name": "results",
+        "type": "bytes[]"
+      }
     ],
     "stateMutability": "payable",
     "type": "function"
@@ -226,12 +320,36 @@ title: Buffer Router
     "inputs": [
       {
         "components": [
-          { "internalType": "address", "name": "token", "type": "address" },
-          { "internalType": "address", "name": "owner", "type": "address" },
-          { "internalType": "address", "name": "spender", "type": "address" },
-          { "internalType": "uint256", "name": "amount", "type": "uint256" },
-          { "internalType": "uint256", "name": "nonce", "type": "uint256" },
-          { "internalType": "uint256", "name": "deadline", "type": "uint256" }
+          {
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "nonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          }
         ],
         "internalType": "struct IRouterCommon.PermitApproval[]",
         "name": "permitBatch",
@@ -246,7 +364,11 @@ title: Buffer Router
         "components": [
           {
             "components": [
-              { "internalType": "address", "name": "token", "type": "address" },
+              {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+              },
               {
                 "internalType": "uint160",
                 "name": "amount",
@@ -257,13 +379,21 @@ title: Buffer Router
                 "name": "expiration",
                 "type": "uint48"
               },
-              { "internalType": "uint48", "name": "nonce", "type": "uint48" }
+              {
+                "internalType": "uint48",
+                "name": "nonce",
+                "type": "uint48"
+              }
             ],
             "internalType": "struct IAllowanceTransfer.PermitDetails[]",
             "name": "details",
             "type": "tuple[]"
           },
-          { "internalType": "address", "name": "spender", "type": "address" },
+          {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+          },
           {
             "internalType": "uint256",
             "name": "sigDeadline",
@@ -274,12 +404,24 @@ title: Buffer Router
         "name": "permit2Batch",
         "type": "tuple"
       },
-      { "internalType": "bytes", "name": "permit2Signature", "type": "bytes" },
-      { "internalType": "bytes[]", "name": "multicallData", "type": "bytes[]" }
+      {
+        "internalType": "bytes",
+        "name": "permit2Signature",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes[]",
+        "name": "multicallData",
+        "type": "bytes[]"
+      }
     ],
     "name": "permitBatchAndCall",
     "outputs": [
-      { "internalType": "bytes[]", "name": "results", "type": "bytes[]" }
+      {
+        "internalType": "bytes[]",
+        "name": "results",
+        "type": "bytes[]"
+      }
     ],
     "stateMutability": "payable",
     "type": "function"
@@ -362,7 +504,11 @@ title: Buffer Router
     ],
     "name": "queryInitializeBuffer",
     "outputs": [
-      { "internalType": "uint256", "name": "issuedShares", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "issuedShares",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -387,7 +533,11 @@ title: Buffer Router
     ],
     "name": "queryInitializeBufferHook",
     "outputs": [
-      { "internalType": "uint256", "name": "issuedShares", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "issuedShares",
+        "type": "uint256"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -453,10 +603,19 @@ title: Buffer Router
   {
     "inputs": [],
     "name": "version",
-    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
-  { "stateMutability": "payable", "type": "receive" }
+  {
+    "stateMutability": "payable",
+    "type": "receive"
+  }
 ]
 ```
