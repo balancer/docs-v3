@@ -62,7 +62,7 @@ E-CLPs are likewise efficient liquidity concentrators, so named because their pr
 
 Used for stable assets (such as Gyroscope’s own GYD), they “stretch” the flat part of the curve around a price peg, but not necessarily symmetrically. This allows very precise control or “focus” around the target price.
 
-When using with yield-bearing assets and rate providers, the precision can be increased even further, helping mitigate LVR (loss vs. rebalancing), and automating liquidity management. Performance can be further enhanced with “re-hype” E-CLPS (using auto-rehypothecation - basically, depositing underlying assets supplied to E-CLPs on lending markets). The latest versions allow shifting some parameters, so that they are no longer fixed per pool. See details [here](https://docs.gyro.finance/pools/rehype-e-clps).
+When using with yield-bearing assets and rate providers, the precision can be increased even further, helping mitigate LVR (loss vs. rebalancing), and automating liquidity management. Performance can be further enhanced with “re-hype” E-CLPS (using auto-rehypothecation - basically, depositing underlying assets supplied to E-CLPs on lending markets). The latest versions allow shifting some parameters, so that they are no longer fixed per pool. See details [here](https://docs.gyro.finance/pools/rehype-clps.html).
 
 ![Non-fungible CL illustration](/images/rehype.png)
 

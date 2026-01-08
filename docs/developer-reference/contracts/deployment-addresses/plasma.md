@@ -1,4 +1,4 @@
-# Optimism Deployment Addresses
+# Plasma Deployment Addresses
 
 ## Active Contracts
 
@@ -8,23 +8,27 @@ For more information on specific deployments as well as changelogs for different
 
 ### Core Contracts
 
-<DeploymentAddresses chain="optimism" :active="true" group="core" />
+<DeploymentAddresses chain="plasma" :active="true" group="core" />
 
 ### Routers
 
-<DeploymentAddresses chain="optimism" :active="true" group="routers" />
+<DeploymentAddresses chain="plasma" :active="true" group="routers" />
 
 ### Pool Factories
 
-<DeploymentAddresses chain="optimism" :active="true" group="poolfactory" />
+<DeploymentAddresses chain="plasma" :active="true" group="poolfactory" />
+
+### Hooks and Peripherals
+
+<DeploymentAddresses chain="plasma" :active="true" group="hooksAndPeripherals" />
 
 ### Authorization Contracts
 
-<DeploymentAddresses chain="optimism" :active="true" group="authorizations" />
+<DeploymentAddresses chain="plasma" :active="true" group="authorizations" />
 
 ### Gauges and Governance
 
-<DeploymentAddresses chain="optimism" :active="true" group="gaugesgovernance" />
+<DeploymentAddresses chain="plasma" :active="true" group="gaugesgovernance" />
 
 ## Deprecated Contracts
 
@@ -36,16 +40,20 @@ If you can only find the contract you are looking for in the deprecated section 
 
 ### Core Contracts
 
-<DeploymentAddresses chain="optimism" :active="false" group="core" />
+<DeploymentAddresses chain="plasma" :active="false" group="core" />
 
 ### Pool Factories
 
-<DeploymentAddresses chain="optimism" :active="false" group="poolfactory" />
+<DeploymentAddresses chain="plasma" :active="false" group="poolfactory" />
+
+### Routers
+
+<DeploymentAddresses chain="plasma" :active="false" group="routers" />
 
 ### Authorization Contracts
 
-<DeploymentAddresses chain="optimism" :active="false" group="authorizations" />
+<DeploymentAddresses chain="plasma" :active="false" group="authorizations" />
 
 ### Gauges and Governance
 
-<DeploymentAddresses chain="optimism" :active="false" group="gaugesgovernance" />
+<DeploymentAddresses chain="plasma" :active="false" group="gaugesgovernance" />

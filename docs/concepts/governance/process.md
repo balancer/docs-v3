@@ -58,7 +58,7 @@ Further, votes requesting new gauges should include the following information:
 - Promote your topics, find voters, get feedback.
   - Consider contacting [Delegates](https://forum.balancer.fi/c/delegate-citadel/14) to obtain their support.
 - Encourage interested parties on Discord to gather their thoughts in a forum post
-- It is advised that proper time is given for the community to discuss a proposal before bringing it to a Snapshot vote and that that the original proposer is open to making changes as part of the discussion process.
+- It is advised that proper time is given for the community to discuss a proposal before bringing it to a Snapshot vote and that the original proposer is open to making changes as part of the discussion process.
 - The Balancer Maxis currently perform initial validation on any submitted snapshots and get in touch with the proposer if there are issues, inviting them to take down their vote and repost it properly to avoid an end result that can not be executed due to lack of compliance.
 
 ### **Step 3: Develop and validate transaction Pull Request**

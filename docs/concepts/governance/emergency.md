@@ -16,7 +16,7 @@ by [this vote](https://forum.balancer.fi/t/form-the-emergency-subdao/3197):
 |:------------|:---------------------------------------------|
 | Mike B      | `0xF01Cc7154e255D20489E091a5aEA10Bc136696a8` |
 | Zen Dragon  | `0x7c2eA10D3e5922ba3bBBafa39Dc0677353D2AF17` |
-| Juani       | `0xB5485e0F543eE6e01e221A57e58ED95268215Ac9` |
+| Juani       | `0xDA07B188daE2ee63B2eC61Ee4cdB9673C03d2293` |
 | Hypernative | `0x202B1AA0d702898CA474aB6ED31d53BA309308D9` |
 | Franz       | `0x89c7D6ABA9Cd18D8A93571E583EEAc58Da75acE6` |
 | Daniel      | `0x606681E47afC7869482660eCD61bd45B53523D83` |
@@ -26,19 +26,20 @@ by [this vote](https://forum.balancer.fi/t/form-the-emergency-subdao/3197):
 
 The Balancer Emergency subDAO operates through the following multisigs which are authorized to perform emergency actions
 
-| Gauge     | Address                                                                                                                                                                                    |
+| Network   | Address                                                                                                                                                                                    |
 |:----------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Ethereum  | <span class="address-link">[0xA29F61256e948F3FB707b4b3B138C5cCb9EF9888](https://app.safe.global/home?safe=eth:0xA29F61256e948F3FB707b4b3B138C5cCb9EF9888)</span>                                    |
-| Polygon   | <span class="address-link">[0x3c58668054c299bE836a0bBB028Bee3aD4724846](https://app.safe.global/home?safe=matic:0x3c58668054c299bE836a0bBB028Bee3aD4724846)</span>                                 |
-| Arbitrum  | <span class="address-link">[0xf404C5a0c02397f0908A3524fc5eb84e68Bbe60D](https://app.safe.global/home?safe=arb1:0xf404C5a0c02397f0908A3524fc5eb84e68Bbe60D)</span>                                     |
-| Optimism  | <span class="address-link">[0xd4c87b33afcE39F1E3F4aF1ce8fFFF7241d9128B](https://app.safe.global/home?safe=oeth:0xd4c87b33afcE39F1E3F4aF1ce8fFFF7241d9128B)</span>                         |
-| Gnosis    | <span class="address-link">[0xd6110A7756080a4e3BCF4e7EBBCA8E8aDFBC9962](https://app.safe.global/home?safe=gno:0xd6110A7756080a4e3BCF4e7EBBCA8E8aDFBC9962)</span>                                   |
+| Ethereum  | <span class="address-link">[0xA29F61256e948F3FB707b4b3B138C5cCb9EF9888](https://app.safe.global/home?safe=eth:0xA29F61256e948F3FB707b4b3B138C5cCb9EF9888)</span>                           |
+| Polygon   | <span class="address-link">[0x3c58668054c299bE836a0bBB028Bee3aD4724846](https://app.safe.global/home?safe=matic:0x3c58668054c299bE836a0bBB028Bee3aD4724846)</span>                         |
+| Arbitrum  | <span class="address-link">[0xf404C5a0c02397f0908A3524fc5eb84e68Bbe60D](https://app.safe.global/home?safe=arb1:0xf404C5a0c02397f0908A3524fc5eb84e68Bbe60D)</span>                          |
+| Optimism  | <span class="address-link">[0xd4c87b33afcE39F1E3F4aF1ce8fFFF7241d9128B](https://app.safe.global/home?safe=oeth:0xd4c87b33afcE39F1E3F4aF1ce8fFFF7241d9128B)</span>                          |
+| Gnosis    | <span class="address-link">[0xd6110A7756080a4e3BCF4e7EBBCA8E8aDFBC9962](https://app.safe.global/home?safe=gno:0xd6110A7756080a4e3BCF4e7EBBCA8E8aDFBC9962)</span>                           |
 | Avalanche | <span class="address-link">[0x308f8d3536261C32c97D2f85ddc357f5cCdF33F0](https://app.safe.global/transactions/queue?safe=avax:0x308f8d3536261C32c97D2f85ddc357f5cCdF33F0)</span>            |
-| zkEVM     | <span class="address-link">[0x79b131498355daa2cC740936fcb9A7dF76A86223](https://zksafe.quickswap.exchange/transactions/queue?safe=zkEVM:0x79b131498355daa2cC740936fcb9A7dF76A86223)</span> |
+| zkEVM     | <span class="address-link">[0x79b131498355daa2cC740936fcb9A7dF76A86223](https://app.safe.global/home?safe=zkevm:0x79b131498355daa2cC740936fcb9A7dF76A86223)</span> |
 | Base      | <span class="address-link">[0x183C55A0dc7A7Da0f3581997e764D85Fd9E9f63a](https://app.safe.global/transactions/queue?safe=base:0x183C55A0dc7A7Da0f3581997e764D85Fd9E9f63a)</span>            |
 | Fraxtal   | <span class="address-link">[0xC66d0Ba27b8309D27cCa70064dfb40b73DB6de9E](https://safe.mainnet.frax.com/home?safe=fraxtal:0xC66d0Ba27b8309D27cCa70064dfb40b73DB6de9E)</span>                 |
 | Mode      | <span class="address-link">[0x66C4b8Ba38a7B57495b7D0581f25784E629516c2](https://safe.optimism.io/home?safe=mode:0x66C4b8Ba38a7B57495b7D0581f25784E629516c2)</span>                         |
-| HyperEVM  | <span class="address-link">[0x44613a28347206F5E26C1B8Db7Dc73f450219746](https://safe.onchainden.com/home?safe=hyperevm:0x44613a28347206F5E26C1B8Db7Dc73f450219746)</span>                         |
+| HyperEVM  | <span class="address-link">[0x44613a28347206F5E26C1B8Db7Dc73f450219746](https://safe.onchainden.com/home?safe=hyperevm:0x44613a28347206F5E26C1B8Db7Dc73f450219746)</span>                  |
+| Plasma    | <span class="address-link">[0x0d3319A8057A0C8afd87dFEEA252541A76d56Ebf](https://app.safe.global/home?safe=plasma:0x0d3319A8057A0C8afd87dFEEA252541A76d56Ebf)</span>                        |
 
 ## Specifications
 
