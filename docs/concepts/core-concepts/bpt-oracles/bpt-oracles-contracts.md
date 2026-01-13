@@ -4,7 +4,7 @@ title: BPT Oracle contracts
 ---
 # Overview
 
-We have implemented oracles for both Weighted and Stable Balancer pools. (ReCLAMM pools should also work, as they are fundamentally Weighted pools, just incorporating virtual balances.) These are in the standalone-utils package: `WeightedLPOracle` and `StableLPOracle`, and associated factories.
+We have implemented oracles for both Weighted and Stable Balancer pools. These are in the standalone-utils package: `WeightedLPOracle` and `StableLPOracle`, and associated factories.
 
 ![Inheritance Diagram](/images/BPTOracles.png)
 
