@@ -36,3 +36,11 @@ By doing this, the BalancerPoolToken contract ensures that Balancer Pool Tokens 
 ## Composability
 
 As BPTs adhere to the ERC20 standard, they can seamlessly integrate as pool tokens in other pools. For instance, the BPT of an ERC4626 pool comprising wrapped versions of DAI, USDC, and USDT can be paired with tokens from new projects. This composability ensures the maintenance of deep and capital-efficient stable liquidity, while simultaneously creating efficient swap paths for the project token.
+
+## Oracles
+
+If Chainlink price feeds are available for all tokens, Weighted and Stable Pool BPTs can be priced in USD terms using the corresponding LP Oracle contracts: [WeightedLPOracle](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/oracles/contracts/WeightedLPOracle.sol) and [StableLPOracle](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/oracles/contracts/StableLPOracle.sol), which implement [this interface](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/oracles/ILPOracleBase.sol) as well as the `AggregatorV3Interface` Chainlink price feed interface. This allows users to call `latestRoundData` on the oracle contract to get an accurate, non-manipulable BPT price, just as if it were a Chainlink oracle itself.
+
+Note that it would be possible to generalize these contracts to support other kinds of price feeds; the only function of the price oracle is to fetch the current market prices. The pricing algorithm and all logic is contained in the LP oracle code (and mostly all in the base contracts).
+
+The most common use for these contracts is enabling Balancer BPT to be used as collateral on lending platforms. See the [BPT as Collateral](./bpt-oracles/bpt-oracles.md) docs for more details.

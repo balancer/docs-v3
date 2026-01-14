@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 5
 title: Pool Creator Fee
 ---
 ## Pool Creator Fee
