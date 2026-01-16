@@ -37,7 +37,7 @@ Balancer has developed, audited and deployed Router contracts with the goal of p
 - [Code](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/BufferRouter.sol)
 
 ### Composite Liquidity Router
-- Liquidity operations on pools containing ERC4626 tokens, and nested pools (i.e. pools containing the BPT of other pools)
+- Liquidity operations on pools containing ERC4626 tokens, and nested pools (i.e. pools containing the BPT of other pools). Nested pools are supported in CLR V3.
 - [API](../../developer-reference/contracts/composite-liquidity-router-api.md)
 - [Code](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/CompositeLiquidityRouter.sol)
 

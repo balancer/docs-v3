@@ -46,8 +46,8 @@ The detailed Router API description can be found in the [Composite Liquidity Rou
 - `queryAddLiquidityUnbalancedToERC4626Pool`
 - `queryAddLiquidityProportionalToERC4626Pool`
 - `queryRemoveLiquidityProportionalFromERC4626Pool`
-- `queryAddLiquidityUnbalancedNestedPool`
-- `queryRemoveLiquidityProportionalNestedPool`
+- `queryAddLiquidityUnbalancedNestedPool` (V3+)
+- `queryRemoveLiquidityProportionalNestedPool` (V3+)
 
 ## Complex queries
 
