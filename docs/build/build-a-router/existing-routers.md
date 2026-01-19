@@ -118,7 +118,7 @@ Token arrays must always be in **token registration order** (the order the pool 
 | Initialize new pool | `Router` | `initialize` |
 | Multi-hop swaps | `BatchRouter` | `swapExactIn`, `swapExactOut` |
 | ERC4626 pool operations | `CompositeLiquidityRouter` | `addLiquidityUnbalancedToERC4626Pool` |
-| Nested pool operations | `CompositeLiquidityRouter` | `addLiquidityUnbalancedNestedPool` |
+| Nested pool operations | `CompositeLiquidityRouter` (V3+) | `addLiquidityUnbalancedNestedPool` |
 | Buffer management | `BufferRouter` | `initializeBuffer`, `addLiquidityToBuffer` |
 | Two-token unbalanced add | `UnbalancedAddViaSwapRouter` | `addLiquidityUnbalanced` |
 | LBP → Weighted Pool migration | `LBPMigrationRouter` | `migrateLiquidity` |

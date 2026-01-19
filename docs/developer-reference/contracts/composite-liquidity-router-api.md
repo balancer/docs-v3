@@ -126,6 +126,8 @@ Removes liquidity proportionally from an ERC4626 pool, receiving underlying or w
 
 Nested pools contain BPTs from other pools as tokens. This router handles the complexity of traversing multiple pool levels.
 
+> NB: These nested pool functions will be introduced in CompositeLiquidityRouter V3, which is not yet released (as of January, 2026).
+
 **Important:** Pools with "overlapping" tokens (where both parent and child pools contain the same token) are not supported.
 
 #### `addLiquidityUnbalancedNestedPool`
@@ -309,6 +311,8 @@ Queries a `removeLiquidityProportionalFromERC4626Pool` operation without actuall
 | amountsOut | uint256[] memory | Expected amounts of tokens to receive |
 
 ### `queryAddLiquidityUnbalancedNestedPool`
+
+> NB: Nested pool operations will be introduced in CompositeLiquidityRouter V3, which is not yet released (as of January, 2026).
 
 ```solidity
 function queryAddLiquidityUnbalancedNestedPool(
