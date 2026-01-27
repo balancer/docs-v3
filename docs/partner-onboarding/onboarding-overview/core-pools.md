@@ -84,7 +84,7 @@ Core pool fees are processed every two weeks to align with:
 ## Maintaining Core Pool Status
 
 - Status is evaluated bi-weekly before fee sweeps
-- Automated checks are performed by Balancer Maxis
+- Automated checks are performed by the MAXYZ service provider
 - Pools must continuously meet all requirements
 - New pool types require explicit governance approval
 
@@ -103,7 +103,8 @@ If your pool meets the above requirements:
 
 ## Additional Resources
 
-- [Core Pools Analytics Dashboard](https://balancer.defilytica.com/#/corePools)
+- [V2 Core Pools Analytics Dashboard](https://balancer.defilytica.com/#/corePools)
+- [V3 Core Pools Analytics Dashboard](https://balancer.defilytica.tools/core-pools)
 - [Protocol Fee Dashboard](https://dune.com/balancer/protocol-fees)
 - [Automatic Core Pool List](https://github.com/BalancerMaxis/bal_addresses/blob/main/outputs/core_pools.json)
 - [Fee Model Documentation](/concepts/protocol-fee-model)
