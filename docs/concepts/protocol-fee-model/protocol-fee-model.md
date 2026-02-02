@@ -87,13 +87,13 @@ The core pool framework establishes criteria for pools to achieve core status an
 - No transfer restrictions or rebasing mechanics
 
 ### Core Pool List Maintenance
-The Balancer Maxis are running and maintaining automation jobs that query on-chain states of all pools deployed on Balancer v2 and v3 that also have a veBAL gauge active. Based on this data following procedures are executed:
+The MAXYZ service provider is running and maintaining automation jobs that query on-chain states of all pools deployed on Balancer v2 and v3 that also have a veBAL gauge active. Based on this data following procedures are executed:
 - Bi-weekly evaluation of core pool status by checking that a gauge is active and TVL is >= $100k USD
 - New pool types require governance approval
 - Regular framework review through DAO governance
 
 ::: danger Important Note
-Core pool status can be lost if requirements are no longer met during bi-weekly evaluations. The currently active core pool list is publicly available via the bal_addresses Maxis [repository](https://github.com/BalancerMaxis/bal_addresses/blob/main/outputs/core_pools.json).
+Core pool status can be lost if requirements are no longer met during bi-weekly evaluations. The currently active core pool list is publicly available via the [bal_addresses repository](https://github.com/BalancerMaxis/bal_addresses/blob/main/outputs/core_pools.json).
 :::
 
 ## References and Additional Resources
