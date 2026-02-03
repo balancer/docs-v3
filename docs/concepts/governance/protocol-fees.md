@@ -1,49 +1,133 @@
-# Governable Protocol Fees
+# Protocol Fee Operations
 
-## Overview
+This page describes how protocol fees are collected and processed through Balancer's safe infrastructure. For fee percentages, distribution splits, and core pool requirements, see the [Protocol Fee Model](../protocol-fee-model/protocol-fee-model.md).
 
-Governable Protocol Fees are fees collected by the Balancer Protocol, **not** Liquidity Providers. There are a few ways in which the fees can be collected, and far more in which they can be used. Though many Liquidity Providers may also be Balancer Governors, we will discuss them here as distinct groups for clarity.
+## Fee Sources
 
-## Sources
+Protocol fees are collected from the following sources:
 
 ### Swap Fees
 
-The obvious source of Protocol Fees is from swapping. Balancer swappers already pay swap fees to Liquidity Providers in exchange for making their swap possible. Fees are denominated in the Input Token when executing a swap. 
+Balancer collects a percentage of swap fees paid by traders. From the swapper's perspective, there is no price increase—the protocol fee is taken as a fraction of the fee already being collected for liquidity providers.
 
-The Protocol Fees for swaps can be collected as a percentage of the swap fees already being collected (a fraction of a fraction). From the swappers' perspective, there will be no price increase. 
+### Yield Fees
 
-
-### Wrapped Token Yield Fees
-
-Balancer currently applies the protocol fee of 50% not only to swaps but also to any yield earned and recorded by a [rate provider](https://docs.balancer.fi/concepts/core-concepts/rate-providers.html#rate-providers). [BIP-19](https://forum.balancer.fi/t/bip-19-incentivize-core-pools-l2-usage/3329) introduces the idea of core pools which are typically pools that are at least 50% yield bearing. Fees earned from core pools are redirected to support liquidity in the protocol they are generated from as [described below](#fee-redirection).
+Protocol fees are applied to yield earned by yield-bearing assets with rate providers. The percentage differs between V2 (50%) and V3 (10%), with V3's reduced rate designed to drive adoption of boosted pools technology.
 
 ### Flash Loan Fees
 
-Another potential source of Protocol Fees is from interest on Flash Loans. They are currently disabled to encourage developers to build on Balancer.
+Flash loan fees are another potential source of protocol revenue. They are currently disabled to encourage developers to build on Balancer.
 
-## Uses
+## Fee Collection Infrastructure
 
-As of [BIP-371](https://forum.balancer.fi/t/bip-371-adjust-protocol-fee-split/4978)  in August 2023, the protocol takes 50% of the swap fees and 50% of wrapped token yield fees on non-exempt pools with rate providers.  From that:
+Protocol fees are collected differently for Balancer V2 and V3, but both ultimately flow through the Protocol Fees Multisig on Ethereum mainnet for distribution.
 
-- 100% of all $BAL fees collected are emitted as fee sharing to veBAL holders.  See this [Governance Proposal](https://forum.balancer.fi/t/proposal-distribute-protocol-fees-in-bal-where-appropriate/2933)
-- All other tokens are sold for USDC, of which: 
-  - 17.5% are paid to the DAO 
-  - 32.5% are emitted to veBAL holders in the form of direct USDC payments
-  - 50% are paid to veBAL holders in the form of vote incentives placed on [Core Pools](https://forum.balancer.fi/t/bip-457-core-pool-incentive-program-automation/5254)
+### Balancer V3 Collection
 
-## Core Pool Fee Redirection
+```
+┌─────────────────────────────┐
+│   Fees Collected in Pools   │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│   Swept via Burners to      │
+│   Omni-sig (per chain)      │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│   Bridged to Mainnet        │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│   Protocol Fees Multisig    │
+└─────────────────────────────┘
+```
 
-[BIP-19](https://forum.balancer.fi/t/bip-19-incentivize-core-pools-l2-usage/3329), revised by [BIP-457](https://forum.balancer.fi/t/bip-457-core-pool-incentive-program-automation/5254) concerns redirecting fees destine for veBAL lockers. It's purpose is 2 fold:
+V3 fees are swept from pools using burner contracts to the [Omni-sig](./multisig.md) on each chain, then bridged to Ethereum mainnet and transferred to the Protocol Fees Multisig.
 
-1. Incentive/encourage veBAL voters to vote for pools that are generating revenue for the DAO by requiring them to do so to capture a portion of fee sharing.
-2. Create a compelling economic proposition for Liquid Staked Tokens(LSTs), Lending Protocols and other DAOs with interest bearing assets by enabling pools that support their own yields with staking and trade fees.
+### Balancer V2 Collection
 
-Pools have been designated as Core in the past for the following reasons:
+```
+┌─────────────────────────────┐
+│   Fees Collected in Pools   │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│   Mimic Infrastructure      │
+│   • Swaps tokens to USDC    │
+│   • Bridges to Mainnet      │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│   Protocol Fees Multisig    │
+└─────────────────────────────┘
+```
 
-1. At least 50% of the tokens in the pool (at peg) are yield baring with rate providers.
-2. The Pool is a ve8020 pool with locked, primary liquidity hosted on Balancer and is not seeking a grant as defined per [BIP-146](https://forum.balancer.fi/t/bip-146-incentivize-8020-bpt-staking-ve8020/4210) and modified by [BIP-225](https://forum.balancer.fi/t/bip-225-amendment-to-bip-146-incentivize-8020-bpt-staking-ve8020/4543).
-3. The pool is the primary source of on-chain liquidity and fees are high [BIP-147](https://snapshot.org/#/balancer.eth/proposal/0x58a74223c1ea38048956969ff0cbaea2167f3a9ed69907a95187c6c222201149), [BIP-237](https://forum.balancer.fi/t/bip-237-enable-ush-eth-50-50-gauge-with-10-emission-cap-ethereum/4599), [BIP-267](https://forum.balancer.fi/t/bip-267-enable-ush-unsheth-gauge-on-ethereum/4678)
+V2 fees are processed by [Mimic](https://mimic.fi/) infrastructure, which handles swapping collected tokens to USDC, bridging from L2s to mainnet, and transferring to the Protocol Fees Multisig.
 
-It is important to note that 100% of fees redirected by this program still flow to veBAL voters. They are just contingent on voting for pools that generate significant flows through the protocol and revenue through the DAO.
+## Fee Distribution Flow
 
-Join the Discord and Forums to take part in the discussion over how to use these fees.
+From the Protocol Fees Multisig, fees are distributed according to governance-approved splits (see [Protocol Fee Model](../protocol-fee-model/protocol-fee-model.md) for percentages):
+
+```
+┌───────────────────────────────────┐
+│      Protocol Fees Multisig       │
+└─────────────────┬─────────────────┘
+                  │
+    ┌─────────────┼─────────────┐
+    │             │             │
+    ▼             ▼             ▼
+┌────────┐ ┌────────────┐ ┌──────────────────┐
+│ veBAL  │ │ Core Pool  │ │ Balancer Onchain │
+│ Holders│ │  Voting    │ │ Ltd Safe (DAO)   │
+│ (USDC) │ │ Incentives │ └────────┬─────────┘
+└────────┘ └────────────┘          │
+                                   ▼
+                          ┌──────────────────┐
+                          │ Balancer OpCo    │
+                          │ Ltd Safe         │
+                          └────────┬─────────┘
+                                   │
+                                   ▼
+                          ┌──────────────────┐
+                          │ Treasury Safe    │
+                          └──────────────────┘
+```
+
+### Distribution Recipients
+
+| Recipient | Description |
+|-----------|-------------|
+| **veBAL Holders** | Direct USDC payments to veBAL lockers |
+| **Core Pool Voting Incentives** | Incentives placed on core pools to drive veBAL votes toward revenue-generating pools |
+| **Balancer Onchain Ltd Safe** | DAO's share of protocol revenue |
+
+### Corporate Structure Flow
+
+From the Balancer Onchain Ltd Safe, the DAO's share flows up the [corporate structure](./corporate-structure.md):
+
+1. **Balancer Onchain Ltd Safe** receives the DAO portion
+2. **Dividends** flow to Balancer OpCo Ltd Safe
+3. **Dividends** flow to Treasury Safe for ecosystem reserves
+
+## Governance Controls
+
+### Protocol Fees Multisig
+
+The Protocol Fees Multisig (`0x7c68c42De679ffB0f16216154C996C354cF1161B`) controls fee collection and initial distribution. It operates under the [1/2 operational multisig configuration](./multisig.md#operational-multisigs) with Balancer Onchain Ltd Safe and Operator Safe as signers.
+
+### Fee Parameter Changes
+
+Changes to protocol fee percentages require governance approval through the standard [governance process](./process.md). The DAO Multisig or appropriate chain-specific multisig executes approved changes.
+
+## Related Documentation
+
+- [Protocol Fee Model](../protocol-fee-model/protocol-fee-model.md) - Fee percentages and distribution splits
+- [Core Pools](../../partner-onboarding/onboarding-overview/core-pools.md) - Core pool requirements and benefits
+- [Multisig](./multisig.md) - Safe infrastructure and signer groups
+- [Corporate Structure](./corporate-structure.md) - Legal entity hierarchy

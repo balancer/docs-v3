@@ -3,13 +3,22 @@
 ## Concept
 
 The [Emergency DAO](https://dao.curve.fi/emergencymembers) is an idea pioneered by Curve that empowers a small group to
-“kill” pools and gauges in the event of malicious activity and/or potential loss of funds. The subDAO is further
+"kill" pools and gauges in the event of malicious activity and/or potential loss of funds. The subDAO is further
 authorized to pause pools when needed. The Balancer emergency subDAO was established after the
 following [vote](https://vote.balancer.fi/#/proposal/0x63fab7ab9ef5b9579dabb82058b8ea309e39c766d435438b55fff8db7c1f69fd).
 
+## Relationship to Balancer Onchain Limited
+
+As of [BIP-882](https://forum.balancer.fi/t/bip-882-transitioning-onchain-operations-of-the-balancer-dao-to-balancer-onchain-limited/6859), the Emergency subDAO operates alongside the [Balancer Onchain Limited](./corporate-structure.md) structure. In emergency situations:
+
+- The Emergency subDAO retains its bounded authority to kill gauges, pause pools, and protect the protocol
+- The Treasury Council maintains override capability on critical infrastructure
+- The Balancer Onchain Ltd Safe can intervene in emergency situations or swap out the operator if needed
+- The self-insurance fund remains available for unforeseen complications
+
 ## Members
 
-The Balancer Emergency subDAO is a 4-of-7 multisig with the following members as appointed
+The Balancer Emergency subDAO is a **3-of-7 multisig** with the following members as appointed
 by [this vote](https://forum.balancer.fi/t/form-the-emergency-subdao/3197):
 
 | Person      | Address                                      |
@@ -74,3 +83,10 @@ event of an exploit:
 | Call  | Contract(s)    | Purpose                                                                     |
 |:------|:---------------|:----------------------------------------------------------------------------|
 | pause | Pool contracts | Pauses a specific Balancer v2 pool based on the Composable v6 pool factory. |
+
+As per [BIP-883](https://forum.balancer.fi/t/bip-883-emergency-safe-governance-improvements-q4-2025/6865), following a comprehensive security review by the Security Council, two critical improvements were implemented: the signer threshold was reduced from 4/7 to 3/7 across all chains to enable faster response times, and the `VaultAdmin.disableQueryPermanently()` permission was revoked from all emergency safes on chains with Balancer v3 deployments as it was not required for legitimate emergency response scenarios.
+
+| Change                          | Scope                            | Purpose                                                                                                  |
+|:--------------------------------|:---------------------------------|:---------------------------------------------------------------------------------------------------------|
+| Threshold reduction (4/7 → 3/7) | All emergency safes              | Enable faster response times during critical security incidents while maintaining multi-entity quorum.   |
+| Revoke `disableQueryPermanently`| Emergency safes on v3 chains     | Remove unnecessary permission that could permanently impact protocol functionality if compromised.       |
