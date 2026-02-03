@@ -14,7 +14,9 @@ Balancer's radical flexibility is a major benefit for builders - yet presents un
 
 Flash loans - either explicit using Balancer V2 or other platforms, or implicit in Balancer's batch operations - are especially dangerous, and could be used to temporarily distort pool balances and pricing, inflating the apparent BPT value. The risk is not theoretical! Naive oracle implementations have been exploited many times in recent years: [Alpha Homora](https://blog.alphaventuredao.io/alpha-homora-v2-post-mortem/) lost over $38 million when an attacker manipulated LP token pricing to over-collateralize a loan, while [Harvest Finance](https://medium.com/harvest-finance/harvest-flashloan-economic-attack-post-mortem-3cf900d65217) saw $24 million drained through a similar manipulation of stablecoin Curve pools. These examples highlight the critical need for manipulation-resistant oracles when integrating LP tokens into lending systems.
 
-One first-line defense against implicit flash loans is the [WrappedBalancerPoolToken](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/WrappedBalancerPoolToken.sol), and its associated factory. This factory deploys wrapped versions of arbitrary BPT, which are freely interchangeable with "raw" BPT - but only when the Vault is locked (i.e., when there is no ongoing operation). This ensures that the BPT balance of the caller is "real," and not flash loaned: at least not from Balancer V3. (It could still be an externally flash loaned from another source.) It's one layer of "Swiss cheese" security, but not necessarily sufficient by itself.
+One defense against implicit flash loans is the [WrappedBalancerPoolToken](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/WrappedBalancerPoolToken.sol), and its associated factory. This factory deploys wrapped versions of arbitrary BPT, which are freely interchangeable with "raw" BPT - but only when the Vault is locked (i.e., when there is no ongoing operation). This ensures that the BPT balance of the caller is "real," and not flash loaned: at least not from Balancer V3. (It could still be an externally flash loaned from another source.) It's one layer of "Swiss cheese" security, but not necessarily sufficient by itself.
+
+Note that at least for the case of oracles used in lending protocols, this concern is adequately addressed using either deposit limits in the native protocols, or alternatively setting the `shouldRevertIfVaultUnlocked` flag on the oracle itself, which reverts if anything requiring TVL calculation happens during a transaction (i.e., when the Vault is unlocked).
 
 While "balance verification" is important for some operations (e.g., nested pools), what we really want is a reliable way to derive a reliable, non-manipulable price for a Balancer Pool Token: on-chain, and available during Vault operations. This enables many advanced use cases, including our target of BPT as collateral.
 
@@ -137,6 +139,62 @@ And then solve for C directly:
 C = k × Π((Pᵢ/Wᵢ)^Wᵢ) = TVL = Total pool value
 
 The price is then simply TVL / totalSupply.
+
+### E-CLP Pools (Elliptic Concentrated Liquidity Pools)
+
+E-CLP pools use a concentrated liquidity mechanism based on an elliptical curve constraint, allowing liquidity to be concentrated within a specified price range [α, β]. Unlike Weighted Pools which use simple power-law invariants or Stable Pools which use polynomial invariants, E-CLPs leverage geometric transformations to map between price space and balance space.
+
+The pool's invariant constraint defines an ellipse in the (x, y) balance space, rotated and stretched according to the pool parameters. The key parameters are:
+
+* **α (alpha)**: The lower bound of the concentrated price range
+* **β (beta)**: The upper bound of the concentrated price range  
+* **τ(α) and τ(β)**: Derived points on the ellipse corresponding to the price bounds
+* **A**: A transformation matrix that maps the unit circle to the pool's ellipse
+
+Given oracle prices P₁ and P₂ for the two tokens, the relative price is r = P₁/P₂. The TVL calculation depends on where this relative price falls within the concentrated range:
+
+**Case 1: r < α (Below the lower price bound)**
+
+When the market price is below the pool's concentrated range, the pool holds only token 1. The effective balance width in price space is:
+
+b_P = (A⁻¹·τ(β))_x - (A⁻¹·τ(α))_x
+
+And the total value locked is:
+
+TVL = b_P × P₁ × invariant
+
+**Case 2: r > β (Above the upper price bound)**
+
+When the market price is above the pool's concentrated range, the pool holds only token 2. The effective balance width is:
+
+b_P = (A⁻¹·τ(α))_y - (A⁻¹·τ(β))_y
+
+And the total value locked is:
+
+TVL = b_P × P₂ × invariant
+
+**Case 3: α ≤ r ≤ β (Within the concentrated range)**
+
+When the market price is within the pool's range, both tokens are present. We compute the point τ(r) on the ellipse corresponding to the current price ratio, then calculate the effective balance vector:
+
+v_x = (A⁻¹·τ(β))_x - (A⁻¹·τ(r))_x
+v_y = (A⁻¹·τ(α))_y - (A⁻¹·τ(r))_y
+
+The total value is then the scalar product of the price vector and the balance vector:
+
+TVL = (P₁ × v_x + P₂ × v_y) × invariant
+
+In summary:
+
+* The τ function maps price ratios to points on the ellipse curve, establishing the "fair" position on the curve given market prices
+* The A⁻¹ transformation converts points from the ellipse to effective balance space
+* The three cases handle the geometric reality that outside the [α, β] range, the pool is single-sided
+* Unlike Weighted Pools where TVL can be computed directly, or Stable Pools where Newton's method solves for a scaling parameter, E-CLP uses geometric projections to determine the effective balances
+* The invariant serves as a scaling factor, similar to its role in other pool types
+
+The final BPT price is simply TVL / totalSupply.
+
+This approach is resistant to price manipulation within the pool because it relies entirely on external oracle prices to determine the theoretical position on the ellipse, then uses only the pool's invariant (total supply) to scale the result. The geometric constraints of the ellipse ensure consistency between internal and external pricing.
 
 ## References
 
