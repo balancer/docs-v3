@@ -40,6 +40,8 @@ The Balancer Emergency subDAO operates through the following multisigs which are
 | Mode      | <span class="address-link">[0x66C4b8Ba38a7B57495b7D0581f25784E629516c2](https://safe.optimism.io/home?safe=mode:0x66C4b8Ba38a7B57495b7D0581f25784E629516c2)</span>                         |
 | HyperEVM  | <span class="address-link">[0x44613a28347206F5E26C1B8Db7Dc73f450219746](https://safe.onchainden.com/home?safe=hyperevm:0x44613a28347206F5E26C1B8Db7Dc73f450219746)</span>                  |
 | Plasma    | <span class="address-link">[0x0d3319A8057A0C8afd87dFEEA252541A76d56Ebf](https://app.safe.global/home?safe=plasma:0x0d3319A8057A0C8afd87dFEEA252541A76d56Ebf)</span>                        |
+| XLayer    | <span class="address-link">[0x6793df018B07C44E86D0b84C8C5f07EEc14E1270](https://app.safe.global/home?safe=xlayer:0x6793df018B07C44E86D0b84C8C5f07EEc14E1270)</span>                        |
+| Monad     | <span class="address-link">[0x3a921d6956C62012Dd88f95bD44224a7Ef5C9b5a](https://app.safe.global/home?safe=monad:0x3a921d6956C62012Dd88f95bD44224a7Ef5C9b5a)</span>                         |
 
 ## Specifications
 
