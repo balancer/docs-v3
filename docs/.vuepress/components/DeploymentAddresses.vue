@@ -68,6 +68,8 @@ const EXPLORER_URLS = {
   avalanche: 'https://snowtrace.io/address/',
   hyperevm: 'https://hyperevmscan.io/address/',
   plasma: 'https://plasmascan.to//address/',
+  xlayer: 'https://www.oklink.com/x-layer/address/',
+  monad: 'https://monadscan.com/address/',
 };
 
 const CONTRACT_GROUPS = {
@@ -78,6 +80,7 @@ const CONTRACT_GROUPS = {
       'VaultFactory',
       'VaultAdmin',
       'VaultExtension',
+      'VaultExplorer',
       'ProtocolFeeController',
       'ProtocolFeeSweeper',
     ],
@@ -88,7 +91,8 @@ const CONTRACT_GROUPS = {
       const nameLower = name.toLowerCase();
       return (
         (nameLower.includes('pool') && nameLower.includes('factory')) ||
-        (nameLower.includes('mock') && nameLower.includes('pool'))
+        (nameLower.includes('mock') && nameLower.includes('pool')) ||
+        nameLower.includes('lporacle')
       );
     },
   },
@@ -97,7 +101,6 @@ const CONTRACT_GROUPS = {
     contracts: [
       'BalancerContractRegistry',
       'BalancerContractRegistryInitializer',
-      'VaultExplorer',
       'StableSurgePoolFactory',
       'StableSurgeHook',
       'MevCaptureHook',
@@ -106,6 +109,11 @@ const CONTRACT_GROUPS = {
       'BalancerFeeBurner',
       'CowSwapFeeBurner',
       'ERC4626CowSwapFeeBurner',
+      'ConstantPriceFeed',
+      'ProtocolFeeHelper',
+      'PoolPauseHelper',
+      'PoolSwapFeeHelper',
+      'UnbalancedAddViaSwapRouter',
     ],
   },
   authorizations: {
@@ -147,6 +155,7 @@ const CONTRACT_GROUPS = {
     requireV3: true,
     contracts: [
       'AggregatorRouter',
+      'AggregatorBatchRouter',
       'BatchRouter',
       'BufferRouter',
       'CompositeLiquidityRouter',
@@ -203,10 +212,7 @@ export default defineComponent({
           if (groupConfig.matchFunction) {
             nameMatch = groupConfig.matchFunction(row.name);
           } else if (groupConfig.contracts) {
-            nameMatch = groupConfig.contracts.some(
-              contract =>
-                row.name.includes(contract) || contract.includes(row.name)
-            );
+            nameMatch = groupConfig.contracts.includes(row.name);
           }
 
           return v3Match && nameMatch;
@@ -255,7 +261,17 @@ export default defineComponent({
           }
         });
 
-        this.tableData = processedData;
+        // Deduplicate by address, keeping the entry from the earliest deployment
+        // (deployment keys start with YYYYMMDD date format)
+        const addressMap = new Map();
+        processedData.forEach(entry => {
+          const existing = addressMap.get(entry.address);
+          if (!existing || entry.deploymentKey < existing.deploymentKey) {
+            addressMap.set(entry.address, entry);
+          }
+        });
+
+        this.tableData = Array.from(addressMap.values());
         this.loading = false;
       } catch (err) {
         this.error = err;
