@@ -13,14 +13,24 @@ As of [BIP-882](https://forum.balancer.fi/t/bip-882-transitioning-onchain-operat
 
 These safes handle governance, treasury management, and high-level operational control.
 
-| Name | Address | Threshold | Signer Set | Purpose |
-|------|---------|-----------|------------|---------|
-| DAO Multi-sig | [0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f](https://app.safe.global/home?safe=eth:0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f) | 6/11 | [DAO Signers](#dao-multisig-signer-set) | DAO administrative permissions |
-| Treasury Safe | [0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89](https://app.safe.global/home?safe=eth:0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89) | 5/7 | [Treasury Council](#treasury-council) | Main treasury holding all assets and DeFi strategies |
-| Balancer OpCo Ltd Safe | [0x3B8910F378034FD6E103Df958863e5c684072693](https://app.safe.global/home?safe=eth:0x3B8910F378034FD6E103Df958863e5c684072693) | 3/4 | [Foundation Directors](#foundation-directors) | Operational funding, dividends to Balancer Foundation |
-| Balancer Onchain Ltd Safe | [0x16b0056636Fcc85f92C49cD49a24bc519d4A1941](https://app.safe.global/home?safe=eth:0x16b0056636Fcc85f92C49cD49a24bc519d4A1941) | 3/4 | [Foundation Directors](#foundation-directors) | Central hub for on-chain operations, fee collection |
-| BizDev Safe | [0xF3B4829C8B9E2910C2396538F49a12b0c2475a7e](https://app.safe.global/home?safe=eth:0xF3B4829C8B9E2910C2396538F49a12b0c2475a7e) | 3/5 | [BizDev Team](#bizdev-team) | Third-party incentives and partnership funds |
-| Operator Safe | [0xBeF27037bC6311b96635E5e9Af3A73EBF6Ca8878](https://app.safe.global/home?safe=eth:0xBeF27037bC6311b96635E5e9Af3A73EBF6Ca8878) | 3/5 | [MAXYZ Operator](#operator) | Executes on-chain operations |
+| Name                      | Address                                                                                                                        | Threshold | Signer Set                                    | Purpose                                               |
+|---------------------------|--------------------------------------------------------------------------------------------------------------------------------|-----------|-----------------------------------------------|-------------------------------------------------------|
+| DAO Multi-sig             | [0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f](https://app.safe.global/home?safe=eth:0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f) | 6/11      | [DAO Signers](#dao-multisig-signer-set)       | DAO administrative permissions                        |
+| Treasury Safe             | [0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89](https://app.safe.global/home?safe=eth:0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89) | 5/7       | [Treasury Council](#treasury-council)         | Main treasury holding all assets and DeFi strategies  |
+| Balancer OpCo Ltd Safe    | [0x3B8910F378034FD6E103Df958863e5c684072693](https://app.safe.global/home?safe=eth:0x3B8910F378034FD6E103Df958863e5c684072693) | 3/4       | [Foundation Directors](#foundation-directors) | Operational funding, dividends to Balancer Foundation |
+| Balancer Onchain Ltd Safe | [0x16b0056636Fcc85f92C49cD49a24bc519d4A1941](https://app.safe.global/home?safe=eth:0x16b0056636Fcc85f92C49cD49a24bc519d4A1941) | 3/4       | [Foundation Directors](#foundation-directors) | Central hub for on-chain operations, fee collection   |
+| BizDev Safe               | [0xF3B4829C8B9E2910C2396538F49a12b0c2475a7e](https://app.safe.global/home?safe=eth:0xF3B4829C8B9E2910C2396538F49a12b0c2475a7e) | 3/5       | [BizDev Team](#bizdev-team)                   | Third-party incentives and partnership funds          |
+| Operator Safe             | [0xBeF27037bC6311b96635E5e9Af3A73EBF6Ca8878](https://app.safe.global/home?safe=eth:0xBeF27037bC6311b96635E5e9Af3A73EBF6Ca8878) | 3/5       | [MAXYZ Operator](#operator)                   | Executes on-chain operations                          |
+
+#### Treasury Safe Multi-Chain Deployment
+
+The Treasury Safe is deployed at the same address across multiple chains to hold ecosystem assets and execute DeFi strategies:
+
+| Chain | Address |
+|-------|---------|
+| Ethereum | [0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89](https://app.safe.global/home?safe=eth:0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89) |
+| Gnosis | [0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89](https://app.safe.global/home?safe=gno:0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89) |
+| Arbitrum | [0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89](https://app.safe.global/home?safe=arb1:0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89) |
 
 ### Operational Multisigs
 
@@ -40,18 +50,26 @@ This configuration enables efficient execution with proper oversight.
 
 ### Chain-Specific DAO Multisigs
 
-These multisigs handle treasury and admin functions on their respective chains.
+These multisigs hold administrative permissions on their respective chains, including:
 
-| Name | Chain | Address | Signer Set |
-|------|-------|---------|------------|
-| Arbitrum DAO Multisig | [ARBI](https://app.safe.global/home?safe=arb1:0xaF23DC5983230E9eEAf93280e312e57539D098D0) | `0xaF23DC5983230E9eEAf93280e312e57539D098D0` | [DAO Signers](#dao-multisig-signer-set) |
-| Polygon DAO Multisig | [POLYGON](https://app.safe.global/home?safe=matic:0xeE071f4B516F69a1603dA393CdE8e76C40E5Be85) | `0xeE071f4B516F69a1603dA393CdE8e76C40E5Be85` | [DAO Signers](#dao-multisig-signer-set) |
-| Optimism DAO Multisig | [OPTIMISM](https://app.safe.global/home?safe=oeth:0x043f9687842771b3dF8852c1E9801DCAeED3f6bc) | `0x043f9687842771b3dF8852c1E9801DCAeED3f6bc` | [DAO Signers](#dao-multisig-signer-set) |
-| Gnosis Chain DAO | [GNOSIS](https://app.safe.global/home?safe=gno:0x2a5AEcE0bb9EfFD7608213AE1745873385515c18) | `0x2a5AEcE0bb9EfFD7608213AE1745873385515c18` | [DAO Signers](#dao-multisig-signer-set) |
-| Avalanche DAO | [AVAX](https://app.safe.global/home?safe=avax:0x17b11FF13e2d7bAb2648182dFD1f1cfa0E4C7cf3) | `0x17b11FF13e2d7bAb2648182dFD1f1cfa0E4C7cf3` | [DAO Signers](#dao-multisig-signer-set) |
-| Base DAO | [BASE](https://app.safe.global/home?safe=base:0xC40DCFB13651e64C8551007aa57F9260827B6462) | `0xC40DCFB13651e64C8551007aa57F9260827B6462` | [DAO Signers](#dao-multisig-signer-set) |
-| Fraxtal DAO | [FRAXTAL](https://safe.mainnet.frax.com/home?safe=fraxtal:0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e) | `0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e` | [DAO Signers](#dao-multisig-signer-set) |
-| Mode DAO | [MODE](https://safe.optimism.io/home?safe=mode:0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e) | `0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e` | [DAO Signers](#dao-multisig-signer-set) |
+- **Authorizer Admin**: Control over protocol parameters and permissions
+- **Gauge Controller**: Adding/removing liquidity gauges for BAL emissions
+- **veBAL Allowlisting**: Managing pool eligibility for veBAL voting incentives
+- **Protocol Fee Configuration**: Setting swap and yield fee percentages
+
+All chain-specific DAO multisigs use the [DAO Signer Set](#dao-multisig-signer-set) with a 6/11 threshold.
+
+| Chain | Address |
+|-------|---------|
+| Ethereum | [0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f](https://app.safe.global/home?safe=eth:0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f) |
+| Arbitrum | [0xaF23DC5983230E9eEAf93280e312e57539D098D0](https://app.safe.global/home?safe=arb1:0xaF23DC5983230E9eEAf93280e312e57539D098D0) |
+| Polygon | [0xeE071f4B516F69a1603dA393CdE8e76C40E5Be85](https://app.safe.global/home?safe=matic:0xeE071f4B516F69a1603dA393CdE8e76C40E5Be85) |
+| Optimism | [0x043f9687842771b3dF8852c1E9801DCAeED3f6bc](https://app.safe.global/home?safe=oeth:0x043f9687842771b3dF8852c1E9801DCAeED3f6bc) |
+| Gnosis | [0x2a5AEcE0bb9EfFD7608213AE1745873385515c18](https://app.safe.global/home?safe=gno:0x2a5AEcE0bb9EfFD7608213AE1745873385515c18) |
+| Avalanche | [0x17b11FF13e2d7bAb2648182dFD1f1cfa0E4C7cf3](https://app.safe.global/home?safe=avax:0x17b11FF13e2d7bAb2648182dFD1f1cfa0E4C7cf3) |
+| Base | [0xC40DCFB13651e64C8551007aa57F9260827B6462](https://app.safe.global/home?safe=base:0xC40DCFB13651e64C8551007aa57F9260827B6462) |
+| Fraxtal | [0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e](https://safe.mainnet.frax.com/home?safe=fraxtal:0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e) |
+| Mode | [0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e](https://safe.optimism.io/home?safe=mode:0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e) |
 
 ### Chain-Specific Operational Multisigs
 
@@ -93,19 +111,21 @@ The [Balancer Multisig Ops Repo](https://github.com/BalancerMaxis/Multisig-ops) 
 
 The DAO Multisig Signer Set is reserved for major changes to protocol operations and management of treasury funds. **Requires 6/11 signers.**
 
+As of [BIP-907](https://forum.balancer.fi/t/bip-907-dao-multisig-signer-set-update/), the signer set has been updated to reflect current ecosystem participation:
+
 | Signer | Association | Address |
 |--------|-------------|---------|
-| [Alexander Lange](https://twitter.com/AlexLangeVC) | Inflection | `0x3ABDc84Dd15b0058B281D7e26CCc3932cfb268aA` |
 | [0xMaki](https://twitter.com/0xMaki) | LayerZero, AURA, DCV | `0x285b7EEa81a5B66B62e7276a24c1e0F83F7409c1` |
-| [Tritium](https://twitter.com/Tritium_DAOist) | Balancer Contributor | `0xcf4fF1e03830D692F52EB094c52A5A6A2181Ab3F` |
-| [Evan](https://twitter.com/0xSausageDoge) | Fjord | `0x59693BA1A5764e087CE166ac0E0085Fc071B9ea7` |
 | [Ernesto](https://twitter.com/eboadom) | BGD | `0xA39a62304d8d43B35114ad7bd1258B0E50e139b3` |
 | [Mounir](https://twitter.com/mounibec) | Paraswap | `0x0951FF0835302929d6c0162b3d2495A85e38ec3A` |
-| [Trent McConaghy](https://twitter.com/trentmc0) | Ocean Protocol | `0x478eC43c6867c2884f87B21c164f1fD1308bD9a3` |
 | [Stefan](https://twitter.com/StefanDGeorge) | Gnosis | `0x9F7dfAb2222A473284205cdDF08a677726d786A0` |
 | [bonustrack87](https://twitter.com/bonustrack87) | Snapshot | `0x9BE6ff2A1D5139Eda96339E2644dC1F05d803600` |
-| [nanexcool](https://twitter.com/nanexcool) | Ethereum OG | `0x823DF0278e4998cD0D06FB857fBD51e85b18A250` |
 | [David Gerai](https://twitter.com/davgarai) | Raft | `0xAc1aA53108712d7f38093A67d380aD54B562a650` |
+| [gosuto](https://twitter.com/gosaborern) | Balancer Contributor | `0x11e450c72c2258ec792d5f64a263ecb18e8c0f06` |
+| [elbagococina](https://twitter.com/elbagococina) | Karpatkey | `0x6578183A203b41C419b93DF9121b5e3b26561aC5` |
+| [netto.eth](https://twitter.com/nettofc) | Blockful/ENS | `0x235f00a6e9416b114780f0b97afcb40f623f65b4` |
+| [MikeB](https://twitter.com/MikeB_Eng) | former Balancer Maxis | `0xF01Cc7154e255D20489E091a5aEA10Bc136696a8` |
+| [hubert](https://twitter.com/hubert_LL) | StakeDAO | `0x02e4De712d99f4B1b1e12aa3675D8b0A582caA5D` |
 
 Beyond current signers, [BIP-16](https://forum.balancer.fi/t/bip-16-update-dao-Multisig-replacement-list/3361) established a group of backup signers who can replace current signers without further governance.
 
