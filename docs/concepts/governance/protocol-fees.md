@@ -20,53 +20,15 @@ Flash loan fees are another potential source of protocol revenue. They are curre
 
 ## Fee Collection Infrastructure
 
-Protocol fees are collected differently for Balancer V2 and V3, but both ultimately flow through the Protocol Fees Multisig on Ethereum mainnet for distribution.
+Protocol fees are collected differently for Balancer V2 and V3, but both ultimately flow through the Protocol Fees Multisig (also known as the Fee Collector Safe) on Ethereum mainnet for distribution.
+
+![Fee Collection Infrastructure](./images/fee_collection_infra.png)
 
 ### Balancer V3 Collection
-
-```
-┌─────────────────────────────┐
-│   Fees Collected in Pools   │
-└──────────────┬──────────────┘
-               │
-               ▼
-┌─────────────────────────────┐
-│   Swept via Burners to      │
-│   Omni-sig (per chain)      │
-└──────────────┬──────────────┘
-               │
-               ▼
-┌─────────────────────────────┐
-│   Bridged to Mainnet        │
-└──────────────┬──────────────┘
-               │
-               ▼
-┌─────────────────────────────┐
-│   Protocol Fees Multisig    │
-└─────────────────────────────┘
-```
 
 V3 fees are swept from pools using burner contracts to the [Omni-sig](./multisig.md) on each chain, then bridged to Ethereum mainnet and transferred to the Protocol Fees Multisig.
 
 ### Balancer V2 Collection
-
-```
-┌─────────────────────────────┐
-│   Fees Collected in Pools   │
-└──────────────┬──────────────┘
-               │
-               ▼
-┌─────────────────────────────┐
-│   Mimic Infrastructure      │
-│   • Swaps tokens to USDC    │
-│   • Bridges to Mainnet      │
-└──────────────┬──────────────┘
-               │
-               ▼
-┌─────────────────────────────┐
-│   Protocol Fees Multisig    │
-└─────────────────────────────┘
-```
 
 V2 fees are processed by [Mimic](https://mimic.fi/) infrastructure, which handles swapping collected tokens to USDC, bridging from L2s to mainnet, and transferring to the Protocol Fees Multisig.
 
@@ -74,30 +36,7 @@ V2 fees are processed by [Mimic](https://mimic.fi/) infrastructure, which handle
 
 From the Protocol Fees Multisig, fees are distributed according to governance-approved splits (see [Protocol Fee Model](../protocol-fee-model/protocol-fee-model.md) for percentages):
 
-```
-┌───────────────────────────────────┐
-│      Protocol Fees Multisig       │
-└─────────────────┬─────────────────┘
-                  │
-    ┌─────────────┼─────────────┐
-    │             │             │
-    ▼             ▼             ▼
-┌────────┐ ┌────────────┐ ┌──────────────────┐
-│ veBAL  │ │ Core Pool  │ │ Balancer Onchain │
-│ Holders│ │  Voting    │ │ Ltd Safe (DAO)   │
-│ (USDC) │ │ Incentives │ └────────┬─────────┘
-└────────┘ └────────────┘          │
-                                   ▼
-                          ┌──────────────────┐
-                          │ Balancer OpCo    │
-                          │ Ltd Safe         │
-                          └────────┬─────────┘
-                                   │
-                                   ▼
-                          ┌──────────────────┐
-                          │ Treasury Safe    │
-                          └──────────────────┘
-```
+![Fee Distribution Flow](./images/fee_distro.png)
 
 ### Distribution Recipients
 
