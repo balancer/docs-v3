@@ -29,7 +29,7 @@ The Balancer Foundation serves as the ultimate custodian of the Balancer ecosyst
 
 **Safe Address:** [0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89](https://app.safe.global/home?safe=eth:0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89)
 
-**Controlled By:** [Treasury Council](#treasury-council) (5/7 threshold)
+**Controlled By:** Foundation Board of Directors on behalf of the Balancer DAO
 
 ### Balancer OpCo Limited
 

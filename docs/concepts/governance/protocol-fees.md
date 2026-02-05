@@ -107,6 +107,10 @@ From the Protocol Fees Multisig, fees are distributed according to governance-ap
 | **Core Pool Voting Incentives** | Incentives placed on core pools to drive veBAL votes toward revenue-generating pools |
 | **Balancer Onchain Ltd Safe** | DAO's share of protocol revenue |
 
+::: tip Core Pool Status
+Interested in having your pool achieve core pool status to benefit from the incentive flywheel? See the [Core Pools guide](../../partner-onboarding/onboarding-overview/core-pools.md) for requirements and application process.
+:::
+
 ### Corporate Structure Flow
 
 From the Balancer Onchain Ltd Safe, the DAO's share flows up the [corporate structure](./corporate-structure.md):

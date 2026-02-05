@@ -19,13 +19,13 @@ Yes, you can transfer BPTs. Rewards will accrue in the wallet where they are hel
 veBAL is a non-standard ERC-20 token and cannot be transferred.
 
 
-### Do veBAL holders receive a portion of the protocol fees? 
+### Do veBAL holders receive a portion of the protocol fees?
 
-Yes. For more information, see [Protocol Revenue Distribution](../protocol-fees.md#uses).
+Yes. For more information, see [Protocol Fee Operations](../protocol-fees.md) and the [Protocol Fee Model](../protocol-fee-model/protocol-fee-model.md).
 
 ### How are the protocol fees paid?
 
-veBAL holders receive protocol fees distributed in bb-a-USD (Balancer Boosted Aave V3 USD Composable Stable Pool). The fee token was selected based on community feedback taken in the [Balancer Forum](https://forum.balancer.fi/t/rfc-change-vebal-usd-yield-component/4692#looking-for-input-8) followed by a [Snapshot vote](https://snapshot.org/#/balancer.eth/proposal/0xe9fa0968d93ab117d6ef28d139d19e5d9d728c0ed4c9581e2f7eb8c381e5ff45) in May '23.
+veBAL holders receive protocol fees distributed in **USDC**. The fee distribution varies depending on whether fees come from core pools or non-core pools—see the [Protocol Fee Model](../protocol-fee-model/protocol-fee-model.md) for the current distribution splits.
 
 ### When are incentives paid?
 

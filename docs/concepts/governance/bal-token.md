@@ -18,7 +18,6 @@ Balancer Governance Token \(BAL\) is the core token behind the Balancer protocol
 | Arbitrum      | <span class="address-link">[0x040d1EdC9569d4Bab2D15287Dc5A4F10F56a56B8](https://arbiscan.io/address/0x040d1EdC9569d4Bab2D15287Dc5A4F10F56a56B8)</span>              |
 | Optimism      | <span class="address-link">[0xFE8B128bA8C78aabC59d4c64cEE7fF28e9379921](https://optimistic.etherscan.io/token/0xfe8b128ba8c78aabc59d4c64cee7ff28e9379921)</span>    |
 | Base          | <span class="address-link">[0x4158734D47Fc9692176B5085E0F52ee0Da5d47F1](https://basescan.org/address/0x4158734d47fc9692176b5085e0f52ee0da5d47f1)</span>             |
-| Goerli        | <span class="address-link">[0xfA8449189744799aD2AcE7e0EBAC8BB7575eff47](https://goerli.etherscan.io/address/0xfA8449189744799aD2AcE7e0EBAC8BB7575eff47)</span>      |
 | Avalanche     | <span class="address-link">[0xE15bCB9E0EA69e6aB9FA080c4c4A5632896298C3](https://snowtrace.io/token/0xE15bCB9E0EA69e6aB9FA080c4c4A5632896298C3?chainId=43114)</span> |
 | Gnosis        | <span class="address-link">[0x7eF541E2a22058048904fE5744f9c7E4C57AF717](https://gnosisscan.io/address/0x7ef541e2a22058048904fe5744f9c7e4c57af717)</span>            |
 

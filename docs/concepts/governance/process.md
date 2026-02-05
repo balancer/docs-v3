@@ -10,6 +10,36 @@ Operational support can be reached on the [Balancer Discord](https://discord.bal
 
 ![img.png](./images/govProcess.png)
 
+## Governance Timeline
+
+The following timeline requirements apply to different proposal types (per [DAO Governance Guidelines](https://forum.balancer.fi/t/balancer-dao-governance-guidelines/6311)):
+
+### Forum Discussion Periods
+
+| Proposal Type | Minimum Discussion | Submission Deadline |
+|---------------|-------------------|---------------------|
+| General proposals | 72 hours | Tuesday 20:00 CET |
+| Gauge additions | 24 hours | Thursday 20:00 CET |
+| Funding proposals | 1 week | 1 week before snapshot |
+
+### Voting Schedule
+
+- **Voting starts**: Friday 20:00 CET
+- **Voting ends**: Tuesday 20:00 CET (4 days / 96 hours)
+- **Quorum**: 2 million veBAL
+
+### Execution Timeline
+
+| Action Type | Typical Execution |
+|-------------|-------------------|
+| Gauge activations | Tuesday after successful vote |
+| Standard multi-sig execution | End of month (usually last week) |
+| Gauge removals | End of month, quarterly basis |
+
+::: warning Funding Proposals
+Funding proposals and real-world contracts may require additional review periods and legal sign-off, potentially extending timelines beyond minimum requirements.
+:::
+
 ## Outline
 
 This page outlines the Balancer Governance Process from Request for Comment \[RFC\] through executing a result.
@@ -82,7 +112,7 @@ The Snapshot process is started when an address with at least 200,000 veBAL in d
 - The BIP is titled like `BIP-[XXX] Title from Forum`, where XXX is the next number in the BIP sequence.
   - The original forum proposer should update their post to match the title from the Snapshot and include a link to it at the bottom of the body of the Forum Post.
 - Barring clear community consensus otherwise the vote should be of Type "Basic Voting" and the choices should be one of [Yes, let's do it - No, This is not the way - Abstain].
-- Runs for 96 hours starting on a **Thursday (GMT)**.
+- Runs for 96 hours (4 days) starting on **Friday 20:00 CET** and concluding **Tuesday 20:00 CET**.
 - Has a quorum of 2 million veBAL.
 - The linked payload matches the English specification and passes review and is in a recognizable/verifiable form by the Operator.
 - The linked payload simulates successfully in Tenderly and/or produces the desired results on fork.

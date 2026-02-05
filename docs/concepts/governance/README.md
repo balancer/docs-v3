@@ -5,6 +5,26 @@ title: Overview
 
 # Governance
 
+Balancer is governed by veBAL token holders who vote on protocol changes through Snapshot. On-chain operations are executed by Balancer Onchain Limited through its service provider MAXYZ. This section documents all governance components and processes.
+
+## Quick Start
+
+**Want to participate in governance?**
+1. Acquire BAL tokens and WETH
+2. Deposit into the [80/20 BAL/WETH pool](https://app.balancer.fi/#/ethereum/pool/0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014) to receive BPT
+3. Lock your BPT on the [veBAL page](https://app.balancer.fi/#/ethereum/vebal) (1 week to 1 year)
+4. Vote on [Snapshot proposals](https://snapshot.org/#/balancer.eth) and [gauge weights](https://app.balancer.fi/#/ethereum/vebal)
+
+**Want to create a proposal?**
+1. Draft an RFC on the [Balancer Forum](https://forum.balancer.fi/c/governance/7)
+2. Engage with the community for feedback
+3. Work with the Operator team to prepare a transaction payload
+4. Submit to Snapshot (requires 200k veBAL delegation)
+
+See the [Governance Process](./process.md) for detailed steps and timeline requirements.
+
+---
+
 Various components of Balancer Governance are described in brief below. Click on the headings for more details on each topic.
 
 ## [Corporate Structure](./corporate-structure)
@@ -42,4 +62,4 @@ Balancer operates through a hierarchical safe system with clear separation of re
 
 ## [Emergency subDAO](./emergency)
 
-In order to protect veBAL from bad actors by killing gauges and pool factories, the emergency subdao was established with bounded authority to manage the protocol.
+The Emergency subDAO is a 3-of-7 multisig (as per [BIP-883](https://forum.balancer.fi/t/bip-883-emergency-safe-governance-improvements-q4-2025/6865)) with bounded authority to protect the protocol by killing gauges, pausing pools, and managing pool factories in emergency situations.

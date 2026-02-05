@@ -45,8 +45,7 @@ This configuration enables efficient execution with proper oversight.
 | Protocol Fees Multisig | Fee collection | [MAINNET](https://app.safe.global/home?safe=eth:0x7c68c42De679ffB0f16216154C996C354cF1161B), [ARBI](https://app.safe.global/home?safe=arb1:0x7c68c42De679ffB0f16216154C996C354cF1161B), [POLYGON](https://app.safe.global/home?safe=matic:0x7c68c42De679ffB0f16216154C996C354cF1161B) | `0x7c68c42De679ffB0f16216154C996C354cF1161B` |
 | Mainnet Fee Setter | Default pool owner for Mainnet fees | [MAINNET](https://app.safe.global/home?safe=eth:0xf4A80929163C5179Ca042E1B292F5EFBBE3D89e6) | `0xf4A80929163C5179Ca042E1B292F5EFBBE3D89e6` |
 | LM Multisig (Omni-sig) | Gauge management, liquidity mining | [MAINNET](https://app.safe.global/home?safe=eth:0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e) | `0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e` |
-| Gauntlet Safe | Risk parameter management | [MAINNET](https://app.safe.global/home?safe=eth:0xf4A80929163C5179Ca042E1B292F5EFBBE3D89e6) | `0xf4A80929163C5179Ca042E1B292F5EFBBE3D89e6` |
-| Aura Locker Safe | vlAURA management | [MAINNET](https://app.safe.global/home?safe=eth:0xf4A80929163C5179Ca042E1B292F5EFBBE3D89e6) | `0xf4A80929163C5179Ca042E1B292F5EFBBE3D89e6` |
+| Aura Locker Safe | vlAURA management | [MAINNET](https://app.safe.global/home?safe=eth:0x9a5BDF08a6969A4bDb7724beE3c6d8964BDc0B28) | `0x9a5BDF08a6969A4bDb7724beE3c6d8964BDc0B28` |
 
 ### Chain-Specific DAO Multisigs
 
@@ -151,7 +150,11 @@ The Treasury Council has authority to:
 
 ### Foundation Directors
 
-Foundation Directors control the Balancer OpCo Ltd Safe and Balancer Onchain Ltd Safe. These are Balancer Foundation board members. **Requires 3/4 signers.**
+Foundation Directors control the Balancer OpCo Ltd Safe and Balancer Onchain Ltd Safe. **Requires 3/4 signers.**
+
+The Foundation board consists of:
+- **Leeward Management Limited** - Corporate director appointed per [BIP-480](https://forum.balancer.fi/t/bip-480-appointment-of-director-to-the-balancer-foundation/5362)
+- Two community directors representing the Balancer ecosystem
 
 ### BizDev Team
 
