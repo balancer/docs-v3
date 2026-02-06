@@ -16,7 +16,7 @@ Protocol fees are applied to yield earned by yield-bearing assets with rate prov
 
 ### Flash Loan Fees
 
-Flash loan fees are another potential source of protocol revenue. They are currently disabled to encourage developers to build on Balancer.
+[Flash loans](/concepts/vault/flash-loans.md) allow users to borrow assets without collateral, as long as the borrowed amount is repaid within the same transaction. In Balancer V2, governance had the ability to set flash loan fees, but they were always set to zero to encourage developers to build on Balancer. In V3, flash loans operate through the Vault's transient unlock mechanism and remain fee-free by design.
 
 ## Fee Collection Infrastructure
 

@@ -170,7 +170,11 @@ The BizDev Team manages incentive funds and partnerships through the BizDev Safe
 
 ### Operator
 
-The Operator Safe is externally managed by [MAXYZ](https://forum.balancer.fi/t/maxyz-flawless-onchain-execution/6851), a service provider engaged by Balancer Onchain Limited. The Operator executes on-chain operations through the operational multisigs.
+The Operator Safe is a **3/5 multisig** currently managed by [MAXYZ](https://forum.balancer.fi/t/maxyz-flawless-onchain-execution/6851), a service provider engaged by Balancer Onchain Limited. The Operator executes on-chain operations through the operational multisigs.
+
+**Safe Address:** `0xBeF27037bC6311b96635E5e9Af3A73EBF6Ca8878` (deployed on all networks where Balancer V3 is active)
+
+The Operator can be exchanged for another service provider if needed—Balancer Onchain Ltd Safe maintains control and can replace the operator through the operational multisig configuration.
 
 ## Signer Duties
 

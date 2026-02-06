@@ -94,9 +94,13 @@ Manages third-party incentives and partnership funds.
 
 Executes day-to-day on-chain operations through third-party service provider [MAXYZ](https://forum.balancer.fi/t/maxyz-flawless-onchain-execution/6851).
 
-**Safe Address:** [0xBeF27037bC6311b96635E5e9Af3A73EBF6Ca8878](https://app.safe.global/home?safe=eth:0xBeF27037bC6311b96635E5e9Af3A73EBF6Ca8878)
+**Safe Address:** [0xBeF27037bC6311b96635E5e9Af3A73EBF6Ca8878](https://app.safe.global/home?safe=eth:0xBeF27037bC6311b96635E5e9Af3A73EBF6Ca8878) (deployed on all networks where Balancer contracts are in use)
 
 **Controlled By:** MAXYZ Operator (3/5 threshold)
+
+::: info Operator Exchangeability
+The Operator can be exchanged for another service provider if needed. Balancer Onchain Ltd Safe maintains control over the operational multisigs and can replace the operator through the 1/2 threshold configuration.
+:::
 
 ### Operational Multisig Configuration
 
