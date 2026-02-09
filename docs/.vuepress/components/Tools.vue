@@ -131,6 +131,13 @@ const calculatorsAndDApps = [
       'Dashboard to visualize the impact of changes in the Amplification Factor on Balancer Stable-Like Pools - created by Bleu',
     link: 'https://tools.balancer.blue/stableswapsimulator',
   },
+  {
+    title: 'LBP simulator',
+    icon: '/images/toolshub/balancer-symbol.svg',
+    details:
+      'Tool created for LBP pool creators, with the goal of facilitating the projection of different scenarios that the pool may follow.',
+      link: 'https://lbp-simulator.vercel.app/' // add tools.balancer DNS
+  }
   // Add more calculators and dApps as needed
 ];
 
