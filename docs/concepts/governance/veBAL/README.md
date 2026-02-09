@@ -20,10 +20,10 @@ Implications:
 
 - veBAL equates to boosted liquidity mining emissions for all gauges. The share of a given staked pool, and the lock multiplier are both factors in the amount a user will be entitled to in liquidity mining emissions.
 
-- As of [BIP-457](https://forum.balancer.fi/t/bip-457-core-pool-incentive-program-automation/5254#specificationconfiguration-10) veBAL holders receive 82.5% of [protocol fees](../protocol-fees.md) including:
+- veBAL holders receive a share of [protocol fees](../protocol-fees.md). The distribution varies by pool type (see [Protocol Fee Model](../protocol-fee-model/protocol-fee-model.md) for details):
 
-  - 82.5% of the [swap fees](../protocol-fees.md#swap-fees) accumulated on Balancer Protocol are collected as protocol fees.
-  - 82.5% of the yields fees taken from yield bearing tokens [as part of Core Pools](../protocol-fees.md#core-pool-fee-redirection)
+  - **Non-core pools**: 82.5% of protocol fees go directly to veBAL holders as USDC payments
+  - **Core pools**: 12.5% goes directly to veBAL holders, with an additional 70% distributed as voting incentives on core pools (requiring veBAL holders to vote for revenue-generating pools to capture this portion)
 
 - veBAL is the governance token of Balancer, used in Snapshot voting to authorize changes to the DAO including the management (adding/removing) of gauges and funding of service providers.
   - veBAL does have a gauge to direct emissions to the holders if chosen. This option is capped at 10% of total emissions of BAL at a given time in the inflation schedule. The overflow, if a vote goes over 10%, will go to the DAO treasury, where governance will have ownership of it.

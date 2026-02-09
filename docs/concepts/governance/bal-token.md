@@ -18,7 +18,6 @@ Balancer Governance Token \(BAL\) is the core token behind the Balancer protocol
 | Arbitrum      | <span class="address-link">[0x040d1EdC9569d4Bab2D15287Dc5A4F10F56a56B8](https://arbiscan.io/address/0x040d1EdC9569d4Bab2D15287Dc5A4F10F56a56B8)</span>              |
 | Optimism      | <span class="address-link">[0xFE8B128bA8C78aabC59d4c64cEE7fF28e9379921](https://optimistic.etherscan.io/token/0xfe8b128ba8c78aabc59d4c64cee7ff28e9379921)</span>    |
 | Base          | <span class="address-link">[0x4158734D47Fc9692176B5085E0F52ee0Da5d47F1](https://basescan.org/address/0x4158734d47fc9692176b5085e0f52ee0da5d47f1)</span>             |
-| Goerli        | <span class="address-link">[0xfA8449189744799aD2AcE7e0EBAC8BB7575eff47](https://goerli.etherscan.io/address/0xfA8449189744799aD2AcE7e0EBAC8BB7575eff47)</span>      |
 | Avalanche     | <span class="address-link">[0xE15bCB9E0EA69e6aB9FA080c4c4A5632896298C3](https://snowtrace.io/token/0xE15bCB9E0EA69e6aB9FA080c4c4A5632896298C3?chainId=43114)</span> |
 | Gnosis        | <span class="address-link">[0x7eF541E2a22058048904fE5744f9c7E4C57AF717](https://gnosisscan.io/address/0x7ef541e2a22058048904fe5744f9c7e4c57af717)</span>            |
 
@@ -167,7 +166,7 @@ This chart outlines the allocation amounts. More details below.
 | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------ | :---------------------------------------------------------------------------------------------------------------------------- |
 | Liquidity Providers - [allocated by the community](https://snapshot.org/#/balancer.eth/proposal/0xc93aa02ea7153a53d124189567ba19aa28663c499cdbfa60fe9bf35bf574d2a7) | up to 65M           | ~25M                                                                                                                          |
 | Founders, Options, Advisors, Investors                                                                                                                              | 22.5M               | Fully vested                                                                                                                  |
-| Ecosystem Fund (now DAO Multisig)                                                                                                                                   | 5M                  | [balance](https://etherscan.io/token/0xba100000625a3754423978a60c9317c58a424e3d?a=0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f) |
+| Treasury Safe (managed by [Treasury Council](./corporate-structure.md#treasury-council))                                                                            | 5M                  | [balance](https://etherscan.io/token/0xba100000625a3754423978a60c9317c58a424e3d?a=0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89) |
 | Balancer Labs Fundraising Fund                                                                                                                                      | 5M                  | [balance](https://etherscan.io/token/0xba100000625a3754423978a60c9317c58a424e3d?a=0xb129f73f1afd3a49c701241f374db17ae63b20eb) |
 | Balancer Labs Contributors Incentives Program                                                                                                                       | 2.5M                | [balance](https://etherscan.io/token/0xba100000625a3754423978a60c9317c58a424e3d?a=0xcdcebf1f28678eb4a1478403ba7f34c94f7ddbc5) |
 
@@ -217,13 +216,15 @@ Emissions to liquidity providers are decided by a combination of the emissions s
 
 25M tokens were allocated to founders, options, advisors, and investors, all subject to vesting periods.
 
-#### Ecosystem Fund
+#### Treasury Safe
 
-5M were allocated for the Ecosystem Fund. This fund will be deployed to attract and incentivize strategic partners who will help the Balancer ecosystem grow and thrive. veBAL holders will ultimately decide how this fund is used over the coming years.
+5M were originally allocated for the Ecosystem Fund. This fund is deployed to attract and incentivize strategic partners who will help the Balancer ecosystem grow and thrive. veBAL holders ultimately decide how this fund is used.
 
-Note that as part of the veBAL conversion, the entire ecosystem fund was transferred into the [DAO multisig](https://etherscan.io/address/0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f)).
+As of [BIP-882](https://forum.balancer.fi/t/bip-882-transitioning-onchain-operations-of-the-balancer-dao-to-balancer-onchain-limited/6859), the main treasury is held in the Treasury Safe, managed by the [Treasury Council](./corporate-structure.md#treasury-council). This includes all assets and DeFi strategies.
 
-Original Ecosystem Fund: <span class="address-link">[Mainnet](https://etherscan.io/address/0xb618F903ad1d00d6F7b92f5b0954DcdC056fC533)</span>, <span class="address-link">[Polygon](https://etherscan.io/address/0xb618F903ad1d00d6F7b92f5b0954DcdC056fC533)</span>, <span class="address-link">[Arbitrum](https://arbiscan.io/address/0xaF23DC5983230E9eEAf93280e312e57539D098D0)</span>
+Treasury Safe: <span class="address-link">[0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89](https://app.safe.global/home?safe=eth:0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89)</span>
+
+The DAO Multisig retains administrative permissions: <span class="address-link">[0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f](https://app.safe.global/home?safe=eth:0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f)</span>
 
 #### Balancer Labs Fundraising Fund
 
