@@ -7,7 +7,7 @@ features:
     icon: /images/build.svg
     iconDark: /images/build-dark.svg
     details: Walkthrough a quick guide of the simulator usage.
-    link: /integration-guides/lbp-simulator/how-to-use.md
+    link: /integration-guides/lbp-simulator/user-guide.md
 
 ---
 
