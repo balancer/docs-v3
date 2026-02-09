@@ -83,13 +83,6 @@ const coreTools = [
 
 const calculatorsAndDApps = [
   {
-    title: 'Xeonus and Zen Dragon Tools',
-    icon: '/images/logo-light.svg',
-    details:
-      'veBAL, Impermanent Loss and Price Impact Calculators - created by Xeonus and Zen Dragon',
-    link: 'https://balancer.tools/veBAL',
-  },
-  {
     title: 'veBAL Gauge Multivoter',
     icon: '/images/toolshub/zekraken.jpg',
     details:
@@ -118,13 +111,6 @@ const calculatorsAndDApps = [
     link: 'https://tools.balancer.blue/internalmanager',
   },
   {
-    title: 'Custom Pool Metadata',
-    icon: '/images/toolshub/balancer-symbol.svg',
-    details:
-      'Tool for owners to be able to add custom metadata to their pools - created by Bleu',
-    link: 'https://tools.balancer.blue/metadata/',
-  },
-  {
     title: 'Stable Swap Simulator',
     icon: '/images/toolshub/balancer-symbol.svg',
     details:
@@ -146,7 +132,7 @@ const analyticsSites = [
     title: 'DeFilytica Analytics',
     icon: '/images/toolshub/defilytica_simple.png',
     details:
-      'Protocol, pool and token metrics. Additionally, an in-depth financial dashboard and service-provider analytics board.',
+      'Protocol, pool and token metrics. Additionally, an in-depth financial dashboard and service-provider analytics board. V2 only ',
     link: 'https://balancer.defilytica.com/',
   },
   {
