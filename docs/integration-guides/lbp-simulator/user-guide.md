@@ -6,7 +6,7 @@ title: User guide
 # LBP Simulator User Guide
 
 ## Overview
-The LBP Simulator lets you configure a Liquidity Bootstrapping Pool (LBP), model buy and sell pressure, and watch how prices, weights, and liquidity evolve over time. It also includes a simulated trading panel for swaps, limit orders, and TWAP programs.
+The LBP Simulator lets you configure a Liquidity Bootstrapping Pool (LBP), model buy and sell pressure, and watch how prices, weights, and liquidity evolve over time. It also includes a simulated trading panel for swaps, limit orders, and TWAP.
 
 ## Getting Started
 1. Open the simulator page.
