@@ -7,7 +7,7 @@ title: Liquidity Bootstrapping Pool
 
 ## Overview
 
-Liquidity Bootstrapping Pools (LBPs) are programmable execution engines that leverage time-dependent weight shifts to create directional price pressure. Unlike standard AMMs with fixed weights, LBPs dynamically change token weighting (e.g 1/99 to 99/1 for TokenA/TokenB) over a specified time period. LBPs use [Weighted Math](./weighted-pool/weighted-math.md) with time-dependent weights controlled by the pool owner.
+Liquidity Bootstrapping Pools (LBPs) are programmable execution engines that leverage time-dependent weight shifts to create directional price pressure. Unlike standard AMMs with fixed weights, LBPs dynamically change token weighting (e.g 1/99 to 99/1 for TokenA/TokenB) over a specified time period. LBPs use [Weighted Math](../weighted-pool/weighted-math.md) with time-dependent weights controlled by the pool owner.
 
 The pool owner is the only address that can add liquidity to the pool, which must be done prior to the start of the weight shift. Furthermore, the proceeds can only be removed after the end time. This architecture transforms LBPs from simple liquidity pools into strategic financial primitives for controlled asset distribution, accumulation, or large-scale portfolio rebalancing.
 
