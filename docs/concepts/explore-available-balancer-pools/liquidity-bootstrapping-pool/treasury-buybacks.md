@@ -67,7 +67,6 @@ Ensure that `blockProjectTokenSwapsIn` is set to `false`. The mechanism relies o
 When configured correctly with sufficient liquidity (>$500k), rLBPs have demonstrated high execution efficiency.
 
 *   **Slippage/Premium:** Historical data from protocols like TempleDAO indicates execution premiums as low as **+0.13%** relative to spot price, significantly outperforming large market buys.
-*   **Anti-MEV:** Because the price rise is gradual and mathematical, the pool resists "sandwich" attacks. The pool does not react violently to external volatility, forcing sellers to accept the pool's defined price curve.
 
 ::: warning Liquidity Requirement
 rLBPs are most effective for institutional-scale execution. Shallow pools (e.g., <$100k liquidity) may suffer from wider arbitrage spreads, resulting in higher premiums.
