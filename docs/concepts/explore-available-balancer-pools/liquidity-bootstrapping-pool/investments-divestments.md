@@ -31,7 +31,7 @@ Divestment involves selling a large quantity of an asset (e.g., a grant received
 
 Unlike a **Token Launch** (which targets 2-4 days for hype maximization), a **Strategic Divestment** prioritizes stability and value retention over long horizons.
 
-### 1. Duration & Patience
+### 1. Duration
 *   **Recommendation:** 1 Month to 1 Year.
 *   **Why:** Empirical data demonstrates that extending the weight shift over a long period allows the market to absorb massive supply without crashing the token price. The slow decay converts panic into a predictable "streaming" sale.
 
