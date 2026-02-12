@@ -10,7 +10,7 @@ The LBP Simulator lets you configure a Liquidity Bootstrapping Pool (LBP), model
 
 ## Getting Started
 1. Open the simulator page.
-2. Click `Configure your LBP` or use kbd `⌘ + b` to open the configuration panel.
+2. Click `Configure your LBP` or use the keyboard shortcut kbd `⌘ + b` to open the configuration panel.
 3. Set your parameters, then press `Play` to run the simulation.
 4. Use the chart tabs and stats cards to read results.
 
