@@ -16,7 +16,7 @@ For DAOs and treasuries, acquiring large amounts of a specific asset (e.g., buyi
 *   **Market Buys** create immediate "green candles," resulting in high slippage and poor execution prices.
 *   **TWAP** (Time-Weighted Average Price) orders reduce impact but lack bottom-up price discovery, simply accepting the market rate over time.
 
-The **rLBP** solves this by functioning as an automated, accumulating limit order. By inverting the weight logic, the pool creates gradually increasing buy pressure. This forces the market to sell into the pool only when the pool's "bid" becomes attractive relative to external venues, minimizing the premium paid by the treasury.
+The **LBP** solves this by functioning as an automated, accumulating limit order. By inverting the weight logic, the pool creates gradually increasing buy pressure. This forces the market to sell into the pool only when the pool's "bid" becomes attractive relative to external venues, minimizing the premium paid by the treasury.
 
 ## Architectural Mechanics
 
