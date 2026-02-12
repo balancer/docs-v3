@@ -82,7 +82,7 @@ Use the chart tabs to explore outcomes.
 - `Price over time`: Spot price evolution during the LBP. When paused, dotted paths show potential price scenarios.
 - `Sales`: Displays simulated swap activity.
 - `Demand curve`: Shows buy and sell pressure over time (net pressure included).
-- `Weights`: Shows how token and collateral weights shift through the campaign.
+- `Weights`: Shows how token and collateral weights shift through the sale.
 
 ## Key Metrics (Stats Cards)
 The header and stat cards summarize current results.
