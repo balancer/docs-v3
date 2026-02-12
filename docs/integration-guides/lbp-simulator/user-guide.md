@@ -31,7 +31,7 @@ All core settings live in the `Configure your LBP` panel.
 **Weights**
 - `Start (Token / Collateral)`: Initial pool weights. Higher token weight means a higher starting price.
 - `End (Token / Collateral)`: Final pool weights at the end of the LBP.
-- `Collateral Token`: Selects the collateral asset (`USDC`, `USDT`, `ETH`, `wETH`).
+- `Collateral Token`: Selects the collateral asset (`USDC`, `USDT`, `WETH`).
 - `Swap Fee`: Fee charged on swaps (1%–5%).
 
 ## Buy Pressure Model
