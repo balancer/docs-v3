@@ -12,7 +12,7 @@ Beyond token launches, Liquidity Bootstrapping Pools (LBPs) serve as programmabl
 
 ## Execution Philosophy: Maker vs. Taker
 
-For treasuries managing significant capital, the primary challenge is **Liquidity Consumption**. Traditional execution methods like Time-Weighted Average Price (TWAP) algorithms break large orders into small "slices" over time. However, TWAP strategies are "takers", they consume existing liquidity, paying swap fees and remaining vulnerable to front-running.
+For treasuries managing significant capital, the primary challenge is **Liquidity Consumption**. Traditional execution methods like Time-Weighted Average Price (TWAP) algorithms break large orders into small "slices" over time. However, TWAP strategies are "takers", they consume existing liquidity, paying swap fees for it.
 
 The LBP flips this dynamic. By deploying a pool, the treasury becomes a **Liquidity Maker**.
 
