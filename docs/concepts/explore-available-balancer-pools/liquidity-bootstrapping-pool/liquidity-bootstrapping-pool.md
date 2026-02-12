@@ -159,7 +159,7 @@ The migration happens via the [`LBPMigrationRouter`](https://github.com/balancer
 - `projectTokenEndWeight` / `reserveTokenEndWeight`: Final weights (scaled).
 - `startTime` / `endTime`: UNIX timestamps for the sale window.
 - `blockProjectTokenSwapsIn`: Boolean to restrict project token sales.
-- `poolCreator`: The account accrueing [pool creator fees](../core-concepts/pool-creator-fee.md) 
+- `poolCreator`: The account accruing [pool creator fees](../core-concepts/pool-creator-fee.md) 
 - Only two tokens are allowed per pool.
 
 ---
