@@ -46,7 +46,7 @@ The rLBP does not "buy" the token itself. It incentivizes **arbitrageurs** to de
 To deploy an rLBP, you must utilize the `LiquidityBootstrappingPoolFactory`. The following parameters are prescriptive for a standard buyback operation.
 
 ### 1. Token Setup
-*   **Collateral Token:** The asset the Treasury wishes to spend (e.g., DAI, USDC, WETH).
+*   **Collateral Token:** The asset the Treasury wishes to spend (e.g., USDC, WETH).
 *   **Project Token:** The asset the Treasury wishes to acquire.
 *   **Initial Liquidity:** The pool should be funded primarily with the **Collateral Token**.
     *   *Note:* A small amount of "dust" Project Token is required to initialize the math.
