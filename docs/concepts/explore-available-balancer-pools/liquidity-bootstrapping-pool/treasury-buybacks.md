@@ -5,7 +5,7 @@ title: Treasury Buybacks (rLBP)
 
 # Treasury Buybacks (rLBP)
 
-While the standard Liquidity Bootstrapping Pool (LBP) is designed for **distribution** (selling tokens), the mechanism can be inverted to facilitate efficient **accumulation** (buying tokens). This configuration is known as a **Reverse LBP (rLBP)**.
+While the standard Liquidity Bootstrapping Pool (LBP) is designed for **distribution** (selling tokens), the mechanism can be inverted to facilitate efficient **accumulation** (buying tokens)**.
 
 This guide outlines the architecture and configuration for using an rLBP to conduct treasury buybacks or collateral accumulation.
 
