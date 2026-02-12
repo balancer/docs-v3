@@ -73,8 +73,6 @@ When configured correctly with sufficient liquidity (>$500k), rLBPs have demonst
 rLBPs are most effective for institutional-scale execution. Shallow pools (e.g., <$100k liquidity) may suffer from wider arbitrage spreads, resulting in higher premiums.
 :::
 
-Based on the provided empirical analysis, here is the requested subsection.
-
 ### 4. Use Cases & Strategic Learnings
 
 The rLBP mechanism is not merely a theoretical construct but a battle-tested financial primitive. Empirical analysis of over $43M in volume identifies two distinct applications for this architecture:
