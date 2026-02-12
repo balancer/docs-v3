@@ -8,7 +8,7 @@ references:
 
 # Strategic Investments & Divestments
 
-Beyond token launches, Liquidity Bootstrapping Pools (LBPs) serve as programmable execution engines for institutional treasuries. They allow DAOs and funds to enter (Invest) or exit (Divest) massive positions in illiquid assets without the slippage associated with atomic swaps or the signaling risks of OTC deals.
+Beyond token launches, Liquidity Bootstrapping Pools (LBPs) serve as programmable execution engines for institutional treasuries. They allow DAOs and funds to enter (Invest) or exit (Divest) massive positions without the slippage associated with atomic swaps or the signaling risks of OTC deals.
 
 ## Execution Philosophy: Maker vs. Taker
 
