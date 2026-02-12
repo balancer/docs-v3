@@ -17,7 +17,7 @@ features:
 The LBP Simulator is an interactive, client-side tool for modeling a Liquidity Bootstrapping Pool (LBP). It lets you configure a launch/divestment/buyback setup and watch how price, weights, and demand dynamics evolve over time. The goal is to make LBP mechanics more intuitive and to help teams explore tradeoffs before going on-chain.
 
 ## What it can do
-- Configure core LBP parameters (token name/symbol, supply, percent for sale, start and end weights, duration, fees, initial balances).
+- Configure core LBP parameters (token name/symbol, supply, percentage for sale, start and end weights, duration, fees, initial balances).
 - Model demand and sell pressure curves to see how different market behaviors affect the price path.
 - Run the simulation with play/pause controls and adjustable speed.
 - Visualize outcomes across multiple charts:
