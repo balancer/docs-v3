@@ -26,7 +26,7 @@ All core settings live in the `Configure your LBP` panel.
 **Tokenomics**
 - `Total Supply`: Total token supply used to compute valuation metrics.
 - `% for Sale`: Share of total supply sold through the LBP. This drives the `Tokens for sale` amount.
-- `Initial Liquidity (Collateral token)`: Starting collateral balance in the pool (USDC/USDT/ETH/wETH). This anchors the starting price.
+- `Initial Liquidity (Collateral token)`: Starting collateral balance in the pool (USDC/USDT/WETH). This anchors the starting price.
 
 **Weights**
 - `Start (Token / Collateral)`: Initial pool weights. Higher token weight means a higher starting price.
