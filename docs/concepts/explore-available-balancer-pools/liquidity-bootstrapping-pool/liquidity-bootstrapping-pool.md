@@ -23,12 +23,12 @@ The pool owner is the only address that can add liquidity to the pool, which mus
 
 LBPs serve three primary institutional and protocol applications. Each use case leverages the same weight-shifting mechanism but with different configurations and strategic objectives:
 
-### 1. [Token Launches](./token-launch.md)
+### 1. [Token Launches](./token-launches.md)
 **Objective:** Fair initial token distribution with minimal starting capital.
 
-The standard LBP configuration facilitates price discovery for new tokens through a continuous Dutch auction mechanism. By starting with a high price ceiling (99% project token / 1% collateral) and shifting to lower weights over 2-3 days, projects can distribute tokens broadly while discouraging bot sniping and whale concentration. The weight shift creates downward price pressure, allowing organic buyers to enter at levels they deem fair rather than competing in a gas war at launch.
+The standard LBP configuration facilitates price discovery for new tokens through a continuous Dutch auction mechanism. By starting with a high price ceiling (99% project token / 1% reserve token) and shifting to lower weights over 2-3 days, projects can distribute tokens broadly while discouraging bot sniping and whale concentration. The weight shift creates downward price pressure, allowing organic buyers to enter at levels they deem fair rather than competing in a gas war at launch.
 
-### 2. [Strategic Investment & Divestment](./investments-divestments.md)
+### 2. [Treasury Diversification](./treasury-diversification.md)
 **Objective:** Institutional-scale position entry and exit with minimal market impact.
 
 For DAOs and treasuries managing significant capital, LBPs function as "Liquidity Maker" execution engines. Unlike TWAP strategies that consume liquidity and pay fees, LBPs create their own depth through weight shifting. This allows treasuries to:
@@ -37,13 +37,13 @@ For DAOs and treasuries managing significant capital, LBPs function as "Liquidit
 
 Extended durations (1 month to 1 year) convert execution from market-taking into a programmatic "streaming" operation.
 
-### 3. [Treasury Buybacks (rLBP)](./treasury-buybacks.md)
+### 3. [Token Buybacks](./token-buybacks.md)
 **Objective:** Efficient protocol token accumulation via inverted weight logic.
 
-The Reverse LBP (rLBP) inverts the standard configuration to create upward price pressure. By starting with high collateral weight (90% DAI / 10% project token) and shifting toward the project token (30% / 70%), the pool functions as an automated, rising limit order. Arbitrageurs are incentivized to sell the project token into the pool when its internal price exceeds external markets, allowing treasuries to accumulate tokens at near-market prices without triggering "green candles" or excessive slippage.
+An LBP configured for accumulation inverts the weight logic to create upward price pressure. By starting with high reserve token weight (90% DAI / 10% project token) and shifting toward the project token (30% / 70%), the pool functions as an automated, rising limit order. Arbitrageurs are incentivized to sell the project token into the pool when its internal price exceeds external markets, allowing treasuries to accumulate tokens at near-market prices without triggering "green candles" or excessive slippage.
 
 ::: tip Choosing the Right Configuration
-The direction and speed of weight shift determines the LBP's behavior. **Decreasing** project token weight creates sell pressure (Token Launch, Divestment). **Increasing** project token weight creates buy pressure (rLBP). Duration controls the intensity: fast shifts (2-3 days) for concentrated events, slow shifts (weeks to months) for capital-efficient institutional execution.
+The direction and speed of weight shift determines the LBP's behavior. **Decreasing** project token weight creates sell pressure (Token Launch, Divestment). **Increasing** project token weight creates buy pressure (Token Buybacks). Duration controls the intensity: fast shifts (2-3 days) for concentrated events, slow shifts (weeks to months) for capital-efficient institutional execution.
 :::
 
 ### Mental Model
@@ -57,9 +57,9 @@ By shifting the weights over time, the pool creates **directional price pressure
 - **Decreasing Token A Weight** → Creates downward price pressure (selling/distribution scenarios).
 - **Increasing Token A Weight** → Creates upward price pressure (buying/accumulation scenarios).
 
-**For Distribution (Token Launch, Divestment):** The starting price should be set significantly above the expected market value (e.g., 99/1 project/collateral). This creates a "price ceiling" that decays over time. Buyers are disincentivized from purchasing immediately, as the weight shift ensures the price will decrease unless organic demand counteracts it. Market equilibrium is reached when buying pressure balances the mechanical decay.
+**For Distribution (Token Launch, Divestment):** The starting price should be set significantly above the expected market value (e.g., 99/1 project/reserve). This creates a "price ceiling" that decays over time. Buyers are disincentivized from purchasing immediately, as the weight shift ensures the price will decrease unless organic demand counteracts it. Market equilibrium is reached when buying pressure balances the mechanical decay.
 
-**For Accumulation (rLBP, Investment):** The starting price should be set below the expected market value (e.g., 10/90 project/collateral). This creates a "price floor" that rises over time. Sellers are incentivized to wait until the pool's bid price rises to an acceptable level, allowing the treasury to accumulate at progressively higher prices until market equilibrium is reached.
+**For Accumulation (Token Buybacks, Investment):** The starting price should be set below the expected market value (e.g., 10/90 project/reserve). This creates a "price floor" that rises over time. Sellers are incentivized to wait until the pool's bid price rises to an acceptable level, allowing the treasury to accumulate at progressively higher prices until market equilibrium is reached.
 
 In both cases, the LBP functions as a **continuous auction** where the weight shift acts as the "forcing function" that drives price discovery without requiring the pool operator to manually adjust parameters.
 
@@ -72,7 +72,7 @@ During a weight shift, one token experiences mechanical sell pressure while the 
 **Application Examples:**
 - **Token Launch:** Downward pressure from 99/1 → 20/80 discourages early bot sniping, allowing price discovery through organic demand.
 - **Treasury Divestment:** A DAO slowly selling 49 trillion AKITA tokens over 1 year used weight shifts to create a "soft price floor," stabilizing the market (Gitcoin case study).
-- **rLBP Buyback:** Upward pressure from 10/90 → 70/30 creates a rising bid, allowing TempleDAO to accumulate $43M with only +0.13% execution premium.
+- **Token Buybacks:** Upward pressure from 10/90 → 70/30 creates a rising bid, allowing TempleDAO to accumulate $43M with only +0.13% execution premium.
 
 ### Fair Market Dynamics
 
@@ -88,11 +88,11 @@ This architecture promotes **organic participation** and **broad distribution** 
 
 LBPs allow operators to achieve large-scale objectives with minimal starting capital. Unlike 50/50 pools that require equal value on both sides, LBPs leverage extreme weight ratios to "manufacture depth."
 
-**Token Launch Example:** A team launching a token in a traditional 50/50 pool must provide 50% DAI and 50% TOKEN. In an LBP starting at 99/1, the team provides only ~1% of the liquidity value in collateral. As weights shift toward 20/80, the pool mathematically forces the accumulation of DAI, leaving the treasury with significantly more funding than at initialization.
+**Token Launch Example:** A team launching a token in a traditional 50/50 pool must provide 50% DAI and 50% TOKEN. In an LBP starting at 99/1, the team provides only ~1% of the liquidity value in reserve token. As weights shift toward 20/80, the pool mathematically forces the accumulation of DAI, leaving the treasury with significantly more funding than at initialization.
 
 **Treasury Divestment Example:** A DAO divesting a grant token into USDC can start with 90/10 (90% grant token, 10% USDC). Over months, as the weight shifts to 30/70, the DAO accumulates USDC while the illiquid grant token is distributed to the market. In Balancer V3, the USDC can be deposited into Boosted Pools (e.g., Aave) to earn yield during the divestment period, further offsetting execution costs.
 
-**rLBP Buyback Example:** A treasury conducting a buyback starts with 90% collateral (DAI) and 10% project token. The treasury deploys capital only once, and the weight shift mechanically creates buy pressure without requiring additional deposits or manual order management.
+**Token Buyback Example:** A treasury conducting a buyback starts with 90% reserve token (DAI) and 10% project token. The treasury deploys capital only once, and the weight shift mechanically creates buy pressure without requiring additional deposits or manual order management.
 
 ### Role Reversal: Maker vs. Taker
 
@@ -119,7 +119,7 @@ The following diagram illustrates a standard distribution LBP (e.g., Token Launc
 
 ![Liquidity Bootstrapping pool weight shifts](/images/pool_LBP.webp)
 
-**Note:** For accumulation scenarios (rLBP), the weight shift operates in reverse: starting with high collateral weight (e.g., 90/10 DAI/TOKEN) and shifting toward the project token (e.g., 30/70), creating upward price pressure.
+**Note:** For accumulation scenarios (e.g. token buybacks), the weight shift operates in reverse: starting with high reserve token weight (e.g., 90/10 DAI/TOKEN) and shifting toward the project token (e.g., 30/70), creating upward price pressure.
 
 ## Pool Settings
 
@@ -127,13 +127,13 @@ LBPs are highly configurable. Here are the key parameters and settings, as defin
 
 - **Tokens**: LBPs are always two-token pools. The specific tokens depend on the use case:
   - **Token Launch / Divestment:** Project token + Reserve token (e.g., USDC, WETH, DAI).
-  - **rLBP / Investment:** Target token + Collateral token (e.g., governance token + DAI).
+  - **Token Buybacks / Investment:** Project token + Reserve token (e.g., governance token + DAI).
 - **Weights**: The pool owner specifies the starting and ending weights for both tokens. These weights change linearly over the operation period.
   - **Distribution (Launch/Divestment):** Start with high project token weight (e.g., 99/1), end with low project token weight (e.g., 20/80).
-  - **Accumulation (rLBP/Investment):** Start with low target token weight (e.g., 10/90), end with high target token weight (e.g., 70/30).
+  - **Accumulation (Token Buybacks / Investment):** Start with low project token weight (e.g., 10/90), end with high project token weight (e.g., 70/30).
 - **Operation Period**: The pool owner sets the `startTime` and `endTime` (timestamps). Swaps are only enabled between these times.
 - **Liquidity Provision**: Only the owner can add liquidity, and only before the operation starts.
-- **Swaps**: Optionally, the pool can block selling the project token back into the pool (`blockProjectTokenSwapsIn`). This is typically enabled for token launches to prevent manipulation, but disabled for rLBPs where sellers must deposit the target token.
+- **Swaps**: Optionally, the pool can block selling the project token back into the pool (`blockProjectTokenSwapsIn`). This is typically enabled for token launches to prevent manipulation, but disabled for token buybacks where sellers must deposit the project token into the pool.
 - **Trusted Router**: All pool interactions must go through a trusted router to ensure correct sender reporting and security.
 
 ## Pool Migration

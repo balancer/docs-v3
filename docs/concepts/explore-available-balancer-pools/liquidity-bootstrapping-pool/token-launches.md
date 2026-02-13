@@ -1,6 +1,6 @@
 ---
 order: 1
-title: Token Launch
+title: Token Launches
 ---
 
 # Token Launches
@@ -33,11 +33,11 @@ Based on forensic analysis of historical launches, we recommend the following co
     *   **48-72 Hours:** The "sweet spot" where organic volume is highest relative to algorithmic extraction.
 
 ### 2. Weight Schedule
-To create the necessary "Price Ceiling," the **Project Token** must start with a dominant weight.
+To create the necessary "Price Ceiling," the **project token** must start with a dominant weight.
 
 | Parameter | Value | Logic |
 | :--- | :--- | :--- |
-| **Start Weights** | 99% Project / 1% Collateral | Sets a high initial price to crush early bot incentives. Historical data shows "Healthy" pools average ~94% starting weight, while failed pools average ~86%. |
+| **Start Weights** | 99% project token / 1% reserve token | Sets a high initial price to crush early bot incentives. Historical data shows "Healthy" pools average ~94% starting weight, while failed pools average ~86%. |
 | **End Weights** | Variable (e.g., 20% / 80%) | Determines the final floor price. A "soft landing" (50/50) is often used if the pool will transition to a standard Weighted Pool. |
 
 ### 3. The Safety Slope
@@ -54,7 +54,7 @@ Analysis suggests that **Swap Fees** and specific **Start/End Ratios** (e.g., 90
 
 ## Migration and Transition
 
-A successful LBP concludes with the **Project Token** widely distributed and the **Collateral Token** accumulated in the pool. To transition to a permanent trading venue, use the `createWithMigration` function on the factory.
+A successful LBP concludes with the **project token** widely distributed and the **reserve token** accumulated in the pool. To transition to a permanent trading venue, use the `createWithMigration` function on the factory.
 
 This allows the atomic migration of liquidity from the LBP to a standard **Weighted Pool** (e.g., 80/20 or 50/50) immediately upon the conclusion of the sale.
 
@@ -72,6 +72,6 @@ When configuring the migration, specific parameters control the lock-up and init
 
 ## Capital Efficiency
 
-The LBP allows teams to bootstrap liquidity with minimal capital. In a standard 50/50 pool, a team must match the value of their tokens with an equal value of collateral (e.g., DAI).
+The LBP allows teams to bootstrap liquidity with minimal capital. In a standard 50/50 pool, a team must match the value of their tokens with an equal value of reserve token (e.g., DAI).
 
-In an LBP starting at **99/1**, the team provides only ~1% of the total liquidity value in collateral. As the weights shift towards the collateral (e.g., to 20/80), the pool mathematically forces the accumulation of the collateral asset, leaving the treasury with significantly more funding than it started with.
+In an LBP starting at **99/1**, the team provides only ~1% of the total liquidity value in reserve token. As the weights shift towards the reserve token (e.g., to 20/80), the pool mathematically forces the accumulation of the reserve asset, leaving the treasury with significantly more funding than it started with.

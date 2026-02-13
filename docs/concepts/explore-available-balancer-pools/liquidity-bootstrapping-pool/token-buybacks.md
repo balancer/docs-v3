@@ -7,7 +7,7 @@ title: Token Buybacks
 
 While the standard Liquidity Bootstrapping Pool (LBP) is designed for **distribution** (selling tokens), the mechanism can be inverted to facilitate efficient **accumulation** (buying tokens)**.
 
-This guide outlines the architecture and configuration for using an LBP to conduct token buybacks or collateral accumulation.
+This guide outlines the architecture and configuration for using an LBP to conduct token buybacks or reserve accumulation.
 
 ## Logic and Philosophy
 
@@ -20,24 +20,24 @@ The **LBP** solves this by functioning as an automated, accumulating limit order
 
 ## Architectural Mechanics
 
-In a standard token launch/sale LBP, the token weight starts high and decreases to lower the price. In an token buyback LBP, the **Collateral Token** (the asset used to buy) starts with a high weight and decreases over time.
+In a standard token launch/sale LBP, the project token weight starts high and decreases to lower the price. In a token buyback LBP, the **reserve token** (the asset used to buy) starts with a high weight and decreases over time.
 
 ### The Weight Flip
-To create upward price pressure (a rising bid), the pool is initialized with a high weight for the Collateral and a low weight for the Project Token.
+To create upward price pressure (a rising bid), the pool is initialized with a high weight for the reserve token and a low weight for the project token.
 
-$$ P_{token} = \frac{Balance_{collateral} \cdot Weight_{token}}{Balance_{token} \cdot Weight_{collateral}} $$
+$$ P_{token} = \frac{Balance_{reserve} \cdot Weight_{token}}{Balance_{token} \cdot Weight_{reserve}} $$
 
-1.  **Initialization:** The pool holds mostly Collateral (e.g., DAI) and very little Project Token.
-    *   *Configuration:* Collateral Weight ~90% / Project Token Weight ~10%.
-    *   *Result:* The theoretical spot price of the Project Token is significantly **below** market price.
+1.  **Initialization:** The pool holds mostly reserve token (e.g., DAI) and very little project token.
+    *   *Configuration:* Reserve token weight ~90% / Project token weight ~10%.
+    *   *Result:* The theoretical spot price of the project token is significantly **below** market price.
 2.  **Accumulation Phase:** As time progresses, the **Controller** shifts the weights.
-    *   *Shift:* Collateral Weight decreases ($90\% \rightarrow 30\%$), Project Token Weight increases ($10\% \rightarrow 70\%$).
-    *   *Result:* The price denominator decreases while the numerator increases, mechanically raising the price of the Project Token.
-3.  **Arbitrage Execution:** When the pool's internal price rises slightly above the external market price (e.g., Uniswap), arbitrageurs buy the Project Token on the open market and sell it to the LBP.
+    *   *Shift:* Reserve token weight decreases ($90\% \rightarrow 30\%$), project token weight increases ($10\% \rightarrow 70\%$).
+    *   *Result:* The price denominator decreases while the numerator increases, mechanically raising the price of the project token.
+3.  **Arbitrage Execution:** When the pool's internal price rises slightly above the external market price (e.g., Uniswap), arbitrageurs buy the project token on the open market and sell it to the LBP.
 
 ::: tip
 
-The LBP does not "buy" the token itself. It incentivizes **arbitrageurs** to deposit the Project Token into the pool in exchange for Collateral.
+The LBP does not "buy" the token itself. It incentivizes **arbitrageurs** to deposit the project token into the pool in exchange for the reserve token.
 
 :::
 
@@ -46,21 +46,21 @@ The LBP does not "buy" the token itself. It incentivizes **arbitrageurs** to dep
 To deploy an LBP, you must utilize the `LiquidityBootstrappingPoolFactory`. The following parameters are prescriptive for a standard buyback operation.
 
 ### 1. Token Setup
-*   **Collateral Token:** The asset the Treasury wishes to spend (e.g., USDC, WETH).
-*   **Project Token:** The asset the Treasury wishes to acquire.
-*   **Initial Liquidity:** The pool should be funded primarily with the **Collateral Token**.
-    *   *Note:* A small amount of "dust" Project Token is required to initialize the math.
+*   **Reserve token:** The asset the Treasury wishes to spend (e.g., USDC, WETH).
+*   **Project token:** The asset the Treasury wishes to acquire.
+*   **Initial Liquidity:** The pool should be funded primarily with the **reserve token**.
+    *   *Note:* A small amount of "dust" project token is required to initialize the math.
 
 ### 2. Weight Schedule
-To ensure the "Limit Order" behavior, the weight curve must start with the Collateral dominant.
+To ensure the "Limit Order" behavior, the weight curve must start with the reserve token dominant.
 
 | Parameter | Recommended Value | Reason |
 | :--- | :--- | :--- |
-| **Start Weights** | 90% Collateral / 10% Project Token | Sets the initial bid price low to prevent front-running. |
-| **End Weights** | 30% Collateral / 70% Project Token | Ensures the bid price eventually crosses the market price to fill the order. |
+| **Start Weights** | 90% reserve token / 10% project token | Sets the initial bid price low to prevent front-running. |
+| **End Weights** | 30% reserve token / 70% project token | Ensures the bid price eventually crosses the market price to fill the order. |
 
 ### 3. Swap Permissions
-Ensure that `blockProjectTokenSwapsIn` is set to `false`. The mechanism relies on external actors swapping the **Project Token** *in* to the pool to extract the **Collateral**.
+Ensure that `blockProjectTokenSwapsIn` is set to `false`. The mechanism relies on external actors swapping the **project token** *in* to the pool to extract the **reserve token**.
 
 ## Performance Expectations
 
@@ -77,7 +77,7 @@ LBPs are most effective for institutional-scale execution. Shallow pools (e.g., 
 The LBP mechanism is not merely a theoretical construct but a battle-tested financial primitive. Empirical analysis of over $43M in volume identifies two distinct applications for this architecture:
 
 1.  **Governance Token Repurchases:**
-    Protocols like **TempleDAO** have utilized rLBPs to buy back governance tokens directly from the market. This allows DAOs to restock their treasury for future incentives or voting power consolidation without manually managing orders on exchanges.
+    Protocols like **TempleDAO** have utilized LBPs to buy back governance tokens directly from the market. This allows DAOs to restock their treasury for future incentives or voting power consolidation without manually managing orders on exchanges.
 2.  **Institutional Block Execution:**
     For large-scale capital deployment, the LBP functions as an algorithmic execution engine. **TempleDAO** demonstrated this by successfully moving over $43M into their token (TEMPLE) with an average execution premium of only +0.13%. In this context, the pool serves as a "moving limit order" that allows a treasury to enter massive positions without triggering the massive slippage ("green candles") associated with standard market buys.
 
