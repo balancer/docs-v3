@@ -83,13 +83,6 @@ const coreTools = [
 
 const calculatorsAndDApps = [
   {
-    title: 'Xeonus and Zen Dragon Tools',
-    icon: '/images/logo-light.svg',
-    details:
-      'veBAL, Impermanent Loss and Price Impact Calculators - created by Xeonus and Zen Dragon',
-    link: 'https://balancer.tools/veBAL',
-  },
-  {
     title: 'veBAL Gauge Multivoter',
     icon: '/images/toolshub/zekraken.jpg',
     details:
@@ -118,19 +111,19 @@ const calculatorsAndDApps = [
     link: 'https://tools.balancer.blue/internalmanager',
   },
   {
-    title: 'Custom Pool Metadata',
-    icon: '/images/toolshub/balancer-symbol.svg',
-    details:
-      'Tool for owners to be able to add custom metadata to their pools - created by Bleu',
-    link: 'https://tools.balancer.blue/metadata/',
-  },
-  {
     title: 'Stable Swap Simulator',
     icon: '/images/toolshub/balancer-symbol.svg',
     details:
       'Dashboard to visualize the impact of changes in the Amplification Factor on Balancer Stable-Like Pools - created by Bleu',
     link: 'https://tools.balancer.blue/stableswapsimulator',
   },
+  {
+    title: 'LBP simulator',
+    icon: '/images/toolshub/balancer-symbol.svg',
+    details:
+      'Tool created for LBP pool creators, with the goal of facilitating the projection of different scenarios that the pool may follow.',
+      link: 'https://lbp-simulator.vercel.app/' // add tools.balancer DNS
+  }
   // Add more calculators and dApps as needed
 ];
 
@@ -139,7 +132,7 @@ const analyticsSites = [
     title: 'DeFilytica Analytics',
     icon: '/images/toolshub/defilytica_simple.png',
     details:
-      'Protocol, pool and token metrics. Additionally, an in-depth financial dashboard and service-provider analytics board.',
+      'Protocol, pool and token metrics. Additionally, an in-depth financial dashboard and service-provider analytics board. V2 only ',
     link: 'https://balancer.defilytica.com/',
   },
   {
