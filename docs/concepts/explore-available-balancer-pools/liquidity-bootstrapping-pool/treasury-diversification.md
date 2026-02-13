@@ -5,84 +5,44 @@ title: Treasury Diversification
 
 # Treasury Diversification
 
-Beyond token launches, Liquidity Bootstrapping Pools (LBPs) serve as programmable execution engines for institutional treasuries. They allow DAOs and funds to enter (Invest) or exit (Divest) massive positions without the slippage associated with atomic swaps or the signaling risks of OTC deals.
+LBPs can help treasuries and DAOs enter or exit large positions with reduced market impact.
 
-## Execution Philosophy: Maker vs. Taker
+::: tip Balancer V3: Boosted Pools
+In Balancer V3, one side of an LBP can be a boosted token (e.g., a yield-bearing stablecoin), so idle balances don’t have to sit unproductive during a long-running operation.
+:::
 
-For treasuries managing significant capital, the primary challenge is **Liquidity Consumption**. Traditional execution methods like Time-Weighted Average Price (TWAP) algorithms break large orders into small "slices" over time. However, TWAP strategies are "takers", they consume existing liquidity, paying swap fees for it.
+### Mental Model
 
-The LBP flips this dynamic. By deploying a pool, the treasury becomes a **Liquidity Maker**.
-
-| Metric            | TWAP Strategy                     | Balancer LBP                                                 |
-| :---------------- | :-------------------------------- | :----------------------------------------------------------- |
-| **Role**          | Liquidity Taker (Pays Fees)       | Liquidity Maker (Earns Fees)                                 |
-| **Market Impact** | Dependent on external pool depth. | Creates its own depth; minimizes impact via weight shifting. |
-| **Slippage**      | Negative (-10 to -25 bps)         | Net Positive (due to accrued swap fees).                     |
-| **Signaling**     | "Stealth" (until detected).       | Transparent & Scheduled (Reduces panic).                     |
-
-**Logic:** The weight shift aligns the internal price with the external market. Arbitrageurs are incentivized to fill the order to close the gap. The treasury effectively "hires" the market to execute the trade, capturing the arbitrage profit as swap fees rather than losing it as slippage.
+LBPs can be used by treasuries to enter (invest) or exit (divest) positions over time, using a scheduled weight shift rather than a single large swap. Arbitrage keeps the LBP internal price aligned with external markets as the sale progresses.
 
 ## Strategic Divestment (Selling)
 
-Divestment involves selling a large quantity of an asset (e.g., a grant received in an illiquid token, or diversifying treasury holdings) into a more liquid asset like USDC or ETH.
+Divestment involves selling a large quantity of an asset (e.g., a grant received in an illiquid token, or diversifying treasury holdings) into a more liquid asset like USDC or ETH. Unlike a **Token Launch** (which typically runs over days), a **Strategic Divestment** prioritizes stability and value retention over longer horizons.
 
-Unlike a **Token Launch** (which targets 2-4 days for hype maximization), a **Strategic Divestment** prioritizes stability and value retention over long horizons.
+## Strategic Investment (Buying)
 
-### 1. Duration
-
-- **Recommendation:** 1 Month to 1 Year.
-- **Why:** Empirical data demonstrates that extending the weight shift over a long period allows the market to absorb massive supply without crashing the token price. The slow decay converts panic into a predictable "streaming" sale.
-
-### 2. V3 Advantage: Boosted Pools
-
-In Balancer V3, Divestment LBPs can be nested within **Boosted Pools**.
-
-- **Concept:** A treasury selling Token A for USDC does not need the USDC to sit idle in the pool.
-- **Implementation:** The USDC side of the LBP is deposited into a lending protocol (e.g., Aave) via the Vault, earning yield throughout the divestment period.
-- **Result:** The treasury earns **Swap Fees + Yield**, often offsetting the price discount required to move the inventory.
-
-## Strategic Investment (Accumulation)
-
-While token buybacks focus on retiring supply, **Investment LBPs** allow treasuries to acquire large stakes in _other_ protocols (e.g., a DAO rotating stablecoins into a governance token) without triggering a parabolic price response.
-
-### The "Fair Launch Opportunity" (FLO)
-
-In a standard market buy, a large "bid" signals whales to front-run the order. In an Investment LBP:
-
-1.  **High Ceiling:** The treasury sets the target token's weight to increase over time (e.g., 1% $\to$ 50%).
-2.  **Disincentive:** Because the price starts artificially high, bots are disincentivized to front-run the treasury.
-3.  **Accumulation:** The treasury accumulates tokens at the "market-clearing price" as the weights shift, effectively acting as a liquidity provider to its own accumulation event.
-
-## V3 Risk Management: Hooks
-
-Balancer V3 introduces "Hooks" that allow projects to embed custom features and institutional-grade safety mechanisms into their LBPs. Through hooks, treasuries can implement advanced capabilities such as price floor protections (to prevent selling below critical valuations during market crashes), MEV capture mechanisms (to redirect arbitrage profits back to the treasury), dynamic fee adjustments, and other programmable controls that were previously impossible in DeFi. This extensibility transforms LBPs from simple pricing mechanisms into sophisticated execution engines with built-in risk management.
-
----
+While token buybacks focus on retiring supply, a **Strategic Investment** allows treasuries to acquire large stakes in _other_ protocols (e.g., a DAO rotating stablecoins into another governance token or ETH) without triggering a parabolic price response. These operations are often run over weeks or months, rather than days.
 
 ## Case Study: The Gitcoin Akita Divestment
 
-The viability of using LBPs for institutional-scale divestment was empirically validated by the **Gitcoin DAO** during the "Akita Inu Saga".
+The viability of using LBPs for institutional-scale divestment was demonstrated by the **Gitcoin DAO**.
 
-**The Challenge:**
+**Challenge:**
+
 In 2021, Vitalik Buterin donated approximately 49 trillion AKITA tokens (valued at ~$5 million) to Gitcoin. The on-chain market depth was insufficient to absorb this liquidity; a direct sale would have resulted in roughly 99% slippage and a collapse of the token's community value.
 
-**The Configuration:**
-Instead of an atomic sell-off, the DAO deployed a "Scheduled Liquidity Pool" (LBP) with the following parameters:
+**Solution:**
 
-- **Duration:** 1 Year (Slow Decay).
+Instead of an atomic sell-off, the DAO deployed a LBP with the following parameters:
+
+- **Duration:** 1 Year (slow decay).
 - **Weight Shift:** 90% AKITA / 10% WETH $\to$ 10% AKITA / 90% WETH.
-- **Mechanism:** The pool acted as a "Smart Stream." Unlike a standard vesting contract (e.g., Sablier) which only releases tokens, the LBP functioned as a two-way market. When the external price dropped, the pool used its accumulated ETH to buy back AKITA, effectively establishing a soft price floor.
 
-**Quantitative Outputs:**
-Over the 12-month period, the mechanism successfully converted the illiquid asset into treasury-grade assets without destroying the market structure.
+**Results:**
 
-| Metric                 | Result                                                                                                                       |
-| :--------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
-| **Total Funds Raised** | ~$4.48 Million (Converted to WETH)                                                                                           |
-| **Trading Volume**     | $22.6 Million                                                                                                                |
-| **Swap Fees**          | The DAO earned fees on every volatility event (buying and selling).                                                          |
-| **Execution Quality**  | The token price stabilized, creating a liquid market described as "a billion dollars deep" relative to the selling pressure. |
+Over the 12-month period, the mechanism successfully converted the illiquid asset into WETH.
 
-::: tip Strategic Learning
-The Akita case demonstrates that **Time** is a substitute for **Liquidity**. By extending the duration of the weight shift, a treasury can manufacture depth, allowing arbitrageurs to break a massive order into thousands of micro-transactions over months.
-:::
+| Metric                 | Result        |
+| :--------------------- | :------------ |
+| **Total Funds Raised** | $4.48 Million |
+| **Trading Volume**     | $22.6 Million |

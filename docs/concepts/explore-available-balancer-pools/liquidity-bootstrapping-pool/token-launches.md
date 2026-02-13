@@ -5,73 +5,50 @@ title: Token Launches
 
 # Token Launches
 
-The Liquidity Bootstrapping Pool (LBP) is the standard primitive for initial token distribution. Unlike fixed-price sales or standard AMMs, which require large capital outlays to prevent volatility, the LBP utilizes time-dependent weights to facilitate fair price discovery and capital efficiency.
+The Liquidity Bootstrapping Pool (LBP) is the standard primitive for initial token distribution. The LBP utilizes time-dependent weights to facilitate fair price discovery and capital efficiency.
 
-This guide outlines the optimal configuration for a token launch, derived from a historical analysis of over 900 pools.
-
-## Logic and Mental Model
-
-The LBP functions as a **continuous Dutch Auction**.
-
-*   **Price Ceiling:** The pool is initialized with the price significantly *above* the expected market value.
-*   **Decay:** The weights shift over time, creating continuous downward pressure on the price.
-*   **Discovery:** Buyers step in when the price decays to a level they deem fair. Buying pressure counteracts the weight decay, effectively stabilizing the price at market equilibrium.
-
-This architecture solves the "Sniping" problem. Because the price starts high, bots are disincentivized from buying in the same block as the pool creation, preventing the extraction of value from legitimate users.
-
-## Optimal Configuration
-
-While extrinsic factors (marketing, sentiment) drive upside, the structural safety of a launch is engineered via three key parameters: **Duration**, **Starting Weights**, and **Slope**.
-
-Based on forensic analysis of historical launches, we recommend the following configuration to maximize capital efficiency and minimize bot extraction.
-
-### 1. Duration: The "Sweet Spot"
-*   **Recommendation:** 48 to 72 Hours (2 to 3 Days).
-*   **Logic:** Empirical data reveals a "U-Curve" of bot activity.
-    *   **< 24 Hours:** High bot participation due to the compressed timeframe.
-    *   **> 72 Hours:** High bot participation due to arbitrage opportunities on slow price decay.
-    *   **48-72 Hours:** The "sweet spot" where organic volume is highest relative to algorithmic extraction.
-
-### 2. Weight Schedule
-To create the necessary "Price Ceiling," the **project token** must start with a dominant weight.
-
-| Parameter | Value | Logic |
-| :--- | :--- | :--- |
-| **Start Weights** | 99% project token / 1% reserve token | Sets a high initial price to crush early bot incentives. Historical data shows "Healthy" pools average ~94% starting weight, while failed pools average ~86%. |
-| **End Weights** | Variable (e.g., 20% / 80%) | Determines the final floor price. A "soft landing" (50/50) is often used if the pool will transition to a standard Weighted Pool. |
-
-### 3. The Safety Slope
-The relationship between Duration and Weight Change creates a metric known as the **Weight Slope**.
-
-$$ Slope = \frac{|Weight_{start} - Weight_{end}|}{Duration_{hours}} $$
-
-*   **Recommendation:** Keep the slope **below 0.6**.
-*   **Logic:** The slope acts as a mechanical forcing function. Data indicates a "Safety Cliff" at 0.6; slopes steeper than this value generate selling pressure that organic demand cannot statistically overcome, leading to price collapses regardless of project quality.
-
-::: warning Placebo Parameters
-Analysis suggests that **Swap Fees** and specific **Start/End Ratios** (e.g., 90/10 vs 95/5) have a negligible impact on structural risk compared to Slope and Duration. These should be treated as user preferences rather than safety levers.
+::: tip New on Balancer v3: Seedless LBPs
+Token launch LBPs can be configured as **seedless**, meaning they require **no initial liquidity in the reserve token**.
 :::
 
-## Migration and Transition
+### Mental Model
+
+You can think of the starting price of your LBP as the ceiling you would want to set for the token sale. This may seem counterintuitive, but since LBPs work differently than other token sales, your starting price should be set much higher than what you believe is the fair price.
+
+This does not mean you are trying to sell the token above what it is worth. Setting a high starting price allows the changing pool weights of your LBP to make their full impact, lowering the price progressively until market equilibrium is reached. Unlike older token sale models, such as bonding curves, users are disincentivized to buy early and instead benefit from waiting for the price to decrease until it reaches a level they believe is fair.
+
+## Advantages
+
+### Capital Efficiency
+
+LBPs can be configured as **seedless**, meaning they require **no initial liquidity in the reserve token**.
+
+### Fair Market Price
+
+LBPs often start with intentionally high prices. This strongly disincentivizes whales and bots from snatching up much of the pool liquidity at the get-go. When LBPs are used for early-stage tokens, this can help increase how widespread the token distribution is.
+
+### Immediate Liquidity
+
+Once the LBP concludes, immediate access to the funds raised is available. The new token holders can immediately trade their token, providing instant liquidity without lengthy lock-up periods.
+
+### Sell Pressure
+
+During a weight shift, the token price of one token experiences sell pressure while the other experiences buy pressure. When this is mixed with modest swap volume, the price approaches the generally agreed-upon market price.
+
+## Configuration
+
+Token launches using LBPs rely on a scheduled **weight shift**.
+
+### Duration
+
+Token launches are typically run over **days** (not weeks or months). A common choice is **48 to 72 hours** (2 to 3 days), which gives participants time to enter without concentrating all activity into a short window.
+
+### Weights
+
+To create the necessary "price ceiling," the **project token** should start with a dominant weight and decrease over time. In practice, avoid weight schedules that go all the way to the extremes (close to 100/0 or 0/100), as pricing becomes highly non-linear near the ends of the range.
+
+## Liquidity Migration
 
 A successful LBP concludes with the **project token** widely distributed and the **reserve token** accumulated in the pool. To transition to a permanent trading venue, use the `createWithMigration` function on the factory.
 
-This allows the atomic migration of liquidity from the LBP to a standard **Weighted Pool** (e.g., 80/20 or 50/50) immediately upon the conclusion of the sale.
-
-### JSON Schema: Migration Parameters
-When configuring the migration, specific parameters control the lock-up and initial state of the new pool:
-
-```json
-{
-  "bptLockDuration": 2592000, // Time (seconds) BPT is locked (e.g., 30 days)
-  "bptPercentageToMigrate": 100, // Percentage of liquidity to move (0-100)
-  "migrationWeightProjectToken": 0.5, // New pool weight (e.g., 50%)
-  "migrationWeightReserveToken": 0.5 // New pool weight (e.g., 50%)
-}
-```
-
-## Capital Efficiency
-
-The LBP allows teams to bootstrap liquidity with minimal capital. In a standard 50/50 pool, a team must match the value of their tokens with an equal value of reserve token (e.g., DAI).
-
-In an LBP starting at **99/1**, the team provides only ~1% of the total liquidity value in reserve token. As the weights shift towards the reserve token (e.g., to 20/80), the pool mathematically forces the accumulation of the reserve asset, leaving the treasury with significantly more funding than it started with.
+This allows the migration of liquidity from the LBP to a **concentrated** or **weighted** pool upon conclusion.
