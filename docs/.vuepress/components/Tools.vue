@@ -122,8 +122,8 @@ const calculatorsAndDApps = [
     icon: '/images/toolshub/balancer-symbol.svg',
     details:
       'Tool created for LBP pool creators, with the goal of facilitating the projection of different scenarios that the pool may follow.',
-      link: 'https://lbp-simulator.vercel.app/' // add tools.balancer DNS
-  }
+    link: 'https://lbp.balancer.fi/',
+  },
   // Add more calculators and dApps as needed
 ];
 
