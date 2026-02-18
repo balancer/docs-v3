@@ -29,6 +29,11 @@ features:
     iconDark: /images/build-dark.svg
     details: How to integrate with Balancer v3 liquidity
     link: /integration-guides/aggregators/introduction.md
+  - title: LBP Simulator
+    icon: /images/build.svg
+    iconDark: /images/build-dark.svg
+    details: What is the LBP simulator and should you use it
+    link: /integration-guides/lbp-simulator/overview.md
 
 ---
 # Integration Guides
