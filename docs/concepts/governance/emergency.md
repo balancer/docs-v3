@@ -23,7 +23,7 @@ by [this vote](https://forum.balancer.fi/t/form-the-emergency-subdao/3197):
 
 | Person      | Address                                      |
 |:------------|:---------------------------------------------|
-| Mike B      | `0xF01Cc7154e255D20489E091a5aEA10Bc136696a8` |
+| Fabio       | `0x90347b9CC81a4a28aAc74E8B134040d5ce2eaB6D` |
 | Zen Dragon  | `0x7c2eA10D3e5922ba3bBBafa39Dc0677353D2AF17` |
 | Juani       | `0xDA07B188daE2ee63B2eC61Ee4cdB9673C03d2293` |
 | Hypernative | `0x202B1AA0d702898CA474aB6ED31d53BA309308D9` |
@@ -92,3 +92,9 @@ As per [BIP-883](https://forum.balancer.fi/t/bip-883-emergency-safe-governance-i
 |:--------------------------------|:---------------------------------|:---------------------------------------------------------------------------------------------------------|
 | Threshold reduction (4/7 → 3/7) | All emergency safes              | Enable faster response times during critical security incidents while maintaining multi-entity quorum.   |
 | Revoke `disableQueryPermanently`| Emergency safes on v3 chains     | Remove unnecessary permission that could permanently impact protocol functionality if compromised.       |
+
+As per [BIP-911](https://forum.balancer.fi/t/bip-911-emergency-subdao-signer-swap-q1-2026/6963), a signer swap was performed across all emergency subDAO safes to replace MikeB (`0xF01Cc7154e255D20489E091a5aEA10Bc136696a8`) with Fabio from BLabs (`0x90347b9CC81a4a28aAc74E8B134040d5ce2eaB6D`), strengthening the security posture for Balancer v3 infrastructure by ensuring a responsive signer set across a wide range of time-zones.
+
+| Change                                | Scope                            | Purpose                                                                                              |
+|:--------------------------------------|:---------------------------------|:-----------------------------------------------------------------------------------------------------|
+| Signer swap (MikeB → Fabio)           | All emergency safes              | Replace MikeB with Fabio from BLabs to ensure responsive signer coverage across time-zones.          |
