@@ -93,13 +93,13 @@ The MAXYZ service provider is running and maintaining automation jobs that query
 - Regular framework review through DAO governance
 
 ::: danger Important Note
-Core pool status can be lost if requirements are no longer met during bi-weekly evaluations. The currently active core pool list is publicly available via the [bal_addresses repository](https://github.com/BalancerMaxis/bal_addresses/blob/main/outputs/core_pools.json).
+Core pool status can be lost if requirements are no longer met during bi-weekly evaluations. The currently active core pool list is publicly available via the [bal_addresses repository](https://github.com/balancer/bal_addresses/blob/main/outputs/core_pools.json).
 :::
 
 ## References and Additional Resources
 
 1. [Protocol Fee Dune Dashboard](https://dune.com/balancer/protocol-fees)
 2. [Core Pools Analytics Dashboard](https://balancer.defilytica.com/#/corePools)
-3. [Automatic Core Pool List](https://github.com/BalancerMaxis/bal_addresses/blob/main/outputs/core_pools.json)
+3. [Automatic Core Pool List](https://github.com/balancer/bal_addresses/blob/main/outputs/core_pools.json)
 4. [Fee Distribution Model Analysis](https://docs.google.com/spreadsheets/d/1dx82Hqcw53AwnXOkY3CFSJMshojjT7BzlsKf3zQa-FQ/edit?gid=759201376#gid=759201376)
 5. [Core Pool Framework BIP](https://forum.balancer.fi/t/bip-457-core-pool-incentive-program-automation/5254)

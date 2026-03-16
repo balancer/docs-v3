@@ -49,7 +49,7 @@ Once your gauge is created (governance approval is only required if you want BAL
 
 ### Step 3: Rewards Injector Creation
 :::info
-The MAXYZ service provider is available to help setup and deploy rewards injectors. For more information on the Injector v2 infrastructure, consult the repository [documentation](https://github.com/BalancerMaxis/ChildGaugeInjectorV2).
+The MAXYZ service provider is available to help setup and deploy rewards injectors. For more information on the Injector v2 infrastructure, consult the repository [documentation](https://github.com/balancer/ChildGaugeInjectorV2).
 :::
 
 Depending on your use-case you want to create a rewards injector for your reward token. In that case, you need to follow a series of configuration steps outlined below. A rewards injector has the purpose of streamlining the distribution of rewards to gauges on Balancer. It takes care of correct token deposits and timely execution based on Chainlink automation. Furthermore, the rewards injector infrastructure is fully customizable and manageable through the [operations UI](https://balancer.defilytica.tools/rewards-injector) overall streamlining the process. Follow these steps if you want to utilize this infrastructure:
@@ -61,7 +61,7 @@ The canonical factory for injectors v2 can be accessed via `0x6142582f8946bf192a
 :::
 
 2. If your new injector has been set up correctly, it will show up in the Injector v2 viewer [drop-down list](https://balancer.defilytica.tools/rewards-injector?version=v2)
-3. For the injector to properly work, set up Chainlink automation as outlined in the [injector documentation](https://github.com/BalancerMaxis/ChildGaugeInjectorV2?tab=readme-ov-file#setting-up-a-chainlink-automation-balancer-maxi-specific-notes). If this is not configured, the injector will not automatically trigger reward distributions to gauges.
+3. For the injector to properly work, set up Chainlink automation as outlined in the [injector documentation](https://github.com/balancer/ChildGaugeInjectorV2?tab=readme-ov-file#setting-up-a-chainlink-automation-balancer-maxi-specific-notes). If this is not configured, the injector will not automatically trigger reward distributions to gauges.
 
 ### Step 4: Gauge Configuration
 #### Whitelisting Reward Tokens on a Target Gauge
@@ -89,7 +89,7 @@ Comprehensive infrastructure and tooling has been built to make this process as 
 * Gauge created (see [Gauge Onboarding Guide](./gauge-onboarding.md))
 * Reward token and injector as distributor correctly set up
 * Reward token is whitelisted on the Balancer [tokenlist](https://github.com/balancer/tokenlists)
-* Chainlink Automation: Injector Upkeep is correctly configured and there is enough LINK to fund the upkeep (more details on this topic [here](https://github.com/BalancerMaxis/ChildGaugeInjectorV2?tab=readme-ov-file#setting-up-a-chainlink-automation-balancer-maxi-specific-notes))
+* Chainlink Automation: Injector Upkeep is correctly configured and there is enough LINK to fund the upkeep (more details on this topic [here](https://github.com/balancer/ChildGaugeInjectorV2?tab=readme-ov-file#setting-up-a-chainlink-automation-balancer-maxi-specific-notes))
 
 Now you can create your own schedule with the [injector configuration tool](https://balancer.defilytica.tools/payload-builder/injector-configurator?version=v2)
 ![Injector Configurator](/images/incentive-management/injector_config_1.png)

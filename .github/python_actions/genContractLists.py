@@ -4,7 +4,7 @@ import re
 from bal_addresses import AddrBook, GITHUB_DEPLOYMENTS_NICE
 
 OUTPUT_PATH = "docs/reference/contracts/deployment-addresses"
-ADDRESSBOOK_URL = "https://raw.githubusercontent.com/BalancerMaxis/bal_addresses/main/outputs/deployments.json"
+ADDRESSBOOK_URL = "https://raw.githubusercontent.com/balancer/bal_addresses/main/outputs/deployments.json"
 
 
 CONTRACTS_BY_HEADING = {

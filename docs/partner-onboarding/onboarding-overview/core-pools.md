@@ -106,5 +106,5 @@ If your pool meets the above requirements:
 - [V2 Core Pools Analytics Dashboard](https://balancer.defilytica.com/#/corePools)
 - [V3 Core Pools Analytics Dashboard](https://balancer.defilytica.tools/core-pools)
 - [Protocol Fee Dashboard](https://dune.com/balancer/protocol-fees)
-- [Automatic Core Pool List](https://github.com/BalancerMaxis/bal_addresses/blob/main/outputs/core_pools.json)
+- [Automatic Core Pool List](https://github.com/balancer/bal_addresses/blob/main/outputs/core_pools.json)
 - [Fee Model Documentation](/concepts/protocol-fee-model)
