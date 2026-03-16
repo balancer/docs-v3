@@ -102,7 +102,7 @@ Multisigs do NOT have decision-making power. Their role is to enact on-chain the
 
 All Balancer Multisigs are deployed using [Safe](https://safe.global/) (formerly Gnosis Safe), the most battle-tested multisig contract on Ethereum.
 
-The [Balancer Multisig Ops Repo](https://github.com/BalancerMaxis/Multisig-ops) describes all multisigs and operations as well as the external touch-points available.
+The [Balancer Multisig Ops Repo](https://github.com/balancer/multisig-ops) describes all multisigs and operations as well as the external touch-points available.
 
 ## Signer Groups
 
