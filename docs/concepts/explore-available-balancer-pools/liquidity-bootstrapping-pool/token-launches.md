@@ -47,8 +47,3 @@ Token launches are typically run over **days** (not weeks or months). A common c
 
 To create the necessary "price ceiling," the **project token** should start with a dominant weight and decrease over time. In practice, avoid weight schedules that go all the way to the extremes (close to 100/0 or 0/100), as pricing becomes highly non-linear near the ends of the range.
 
-## Liquidity Migration
-
-A successful LBP concludes with the **project token** widely distributed and the **reserve token** accumulated in the pool. To transition to a permanent trading venue, use the `createWithMigration` function on the factory.
-
-This allows the migration of liquidity from the LBP to a **concentrated** or **weighted** pool upon conclusion.
