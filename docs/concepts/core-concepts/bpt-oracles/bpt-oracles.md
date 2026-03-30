@@ -196,7 +196,7 @@ On the other hand, the spot price of the pool is:
 P = Tb / Ta = (Rb + Vb) / (Ra + Va)
 ```
 
-So we can express invariant in terms of price:
+So we can express the invariant in terms of price:
 
 ```
 D = P (Ra + Va)^2 = (Rb + Vb)^2 / P
@@ -219,7 +219,7 @@ Rb = Tb - Vb = sqrt(D * P) - Vb
 With the given price feeds `Pᵢ`, we can find the theoretical real balances `x̃ᵢ = [Ra', Rb']`, and compute the TVL:
 
 ```
-TVL = Π (x̃ᵢ × Pᵢ) = Ra' × Pa + Rb' × Pb
+TVL = Σ (x̃ᵢ × Pᵢ) = Ra' × Pa + Rb' × Pb
 ```
 
 #### Practical constraints
