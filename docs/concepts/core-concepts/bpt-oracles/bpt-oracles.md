@@ -55,13 +55,17 @@ Then the real magic happens - we can substitute those xⱼ expressions into the 
 
 With x̃ representing the vector of theoretical token balances, the pool constraint can be expressed mathematically as:
 
+```
 F(x̃) = D; or F(x̃, D) = 0
+```
 
 This means that the theoretical balances must reproduce the real invariant.
 
 The price constraint can be expressed mathematically as:
 
+```
 ∇f(x̃) = k̃ · ρ
+```
 
 This means that the internal prices must match (i.e., be proportional to) the oracle prices. ρ (rho) is a "critical boundary" constraint on k̃. We can derive a minimum valid value of k̃ from the oracle prices and degree of price curvature: at this value or below, the "T curve" (described below) goes to infinity and the equation is no longer soluble.
 
@@ -73,7 +77,9 @@ To calculate ρ:
 
 Given these constraints, the key is to find k̃. To understand how, we start with the invariant equation for the pool:
 
+```
 f(x₁, x₂, ..., xₙ) = D
+```
 
 This is some function which, operating on the real balances, produces a single invariant value D, representing the total value of the pool. The details vary, but the Balancer Vault requires this to be defined for every pool type. So far, we have implemented oracles for both Weighted and Stable Balancer pools. (ReCLAMM pools should also work, as they are fundamentally Weighted pools, just incorporating virtual balances.)
 
@@ -81,36 +87,56 @@ The partial derivative ∂f/∂xⱼ represents how much the invariant changes pe
 
 The n gradient equations look like:
 
+```
 ∂F/∂x₁ = k̃ · p₁<br>
 ∂F/∂x₂ = k̃ · p₂<br>
 ...<br>
 ∂F/∂xₙ = k̃ · p₂
+```
 
 We now apply the second constraint, substituting the x expressions into the pool constraint F(x̃, D) = 0. Since all the x expressions are functions of k̃, we now have a single equation in terms of k̃: one equation, one unknown.
 
 After a lot of algebra, the single equation can be written as:
 
-T(k̃)^(n+1) · P(k̃) = α; where
+```
+T(k̃)^(n+1) · P(k̃) = α
+```
 
-T(k̃) = Σ(1/(k̃rᵢ - 1)) - 1; from the gradient equations, where the r values are the scaled prices described above;
+where:
 
-P(k̃) = ∏(k̃rᵢ - 1); also from the gradient equations; and
+```
+T(k̃) = Σ(1/(k̃rᵢ - 1)) - 1
+```
 
-α = a·c^(n+1); a constant derived from the pool parameters, where:
+from the gradient equations, where the r values are the scaled prices described above;
 
+```
+P(k̃) = ∏(k̃rᵢ - 1)
+```
+
+also from the gradient equations; and
+
+```
+α = a·c^(n+1)
+```
+
+a constant derived from the pool parameters, where:
+
+```
 a = A·n^(2n);<br>
 b = a - n^n; and<br>
 c = b/a
+```
 
-Unfortunately this "T equation" is non-linear in k̃, so it must be solved numerically. On-chain, we use Newton's method to find the root (= the value of k̃ that satisfies both constraints). In the mathematical paper referenced below, we prove that given the specified starting point, it will converge to the correct solution. There may be many roots, especially with higher numbers of tokens. The correct one is the smallest non-negative root, closest to the origin.
+Unfortunately this "T equation" is non-linear in `k̃`, so it must be solved numerically. On-chain, we use Newton's method to find the root (= the value of k̃ that satisfies both constraints). In the mathematical paper referenced below, we prove that given the specified starting point, it will converge to the correct solution. There may be many roots, especially with higher numbers of tokens. The correct one is the smallest non-negative root, closest to the origin.
 
 In summary:
 
 * Oracle prices tell us what the "fair" relative prices should be
 * The gradient condition ensures that internal AMM prices correspond to these fair prices
 * The invariant condition ensures that the theoretical balances are valid for the pool, and correctly represent the value
-* k̃ is the common scaling parameter: the "knob" we adjust to make both conditions true simultaneously
-* Once we find the right k̃, we can calculate the fair balances x̃ⱼ, and price the LP token
+* `k̃` is the common scaling parameter: the "knob" we adjust to make both conditions true simultaneously
+* Once we find the right k̃, we can calculate the fair balances `x̃ⱼ`, and price the LP token
 
 See [this page](./bpt-oracles-example.md) for a numerical example.
 
@@ -118,27 +144,105 @@ See [this page](./bpt-oracles-example.md) for a numerical example.
 
 Weighted and Stable Pools use the same general algorithm. While the complex StableSwap invariant requires Newton's method to find the scaling parameter k̃, then calculate effective balances and total value, the power-law invariant of the Weighted Pool allows us to solve the gradient and invariant conditions simultaneously, giving us:
 
-TVL = k × Π((Pᵢ/Wᵢ)^Wᵢ) in one step.
+```
+TVL = k × Π((Pᵢ/Wᵢ)^Wᵢ)
+```
+
+in one step.
 
 In particular, "mapping" the weighted pool solution onto the equivalent terms used above:
 
-* The theoretical balances x̃ᵢ = (TVL × Wᵢ)/Pᵢ, where TVL is the total pool value (referred to as Bᵢ in the WeightedLPOracle code docs).
-* The Weighted invariant D = Π(Bᵢ^Wᵢ), computed directly using theoretical balances and weights (referred to as k in the WeightedLPOracle code docs).
-* The scaling parameter k̃ is in the Weighted case simply equal to the TVL (C in the code docs).
+* The theoretical balances `x̃ᵢ = (TVL × Wᵢ)/Pᵢ`, where TVL is the total pool value (referred to as `Bᵢ` in the WeightedLPOracle code docs).
+* The Weighted invariant `D = Π(Bᵢ^Wᵢ)`, computed directly using theoretical balances and weights (referred to as k in the WeightedLPOracle code docs).
+* The scaling parameter `k̃` is in the Weighted case simply equal to the TVL (`C` in the code docs).
 
-So, positing a normalization constant C such that C = (Pᵢ × Bᵢ / Wᵢ) for every token, the gradient "price constraint" is:
+So, positing a normalization constant `C` such that `C = (Pᵢ × Bᵢ / Wᵢ)` for every token, the gradient "price constraint" is:
 
+```
 Bᵢ = (C × Wᵢ)/Pᵢ
+```
+
+This set of balances align the pool's spot price with external prices provided by the feeds.
 
 We can then substitute this directly into the invariant (no complex polynomials here):
 
+```
 D = Π((C × Wᵢ/Pᵢ)^Wᵢ) = C × Π((Wᵢ/Pᵢ)^Wᵢ)
+```
 
 And then solve for C directly:
 
+```
 C = k × Π((Pᵢ/Wᵢ)^Wᵢ) = TVL = Total pool value
+```
 
 The price is then simply TVL / totalSupply.
+
+### ReClamm Pools
+
+The same principle can be applied to a ReClamm pool, which is in practice a 50/50 weighted pool with virtual balances that concentrate the liquidity in a specified price range.
+
+The ReClamm invariant is
+
+```
+D = (Ra + Va)(Rb + Vb)
+```
+
+where `Ri` represents real balances and `Vi` represents virtual balances.
+
+On the other hand, the spot price of the pool is:
+
+```
+P = Tb / Ta = (Rb + Vb) / (Ra + Va)
+```
+
+So we can express invariant in terms of price:
+
+```
+D = P (Ra + Va)^2 = (Rb + Vb)^2 / P
+```
+
+Isolating total balances:
+
+```
+sqrt(D / P) = Ta
+sqrt(D * P) = Tb
+```
+
+So
+
+```
+Ra = Ta - Va = sqrt(D / P) - Va
+Rb = Tb - Vb = sqrt(D * P) - Vb
+```
+
+With the given price feeds `Pᵢ`, we can find the theoretical real balances `x̃ᵢ = [Ra', Rb']`, and compute the TVL:
+
+```
+TVL = Π (x̃ᵢ × Pᵢ) = Ra' × Pa + Rb' × Pb
+```
+
+#### Practical constraints
+
+The calculated `Ra'` and `Rb'` in the step above can be negative, or above the maximum real balance. Therefore it needs to be capped on both ends:
+```
+Ra' = max(0, Ra');
+Ra' = min(Ra', Ra_max)
+```
+
+To calculate maximum real balances, we can evaluate the invariant at the edges. In particular, `Ra` is `Ra_max` when `Rb = 0`, and vice versa:
+
+```
+D = (Ra_max + Va)(Vb)
+D = (Va)(Rb_max + Vb)
+```
+
+Isolating max real balances:
+
+```
+Ra_max = D / Vb - Va
+Rb_max = D / Va - Vb
+```
 
 ### E-CLP Pools (Elliptic Concentrated Liquidity Pools)
 
@@ -157,38 +261,50 @@ Given oracle prices P₁ and P₂ for the two tokens, the relative price is r = 
 
 When the market price is below the pool's concentrated range, the pool holds only token 1. The effective balance width in price space is:
 
+```
 b_P = (A⁻¹·τ(β))_x - (A⁻¹·τ(α))_x
+```
 
 And the total value locked is:
 
+```
 TVL = b_P × P₁ × invariant
+```
 
 **Case 2: r > β (Above the upper price bound)**
 
 When the market price is above the pool's concentrated range, the pool holds only token 2. The effective balance width is:
 
+```
 b_P = (A⁻¹·τ(α))_y - (A⁻¹·τ(β))_y
+```
 
 And the total value locked is:
 
+```
 TVL = b_P × P₂ × invariant
+```
 
 **Case 3: α ≤ r ≤ β (Within the concentrated range)**
 
 When the market price is within the pool's range, both tokens are present. We compute the point τ(r) on the ellipse corresponding to the current price ratio, then calculate the effective balance vector:
 
+```
 v_x = (A⁻¹·τ(β))_x - (A⁻¹·τ(r))_x
 v_y = (A⁻¹·τ(α))_y - (A⁻¹·τ(r))_y
+```
 
 The total value is then the scalar product of the price vector and the balance vector:
 
+```
 TVL = (P₁ × v_x + P₂ × v_y) × invariant
+```
 
 In summary:
 
-* The τ function maps price ratios to points on the ellipse curve, establishing the "fair" position on the curve given market prices
-* The A⁻¹ transformation converts points from the ellipse to effective balance space
-* The three cases handle the geometric reality that outside the [α, β] range, the pool is single-sided
+* The `τ` function maps price ratios to points on the ellipse curve, establishing the "fair" position on the curve given market prices
+* The `A⁻¹` transformation converts points from the ellipse to effective balance space
+* The three cases handle the geometric reality that outside the `[α, β]` range, the pool is single-sided
 * Unlike Weighted Pools where TVL can be computed directly, or Stable Pools where Newton's method solves for a scaling parameter, E-CLP uses geometric projections to determine the effective balances
 * The invariant serves as a scaling factor, similar to its role in other pool types
 
@@ -208,6 +324,6 @@ This paper goes much deeper into the mathematics, providing a rigorous theoretic
 
 It reviews the mathematical properties of the StableSwap function, especially the upper/lower price bounds.
 
-It analyzes Newton's method, proving that the function G(k) is convex (which ensures convergence), and justifies the choice of starting point k₀. Newton's method is iterative, converging on the final value of k̃  by refining subsequent guesses, so it is important for performance to start in the right place. The paper proves the existence, uniqueness, and guaranteed monotonic convergence on k̃  from k₀.
+It analyzes Newton's method, proving that the function `G(k)` is convex (which ensures convergence), and justifies the choice of starting point `k₀`. Newton's method is iterative, converging on the final value of `k̃`  by refining subsequent guesses, so it is important for performance to start in the right place. The paper proves the existence, uniqueness, and guaranteed monotonic convergence on `k̃`  from `k₀`.
 
-Finally, it analyzes edge cases, and proves that the boundary condition k̃rᵢ - 1 > 0 always holds under all supported conditions (i.e., balances, invariant, and amplification parameter are all > 0, and there are at least two tokens).
+Finally, it analyzes edge cases, and proves that the boundary condition `k̃rᵢ - 1 > 0` always holds under all supported conditions (i.e., balances, invariant, and amplification parameter are all > 0, and there are at least two tokens).
