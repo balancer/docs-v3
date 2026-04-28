@@ -290,12 +290,12 @@ query MyQuery {
 }
 ```
 
-## reCLAMM Pools
+## AutoRange Pools
 
-reCLAMM Pools are two-token concentrated liquidity pools conceptually similar to 2-CLPs, but the parameters are not immutable. They can be changed not only by admins, but also by the pool itself, as it automatically adjusts virtual balances to shift the price range as necessary to keep the pool balanced (and earning fees for LPs).
+AutoRange Pools are two-token fungible concentrated liquidity pools conceptually similar to 2-CLPs, but the parameters are not immutable. They can be changed not only by admins, but also by the pool itself, as it automatically adjusts virtual balances to shift the price range as necessary to keep the pool balanced (and earning fees for LPs).
 
 ::: warning V2 Changes
-V1 reCLAMM pools are deprecated in favour of V2. 
+V1 AutoRange Pools are deprecated in favour of V2. 
 V2 has a small maths fix to handle an edge case when pool is out of range.
 They have independent factories. If using the API please use `version` to differentiate. 
 :::

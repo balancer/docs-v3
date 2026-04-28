@@ -1,16 +1,16 @@
 ---
 order: 6
-title: Readjusting Concentrated Liquidity AMM Pool
+title: AutoRange Pool
 ---
 
-# Readjusting Concentrated Liquidity AMM Pools
+# AutoRange Pools
 
 ## Overview
 
-reCLAMM Pools are a type of **concentrated liquidity pool** that focus liquidity within a predefined price range, allowing LPs to earn greater fees with less capital—especially when the market price remains within that range. This concentration is initialized with a **target price** and **range bounds**, enabling the pool to deliver capital efficiency over traditional constant-product models.
+AutoRange Pools are **fungible concentrated liquidity pools** that focus liquidity within a predefined price range, allowing LPs to earn greater fees with less capital—especially when the market price remains within that range. This concentration is initialized with a **target price** and **range bounds**, enabling the pool to deliver capital efficiency over traditional constant-product models.
 
-What sets reCLAMM apart is its **adaptive nature**. As trading activity or liquidity operations shift the market price, reCLAMM Pools are able to **automatically move** their price range—up or down the price curve—without any intervention from users or governance. This "re-centering" behavior activates only when the pool becomes sufficiently unbalanced, based on a margin threshold defined at deployment. Once triggered, the pool begins gradually shifting its range in the direction of market pressure, ensuring liquidity stays useful and active.
-To enable this adaptive behavior, reCLAMM Pools are configured with a few key parameters:
+What sets AutoRange Pools apart is their **adaptive nature**. As trading activity or liquidity operations shift the market price, AutoRange Pools are able to **automatically move** their price range—up or down the price curve—without any intervention from users or governance. This "re-centering" behavior activates only when the pool becomes sufficiently unbalanced, based on a margin threshold defined at deployment. Once triggered, the pool begins gradually shifting its range in the direction of market pressure, ensuring liquidity stays useful and active.
+To enable this adaptive behavior, AutoRange Pools are configured with a few key parameters:
 
 - A **target price**, often set near the current market price at deployment.
 - A **price range**, where all the pool’s liquidity is initially concentrated.
@@ -21,14 +21,14 @@ For example, if the margin is set at 20%, the pool tolerates up to a 60/40 imbal
 
 This design offers LPs the benefit of concentrated liquidity **without the need for manual range resets**. It suits passive LPs seeking to stay aligned with market trends while still capturing the fee benefits of a tighter range.
 
-Those familiar with other concentrated liquidity designs may notice echoes of similar mechanisms—like pools that start with fixed ranges around a target price—but unlike those, reCLAMM’s range is not locked. Instead, it evolves in response to the market, maintaining efficiency over time without additional user action.
+Those familiar with other concentrated liquidity designs may notice echoes of similar mechanisms—like pools that start with fixed ranges around a target price—but unlike those, an AutoRange Pool's range is not locked. Instead, it evolves in response to the market, maintaining efficiency over time without additional user action.
 
 The following diagram shows a pool that is `OUT OF RANGE`. The current price is within the price range (as it must be), but above the margin. In this state, the pool will be shifting the price range "up" toward higher prices, following the market, and attempting to bring the market price back inside the margins.
 
-![reCLAMM out of range](/images/PoolRange.png)
+![AutoRange pool out of range](/images/PoolRange.png)
 
 ::: info
-reCLAMM Pools are always two-token pools.
+AutoRange Pools are always two-token pools.
 
 - The minimum swap fee percentage is 0.001% (note - same as the Weighted Pool)
 - The maximum swap fee is 10%
@@ -40,15 +40,15 @@ Note that the swap fee and invariant limits are defined in `ReClammPool` through
 
 See [here](../../../integration-guides/aggregators/pool-maths-and-details.md) for a more detailed reference.
 
-## Advantages of reCLAMM Pools
+## Advantages of AutoRange Pools
 
 - All the benefits of concentrated liquidity: higher fees and better capital efficiency (when in range, same math as UniV3)
 - None of the maintenance required with traditional concentrated liquidity pools: LP-and-forget
-- Moreover, unlike third party ALMs, the rebalancing is entirely transparent
+- Moreover, unlike with third-party ALMs, the price range adjustment is entirely transparent
 - Fungible positions can be incentivized, making them ideal for guaranteeing deep DAO token liquidity
 - Calculations simplified by having all LPs share the same price range
-- reCLAMM Pools automatically adjust to market conditions; LPs should always be earning fees
-- While designed to be maintenance-free, reCLAMM Pools are tunable by admins if necessary in extreme conditions
+- AutoRange Pools automatically adjust to market conditions; LPs should always be earning fees
+- While designed to be maintenance-free, AutoRange Pools are tunable by admins if necessary in extreme conditions
 
 These are designed for maintaining deep liquidity, and should not be used for token launches, or with tokens that have low liquidity or otherwise manipulable prices (e.g., using direct collateral or relying on non-aggregated on-chain oracles).
 
@@ -90,13 +90,13 @@ Finally, we validate that the ratio of the real balances corresponds to the theo
 
 We provide a helper function, `computeInitialBalancesRaw`, to assist with these calculations. Given the actual intended deposit amount of one of the tokens - and the initial parameters set on deployment - the contract can calculate how much of the other token must be supplied to pass all the initialization checks.
 
-One final twist involves the handling of wrapped tokens with rate providers, which are expected to be commonly used in reCLAMM Pools. Recall that the prices are passed in during initialization - but how were they calculated? It's possible the pool creator wants to use the direct price of the wrapped token (e.g., for non-boosted pools with tokens like wstETH). In this case, the price does not include the rate provider, even though the token has one. In other cases (e.g., boosted pools with tokens like waUSDC), the creator might want to use the price of the underlying token instead. In that case, the price does incorporate the rate, and the initialization calculation must accommodate that. Accordingly, along with the price range and target values, the pool is deployed with flags indicating whether to use the rate provider for each token during initialization.
+One final twist involves the handling of wrapped tokens with rate providers, which are expected to be commonly used in AutoRange Pools. Recall that the prices are passed in during initialization - but how were they calculated? It's possible the pool creator wants to use the direct price of the wrapped token (e.g., for non-boosted pools with tokens like wstETH). In this case, the price does not include the rate provider, even though the token has one. In other cases (e.g., boosted pools with tokens like waUSDC), the creator might want to use the price of the underlying token instead. In that case, the price does incorporate the rate, and the initialization calculation must accommodate that. Accordingly, along with the price range and target values, the pool is deployed with flags indicating whether to use the rate provider for each token during initialization.
 
 ## Centeredness Margin
 
 The centeredness margin is another parameter that must be set on deployment. Unlike the initial target and range, it is not immutable, and can be changed later by admin action.
 
-This is a percentage value in the range of 0 - 90%. A value of 0 would mean there is effectively no margin - real balances can go to 0, and the pool will never readjust. This degenerate case is effectively the same as a Gyro 2-CLP at the full price range: completely insensitive to price movement, until the pool goes out of range and effectively halts. (Technically, reCLAMM pools act like 2-CLPs constructed with the current range whenever they're in range and not updating the price ratio.)
+This is a percentage value in the range of 0 - 90%. A value of 0 would mean there is effectively no margin - real balances can go to 0, and the pool will never readjust. This degenerate case is effectively the same as a Gyro 2-CLP at the full price range: completely insensitive to price movement, until the pool goes out of range and effectively halts. (Technically, AutoRange Pools act like 2-CLPs constructed with the current range whenever they're in range and not updating the price ratio.)
 
 A value of 100% would mean the pool is always "out of range," unless it is _perfectly_ balanced. This is maximal sensitivity to price changes; essentially it would always be shifting the range (and incurring somewhat higher gas costs). Since the margin can only be changed when the pool is in range both before and after, it would be very difficult to lower it from 100%. Mainly for this reason, the maximum was set to 90%. We expect most pools to be configured somewhere in the middle.
 
@@ -110,7 +110,7 @@ When the centeredness falls below 50%, the market price point will be above the 
 
 ## Daily price shift exponent
 
-The centeredness margin is the final parameter (relating to reCLAMM functionality) that must be set on deployment. Unlike the initial target and range, it is not immutable, and can be changed later by admin action.
+The daily price shift exponent is the final parameter (specific to AutoRange Pools) that must be set on deployment. Unlike the initial target and range, it is not immutable, and can be changed later by admin action.
 
 This is also a percentage, and it controls the "doubling rate" of the price shift. At 100%, the prices will double (or halve) in one day. This rate is non-linear, and means that the prices will be multiplied (or divided) by 2^(`dailyPriceShiftExponent`) per day. So 200% corresponds to 2^2 or 4x, and 300% corresponds to 2^3 or 8x. (The maximum is 100%, or doubling once per day.)
 
@@ -118,7 +118,7 @@ Note that the math prevents the price from "overshooting" in either direction du
 
 ## Admin actions
 
-reCLAMM Pool admins can do three things: 1) change the centeredness margin (the threshold for updates); 2) change the daily price shift exponent (the speed of updates); and 3) initiate an update to the price interval (i.e., the distance, or ratio, between the minimum and maximum price bounds), or simply stop an ongoing update. All of these changes will update the virtual balances (and potentially slightly change the price).
+AutoRange Pool admins can do three things: 1) change the centeredness margin (the threshold for updates); 2) change the daily price shift exponent (the speed of updates); and 3) initiate an update to the price interval (i.e., the distance, or ratio, between the minimum and maximum price bounds), or simply stop an ongoing update. All of these changes will update the virtual balances (and potentially slightly change the price).
 
 All of these functions require the pool to be initialized.
 
@@ -134,6 +134,6 @@ Note that it is possible for the price range to be both shifting up or down and 
 
 ## Simulator
 
-A simulator is deployed [here](https://aclamm.web.app/reclamm). You can set the initial parameters manually - or load them from a real deployed reCLAMM pool, then change the settings to see how a real pool would respond (including simulating swaps).
+A simulator is deployed [here](https://aclamm.web.app/reclamm). You can set the initial parameters manually - or load them from a real deployed AutoRange Pool, then change the settings to see how a real pool would respond (including simulating swaps).
 
 See [this page](./reclamm-pool-math.md) for details of the math.

@@ -81,7 +81,7 @@ Given these constraints, the key is to find k̃. To understand how, we start wit
 f(x₁, x₂, ..., xₙ) = D
 ```
 
-This is some function which, operating on the real balances, produces a single invariant value D, representing the total value of the pool. The details vary, but the Balancer Vault requires this to be defined for every pool type. So far, we have implemented oracles for both Weighted and Stable Balancer pools. (ReCLAMM pools should also work, as they are fundamentally Weighted pools, just incorporating virtual balances. See the ReClamm Pools section below.)
+This is some function which, operating on the real balances, produces a single invariant value D, representing the total value of the pool. The details vary, but the Balancer Vault requires this to be defined for every pool type. So far, we have implemented oracles for both Weighted and Stable Balancer pools. (AutoRange Pools should also work, as they are fundamentally Weighted pools, just incorporating virtual balances. See the AutoRange Pools section below.)
 
 The partial derivative ∂f/∂xⱼ represents how much the invariant changes per unit of token j, and the ratio of these partial derivatives represents the internal spot price of one token in terms of another. For instance, ∂f/∂x₂ / ∂f/∂x₁ would be the spot price of token 2 in terms of token 1.
 
@@ -178,11 +178,11 @@ C = k × Π((Pᵢ/Wᵢ)^Wᵢ) = TVL = Total pool value
 
 The price is then simply TVL / totalSupply.
 
-### ReCLAMM Pools
+### AutoRange Pools
 
-The same principle can be applied to a ReCLAMM pool, which is in practice a 50/50 weighted pool with virtual balances that concentrate the liquidity in a specified price range.
+The same principle can be applied to an AutoRange Pool, which is in practice a 50/50 weighted pool with virtual balances that concentrate the liquidity in a specified price range.
 
-The ReCLAMM invariant is
+The AutoRange Pool invariant is
 
 ```
 D = (Ra + Va)(Rb + Vb)

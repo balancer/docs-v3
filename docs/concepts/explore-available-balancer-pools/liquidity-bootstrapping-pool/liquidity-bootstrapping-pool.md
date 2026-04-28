@@ -74,7 +74,7 @@ The migration happens via the [`LBPMigrationRouter`](https://github.com/balancer
 
 ::: tip
 
-**Primary Use Case:** This feature is most commonly used for **Token Launches**, where the LBP concludes with a successful distribution and the project wishes to establish permanent liquidity. By migrating to a reCLAMM or Weighted pool, the project token becomes immediately tradable on Balancer.
+**Primary Use Case:** This feature is most commonly used for **Token Launches**, where the LBP concludes with a successful distribution and the project wishes to establish permanent liquidity. By migrating to an AutoRange or Weighted pool, the project token becomes immediately tradable on Balancer.
 
 :::
 
