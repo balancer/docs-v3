@@ -10,7 +10,7 @@ export interface NetworkConfig {
 
 export const NETWORKS: NetworkConfig[] = [
   {
-    id: Network.MAINNET,
+    id: ChainId.MAINNET,
     name: 'Ethereum',
     logo: '/images/chains/ethereum-logo.svg',
     explorer: 'https://etherscan.io',
