@@ -1,7 +1,7 @@
-import { Network } from '@balancer-labs/sdk';
+import { ChainId } from '@balancer/sdk';
 
 export interface NetworkConfig {
-  id: Network;
+  id: ChainId;
   name: string;
   logo: string;
   explorer: string;
