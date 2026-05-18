@@ -31,5 +31,8 @@
     "sass": "^1.55.0",
     "vue": "^3.2.41",
     "vue-router": "^4.1.6"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
   }
 }
