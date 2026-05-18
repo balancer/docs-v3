@@ -51,17 +51,6 @@ LBPs are highly configurable. Here are the key parameters and settings, as defin
 - **Swaps**: Optionally, the pool can block selling the project token back into the pool (`blockProjectTokenSwapsIn`). This is typically enabled for token launches to prevent manipulation, but disabled for token buybacks where sellers must deposit the project token into the pool.
 - **Trusted Router**: All pool interactions must go through a trusted router to ensure correct sender reporting and security.
 
-## Pool Migration
-
-It is possible to either create a standalone LBP or create one that can easily be migrated to a weighted pool after the operation has concluded. To use this feature the pool factory offers a `createWithMigration` function. For this additional parameters are required:
-
-- `bptLockDuration`: The time in seconds the BPT of the created weighted pool is locked before the liquidity can be removed from the created weighted pool.
-- `bptPercentageToMigrate`: The percentage of the liquidity to be migrated from the LBP to the created weighted pool.
-- `migrationWeightProjectToken`: Defines the weight of the project token in the created weighted pool.
-- `migrationWeightReserveToken`: Defines the weight of the reserve token in the created weighted pool.
-
-The migration happens via the [`LBPMigrationRouter`](https://github.com/balancer/balancer-deployments/tree/master/v3/tasks/20251219-v3-liquidity-bootstrapping-pool-v3).
-
 **Technical Parameters (from the implementation):**
 
 - `projectToken` / `reserveToken`: ERC20 addresses for the tokens.
@@ -71,11 +60,3 @@ The migration happens via the [`LBPMigrationRouter`](https://github.com/balancer
 - `blockProjectTokenSwapsIn`: Boolean to restrict project token sales.
 - `poolCreator`: The account accruing [pool creator fees](../core-concepts/pool-creator-fee.md)
 - Only two tokens are allowed per pool.
-
-::: tip
-
-**Primary Use Case:** This feature is most commonly used for **Token Launches**, where the LBP concludes with a successful distribution and the project wishes to establish permanent liquidity. By migrating to an AutoRange or Weighted pool, the project token becomes immediately tradable on Balancer.
-
-:::
-
----

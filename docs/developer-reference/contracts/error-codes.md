@@ -89,13 +89,6 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 | InvalidProjectTokenRate |  | The token sale price cannot be zero. | `0x2d889800` |
 | TokenSwapsInUnsupported |  | All fixed price LBPools are "buy only;" token swaps in are not supported. | `0x0ad2684a` |
 
-### ILBPMigrationRouter
-| Error | Arguments | Comment | Signature |
-| --- | --- | --- | --- |
-| IncorrectMigrationRouter(address,address) | expectedRouter: address, actualRouter: address | A router called `migrate` on a pool that was not the one specified on deployment. | `0x2a6ef7fc` |
-| NoRegisteredWeightedPoolFactory |  | The Balancer Contract Registry did not return an active address for the "WeightedPool" alias. | `0x66d89320` |
-| SenderIsNotLBPOwner |  | The caller is not the owner of the LBP. | `0xea37ac06` |
-
 ### ILBPool
 | Error | Arguments | Comment | Signature |
 | --- | --- | --- | --- |
@@ -481,13 +474,9 @@ Balancer uses custom errors which provide a convenient and gas-efficient way to 
 ### LBPValidation
 | Error | Arguments | Comment | Signature |
 | --- | --- | --- | --- |
-| InvalidBptLockDuration |  | The BPT lock duration is invalid. | `0xc715892a` |
-| InvalidBptPercentageToMigrate |  | The percentage of BPT to migrate is invalid (must be between 0-100%). | `0x14533421` |
-| InvalidMigrationWeights |  | The sum of migrated weights is not equal to 1. | `0x63ecd650` |
 | InvalidOwner |  | The owner is the zero address. | `0x49e27cff` |
 | InvalidProjectToken |  | The project token is the zero address. | `0x59977db3` |
 | InvalidReserveToken |  | The reserve token is the zero address. | `0xaaee807a` |
-| MigrationRouterRequired |  | Cannot create a pool with migration parameters if the migration router is not set. | `0xb199d1fa` |
 | TokensMustBeDifferent |  | The project and reserve tokens must be different. | `0xfbfc7a91` |
 
 ## pool-weighted/lib

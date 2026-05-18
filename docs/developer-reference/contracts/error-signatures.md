@@ -39,7 +39,6 @@ Catalogue for decoding custom error signatures into their associated error names
 | `0x1269438a` | SwapOfProjectTokenIn() |  | [pool-weighted/lbp/LBPCommon.sol](error-codes.md#lbpcommon) |
 | `0x12e3e411` | DerivedZWrong() |  | [pool-gyro/lib/GyroECLPMath.sol](error-codes.md#gyroeclpmath) |
 | `0x137a9a39` | InvalidRemoveLiquidityKind() |  | [interfaces/vault/IVaultErrors.sol](error-codes.md#ivaulterrors) |
-| `0x14533421` | InvalidBptPercentageToMigrate() |  | [pool-weighted/lbp/LBPValidation.sol](error-codes.md#lbpvalidation) |
 | `0x15a29dec` | AfterSwapHookFailed() |  | [interfaces/vault/IVaultErrors.sol](error-codes.md#ivaulterrors) |
 | `0x18e79a20` | WeightedPoolBptRateUnsupported() |  | [pool-weighted/WeightedPool.sol](error-codes.md#weightedpool) |
 | `0x1a53f97f` | WrapAmountTooSmall(IERC4626) | wrappedToken: IERC4626 | [interfaces/vault/IVaultErrors.sol](error-codes.md#ivaulterrors) |
@@ -69,7 +68,6 @@ Catalogue for decoding custom error signatures into their associated error names
 | `0x28f95541` | QuoteResultSpoofed() |  | [standalone-utils/CallAndRevert.sol](error-codes.md#callandrevert) |
 | `0x29198c3d` | InvalidBufferPath(address,address,address) | buffer: address, tokenIn: address, tokenOut: address | [interfaces/standalone-utils/ITokenPairRegistry.sol](error-codes.md#itokenpairregistry) |
 | `0x29a270f5` | OperationNotSupported() |  | [interfaces/vault/IRouterCommon.sol](error-codes.md#iroutercommon) |
-| `0x2a6ef7fc` | IncorrectMigrationRouter(address,address) | expectedRouter: address, actualRouter: address | [interfaces/pool-weighted/ILBPMigrationRouter.sol](error-codes.md#ilbpmigrationrouter) |
 | `0x2aaf8866` | BeforeRemoveLiquidityHookFailed() |  | [interfaces/vault/IVaultErrors.sol](error-codes.md#ivaulterrors) |
 | `0x2c35aa96` | PoolSetManagerNotUnique(address) | poolSetManager: address | [interfaces/standalone-utils/IPoolHelperCommon.sol](error-codes.md#ipoolhelpercommon) |
 | `0x2d889800` | InvalidProjectTokenRate() |  | [interfaces/pool-weighted/IFixedPriceLBPool.sol](error-codes.md#ifixedpricelbpool) |
@@ -131,12 +129,10 @@ Catalogue for decoding custom error signatures into their associated error names
 | `0x61c18134` | TokenInfoPrecompileFailed() |  | [standalone-utils/utils/HyperTokenInfoPrecompile.sol](error-codes.md#hypertokeninfoprecompile) |
 | `0x61ee1764` | StandardPoolWithCreator() |  | [pool-utils/BasePoolFactory.sol](error-codes.md#basepoolfactory) |
 | `0x62791302` | ERC2612ExpiredSignature(uint256) | deadline: uint256 | [vault/BalancerPoolToken.sol](error-codes.md#balancerpooltoken) |
-| `0x63ecd650` | InvalidMigrationWeights() |  | [pool-weighted/lbp/LBPValidation.sol](error-codes.md#lbpvalidation) |
 | `0x64590b9f` | MaxOutRatio() |  | [solidity-utils/math/WeightedMath.sol](error-codes.md#weightedmath) |
 | `0x658639aa` | RotationVectorCWrong() |  | [pool-gyro/lib/GyroECLPMath.sol](error-codes.md#gyroeclpmath) |
 | `0x66af5392` | ElementNotFound() |  | [solidity-utils/openzeppelin/EnumerableSet.sol](error-codes.md#enumerableset) |
 | `0x66af5392` | ElementNotFound() |  | [solidity-utils/openzeppelin/TransientEnumerableSet.sol](error-codes.md#transientenumerableset) |
-| `0x66d89320` | NoRegisteredWeightedPoolFactory() |  | [interfaces/pool-weighted/ILBPMigrationRouter.sol](error-codes.md#ilbpmigrationrouter) |
 | `0x67f84ab2` | NotStaticCall() |  | [solidity-utils/helpers/EVMCallModeHelpers.sol](error-codes.md#evmcallmodehelpers) |
 | `0x686d3607` | InvalidTokenDecimals() |  | [interfaces/vault/IVaultErrors.sol](error-codes.md#ivaulterrors) |
 | `0x68755a11` | PoolPauseWindowDurationOverflow() |  | [solidity-utils/helpers/FactoryWidePauseWindow.sol](error-codes.md#factorywidepausewindow) |
@@ -206,7 +202,6 @@ Catalogue for decoding custom error signatures into their associated error names
 | `0xabf6c150` | InsufficientPayment(IERC20) | token: IERC20 | [vault/RouterHooks.sol](error-codes.md#routerhooks) |
 | `0xabf6c797` | HookAdjustedAmountOutBelowMin(IERC20,uint256,uint256) | tokenOut: IERC20, amountOut: uint256, minAmountOut: uint256 | [interfaces/vault/IVaultErrors.sol](error-codes.md#ivaulterrors) |
 | `0xb110e99d` | OracleFactoryIsDisabled() |  | [interfaces/oracles/ILPOracleFactoryBase.sol](error-codes.md#ilporaclefactorybase) |
-| `0xb199d1fa` | MigrationRouterRequired() |  | [pool-weighted/lbp/LBPValidation.sol](error-codes.md#lbpvalidation) |
 | `0xb309199b` | InvalidSimplePath(address) | path: address | [interfaces/standalone-utils/ITokenPairRegistry.sol](error-codes.md#itokenpairregistry) |
 | `0xb4120f14` | OutOfBounds() |  | [solidity-utils/helpers/WordCodec.sol](error-codes.md#wordcodec) |
 | `0xb4120f14` | OutOfBounds() |  | [solidity-utils/math/LogExpMath.sol](error-codes.md#logexpmath) |
@@ -230,7 +225,6 @@ Catalogue for decoding custom error signatures into their associated error names
 | `0xc2a47384` | UnknownFactory(address) | factory: address | [interfaces/vault/IProtocolFeePercentagesProvider.sol](error-codes.md#iprotocolfeepercentagesprovider) |
 | `0xc5bc8d51` | BurnerDidNotConsumeAllowance() |  | [interfaces/standalone-utils/IProtocolFeeSweeper.sol](error-codes.md#iprotocolfeesweeper) |
 | `0xc609fb47` | AmountOutIsZero(IERC20) | token: IERC20 | [standalone-utils/ERC4626CowSwapFeeBurner.sol](error-codes.md#erc4626cowswapfeeburner) |
-| `0xc715892a` | InvalidBptLockDuration() |  | [pool-weighted/lbp/LBPValidation.sol](error-codes.md#lbpvalidation) |
 | `0xc7f4796e` | InvalidBytecode(string) | contractName: string | [vault/VaultFactory.sol](error-codes.md#vaultfactory) |
 | `0xc8e28160` | VaultNotSet() |  | [standalone-utils/OwnableAuthentication.sol](error-codes.md#ownableauthentication) |
 | `0xc8e28160` | VaultNotSet() |  | [vault/CommonAuthentication.sol](error-codes.md#commonauthentication) |
@@ -285,7 +279,6 @@ Catalogue for decoding custom error signatures into their associated error names
 | `0xe5d185cf` | RouterNotTrusted() |  | [interfaces/vault/IVaultErrors.sol](error-codes.md#ivaulterrors) |
 | `0xe76c2b23` | ProtocolFeePercentageAboveLimit(uint256,uint256) | newProtocolFeePercentage: uint256, maxProtocolFeePercentage: uint256 | [interfaces/pool-cow/ICowRouter.sol](error-codes.md#icowrouter) |
 | `0xe91e17e7` | BeforeSwapHookFailed() |  | [interfaces/vault/IVaultErrors.sol](error-codes.md#ivaulterrors) |
-| `0xea37ac06` | SenderIsNotLBPOwner() |  | [interfaces/pool-weighted/ILBPMigrationRouter.sol](error-codes.md#ilbpmigrationrouter) |
 | `0xeb5a1217` | PoolPauseWindowExpired(address) | pool: address | [interfaces/vault/IVaultErrors.sol](error-codes.md#ivaulterrors) |
 | `0xec13362c` | DerivedTauAlphaYWrong() |  | [pool-gyro/lib/GyroECLPMath.sol](error-codes.md#gyroeclpmath) |
 | `0xed1bba46` | SequencerResyncIncomplete() |  | [interfaces/oracles/ISequencerUptimeFeed.sol](error-codes.md#isequenceruptimefeed) |
