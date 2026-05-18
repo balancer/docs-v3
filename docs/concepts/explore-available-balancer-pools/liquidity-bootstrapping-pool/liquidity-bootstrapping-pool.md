@@ -60,6 +60,3 @@ LBPs are highly configurable. Here are the key parameters and settings, as defin
 - `blockProjectTokenSwapsIn`: Boolean to restrict project token sales.
 - `poolCreator`: The account accruing [pool creator fees](../core-concepts/pool-creator-fee.md)
 - Only two tokens are allowed per pool.
-
-
----

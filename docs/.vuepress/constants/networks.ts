@@ -1,7 +1,7 @@
-import { Network } from '@balancer-labs/sdk';
+import { ChainId } from '@balancer/sdk';
 
 export interface NetworkConfig {
-  id: Network;
+  id: ChainId;
   name: string;
   logo: string;
   explorer: string;
@@ -10,7 +10,7 @@ export interface NetworkConfig {
 
 export const NETWORKS: NetworkConfig[] = [
   {
-    id: Network.MAINNET,
+    id: ChainId.MAINNET,
     name: 'Ethereum',
     logo: '/images/chains/ethereum-logo.svg',
     explorer: 'https://etherscan.io',

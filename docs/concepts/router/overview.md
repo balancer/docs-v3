@@ -42,7 +42,7 @@ Balancer has developed, audited and deployed Router contracts with the goal of p
 - [Code](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/CompositeLiquidityRouter.sol)
 
 ### Add Unbalanced Via Swap Router
-- Specialized router for adding unbalanced liquidity to two-token pools by combining a proportional add with a swap. Useful for pool types that don't natively allow unbalanced liquidity (e.g., ReCLAMMs).
+- Specialized router for adding unbalanced liquidity to two-token pools by combining a proportional add with a swap. Useful for pool types that don't natively allow unbalanced liquidity (e.g., AutoRange Pools).
 - [API](../../developer-reference/contracts/unbalanced-add-via-swap-router-api.md)
 - [Code](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/UnbalancedAddViaSwapRouter.sol)
 

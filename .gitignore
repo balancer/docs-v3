@@ -11,6 +11,7 @@ lib/
 
 # cache files
 .eslintcache
+*.tsbuildinfo
 
 # Log files
 npm-debug.log*
