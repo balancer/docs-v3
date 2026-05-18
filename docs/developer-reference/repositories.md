@@ -119,7 +119,7 @@ Mathematical libraries and implementations for Balancer V3 pool calculations, in
 #### [ReCLAMM](https://github.com/balancer/reclamm)
 **Status:** Actively maintained (December 2024) • 3 stars • 4 forks
 
-Readjusting Concentrated Liquidity AMM (ReCLAMM) implementation for Balancer V3, providing advanced concentrated liquidity features.
+AutoRange Pools implementation for Balancer V3 — fungible concentrated liquidity pools that automatically adjust the price range according to market conditions.
 
 **Repository:** https://github.com/balancer/reclamm  
 **Primary Use:** Advanced concentrated liquidity features
