@@ -1,18 +1,32 @@
 # Protocol Fee Operations
 
-This page describes how protocol fees are collected and processed through Balancer's safe infrastructure. For fee percentages, distribution splits, and core pool requirements, see the [Protocol Fee Model](../protocol-fee-model/protocol-fee-model.md).
+This page describes how protocol fees are collected and processed through Balancer's safe infrastructure. 
 
-## Fee Sources
+## Fee Structure Overview
 
-Protocol fees are collected from the following sources:
+| Fee Type | Balancer v2 | Balancer v3 |
+|----------|-------------|-------------|
+| Yield Fees | 50% | 10% |
+| Swap Fees | 50% | 25% |
+
+::: info Key Changes in v3
+- Reduced yield fees from 50% to 10% to increase adoption
+- Universal 25% swap fees across all pools
+- Simplified fee distribution model
+- Introduction of boosted pools technology
+  :::
 
 ### Swap Fees
 
-Balancer collects a percentage of swap fees paid by traders. From the swapper's perspective, there is no price increase—the protocol fee is taken as a fraction of the fee already being collected for liquidity providers.
+Balancer collects a percentage of swap fees paid by traders. From the swapper's perspective, there is no price increase: the protocol fee is taken as a fraction of the fee already being collected for liquidity providers.
 
 ### Yield Fees
 
 Protocol fees are applied to yield earned by yield-bearing assets with rate providers. The percentage differs between V2 (50%) and V3 (10%), with V3's reduced rate designed to drive adoption of boosted pools technology.
+
+::: tip Boosted Pools
+V3 introduces boosted pools that deploy underlying liquidity into yield-generating markets, allowing any token with an external yield market to be transformed into a yield-bearing asset.
+:::
 
 ### Flash Loan Fees
 
@@ -34,21 +48,7 @@ V2 fees are processed by [Mimic](https://mimic.fi/) infrastructure, which handle
 
 ## Fee Distribution Flow
 
-From the Protocol Fees Multisig, fees are distributed according to governance-approved splits (see [Protocol Fee Model](../protocol-fee-model/protocol-fee-model.md) for percentages):
-
-![Fee Distribution Flow](./images/fee_distro.png)
-
-### Distribution Recipients
-
-| Recipient | Description |
-|-----------|-------------|
-| **veBAL Holders** | Direct USDC payments to veBAL lockers |
-| **Core Pool Voting Incentives** | Incentives placed on core pools to drive veBAL votes toward revenue-generating pools |
-| **Balancer Onchain Ltd Safe** | DAO's share of protocol revenue |
-
-::: tip Core Pool Status
-Interested in having your pool achieve core pool status to benefit from the incentive flywheel? See the [Core Pools guide](../../partner-onboarding/onboarding-overview/core-pools.md) for requirements and application process.
-:::
+**Updated by BIP-919*** The protocol fee rates and routing were materially restructured by [BIP-919 (BAL Tokenomics Revamp)](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001). 100% of all protocol fees now route to the DAO Treasury via the corporate entities. The prior fee-sharing splits to veBAL holders, core pool incentives, partners, and the Alliance program have all been terminated.
 
 ### Corporate Structure Flow
 
@@ -66,11 +66,10 @@ The Protocol Fees Multisig (`0x7c68c42De679ffB0f16216154C996C354cF1161B`) contro
 
 ### Fee Parameter Changes
 
-Changes to protocol fee percentages require governance approval through the standard [governance process](./process.md). The DAO Multisig or appropriate chain-specific multisig executes approved changes.
+Routine protocol fee parameter changes fall under the core team's operational mandate (per [BIP-918](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000)) and do not require a Snapshot vote; the DAO Multisig or appropriate chain-specific multisig executes them. Major changes — such as BAL supply or minting parameters — still require a [governance vote](./process.md).
 
 ## Related Documentation
 
-- [Protocol Fee Model](../protocol-fee-model/protocol-fee-model.md) - Fee percentages and distribution splits
 - [Core Pools](../../partner-onboarding/onboarding-overview/core-pools.md) - Core pool requirements and benefits
 - [Multisig](./multisig.md) - Safe infrastructure and signer groups
 - [Corporate Structure](./corporate-structure.md) - Legal entity hierarchy

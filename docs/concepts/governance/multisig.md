@@ -136,11 +136,11 @@ The Treasury Council oversees the Treasury Safe and administers the self-insuran
 |--------|---------|
 | 0xDanko | `0x122AFb4667C5f80e45721a42C7c81e9140C62FA4` |
 | Xeonus | `0xaa5af0dd9c52c773d36cdbc509a0b2a1ded4c196` |
-| danielmk | `0x606681E47afC7869482660eCD61bd45B53523D83` |
-| mendesfabio | `0x90347b9CC81a4a28aAc74E8B134040d5ce2eaB6D` |
-| solarcurve | `0x512fce9B07Ce64590849115EE6B32fd40eC0f5F3` |
+| danielmk | `0x7984aB7e6B51A50d970b74a437BC82156753b866` |
+| mendesfabio | `0xF162D64Cab37fD3335122024f23680AF7cf067ad` |
 | gosuto | `0x11e450c72c2258ec792d5f64a263ecb18e8c0f06` |
-| notsoformal | `0xd17a9f089862351af82fa782435fac0f9e17786c` |
+| Marcus | `0xb7364Fca20EEC90f51b158C05199044AD362b675` |
+| franzns | `0xA574Af018138bBC2bf065f68015687Aa67388A2A` |
 
 The Treasury Council has authority to:
 - Object to Corporate Resolutions or activities not deemed in the ecosystem's best interests
@@ -162,7 +162,7 @@ The BizDev Team manages incentive funds and partnerships through the BizDev Safe
 
 | Member | Address |
 |--------|---------|
-| Simon | `0xc57b29CAc1a1CD4E8e678622D35459c4AF6F8b9c` |
+| mendesfabio | `0xF162D64Cab37fD3335122024f23680AF7cf067ad` |
 | Zekraken | `0xafFC70b81D54F229A5F50ec07e2c76D2AAAD07Ae` |
 | Marcus BLabs | `0xb7364Fca20EEC90f51b158C05199044AD362b675` |
 | Danko | `0x122AFb4667C5f80e45721a42C7c81e9140C62FA4` |

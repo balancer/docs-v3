@@ -10,6 +10,10 @@ references:
 
 # veBAL
 
+:::danger Deprecated — veBAL economic and governance rights ended in Q2 2026
+This page describes the legacy veBAL system and is **no longer accurate**. Per [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001), BAL emissions are halted, all protocol fees route 100% to the DAO Treasury, and veBAL no longer earns fees or directs emissions. Per [BIP-921](https://forum.balancer.fi/t/bip-921-1-bal-1-vote-reconfiguration-for-balancer-eth-snapshot-space/7052), Snapshot voting is denominated in raw BAL; the veBAL escrow multiplier no longer confers extra voting weight (only the underlying BAL counts, at face value). See the [Governance Overview](../README.md) and [BAL Token](../bal-token.md) pages for the current state. Retained below for historical reference only.
+:::
+
 ## Overview
 
 veBAL (vote-escrow BAL) is a vesting system based on [Curve's veCRV mechanism](https://curve.readthedocs.io/dao-vecrv.html) which locks 80/20 BAL/WETH Balancer Pool Tokens for a maximum of 1 year. The veBAL and Gauge system is designed to promote long-term token-holder alignment and facilitate fair protocol fee distribution.
