@@ -4,6 +4,10 @@ title: FAQ
 
 # veBAL FAQ
 
+:::danger Deprecated — veBAL economic and governance rights ended in Q2 2026
+This FAQ describes the legacy veBAL system and is **no longer accurate**. Per [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001) and [BIP-921](https://forum.balancer.fi/t/bip-921-1-bal-1-vote-reconfiguration-for-balancer-eth-snapshot-space/7052), BAL emissions are halted, protocol fees route 100% to the DAO Treasury, and Snapshot voting is denominated in raw BAL (veBAL no longer earns fees, directs emissions, or confers an escrow voting multiplier). See the [Governance Overview](../README.md) for the current state. Retained below for historical reference only.
+:::
+
 ### How do I get veBAL?
 
 When you provide liquidity into a Balancer pool, you take out an ERC-20 token we call a "Balancer Pool Token", or BPT for short. In veBAL, the used BPT is from a B-80BAL-20WETH pool.

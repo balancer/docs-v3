@@ -55,7 +55,7 @@ Snapshot voting in the `balancer.eth` space operates on raw BAL across seven pro
 
 ## veBAL (Discontinued)
 
-Existing veBAL locks remain on-chain until natural expiry but no longer earn protocol fees, no longer carry voting weight under the new strategy stack, and don't direct emissions (because there are no emissions).
+Existing veBAL locks remain on-chain until natural expiry. They no longer earn protocol fees and no longer direct emissions (there are no emissions). The veBAL escrow multiplier no longer confers any extra voting weight — under the new strategy stack only the underlying BAL is counted, at face value (see Voting above).
 
 ## Protocol Fee Operations
 

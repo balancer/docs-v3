@@ -66,11 +66,10 @@ The Protocol Fees Multisig (`0x7c68c42De679ffB0f16216154C996C354cF1161B`) contro
 
 ### Fee Parameter Changes
 
-Changes to protocol fee percentages require governance approval through the standard [governance process](./process.md). The DAO Multisig or appropriate chain-specific multisig executes approved changes.
+Routine protocol fee parameter changes fall under the core team's operational mandate (per [BIP-918](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000)) and do not require a Snapshot vote; the DAO Multisig or appropriate chain-specific multisig executes them. Major changes — such as BAL supply or minting parameters — still require a [governance vote](./process.md).
 
 ## Related Documentation
 
-- [Protocol Fee Model](../protocol-fee-model/protocol-fee-model.md) - Fee percentages and distribution splits
 - [Core Pools](../../partner-onboarding/onboarding-overview/core-pools.md) - Core pool requirements and benefits
 - [Multisig](./multisig.md) - Safe infrastructure and signer groups
 - [Corporate Structure](./corporate-structure.md) - Legal entity hierarchy

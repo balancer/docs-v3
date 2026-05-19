@@ -107,7 +107,7 @@ Examples of how to submit payload PRs for common governance quests can be found 
 
 ### **Step 4: Voting
 
-Voting takes place on Snapshot in the `balancer.eth` space. Voting power is denominated in raw BAL across seven chains. See [Voting](./voting.md) for the full strategy stack and delegation mechanics.
+Voting takes place on Snapshot in the `balancer.eth` space. Voting power is denominated in raw BAL across seven production chains via a seven-strategy stack; on Ethereum, BAL underlying 80/20 BAL/WETH BPT (held directly or locked in veBAL) is also counted at face value. See [Snapshot](./snapshot.md) and the Voting section of the [Governance Overview](./README.md).
 
 - **Quorum**: 10M BAL (converted from the previous 2M veBAL).
 - **Individual voter cap**: removed (the 45% delegation cap from BIP-521 is no longer in effect).
