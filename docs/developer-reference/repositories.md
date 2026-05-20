@@ -177,7 +177,7 @@ The Graph protocol subgraph for indexing Balancer V2 data including pools, swaps
 #### [docs](https://github.com/balancer/docs)
 **Status:** Maintained (September 2024) • 46 stars • 118 forks • Vue
 
-Official documentation for Balancer V2, covering protocol concepts, pool types, integration guides, and developer resources. Note that new development on V2 is discouraged, in favor of V3. Note that BAL minting and the liquidity mining architecture and infrastructure will always be on V2.
+Official documentation for Balancer V2, covering protocol concepts, pool types, integration guides, and developer resources. Note that new development on V2 is discouraged, in favor of V3. The legacy BAL liquidity-mining architecture (gauges, gauge controller, veBAL) lives on V2; BAL emissions to gauges were halted by [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001).
 
 **Repository:** https://github.com/balancer/docs  
 **Primary Use:** V2 protocol documentation
@@ -285,7 +285,7 @@ Comprehensive collection of deployed contract addresses, ABIs, and deployment ar
 #### [gauges-subgraph](https://github.com/balancer/gauges-subgraph)
 **Status:** Actively maintained (December 2024) • 3 stars • 18 forks
 
-Subgraph for tracking Balancer liquidity gauge data, including veBAL voting, gauge weights, and rewards distribution.
+Subgraph for tracking Balancer liquidity gauge data, including historical veBAL voting and gauge weights (pre-[BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001)/[BIP-921](https://forum.balancer.fi/t/bip-921-1-bal-1-vote-reconfiguration-for-balancer-eth-snapshot-space/7052)) and ongoing secondary-reward distribution data.
 
 **Repository:** https://github.com/balancer/gauges-subgraph  
 **Primary Use:** Gauge and incentive tracking

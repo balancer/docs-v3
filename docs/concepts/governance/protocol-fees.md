@@ -48,7 +48,7 @@ V2 fees are processed by [Mimic](https://mimic.fi/) infrastructure, which handle
 
 ## Fee Distribution Flow
 
-**Updated by BIP-919*** The protocol fee rates and routing were materially restructured by [BIP-919 (BAL Tokenomics Revamp)](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001). 100% of all protocol fees now route to the DAO Treasury via the corporate entities. The prior fee-sharing splits to veBAL holders, core pool incentives, partners, and the Alliance program have all been terminated.
+**Updated by BIP-919.** The protocol fee rates and routing were materially restructured by [BIP-919 (BAL Tokenomics Revamp)](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001). **100% of all protocol fees now route to the DAO Treasury via the corporate entities.** The prior fee-sharing splits to veBAL holders, core-pool voting incentives, partners, and the Balancer Alliance program have all been terminated.
 
 ### Corporate Structure Flow
 
@@ -70,6 +70,6 @@ Routine protocol fee parameter changes fall under the core team's operational ma
 
 ## Related Documentation
 
-- [Core Pools](../../partner-onboarding/onboarding-overview/core-pools.md) - Core pool requirements and benefits
+- [Pool Token Compatibility](../../partner-onboarding/onboarding-overview/core-pools.md) - Token requirements for Balancer pools (and historical core-pool context)
 - [Multisig](./multisig.md) - Safe infrastructure and signer groups
 - [Corporate Structure](./corporate-structure.md) - Legal entity hierarchy

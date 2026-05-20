@@ -42,7 +42,7 @@ At the start of BAL token incentives in 2020, 145,000 BAL were minted every week
 
 BAL holders participate in protocol governance through the Snapshot space `balancer.eth`. Per BIP-921, voting power is now denominated in **raw BAL across all production chains where BAL is deployed**, replacing the prior veBAL-based strategies.
 
-See the [Governance Overview](./README.md) and [Snapshot](./snapshot.md) pages for the strategy stack, quorum, and per-chain delegation mechanics.
+See the [Voting](./voting.md) page for the full strategy stack, the `BalVotingPower` contract, quorum, and per-chain delegation mechanics.
 
 The core team via Balancer Foundation holds an operational mandate (per [BIP-918](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000)) for day-to-day decisions such as fee parameter changes, vendor selection, and partner negotiations. Major decisions — new pool factories, novel pool types, new chain deployments, BAL supply or minting parameter changes — still flow through a Snapshot vote.
 
