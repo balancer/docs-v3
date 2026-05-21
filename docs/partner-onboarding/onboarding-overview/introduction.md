@@ -41,8 +41,8 @@ When adding new tokens to Balancer pools, keep in mind the [Vault compatibility 
 ### Onboarding Journey
 Onboarding your asset onto Balancer involves three main steps:
 - **Choose a Pool Type**: Select the pool type that best fits your use case.
-- **Customize Pool Logic**: Utilize Balancer v3's [hooks](../../concepts/core-concepts/hooks.md) for tailored functionality. 
-- **Engage in Governance**: [Apply for a gauge](./../onboarding-overview/gauge-onboarding.md) to receive BAL rewards for your pool.
+- **Customize Pool Logic**: Utilize Balancer v3's [hooks](../../concepts/core-concepts/hooks.md) for tailored functionality.
+- **Configure Incentives (optional)**: Stand up a [gauge](./../onboarding-overview/gauge-onboarding.md) to stream your own secondary rewards. BAL emissions to gauges have been halted per [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001).
 
   ::: tip
   Balancer contributors are happy to help during the onboarding process. Feel free to reach out to us on our [Discord](https://discord.balancer.fi)!

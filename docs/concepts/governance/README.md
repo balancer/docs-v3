@@ -12,6 +12,7 @@ The governance model documented in this section was substantially restructured b
 
 - [**BIP-918** — Operational Restructuring](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000):  consolidated operations under Balancer OpCo Ltd post Balancer Labs wind-down, reducing the team and annual budget, transferred L2 Authorizer admin to the Omni multisig, and introduced a core team mandate for day-to-day operational decisions.
 - [**BIP-919** — BAL Tokenomics Revamp](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001): halted all BAL emissions, reduced the V3 protocol swap fee share from 50% to 25%, routed 100% of protocol fees to the DAO Treasury, discontinued veBAL economic rights, and authorized a BAL buyback-and-burn program at NAV.
+- [**BIP-920** — veBAL Compensation Airdrop](https://forum.balancer.fi/t/bip-920-vebal-compensation-airdrop/7025): a one-off 500,000 USDC grant distributed to veBAL holders to compensate for forgone passive fees during the unwind period, delivered via direct CSV airdrop proportional to veBAL balance at the proposal snapshot.
 - [**BIP-921** — 1-BAL-1-Vote Reconfiguration](https://forum.balancer.fi/t/bip-921-1-bal-1-vote-reconfiguration-for-balancer-eth-snapshot-space/7052): replaced veBAL-based Snapshot strategies with a seven-strategy stack denominated in raw BAL, raised quorum to 10M BAL, and removed both the 200k veBAL proposal-submission threshold and the 45% delegation cap.
 
 This Overview reflects the post-revamp state. References to veBAL fee share, BAL emissions, or veBAL-based voting power are no longer operative.
@@ -51,7 +52,7 @@ The BAL token is the protocol's governance token and the unit of voting power. B
 
 ## Voting
 
-Snapshot voting in the `balancer.eth` space operates on raw BAL across seven production chains via a seven-strategy stack. The Ethereum strategy uses the singleton `BalVotingPower.sol` view contract to include BAL underlying 80/20 BAL/WETH BPT (held directly or locked in veBAL at face value). Other chains use Snapshot's `erc20-balance-of-delegation` strategy. 
+Snapshot voting in the `balancer.eth` space operates on raw BAL across seven production chains via a seven-strategy stack. The Ethereum strategy uses the singleton `BalVotingPower.sol` view contract to include BAL underlying 80/20 BAL/WETH BPT (held directly or locked in veBAL at face value). Other chains use Snapshot's `erc20-balance-of-delegation` strategy. See the [Voting](./voting.md) page for the full strategy stack, quorum, and per-chain delegation mechanics.
 
 ## veBAL (Discontinued)
 

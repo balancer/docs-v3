@@ -49,26 +49,26 @@ This configuration enables efficient execution with proper oversight.
 
 ### Chain-Specific DAO Multisigs
 
-These multisigs hold administrative permissions on their respective chains, including:
+Per [BIP-918](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000), **L2 Authorizer admin permissions were transferred to the Omni-sig** (`0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e`). The **Ethereum DAO Multisig is excluded from this transfer** and retains Authorizer admin on Mainnet due to additional elevated privileges (notably **BAL minting**) that remain under DAO governance.
 
-- **Authorizer Admin**: Control over protocol parameters and permissions
-- **Gauge Controller**: Adding/removing liquidity gauges for BAL emissions
-- **veBAL Allowlisting**: Managing pool eligibility for veBAL voting incentives
-- **Protocol Fee Configuration**: Setting swap and yield fee percentages
+Resulting split:
+
+- **Ethereum DAO Multisig** — Authorizer admin on Mainnet, BAL minting, plus the historical permission set (gauge controller, fee parameter configuration). BAL emissions to gauges were halted by [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001) — the gauge controller permission set is retained but no longer routes new BAL emissions.
+- **L2 DAO Multisigs** — Retained for residual governance functions (treasury holdings on-chain, historical roles), but **no longer hold Authorizer admin**; routine protocol parameter changes on L2s are now executed via the Omni-sig under the core team's operational mandate.
 
 All chain-specific DAO multisigs use the [DAO Signer Set](#dao-multisig-signer-set) with a 6/11 threshold.
 
-| Chain | Address |
-|-------|---------|
-| Ethereum | [0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f](https://app.safe.global/home?safe=eth:0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f) |
-| Arbitrum | [0xaF23DC5983230E9eEAf93280e312e57539D098D0](https://app.safe.global/home?safe=arb1:0xaF23DC5983230E9eEAf93280e312e57539D098D0) |
-| Polygon | [0xeE071f4B516F69a1603dA393CdE8e76C40E5Be85](https://app.safe.global/home?safe=matic:0xeE071f4B516F69a1603dA393CdE8e76C40E5Be85) |
-| Optimism | [0x043f9687842771b3dF8852c1E9801DCAeED3f6bc](https://app.safe.global/home?safe=oeth:0x043f9687842771b3dF8852c1E9801DCAeED3f6bc) |
-| Gnosis | [0x2a5AEcE0bb9EfFD7608213AE1745873385515c18](https://app.safe.global/home?safe=gno:0x2a5AEcE0bb9EfFD7608213AE1745873385515c18) |
-| Avalanche | [0x17b11FF13e2d7bAb2648182dFD1f1cfa0E4C7cf3](https://app.safe.global/home?safe=avax:0x17b11FF13e2d7bAb2648182dFD1f1cfa0E4C7cf3) |
-| Base | [0xC40DCFB13651e64C8551007aa57F9260827B6462](https://app.safe.global/home?safe=base:0xC40DCFB13651e64C8551007aa57F9260827B6462) |
-| Fraxtal | [0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e](https://safe.mainnet.frax.com/home?safe=fraxtal:0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e) |
-| Mode | [0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e](https://safe.optimism.io/home?safe=mode:0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e) |
+| Chain | Address | Authorizer Admin (post BIP-918) |
+|-------|---------|---------------------------------|
+| Ethereum | [0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f](https://app.safe.global/home?safe=eth:0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f) | **Yes** (retains admin + BAL minting + other elevated mainnet privileges) |
+| Arbitrum | [0xaF23DC5983230E9eEAf93280e312e57539D098D0](https://app.safe.global/home?safe=arb1:0xaF23DC5983230E9eEAf93280e312e57539D098D0) | No — transferred to Omni-sig |
+| Polygon | [0xeE071f4B516F69a1603dA393CdE8e76C40E5Be85](https://app.safe.global/home?safe=matic:0xeE071f4B516F69a1603dA393CdE8e76C40E5Be85) | No — transferred to Omni-sig |
+| Optimism | [0x043f9687842771b3dF8852c1E9801DCAeED3f6bc](https://app.safe.global/home?safe=oeth:0x043f9687842771b3dF8852c1E9801DCAeED3f6bc) | No — transferred to Omni-sig |
+| Gnosis | [0x2a5AEcE0bb9EfFD7608213AE1745873385515c18](https://app.safe.global/home?safe=gno:0x2a5AEcE0bb9EfFD7608213AE1745873385515c18) | No — transferred to Omni-sig |
+| Avalanche | [0x17b11FF13e2d7bAb2648182dFD1f1cfa0E4C7cf3](https://app.safe.global/home?safe=avax:0x17b11FF13e2d7bAb2648182dFD1f1cfa0E4C7cf3) | No — transferred to Omni-sig |
+| Base | [0xC40DCFB13651e64C8551007aa57F9260827B6462](https://app.safe.global/home?safe=base:0xC40DCFB13651e64C8551007aa57F9260827B6462) | No — transferred to Omni-sig |
+| Fraxtal | [0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e](https://safe.mainnet.frax.com/home?safe=fraxtal:0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e) | No — transferred to Omni-sig |
+| Mode | [0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e](https://safe.optimism.io/home?safe=mode:0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e) | No — transferred to Omni-sig |
 
 ### Chain-Specific Operational Multisigs
 
@@ -185,15 +185,35 @@ A signer shall lose their role (by action of the remaining multisig signers) in 
 - Act against BAL token holders' off-chain voting
 - Go through 3 months or 2 votes (whichever takes longer) without performing any signer duties
 
-## Multisig Powers
+## Multisig Mandate & Authorizations
 
-Balancer V2 and V3 have different governance models reflecting their maturity and deployment strategies.
+Balancer V2 and V3 have different governance models reflecting their maturity and deployment strategies. The following sections describe the on-chain authorizations granted to each multisig and the operational mandate under which they are exercised.
 
-### Balancer V2 Powers
+### Core Team Operational Mandate (BIP-918)
 
-V2 smart contracts grant specific powers to an "admin" address, which points to the appropriate multisig (typically DAO multisigs on established chains).
+[BIP-918](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000) grants the core team a defined operational mandate covering day-to-day protocol decisions. The following fall **within the core team's discretion** and do **not** require a Snapshot vote:
 
-These powers include:
+- Protocol fee parameter changes
+- New chain deployments
+- Vendor selection and sprint priorities
+- Chain deprecation
+- Hiring/terminations within approved budget
+- Fee-split agreements and direct deal negotiations with partners
+
+The following continue to require a **DAO Multisig** decision (Snapshot vote):
+
+- New pool factories
+- Novel pool types
+- New chains (formal approval, in addition to the operational deployment work that may fall under the mandate)
+- BAL supply or minting parameter changes
+
+On-chain, this is reflected in the Authorizer admin transfer to the Omni-sig on all chains **except Mainnet** (which retains BAL minting and elevated privileges under the DAO Multisig). See [Chain-Specific DAO Multisigs](#chain-specific-dao-multisigs) for the resulting split.
+
+### Balancer V2 Authorizations
+
+V2 smart contracts grant specific authorizations to an "admin" address, which points to the appropriate multisig (typically DAO multisigs on established chains).
+
+These authorizations include:
 
 - Set a share of swap fees to be diverted to the protocol (hard capped at 50% of the swap fee)
 - Set a flash loan fee
@@ -201,11 +221,11 @@ These powers include:
 - Set the address of the oracle implementation
 - Set relayer addresses: relayers are (user opt-in, audited) contracts that can make calls to the vault (with the transaction "sender" being any arbitrary address) and use the sender's ERC20 vault allowance, internal balance or BPTs on their behalf
 - Set dynamic-fee controllers: addresses that may change the swap fee for pools created by the dynamic-fee pool factory
-- Add and remove veBAL gauges
+- Add and remove gauges in the v2 gauge controller (historical: BAL emissions to gauges have been halted by [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001))
 
-### Balancer V3 Powers
+### Balancer V3 Authorizations
 
-V3 deployments use a role-based permission system through the Authorizer contract. Admin powers include:
+V3 deployments use a role-based permission system through the Authorizer contract. Admin authorizations include:
 
 - Configure protocol swap and yield fee percentages
 - Set pool creator fee percentages
@@ -216,23 +236,16 @@ V3 deployments use a role-based permission system through the Authorizer contrac
 
 #### Established Chains
 
-On chains with mature V3 deployments (Ethereum, Arbitrum, Base, Gnosis, Avalanche, Optimism), the **DAO Multisig** holds administrative permissions following the standard governance model.
+- **Ethereum**: the **DAO Multisig** retains full administrative permissions, including Authorizer admin and BAL minting (the latter remaining under DAO governance due to its elevated risk profile).
+- **Arbitrum, Base, Gnosis, Avalanche, Optimism**: Authorizer admin was transferred to the **Omni-sig** under [BIP-918](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000); routine V3 protocol parameter changes on these L2s are executed by the Omni-sig under the core team's operational mandate. The chain-specific DAO multisigs remain in place but no longer act as the Authorizer admin for these chains.
 
-#### Multi-Stage Deployment Framework (Newer Chains)
+#### Newer Chain Deployments
 
-For newer V3 deployments on emerging chains, Balancer uses a multi-stage deployment approach that initially grants administrative permissions to the **Omni-sig** (`0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e`). This enables greater operational flexibility during the critical early phases of deployment.
+For newer V3 deployments on emerging chains, the **Omni-sig** (`0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e`) holds Authorizer admin permissions and exercises them under the core team's operational mandate (per [BIP-918](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000)). This enables fast, low-friction operational responses on emerging chains where the existing operational mandate already covers routine protocol changes.
 
-**Chains using this framework:** Plasma, HyperEVM, Monad, XLayer
+**Chains under this model:** Plasma, HyperEVM, Monad, XLayer.
 
-| Phase | Duration | Admin Control | Description |
-|:------|:---------|:--------------|:------------|
-| Phase 1: Technical Deployment | Months 1-2 | Omni-sig | Full technical functionality, frontend integration, initial pool creation |
-| Phase 2: Growth & Partnerships | Months 2-8 | Omni-sig | Ecosystem partnerships, TVL growth, protocol integrations |
-| Phase 3: BAL Integration | Month 8+ | Transition to DAO Multisig | Gauge system integration, veBAL voting, full governance transition |
-
-**Governance Transition:** Upon successful completion of Phase 2 milestones (typically $15M+ TVL, 5+ protocol integrations, sustained trading volume), the Omni-sig transfers administrative privileges to a newly established DAO multisig following the standard DAO signer set.
-
-**Exit Criteria:** Each phase has clear success metrics. If deployments don't achieve sufficient traction, the DAO can propose to wind down operations rather than proceeding to the next phase.
+There is **no planned hand-off to a chain-specific DAO multisig** — these chains remain under Omni-sig admin indefinitely, consistent with the L2 model established by BIP-918. If a deployment fails to gain traction, the DAO can propose to wind down operations on that chain via standard governance.
 
 Example deployment BIPs using this framework:
 - [BIP-862: Deploy Balancer v3 on HyperEVM](https://forum.balancer.fi/t/bip-862-deploy-balancer-v3-on-hyperevm/6628)

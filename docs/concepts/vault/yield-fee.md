@@ -6,10 +6,7 @@ order: 7
 
 Balancer Protocol Fees are collected by the Balancer Protocol on most operations, as a percentage of either pool swap fees or token yield. The Yield Fee is a specific type of Protocol fee that is applied to yield-bearing tokens, such as wstETH. The fee percentage is controlled by Balancer governance.
 
-The Yield Fee is distributed in three primary ways:
-- as liquidity incentives for [core pools](https://forum.balancer.fi/t/bip-19-incentivize-core-pools-l2-usage/3329). This forms a key part of the [Yield Bearing Asset Thesis](https://medium.com/balancer-protocol/balancer-the-yield-bearing-asset-thesis-f44489ba2deb).
-- to the Balancer DAO, providing a source of revenue for the protocol and contributing to the operational costs.
-- to veBAL holders.
+Per [BIP-919 (BAL Tokenomics Revamp)](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001), **100% of collected yield fees now route to the DAO Treasury**. The previous distribution model — splits to core-pool voting incentives, veBAL holders, and the DAO — has been retired alongside BAL emissions and the voting-incentive markets. See the [Protocol Fee Operations](../governance/protocol-fees.md) page for the current rates and routing.
 
 # Implementation
 

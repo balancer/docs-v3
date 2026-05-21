@@ -71,8 +71,8 @@ The DAO Multi-sig maintains DAO administrative permissions and represents the br
 **Responsibilities:**
 - DAO administrative permissions
 - Funding BIPs
-- Gauge killing
-- veBAL allowlisting
+- Gauge killing (historical: BAL emissions to gauges were halted by [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001))
+- veBAL allowlisting (historical permission; no new gauges are being added to the veBAL gauge controller)
 
 **Safe Address:** [0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f](https://app.safe.global/home?safe=eth:0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f)
 
