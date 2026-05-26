@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { useTokens } from '../../providers/tokens';
 import { usePools } from '../../providers/pools';
-import { PoolType } from '@balancer-labs/sdk';
+import { PoolType } from '@balancer/sdk';
 import { filterPool } from '../../utils';
 import Filter from './Filter/Filter.vue';
 import FilterMenu from './Filter/FilterMenu.vue';

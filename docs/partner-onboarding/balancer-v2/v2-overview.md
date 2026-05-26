@@ -7,7 +7,7 @@ order: 0
 
 Balancer v2 has been a core pillar of DeFi since 2021. By leveraging innovative pool types, Balancer v2 has attracted liquidity in the liquid staking token (LST) and liquid restaking token (LRT) sector.
 
-Balancer Technology provides decentralized infrastructure for DAOs, enabling efficient scaling of Yield Bearing assets, creating advanced Governance positions, and developing customized pool types. The Balancer ecosystem facilitates the streamlined scaling of liquidity for DAOs through core pool incentive flywheels and its network of liquidity enhancing protocols.
+Balancer Technology provides decentralized infrastructure for DAOs, enabling efficient scaling of Yield Bearing assets, creating advanced Governance positions, and developing customized pool types. The Balancer ecosystem facilitates the streamlined scaling of liquidity for DAOs through its network of liquidity enhancing protocols.
 
 ::: warning Security Advisory
 Before integrating new tokens with Balancer V2, please review our [token whitelisting](./token-whitelisting.md) documentation and security considerations. For new integrations, we recommend using Balancer V3.
@@ -19,8 +19,7 @@ Onboarding to Balancer v2's tech stack involves various steps depending on your 
 
 1. Choosing and launching your pool
 2. Providing initial liquidity
-3. Onboarding to Balancer's gauge system
-4. Setting up voting incentive markets
+3. (Optional) Standing up a gauge to stream your own secondary rewards
 
 ### Choosing and Launching A Pool
 
@@ -42,16 +41,7 @@ Depending on your chosen pool type, you can bootstrap liquidity through:
 
 ### Gauge System Integration
 
-If your project intends to receive BAL rewards, consult our [Gauge Onboarding](../onboarding-overview/gauge-onboarding.md) documentation. The gauge system enables:
-1. BAL rewards through [veBAL](https://app.balancer.fi/#/ethereum/vebal) holder votes
-2. [vlAURA](https://app.aura.finance/#/1/lock) votes from AURA finance
-3. Direct incentives on Balancer Gauges
-4. Direct incentives on AURA Finance Gauges
-5. Voting incentive markets
-
-::: tip Core Pool Status
-Interested in receiving core pool status? Read our [core pools documentation](../onboarding-overview/core-pools.md)
-:::
+Gauges remain operational for routing third-party (non-BAL) reward tokens to LPs. **BAL emissions to gauges have been halted per [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001)**, and all voting-incentive markets have been terminated. If your project wants to stream its own reward tokens, see the [Gauge Onboarding](../onboarding-overview/gauge-onboarding.md) and [Incentive Management](../onboarding-overview/incentive-management.md) guides. Direct incentives on AURA Finance Gauges remain a separate option managed by AURA.
 
 ## Additional Resources
 
@@ -59,4 +49,3 @@ Interested in receiving core pool status? Read our [core pools documentation](..
 - [Rate Provider Onboarding](../onboarding-overview/rate-providers.md)
 - [Token Whitelisting](./token-whitelisting.md)
 - [Incentives Management Documentation](../onboarding-overview/incentive-management.md)
-- [Voting Markets](../onboarding-overview/voting-markets.md)

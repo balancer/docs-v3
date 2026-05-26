@@ -3,20 +3,29 @@
 ## Concept
 
 The [Emergency DAO](https://dao.curve.fi/emergencymembers) is an idea pioneered by Curve that empowers a small group to
-“kill” pools and gauges in the event of malicious activity and/or potential loss of funds. The subDAO is further
+"kill" pools and gauges in the event of malicious activity and/or potential loss of funds. The subDAO is further
 authorized to pause pools when needed. The Balancer emergency subDAO was established after the
 following [vote](https://vote.balancer.fi/#/proposal/0x63fab7ab9ef5b9579dabb82058b8ea309e39c766d435438b55fff8db7c1f69fd).
 
+## Relationship to Balancer Onchain Limited
+
+As of [BIP-882](https://forum.balancer.fi/t/bip-882-transitioning-onchain-operations-of-the-balancer-dao-to-balancer-onchain-limited/6859), the Emergency subDAO operates alongside the [Balancer Onchain Limited](./corporate-structure.md) structure. In emergency situations:
+
+- The Emergency subDAO retains its bounded authority to kill gauges, pause pools, and protect the protocol
+- The Treasury Council maintains override capability on critical infrastructure
+- The Balancer Onchain Ltd Safe can intervene in emergency situations or swap out the operator if needed
+- The self-insurance fund remains available for unforeseen complications
+
 ## Members
 
-The Balancer Emergency subDAO is a 4-of-7 multisig with the following members as appointed
+The Balancer Emergency subDAO is a **3-of-7 multisig** with the following members as appointed
 by [this vote](https://forum.balancer.fi/t/form-the-emergency-subdao/3197):
 
 | Person      | Address                                      |
 |:------------|:---------------------------------------------|
-| Mike B      | `0xF01Cc7154e255D20489E091a5aEA10Bc136696a8` |
+| Fabio       | `0x90347b9CC81a4a28aAc74E8B134040d5ce2eaB6D` |
 | Zen Dragon  | `0x7c2eA10D3e5922ba3bBBafa39Dc0677353D2AF17` |
-| Juani       | `0xDA07B188daE2ee63B2eC61Ee4cdB9673C03d2293` |
+| Danko       | `0x122AFb4667C5f80e45721a42C7c81e9140C62FA4` |
 | Hypernative | `0x202B1AA0d702898CA474aB6ED31d53BA309308D9` |
 | Franz       | `0x89c7D6ABA9Cd18D8A93571E583EEAc58Da75acE6` |
 | Daniel      | `0x606681E47afC7869482660eCD61bd45B53523D83` |
@@ -38,7 +47,7 @@ The Balancer Emergency subDAO operates through the following multisigs which are
 | Base      | <span class="address-link">[0x183C55A0dc7A7Da0f3581997e764D85Fd9E9f63a](https://app.safe.global/transactions/queue?safe=base:0x183C55A0dc7A7Da0f3581997e764D85Fd9E9f63a)</span>            |
 | Fraxtal   | <span class="address-link">[0xC66d0Ba27b8309D27cCa70064dfb40b73DB6de9E](https://safe.mainnet.frax.com/home?safe=fraxtal:0xC66d0Ba27b8309D27cCa70064dfb40b73DB6de9E)</span>                 |
 | Mode      | <span class="address-link">[0x66C4b8Ba38a7B57495b7D0581f25784E629516c2](https://safe.optimism.io/home?safe=mode:0x66C4b8Ba38a7B57495b7D0581f25784E629516c2)</span>                         |
-| HyperEVM  | <span class="address-link">[0x44613a28347206F5E26C1B8Db7Dc73f450219746](https://safe.onchainden.com/home?safe=hyperevm:0x44613a28347206F5E26C1B8Db7Dc73f450219746)</span>                  |
+| HyperEVM  | <span class="address-link">[0x44613a28347206F5E26C1B8Db7Dc73f450219746](https://app.safe.global/transactions/queue?safe=hyper-evm:0x44613a28347206F5E26C1B8Db7Dc73f450219746)</span>                  |
 | Plasma    | <span class="address-link">[0x0d3319A8057A0C8afd87dFEEA252541A76d56Ebf](https://app.safe.global/home?safe=plasma:0x0d3319A8057A0C8afd87dFEEA252541A76d56Ebf)</span>                        |
 | XLayer    | <span class="address-link">[0x6793df018B07C44E86D0b84C8C5f07EEc14E1270](https://app.safe.global/home?safe=xlayer:0x6793df018B07C44E86D0b84C8C5f07EEc14E1270)</span>                        |
 | Monad     | <span class="address-link">[0x3a921d6956C62012Dd88f95bD44224a7Ef5C9b5a](https://app.safe.global/home?safe=monad:0x3a921d6956C62012Dd88f95bD44224a7Ef5C9b5a)</span>                         |
@@ -76,3 +85,22 @@ event of an exploit:
 | Call  | Contract(s)    | Purpose                                                                     |
 |:------|:---------------|:----------------------------------------------------------------------------|
 | pause | Pool contracts | Pauses a specific Balancer v2 pool based on the Composable v6 pool factory. |
+
+As per [BIP-883](https://forum.balancer.fi/t/bip-883-emergency-safe-governance-improvements-q4-2025/6865), following a comprehensive security review by the Security Council, two critical improvements were implemented: the signer threshold was reduced from 4/7 to 3/7 across all chains to enable faster response times, and the `VaultAdmin.disableQueryPermanently()` permission was revoked from all emergency safes on chains with Balancer v3 deployments as it was not required for legitimate emergency response scenarios.
+
+| Change                          | Scope                            | Purpose                                                                                                  |
+|:--------------------------------|:---------------------------------|:---------------------------------------------------------------------------------------------------------|
+| Threshold reduction (4/7 → 3/7) | All emergency safes              | Enable faster response times during critical security incidents while maintaining multi-entity quorum.   |
+| Revoke `disableQueryPermanently`| Emergency safes on v3 chains     | Remove unnecessary permission that could permanently impact protocol functionality if compromised.       |
+
+As per [BIP-911](https://forum.balancer.fi/t/bip-911-emergency-subdao-signer-swap-q1-2026/6963), a signer swap was performed across all emergency subDAO safes to replace MikeB (`0xF01Cc7154e255D20489E091a5aEA10Bc136696a8`) with Fabio from BLabs (`0x90347b9CC81a4a28aAc74E8B134040d5ce2eaB6D`), strengthening the security posture for Balancer v3 infrastructure by ensuring a responsive signer set across a wide range of time-zones.
+
+| Change                                | Scope                            | Purpose                                                                                              |
+|:--------------------------------------|:---------------------------------|:-----------------------------------------------------------------------------------------------------|
+| Signer swap (MikeB → Fabio)           | All emergency safes              | Replace MikeB with Fabio from BLabs to ensure responsive signer coverage across time-zones.          |
+
+Following the operational mandate granted to the core team by [BIP-918](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000) — under which routine emergency-signer rotations no longer require a standalone BIP — a signer swap was executed across all emergency subDAO safes to replace Juani (`0xDA07B188daE2ee63B2eC61Ee4cdB9673C03d2293`) with Danko (`0x122AFb4667C5f80e45721a42C7c81e9140C62FA4`) following Juani's departure, maintaining the 3-of-7 multi-entity signer composition.
+
+| Change                                | Scope                            | Authority                                                                                            |
+|:--------------------------------------|:---------------------------------|:-----------------------------------------------------------------------------------------------------|
+| Signer swap (Juani → Danko)           | All emergency safes              | Core team operational mandate per BIP-918 (no standalone BIP required).                              |

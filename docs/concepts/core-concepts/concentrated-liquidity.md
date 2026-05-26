@@ -66,18 +66,18 @@ When using with yield-bearing assets and rate providers, the precision can be in
 
 ![Non-fungible CL illustration](/images/rehype.png)
 
-### Readjusting Concentrated Liquidity AMM (ReClamm) Pools
+### AutoRange Pools
 
-[Reclamm Pools](../explore-available-balancer-pools/reclamm-pool/reclamm-pool.md) are the next logical step. To summarize the discussion above:
+[AutoRange Pools](../explore-available-balancer-pools/reclamm-pool/reclamm-pool.md) are the next logical step. To summarize the discussion above:
 
 Uniswap pools offer highly granular concentrated liquidity positions, but they are non-fungible and must be actively managed by the LP. There is a direct trade-off between capital efficiency and ease of management.
 
 Gyro pools offer fungible concentrated liquidity over moderate ranges, but the parameters are fixed, so management of volatile assets may involve liquidity migration.
 
-ReClamm pools offer fungible concentrated liquidity similar to 2-CLPs - but as the name implies, the parameters are not fixed. Essentially, the pools manage the liquidity on behalf of the LPs, with no user intervention required.
+AutoRange Pools offer fungible concentrated liquidity similar to 2-CLPs - but as the name implies, the parameters are not fixed. Essentially, the pools manage the liquidity on behalf of the LPs, with no user intervention required.
 
 Triggered by swaps or liquidity operations, the pool can adjust the price range automatically to keep itself “in range” (i.e., maintain the price within the liquidity bounds), whichever way the market moves. The pool creator can set the initial price range, as well as the margin - the “sensitivity” of the pool - which determines how quickly the pool responds to market price changes.
 
 Generally, the higher the volatility, the lower the margin, which makes the pool less sensitive to price changes and more gas-efficient. (If necessary, these can even be changed after deployment - but only slowly, to prevent manipulation.)
 
-The field is always advancing. There are now "ALMs" (automated liquidity managers), third party services that can relieve users of position maintenance. For instance, Arrakis Pro works on Uniswap V3 and V4, but has much broader application. The focused goal of ReClamm pools is to remove the burden of active user management, without sacrificing capital efficiency: a true "fire-and-forget" concentrated liquidity position native to Balancer. And in contrast to some "strategy" solutions, it is completely transparent.
+The field is always advancing. There are now "ALMs" (automated liquidity managers), third party services that can relieve users of position maintenance. For instance, Arrakis Pro works on Uniswap V3 and V4, but has much broader application. The focused goal of AutoRange Pools is to remove the burden of active user management, without sacrificing capital efficiency: a true "fire-and-forget" concentrated liquidity position native to Balancer. And in contrast to some "strategy" solutions, it is completely transparent.

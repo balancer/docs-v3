@@ -49,10 +49,6 @@ Query functions use the same underlying logic as their execution counterparts, b
 ### BufferRouter ([IBufferRouter](https://github.com/balancer/balancer-v3-monorepo/blob/cdb5d86cf458362538ada1ba24ff33506c74ed94/pkg/interfaces/contracts/vault/IBufferRouter.sol))
 ### UnbalancedAddViaSwapRouter ([IUnbalancedAddViaSwapRouter](https://github.com/balancer/balancer-v3-monorepo/blob/cdb5d86cf458362538ada1ba24ff33506c74ed94/pkg/interfaces/contracts/vault/IUnbalancedAddViaSwapRouter.sol))
 
-## Special purpose Routers
-
-### LBPMigrationRouter ([ILBPMigrationRouter](https://github.com/balancer/balancer-v3-monorepo/blob/cdb5d86cf458362538ada1ba24ff33506c74ed94/pkg/interfaces/contracts/pool-weighted/ILBPMigrationRouter.sol))
-
 ---
 
 ## Inheritance Diagram
@@ -121,7 +117,6 @@ Token arrays must always be in **token registration order** (the order the pool 
 | Nested pool operations | `CompositeLiquidityRouter` (V3+) | `addLiquidityUnbalancedNestedPool` |
 | Buffer management | `BufferRouter` | `initializeBuffer`, `addLiquidityToBuffer` |
 | Two-token unbalanced add | `UnbalancedAddViaSwapRouter` | `addLiquidityUnbalanced` |
-| LBP → Weighted Pool migration | `LBPMigrationRouter` | `migrateLiquidity` |
 
 ---
 

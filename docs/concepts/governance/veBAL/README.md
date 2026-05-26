@@ -1,42 +1,48 @@
 ---
-title: Overview
-references:
-  - details: Querying Gauges
-    link: /reference/vebal-and-gauges/gauges.html
-  - details: veBAL Boost Calculations
-    link: /reference/vebal-and-gauges/boost-calculations.html
-
+title: Overview (Historical)
 ---
 
-# veBAL
+# veBAL (Historical)
+
+:::danger Deprecated — veBAL economic and governance rights ended in Q2 2026
+This page describes the legacy veBAL system and is **no longer accurate**. It is retained as a historical record.
+
+**What changed:**
+
+- Per [BIP-919 (BAL Tokenomics Revamp)](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001), BAL emissions are halted, all protocol fees route 100% to the DAO Treasury, and veBAL no longer earns fees or directs emissions.
+- Per [BIP-920 (veBAL Compensation Airdrop)](https://forum.balancer.fi/t/bip-920-vebal-compensation-airdrop/7025), veBAL holders received a **one-off payment of 500,000 USDC** as compensation for forgoing future fee streams, distributed by direct CSV airdrop proportional to veBAL balance at the proposal snapshot (no claiming required). The bulk of this airdrop landed in the major locker contracts (Aura BAL locker, StakeDAO BAL locker, Tetu BAL locker); those wrappers are expected to **unwind their veBAL positions and distribute the received rewards to their underlying users** (sdBAL, auraBAL, tetuBAL holders) accordingly. Reach out to each wrapper protocol for their specific distribution timeline.
+- Per [BIP-921 (1-BAL-1-Vote)](https://forum.balancer.fi/t/bip-921-1-bal-1-vote-reconfiguration-for-balancer-eth-snapshot-space/7052), Snapshot voting is now denominated in raw BAL across seven chains; the veBAL escrow multiplier no longer confers extra voting weight (only the underlying BAL is counted, at face value).
+
+Existing locks remain on-chain until natural expiry but no longer accrue fees or carry escrow-multiplied voting weight. See the [Governance Overview](../README.md), [BAL Token](../bal-token.md), and [Voting](../voting.md) pages for the current state.
+:::
 
 ## Overview
 
-veBAL (vote-escrow BAL) is a vesting system based on [Curve's veCRV mechanism](https://curve.readthedocs.io/dao-vecrv.html) which locks 80/20 BAL/WETH Balancer Pool Tokens for a maximum of 1 year. The veBAL and Gauge system is designed to promote long-term token-holder alignment and facilitate fair protocol fee distribution.
+veBAL (vote-escrow BAL) was a vesting system based on [Curve's veCRV mechanism](https://curve.readthedocs.io/dao-vecrv.html) which locked 80/20 BAL/WETH Balancer Pool Tokens for up to 1 year. The veBAL and Gauge system was designed to promote long-term token-holder alignment and facilitate fair protocol fee distribution.
 
-By locking the BAL/WETH 80/20 BPT, holders are given veBAL, entitling them to governance rights and protocol fee collection. A user's veBAL balance is directly proportional to the amount of BAL/WETH 80/20 BPT locked and the duration of time left in the lock period. In short if a user locks 1 BPT for 52 weeks, they will receive the same amount of “vote escrowed” strength as someone who locks 2 BPT for 26 weeks.
+By locking the BAL/WETH 80/20 BPT, holders received veBAL, entitling them to governance rights and protocol fee collection. A user's veBAL balance was directly proportional to the amount of BAL/WETH 80/20 BPT locked and the duration of time left in the lock period. In short, a user who locked 1 BPT for 52 weeks received the same amount of "vote-escrowed" strength as someone who locked 2 BPT for 26 weeks.
 
-Implications:
+Implications (historical):
 
-- veBAL equates to boosted liquidity mining emissions for all gauges. The share of a given staked pool, and the lock multiplier are both factors in the amount a user will be entitled to in liquidity mining emissions.
+- veBAL conferred boosted liquidity-mining emissions across gauges. A user's share of a given staked pool and the lock multiplier were both factors in the amount they were entitled to in liquidity-mining emissions.
 
-- As of [BIP-457](https://forum.balancer.fi/t/bip-457-core-pool-incentive-program-automation/5254#specificationconfiguration-10) veBAL holders receive 82.5% of [protocol fees](../protocol-fees.md) including:
+- veBAL holders received a share of protocol fees. The distribution varied by pool type (see Protocol Fee Model (historical) for details):
 
-  - 82.5% of the [swap fees](../protocol-fees.md#swap-fees) accumulated on Balancer Protocol are collected as protocol fees.
-  - 82.5% of the yields fees taken from yield bearing tokens [as part of Core Pools](../protocol-fees.md#core-pool-fee-redirection)
+  - **Non-core pools**: 82.5% of protocol fees flowed directly to veBAL holders as USDC payments.
+  - **Core pools**: 12.5% flowed directly to veBAL holders, with an additional 70% distributed as voting incentives on core pools (requiring veBAL holders to vote for revenue-generating pools to capture this portion).
 
-- veBAL is the governance token of Balancer, used in Snapshot voting to authorize changes to the DAO including the management (adding/removing) of gauges and funding of service providers.
-  - veBAL does have a gauge to direct emissions to the holders if chosen. This option is capped at 10% of total emissions of BAL at a given time in the inflation schedule. The overflow, if a vote goes over 10%, will go to the DAO treasury, where governance will have ownership of it.
-  - As demonstrated by BIP-161 the handling and amount of protocol fees are subject to change based on the [Balancer Governance Process](../process.md)
+- veBAL was the governance token of Balancer, used in Snapshot voting to authorize changes to the DAO including the management (adding/removing) of gauges and funding of service providers.
+  - veBAL had a gauge that could direct emissions back to veBAL holders. This option was capped at 10% of total BAL emissions at any given point in the inflation schedule; any overflow above 10% flowed to the DAO treasury.
+  - As demonstrated by BIP-161, the handling and amount of protocol fees were subject to change based on the [Balancer Governance Process](../process.md).
 
-This gives veBAL holders the option to choose pools for which they have liquidity positions for increased emissions or a potential for "bribing" battles can ensue. [BIP-903](https://forum.balancer.fi/t/bip-903-transition-core-pool-incentive-program-to-stake-dao-s-votemarket-v2/6928) introduced StakeDAOs [Votemarket](https://votemarket.stakedao.org/balancer) as the default voting incentive marketplace. It allows projects to provide veBAL holders an incentivize to vote in a direction they prefer, hence the term “bribe”.
+This gave veBAL holders the option to direct emissions toward pools where they held liquidity positions, and opened the door to "bribing" markets. [BIP-903](https://forum.balancer.fi/t/bip-903-transition-core-pool-incentive-program-to-stake-dao-s-votemarket-v2/6928) introduced StakeDAO's [Votemarket](https://votemarket.stakedao.org/balancer) as the default voting-incentive marketplace, allowing projects to incentivize veBAL voters to allocate their gauge votes in a preferred direction — hence the term "bribe".
 
-In the same breath, the emission schedule for BAL has been defined and is set permanently. Before veBAL, 145,000 BAL was being emitted per week, which was unsustainable without a ceiling on emissions. The two key takeaways for the new inflation schedule will be a halving of the inflation rate every 4 years, and a total supply of BAL being capped at 94,000,000.
+The BAL emission schedule was originally defined as permanent: before veBAL, 145,000 BAL were emitted per week, which was unsustainable without a ceiling. The veBAL-era schedule halved the inflation rate every 4 years and capped total BAL supply at ~94,000,000. This schedule was retired by [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001), which halted emissions entirely.
 
-### How is veBAL different from veCRV?
+### How was veBAL different from veCRV?
 
-There are a few modifications that set veBAL apart:
+A few modifications set veBAL apart from veCRV:
 
-- Instead of locking pure BAL, users obtain veBAL by locking 80/20 BAL/WETH Balancer Pool Tokens (BPTs). This ensures that even if a large portion of BAL tokens are locked, there is deep liquidity.
+- Instead of locking pure BAL, users obtained veBAL by locking 80/20 BAL/WETH Balancer Pool Tokens (BPTs). This ensured that even if a large portion of BAL tokens were locked, there was deep liquidity available for trading.
 
-- veBAL's maximum locking period is 1 year, a decrease from veCRV's 4 year period. The minimum locking period is 1 week. DeFi moves quickly, and in the event governance decides to use a new voting system, this allows for a shorter, but still sufficiently long, waiting period to transition.
+- veBAL's maximum locking period was 1 year, a decrease from veCRV's 4-year period. The minimum locking period was 1 week. DeFi moves quickly, and a shorter — but still sufficiently long — lock duration allowed for a faster transition path if governance ever decided to migrate to a new voting system (which is what BIP-921 ultimately did).
