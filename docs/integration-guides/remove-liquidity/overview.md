@@ -3,7 +3,7 @@ order: 0
 title: Overview
 
 features:
-  - title: Remove Liqudity with Typescript
+  - title: Remove Liquidity with Typescript
     icon: /images/build.svg
     iconDark: /images/build-dark.svg
     details: Walkthrough a simple proportional remove using the SDK
@@ -26,7 +26,7 @@ The core concepts of removing liquidity are the same for any programming languag
 - When removing liquidity the user sends [Balancer Pool Tokens](../../concepts/core-concepts/balancer-pool-tokens.md) (BPTs), and will receive pool tokens
 - Use a `permit` signature to approve the Router to spend BPT
 - Token amount inputs/outputs are always in the raw token scale, e.g. `1 USDC` should be sent as `1000000` because it has 6 decimals
-- If a pool's tokens include an ERC4626 with an intialized buffer, you have the option to receive the `asset()` of the ERC4626 when removing liquidity.
+- If a pool's tokens include an ERC4626 with an initialized buffer, you have the option to receive the `asset()` of the ERC4626 when removing liquidity.
 - Transactions are always sent to a [Router](../../concepts/router/overview.md)
   - Use the standard `Router` to receive standard pool tokens
   - Use the `CompositeLiquidityRouter` to receive a pool's underlying tokens

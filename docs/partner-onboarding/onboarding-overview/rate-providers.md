@@ -13,7 +13,7 @@ Rate providers are contracts that provide an exchange rate between two assets. F
 :::
 
 ## When is a rate provider needed?
-The primary use-case of a rate provider is the deployment of liquidity in a composable stable pool consisting of correlated or non-correlated assets containing a yield-bearing asset. If 50% or more of the tokens are yield-bearing, the pool is eligible to be flagged as a [core pool](/partner-onboarding/balancer-v2/core-pools.html) to receive a share of fees as voting incentives
+The primary use-case of a rate provider is the deployment of liquidity in a composable stable pool consisting of correlated or non-correlated assets containing a yield-bearing asset.
 
 ## What are the requirements for a rate provider contract?
 - Must implement the [`IRateProvider`](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/solidity-utils/helpers/IRateProvider.sol) interface, which simply requires a `getRate()` function that returns an 18 decimal fixed point number that is the exchange rate of the token to some other underlying token.

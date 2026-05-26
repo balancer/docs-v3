@@ -43,7 +43,7 @@ Where
 
 ## Spot Price
 
-Each pair of tokens in a pool has a spot price defined entirely by the weights and balances of just that pair of tokens. The spot price between any two tokens,$SpotPrice^o_i$, or in short $SP^o_i$, is the the ratio of the token balances normalized by their weights:
+Each pair of tokens in a pool has a spot price defined entirely by the weights and balances of just that pair of tokens. The spot price between any two tokens,$SpotPrice^o_i$, or in short $SP^o_i$, is the ratio of the token balances normalized by their weights:
 
 <!-- prettier-ignore -->
 $$

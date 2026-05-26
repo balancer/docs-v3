@@ -331,7 +331,7 @@ contract SingleSwap {
 ### Multi Path Swap
 
 :::warning
-Multi-path Swaps use the Balancer [BatchRouter-TODO we need a link to more info here?]()
+Multi-path Swaps use the Balancer [BatchRouter](https://github.com/balancer/balancer-deployments/tree/master/v3/tasks/20241205-v3-batch-router)
 :::
 
 The following code examples demonstrate how to execute a multi path swap specifying exact input token amounts. To achieve this, we use two Router functions:

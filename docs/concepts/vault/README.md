@@ -4,7 +4,7 @@ order: 0
 ---
 
 ::: info
-Retail users should not interact directly with the Vault should not be interacted with directly. [Routers](../router/overview.md) serve as the entry point for all user actions.
+Retail users should not interact directly with the Vault. [Routers](../router/overview.md) serve as the entry point for all user actions.
 :::
 
 # The Vault
@@ -16,7 +16,7 @@ on the implementation of their swap, add liquidity and remove liquidity logic.
 This architecture brings different pool designs under the same umbrella; the Vault is agnostic to pool math and can accommodate any system that satisfies a few requirements. Anyone who comes up with a novel idea can develop a custom pool plugged directly into Balancer's existing liquidity instead of needing to build their own Decentralized Exchange.
 
 In v3, the vault more formally defines the requirements of a pool contract, shifting core design patterns out of the pool and into the vault.
-The result is pool contracts that are compact and much easier to reason about.
+The result is pool contracts that are compact and much easier to reason about. The Vault works with standard ERC20 tokens and is incompatible with rebasing or double entry point tokens.
 
 - [On-chain API](/developer-reference/contracts/vault-api.html)
 - [Configuration](/developer-reference/contracts/vault-config.html)

@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 10
 title: Security
 ---
 # Security
@@ -16,7 +16,7 @@ For more information of Balancer's Bug Bounty program, please visit our [Immunef
 **Bounties only apply to protocol smart contracts**. Bug reports pertaining to Balancer's web interfaces, both in terms of UI/UX or servers/infrastructure, are not eligible.
 :::
 
-For security reports outside of the scope of the bug bounty program, please reach out via security@balancer.finance
+For security reports outside of the scope of the bug bounty program, please reach out via Discord.
 
 ## Audits
 

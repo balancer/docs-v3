@@ -4,4 +4,9 @@ This section includes all of the permissions currently setup in the Authorizer f
 
 - [Mainnet](mainnet.md)
 - [Gnosis](gnosis.md)
+- [Base](base.md)
+- [Avalanche](avalanche.md)
+- [Optimism](optimism.md)
+- [HyperEVM](hyperevm.md)
+- [Plasma](plasma.md)
 - [Sepolia](sepolia.md)

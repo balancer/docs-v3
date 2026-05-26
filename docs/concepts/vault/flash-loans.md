@@ -27,7 +27,7 @@ Flash loans in Balancer V3 allow users to borrow assets without collateral, as l
 pragma solidity ^0.8.24;
 
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import { IVaultMain } from "./IVaultMain.sol";
+import { IVaultMain } from "@balancer-labs/v3-interfaces/contracts/vault/IVaultMain.sol";
 
 contract BalancerFlashLoan {
     IVaultMain public immutable balancerVault;

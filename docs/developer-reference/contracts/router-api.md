@@ -1,5 +1,5 @@
 ---
-order: 0
+order: 1
 title: Router API
 ---
 
@@ -7,12 +7,13 @@ title: Router API
 
 The Router can be used to interact with Balancer onchain via state changing operations or used to query operations in an off-chain context.
 
+The main router provides user-friendly interfaces for basic Vault operations: initialization, adding/removing liquidity, and single-pool swaps.
+
 ## State-changing functions
-The router's state-changing functions are used for interacting with Balancer onchain. They provide simple interfaces for the most common user actions performed against the Balancer Vault.
 
-## Pool initialization
+### Pool Initialization
 
-### `initialize`
+#### `initialize`
 
 ```solidity
 function initialize(
@@ -24,28 +25,29 @@ function initialize(
     bytes memory userData
 ) external payable returns (uint256 bptAmountOut);
 ```
-This function initializes a liquidity pool. It adds the initial liquidity to the pool and mints the initial pool tokens.
+
+Initializes a new liquidity pool with exact token amounts. This is the first liquidity operation that must be performed on any pool. V3 pools have a separate initialization step, which changes pool metadata in the Vault to guarantee that it is only done once. This eliminates any attacks based on 're-initialization' of pools.
 
 **Parameters:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| pool  | address  | Address of the liquidity pool |
-| tokens  | IERC20[]  | Array of token contracts to be added to the pool |
-| exactAmountsIn  | uint256[]  | Exact amounts of tokens to be added, sorted in token registration order |
-| minBptAmountOut  | uint256  | Minimum amount of pool tokens to be received |
-| wethIsEth  | bool  | If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens |
-| userData  | bytes  | Additional (optional) data required for adding initial liquidity |
+| Name            | Type             | Description                                                                      |
+|-----------------|------------------|----------------------------------------------------------------------------------|
+| pool            | address          | Address of the liquidity pool to initialize                                      |
+| tokens          | IERC20[] memory  | Pool tokens in token registration order                                          |
+| exactAmountsIn  | uint256[] memory | Exact amounts of tokens to deposit, sorted in token registration order           |
+| minBptAmountOut | uint256          | Minimum BPT tokens to receive (slippage protection)                              |
+| wethIsEth       | bool             | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
+| userData        | bytes memory     | Additional (optional) data passed to the pool                                    |
 
 **Returns:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| bptAmountOut  | uint256  | Actual amount of pool tokens minted in exchange for initial liquidity |
+| Name          | Type    | Description                            |
+|---------------|---------|----------------------------------------|
+| bptAmountOut  | uint256 | Actual amount of pool tokens minted    |
 
-## Add liquidity
+### Add Liquidity Operations
 
-### `addLiquidityProportional`
+#### `addLiquidityProportional`
 
 ```solidity
 function addLiquidityProportional(
@@ -56,25 +58,26 @@ function addLiquidityProportional(
     bytes memory userData
 ) external payable returns (uint256[] memory amountsIn);
 ```
-Adds with proportional token amounts to a pool, receiving an exact amount of pool tokens.
+
+Adds liquidity proportionally to receive an exact amount of BPT. The ratio of tokens added matches the current pool composition.
 
 **Parameters:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| pool  | address  | Address of the liquidity pool |
-| maxAmountsIn  | uint256[]  | Maximum amounts of tokens to be added, sorted in token registration order |
-| exactBptAmountOut  | uint256  | Exact amount of pool tokens to be received |
-| wethIsEth  | bool  | If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens |
-| userData  | bytes  | Additional (optional) data required for adding liquidity |
+| Name              | Type             | Description                                                                      |
+|-------------------|------------------|----------------------------------------------------------------------------------|
+| pool              | address          | Address of the liquidity pool                                                    |
+| maxAmountsIn      | uint256[] memory | Maximum amounts of tokens to be added, sorted in token registration order        |
+| exactBptAmountOut | uint256          | Exact amount of pool tokens to be received                                       |
+| wethIsEth         | bool             | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
+| userData          | bytes memory     | Additional (optional) data sent with the request to add liquidity                |
 
 **Returns:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| amountsIn  | uint256[]  | Actual amounts of tokens added, sorted in token registration order |
+| Name      | Type             | Description                                                    |
+|-----------|------------------|----------------------------------------------------------------|
+| amountsIn | uint256[] memory | Actual amounts of tokens added, sorted in token registration order |
 
-### `addLiquidityUnbalanced`
+#### `addLiquidityUnbalanced`
 
 ```solidity
 function addLiquidityUnbalanced(
@@ -85,25 +88,26 @@ function addLiquidityUnbalanced(
     bytes memory userData
 ) external payable returns (uint256 bptAmountOut);
 ```
-Adds with arbitrary token amounts in to a pool.
+
+Adds liquidity with arbitrary token amounts (not necessarily proportional). The pool calculates the appropriate BPT to mint.
 
 **Parameters:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| pool  | address  | Address of the liquidity pool |
-| exactAmountsIn  | uint256[]  | Exact amounts of tokens to be added, sorted in token registration order |
-| minBptAmountOut  | uint256  | Minimum amount of pool tokens to be received |
-| wethIsEth  | bool  | If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens |
-| userData  | bytes  | Additional (optional) data required for adding liquidity |
+| Name            | Type             | Description                                                                      |
+|-----------------|------------------|----------------------------------------------------------------------------------|
+| pool            | address          | Address of the liquidity pool                                                    |
+| exactAmountsIn  | uint256[] memory | Exact amounts of tokens to be added, sorted in token registration order          |
+| minBptAmountOut | uint256          | Minimum amount of pool tokens to be received                                     |
+| wethIsEth       | bool             | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
+| userData        | bytes memory     | Additional (optional) data sent with the request to add liquidity                |
 
 **Returns:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| bptAmountOut  | uint256  | Actual amount of pool tokens received |
+| Name         | Type    | Description                             |
+|--------------|---------|-----------------------------------------|
+| bptAmountOut | uint256 | Actual amount of pool tokens received   |
 
-### `addLiquiditySingleTokenExactOut`
+#### `addLiquiditySingleTokenExactOut`
 
 ```solidity
 function addLiquiditySingleTokenExactOut(
@@ -115,26 +119,27 @@ function addLiquiditySingleTokenExactOut(
     bytes memory userData
 ) external payable returns (uint256 amountIn);
 ```
-Adds with a single token to a pool, receiving an exact amount of pool tokens.
+
+Adds liquidity using only one token to receive an exact amount of BPT. Useful for adding liquidity when you only have one of the pool's tokens.
 
 **Parameters:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| pool  | address  | Address of the liquidity pool |
-| tokenIn  | IERC20  | Token used to add liquidity |
-| maxAmountIn  | uint256  | Maximum amount of tokens to be added |
-| exactBptAmountOut  | uint256  | Exact amount of pool tokens to be received |
-| wethIsEth  | bool  | If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens |
-| userData  | bytes  | Additional (optional) data required for adding liquidity |
+| Name              | Type         | Description                                                                      |
+|-------------------|--------------|----------------------------------------------------------------------------------|
+| pool              | address      | Address of the liquidity pool                                                    |
+| tokenIn           | IERC20       | Token used to add liquidity                                                      |
+| maxAmountIn       | uint256      | Maximum amount of tokens to be added                                             |
+| exactBptAmountOut | uint256      | Exact amount of pool tokens to be received                                       |
+| wethIsEth         | bool         | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
+| userData          | bytes memory | Additional (optional) data sent with the request to add liquidity                |
 
 **Returns:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| amountIn  | uint256  | Actual amount of tokens added |
+| Name     | Type    | Description                    |
+|----------|---------|--------------------------------|
+| amountIn | uint256 | Actual amount of tokens added  |
 
-### `donate`
+#### `donate`
 
 ```solidity
 function donate(
@@ -144,18 +149,19 @@ function donate(
     bytes memory userData
 ) external payable;
 ```
-Adds liquidity to a pool by donating the amounts in (no BPT out). To support donation, the pool config `enableDonation` flag must be set to true. This liquidity type is disabled by default, and is only useful in certain limited use cases (e.g., pools with exit fees). Pools that support donation have special security considerations. In particular, their rates are trivially manipulable, so they cannot be nested inside other pools. Use with care!
+
+Donates tokens to a pool without receiving BPT. This increases the value of existing BPT tokens. The pool must have the `enableDonation` flag set to true.
 
 **Parameters:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| pool  | address  | Address of the liquidity pool |
-| amountsIn  | uint256[]  | Amounts of tokens to be donated, sorted in token registration order |
-| wethIsEth  | bool  | If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens |
-| userData  | bytes  | Additional (optional) data required for adding liquidity |
+| Name      | Type             | Description                                                                      |
+|-----------|------------------|----------------------------------------------------------------------------------|
+| pool      | address          | Address of the liquidity pool                                                    |
+| amountsIn | uint256[] memory | Amounts of tokens to be donated, sorted in token registration order              |
+| wethIsEth | bool             | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
+| userData  | bytes memory     | Additional (optional) data sent with the request to donate liquidity             |
 
-### `addLiquidityCustom`
+#### `addLiquidityCustom`
 
 ```solidity
 function addLiquidityCustom(
@@ -164,31 +170,36 @@ function addLiquidityCustom(
     uint256 minBptAmountOut,
     bool wethIsEth,
     bytes memory userData
-) external payable returns (uint256[] memory amountsIn, uint256 bptAmountOut, bytes memory returnData);
+) external payable returns (
+    uint256[] memory amountsIn,
+    uint256 bptAmountOut,
+    bytes memory returnData
+);
 ```
-Adds liquidity to a pool with a custom request.
+
+Adds liquidity with a custom operation defined by the pool. The interpretation of max/min amounts depends on the pool type and userData.
 
 **Parameters:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| pool  | address  | Address of the liquidity pool |
-| maxAmountsIn  | uint256[]  | Maximum amounts of tokens to be added, sorted in token registration order |
-| minBptAmountOut  | uint256  | Minimum amount of pool tokens to be received |
-| wethIsEth  | bool  | If true, incoming ETH will be wrapped to WETH; otherwise the Vault will pull WETH tokens |
-| userData  | bytes  | Additional (optional) data required for adding liquidity |
+| Name            | Type             | Description                                                                      |
+|-----------------|------------------|----------------------------------------------------------------------------------|
+| pool            | address          | Address of the liquidity pool                                                    |
+| maxAmountsIn    | uint256[] memory | Maximum amounts of tokens to be added, sorted in token registration order        |
+| minBptAmountOut | uint256          | Minimum amount of pool tokens to be received                                     |
+| wethIsEth       | bool             | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
+| userData        | bytes memory     | Additional (optional) data sent with the request to add liquidity                |
 
 **Returns:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| amountsIn  | uint256[]  | Actual amounts of tokens added, sorted in token registration order |
-| bptAmountOut  | uint256  | Actual amount of pool tokens received |
-| returnData  | bytes  | Arbitrary (optional) data with encoded response from the pool |
+| Name         | Type             | Description                                                            |
+|--------------|------------------|------------------------------------------------------------------------|
+| amountsIn    | uint256[] memory | Actual amounts of tokens added, sorted in token registration order     |
+| bptAmountOut | uint256          | Actual amount of pool tokens received                                  |
+| returnData   | bytes memory     | Arbitrary (optional) data with an encoded response from the pool       |
 
-## Remove liquidity
+### Remove Liquidity Operations
 
-### `removeLiquidityProportional`
+#### `removeLiquidityProportional`
 
 ```solidity
 function removeLiquidityProportional(
@@ -199,25 +210,26 @@ function removeLiquidityProportional(
     bytes memory userData
 ) external payable returns (uint256[] memory amountsOut);
 ```
-Removes liquidity with proportional token amounts from a pool, burning an exact pool token amount. If the user both adds and removes liquidity to a pool in the same transaction, the system will charge the static fee percentage on all tokens as an "exit fee." This is not really a valid use case, and may be an attack. Use caution when removing liquidity through a Safe or other multisig / non-EOA address. Use "sign and execute," ideally through a private node (or at least not allowing public execution) to avoid front-running, and always set strict limits (i.e., `minAmountsOut`) so that it will revert if any unexpected fees are charged. (It is also possible to check whether the flag has been set before withdrawing, by calling `getAddLiquidityCalledFlag` on the Vault.)
+
+Removes liquidity proportionally by burning an exact amount of BPT. Receives all pool tokens in proportion to current pool composition.
 
 **Parameters:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| pool  | address  | Address of the liquidity pool |
-| exactBptAmountIn  | uint256  | Exact amount of pool tokens provided |
-| minAmountsOut  | uint256[]  | Minimum amounts of tokens to be received, sorted in token registration order |
-| wethIsEth  | bool  | If true, outgoing WETH will be unwrapped to ETH; otherwise the Vault will send WETH tokens |
-| userData  | bytes  | Additional (optional) data required for removing liquidity |
+| Name             | Type             | Description                                                                      |
+|------------------|------------------|----------------------------------------------------------------------------------|
+| pool             | address          | Address of the liquidity pool                                                    |
+| exactBptAmountIn | uint256          | Exact amount of pool tokens provided                                             |
+| minAmountsOut    | uint256[] memory | Minimum amounts of tokens to be received, sorted in token registration order     |
+| wethIsEth        | bool             | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
+| userData         | bytes memory     | Additional (optional) data sent with the request to remove liquidity             |
 
 **Returns:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| amountsOut  | uint256[]  | Actual amounts of tokens received, sorted in token registration order |
+| Name       | Type             | Description                                                         |
+|------------|------------------|---------------------------------------------------------------------|
+| amountsOut | uint256[] memory | Actual amounts of tokens received, sorted in token registration order |
 
-### `removeLiquiditySingleTokenExactIn`
+#### `removeLiquiditySingleTokenExactIn`
 
 ```solidity
 function removeLiquiditySingleTokenExactIn(
@@ -229,26 +241,27 @@ function removeLiquiditySingleTokenExactIn(
     bytes memory userData
 ) external payable returns (uint256 amountOut);
 ```
-Removes liquidity from a pool via a single token, burning an exact pool token amount.
+
+Burns an exact amount of BPT to receive a single token. Useful for exiting positions into one specific token.
 
 **Parameters:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| pool  | address  | Address of the liquidity pool |
-| exactBptAmountIn  | uint256  | Exact amount of pool tokens provided |
-| tokenOut  | IERC20  | Token used to remove liquidity |
-| minAmountOut  | uint256  | Minimum amount of tokens to be received |
-| wethIsEth  | bool  | If true, outgoing WETH will be unwrapped to ETH; otherwise the Vault will send WETH tokens |
-| userData  | bytes  | Additional (optional) data required for removing liquidity |
+| Name             | Type         | Description                                                                      |
+|------------------|--------------|----------------------------------------------------------------------------------|
+| pool             | address      | Address of the liquidity pool                                                    |
+| exactBptAmountIn | uint256      | Exact amount of pool tokens provided                                             |
+| tokenOut         | IERC20       | Token to be received                                                             |
+| minAmountOut     | uint256      | Minimum amount of tokens to be received                                          |
+| wethIsEth        | bool         | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
+| userData         | bytes memory | Additional (optional) data sent with the request to remove liquidity             |
 
 **Returns:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| amountOut  | uint256  | Actual amount of tokens received |
+| Name      | Type    | Description                      |
+|-----------|---------|----------------------------------|
+| amountOut | uint256 | Actual amount of tokens received |
 
-### `removeLiquiditySingleTokenExactOut`
+#### `removeLiquiditySingleTokenExactOut`
 
 ```solidity
 function removeLiquiditySingleTokenExactOut(
@@ -260,26 +273,27 @@ function removeLiquiditySingleTokenExactOut(
     bytes memory userData
 ) external payable returns (uint256 bptAmountIn);
 ```
-Removes liquidity from a pool via a single token, specifying the exact amount of tokens to receive.
+
+Burns BPT to receive an exact amount of a single token. You specify how much of the output token you want.
 
 **Parameters:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| pool  | address  | Address of the liquidity pool |
-| maxBptAmountIn  | uint256  | Maximum amount of pool tokens provided |
-| tokenOut  | IERC20  | Token used to remove liquidity |
-| exactAmountOut  | uint256  | Exact amount of tokens to be received |
-| wethIsEth  | bool  | If true, outgoing WETH will be unwrapped to ETH; otherwise the Vault will send WETH tokens |
-| userData  | bytes  | Additional (optional) data required for removing liquidity |
+| Name           | Type         | Description                                                                      |
+|----------------|--------------|----------------------------------------------------------------------------------|
+| pool           | address      | Address of the liquidity pool                                                    |
+| maxBptAmountIn | uint256      | Maximum amount of pool tokens provided                                           |
+| tokenOut       | IERC20       | Token to be received                                                             |
+| exactAmountOut | uint256      | Exact amount of tokens to be received                                            |
+| wethIsEth      | bool         | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
+| userData       | bytes memory | Additional (optional) data sent with the request to remove liquidity             |
 
 **Returns:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| bptAmountIn  | uint256  | Actual amount of pool tokens burned |
+| Name        | Type    | Description                          |
+|-------------|---------|--------------------------------------|
+| bptAmountIn | uint256 | Actual amount of pool tokens burned  |
 
-### `removeLiquidityCustom`
+#### `removeLiquidityCustom`
 
 ```solidity
 function removeLiquidityCustom(
@@ -288,56 +302,62 @@ function removeLiquidityCustom(
     uint256[] memory minAmountsOut,
     bool wethIsEth,
     bytes memory userData
-) external returns (uint256 bptAmountIn, uint256[] memory amountsOut, bytes memory returnData);
+) external payable returns (
+    uint256 bptAmountIn,
+    uint256[] memory amountsOut,
+    bytes memory returnData
+);
 ```
-Removes liquidity from a pool with a custom request.
+
+Removes liquidity with a custom operation defined by the pool.
 
 **Parameters:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| pool  | address  | Address of the liquidity pool |
-| maxBptAmountIn  | uint256  | Maximum amount of pool tokens provided |
-| minAmountsOut  | uint256[]  | Minimum amounts of tokens to be received, sorted in token registration order |
-| wethIsEth  | bool  | If true, outgoing WETH will be unwrapped to ETH; otherwise the Vault will send WETH tokens |
-| userData  | bytes  | Additional (optional) data required for removing liquidity |
+| Name           | Type             | Description                                                                      |
+|----------------|------------------|----------------------------------------------------------------------------------|
+| pool           | address          | Address of the liquidity pool                                                    |
+| maxBptAmountIn | uint256          | Maximum amount of pool tokens provided                                           |
+| minAmountsOut  | uint256[] memory | Minimum amounts of tokens to be received, sorted in token registration order     |
+| wethIsEth      | bool             | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
+| userData       | bytes memory     | Additional (optional) data sent with the request to remove liquidity             |
 
 **Returns:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| bptAmountIn  | uint256  | Actual amount of pool tokens burned |
-| amountsOut  | uint256[]  | Actual amounts of tokens received, sorted in token registration order |
-| returnData  | bytes  | Arbitrary (optional) data with encoded response from the pool |
+| Name        | Type             | Description                                                            |
+|-------------|------------------|------------------------------------------------------------------------|
+| bptAmountIn | uint256          | Actual amount of pool tokens burned                                    |
+| amountsOut  | uint256[] memory | Actual amounts of tokens received, sorted in token registration order  |
+| returnData  | bytes memory     | Arbitrary (optional) data with an encoded response from the pool       |
 
-### `removeLiquidityRecovery`
+#### `removeLiquidityRecovery`
 
 ```solidity
 function removeLiquidityRecovery(
     address pool,
     uint256 exactBptAmountIn,
     uint256[] memory minAmountsOut
-) external returns (uint256[] memory amountsOut);
+) external payable returns (uint256[] memory amountsOut);
 ```
-Removes liquidity proportionally, burning an exact pool token amount. Only available in Recovery Mode. If the user both adds and removes liquidity to a pool in the same transaction, the system will charge the static fee percentage on all tokens as an "exit fee." This is not really a valid use case (and would be especially unusual in Recovery Mode), and may be an attack. Use caution when removing liquidity through a Safe or other multisig / non-EOA address. Use "sign and execute," ideally through a private node (or at least not allowing public execution) to avoid front-running, and always set strict limits (i.e., `minAmountsOut`) so that it will revert if any unexpected fees are charged. (It is also possible to check whether the flag has been set before withdrawing, by calling `getAddLiquidityCalledFlag` on the Vault.)
+
+Emergency exit function available only when a pool is in Recovery Mode. Allows proportional exits even if the pool is in a bad state.
 
 **Parameters:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| pool  | address  | Address of the liquidity pool |
-| exactBptAmountIn  | uint256  | Exact amount of pool tokens provided |
-| minAmountsOut | uint256[] | Minimum amounts of tokens to be received, sorted in token registration order |
+| Name             | Type             | Description                                                          |
+|------------------|------------------|----------------------------------------------------------------------|
+| pool             | address          | Address of the liquidity pool                                        |
+| exactBptAmountIn | uint256          | Exact amount of pool tokens provided                                 |
+| minAmountsOut    | uint256[] memory | Minimum amounts of tokens to be received, sorted in token registration order |
 
 **Returns:**
 
-| Name  | Type  | Description  |
-|---|---|---|
-| amountsOut  | uint256[]  | Actual amounts of tokens received, sorted in token registration order |
+| Name       | Type             | Description                                                         |
+|------------|------------------|---------------------------------------------------------------------|
+| amountsOut | uint256[] memory | Actual amounts of tokens received, sorted in token registration order |
 
-## Swaps
+### Swap Operations
 
-### `swapSingleTokenExactIn`
+#### `swapSingleTokenExactIn`
 
 ```solidity
 function swapSingleTokenExactIn(
@@ -351,28 +371,29 @@ function swapSingleTokenExactIn(
     bytes calldata userData
 ) external payable returns (uint256 amountOut);
 ```
-Executes a swap operation specifying an exact input token amount.
+
+Swaps an exact amount of one token for another within a single pool. You specify the input amount.
 
 **Parameters:**
 
-| Name           | Type        | Description                                                                 |
-|----------------|-------------|-----------------------------------------------------------------------------|
-| pool           | address     | Address of the liquidity pool                                               |
-| tokenIn        | IERC20      | Token to be swapped from                                                    |
-| tokenOut       | IERC20      | Token to be swapped to                                                      |
-| exactAmountIn  | uint256     | Exact amount of input tokens to send                                        |
-| minAmountOut   | uint256     | Minimum amount of tokens to be received                                     |
-| deadline       | uint256     | Deadline for the swap                                                       |
-| wethIsEth      | bool        | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
-| userData       | bytes       | Additional (optional) data required for the swap                            |
+| Name          | Type           | Description                                                                      |
+|---------------|----------------|----------------------------------------------------------------------------------|
+| pool          | address        | Address of the liquidity pool                                                    |
+| tokenIn       | IERC20         | Token to be swapped from                                                         |
+| tokenOut      | IERC20         | Token to be swapped to                                                           |
+| exactAmountIn | uint256        | Exact amount of input tokens to send                                             |
+| minAmountOut  | uint256        | Minimum amount of tokens to be received                                          |
+| deadline      | uint256        | Deadline for the swap, after which it will revert                                |
+| wethIsEth     | bool           | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
+| userData      | bytes calldata | Additional (optional) data sent with the swap request                            |
 
 **Returns:**
 
-| Name        | Type      | Description                                         |
-|-------------|-----------|-----------------------------------------------------|
-| amountOut   | uint256   | Calculated amount of output tokens to be received in exchange for the given input tokens |
+| Name      | Type    | Description                                                                              |
+|-----------|---------|------------------------------------------------------------------------------------------|
+| amountOut | uint256 | Calculated amount of output tokens to be received in exchange for the given input tokens |
 
-### `swapSingleTokenExactOut`
+#### `swapSingleTokenExactOut`
 
 ```solidity
 function swapSingleTokenExactOut(
@@ -386,26 +407,27 @@ function swapSingleTokenExactOut(
     bytes calldata userData
 ) external payable returns (uint256 amountIn);
 ```
-Executes a swap operation specifying an exact output token amount.
+
+Swaps tokens to receive an exact amount of the output token. You specify the output amount you want.
 
 **Parameters:**
 
-| Name           | Type        | Description                                                                 |
-|----------------|-------------|-----------------------------------------------------------------------------|
-| pool           | address     | Address of the liquidity pool                                               |
-| tokenIn        | IERC20      | Token to be swapped from                                                    |
-| tokenOut       | IERC20      | Token to be swapped to                                                      |
-| exactAmountOut | uint256     | Exact amount of output tokens to receive                                    |
-| maxAmountIn    | uint256     | Maximum amount of tokens to be sent                                         |
-| deadline       | uint256     | Deadline for the swap                                                       |
-| wethIsEth      | bool        | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
-| userData       | bytes       | Additional (optional) data required for the swap                            |
+| Name           | Type           | Description                                                                      |
+|----------------|----------------|----------------------------------------------------------------------------------|
+| pool           | address        | Address of the liquidity pool                                                    |
+| tokenIn        | IERC20         | Token to be swapped from                                                         |
+| tokenOut       | IERC20         | Token to be swapped to                                                           |
+| exactAmountOut | uint256        | Exact amount of output tokens to receive                                         |
+| maxAmountIn    | uint256        | Maximum amount of tokens to be sent                                              |
+| deadline       | uint256        | Deadline for the swap, after which it will revert                                |
+| wethIsEth      | bool           | If true, incoming ETH will be wrapped to WETH and outgoing WETH will be unwrapped to ETH |
+| userData       | bytes calldata | Additional (optional) data sent with the swap request                            |
 
 **Returns:**
 
-| Name        | Type      | Description                                         |
-|-------------|-----------|-----------------------------------------------------|
-| amountIn    | uint256   | Calculated amount of input tokens to be sent in exchange for the requested output tokens |
+| Name     | Type    | Description                                                                                   |
+|----------|---------|-----------------------------------------------------------------------------------------------|
+| amountIn | uint256 | Calculated amount of input tokens to be sent in exchange for the requested output tokens      |
 
 ## Queries
 
@@ -419,22 +441,23 @@ function queryAddLiquidityProportional(
     bytes memory userData
 ) external returns (uint256[] memory amountsIn);
 ```
+
 Queries an `addLiquidityProportional` operation without actually executing it.
 
 **Parameters:**
 
-| Name              | Type        | Description                                                        |
-|-------------------|-------------|--------------------------------------------------------------------|
-| pool              | address     | Address of the liquidity pool                                      |
-| exactBptAmountOut | uint256     | Exact amount of pool tokens to be received                         |
-| sender | address | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
-| userData          | bytes       | Additional (optional) data required for the query                  |
+| Name              | Type         | Description                                                                             |
+|-------------------|--------------|-----------------------------------------------------------------------------------------|
+| pool              | address      | Address of the liquidity pool                                                           |
+| exactBptAmountOut | uint256      | Exact amount of pool tokens to be received                                              |
+| sender            | address      | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
+| userData          | bytes memory | Additional (optional) data sent with the query request                                  |
 
 **Returns:**
 
-| Name        | Type        | Description                                             |
-|-------------|-------------|---------------------------------------------------------|
-| amountsIn   | uint256[]   | Expected amounts of tokens to add, sorted in token registration order |
+| Name      | Type             | Description                                                          |
+|-----------|------------------|----------------------------------------------------------------------|
+| amountsIn | uint256[] memory | Expected amounts of tokens to add, sorted in token registration order |
 
 ### `queryAddLiquidityUnbalanced`
 
@@ -446,22 +469,23 @@ function queryAddLiquidityUnbalanced(
     bytes memory userData
 ) external returns (uint256 bptAmountOut);
 ```
+
 Queries an `addLiquidityUnbalanced` operation without actually executing it.
 
 **Parameters:**
 
-| Name            | Type        | Description                                                    |
-|-----------------|-------------|----------------------------------------------------------------|
-| pool            | address     | Address of the liquidity pool                                  |
-| exactAmountsIn  | uint256[]   | Exact amounts of tokens to be added, sorted in token registration order |
-| sender | address | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
-| userData        | bytes       | Additional (optional) data required for the query              |
+| Name           | Type             | Description                                                                             |
+|----------------|------------------|-----------------------------------------------------------------------------------------|
+| pool           | address          | Address of the liquidity pool                                                           |
+| exactAmountsIn | uint256[] memory | Exact amounts of tokens to be added, sorted in token registration order                 |
+| sender         | address          | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
+| userData       | bytes memory     | Additional (optional) data sent with the query request                                  |
 
 **Returns:**
 
-| Name          | Type      | Description                                  |
-|---------------|-----------|----------------------------------------------|
-| bptAmountOut  | uint256   | Expected amount of pool tokens to receive    |
+| Name         | Type    | Description                              |
+|--------------|---------|------------------------------------------|
+| bptAmountOut | uint256 | Expected amount of pool tokens to receive |
 
 ### `queryAddLiquiditySingleTokenExactOut`
 
@@ -474,23 +498,24 @@ function queryAddLiquiditySingleTokenExactOut(
     bytes memory userData
 ) external returns (uint256 amountIn);
 ```
+
 Queries an `addLiquiditySingleTokenExactOut` operation without actually executing it.
 
 **Parameters:**
 
-| Name              | Type        | Description                                             |
-|-------------------|-------------|---------------------------------------------------------|
-| pool              | address     | Address of the liquidity pool                           |
-| tokenIn           | IERC20      | Token used to add liquidity                             |
-| exactBptAmountOut | uint256     | Expected exact amount of pool tokens to receive         |
-| sender | address | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
-| userData          | bytes       | Additional (optional) data required for the query       |
+| Name              | Type         | Description                                                                             |
+|-------------------|--------------|-----------------------------------------------------------------------------------------|
+| pool              | address      | Address of the liquidity pool                                                           |
+| tokenIn           | IERC20       | Token used to add liquidity                                                             |
+| exactBptAmountOut | uint256      | Expected exact amount of pool tokens to receive                                         |
+| sender            | address      | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
+| userData          | bytes memory | Additional (optional) data sent with the query request                                  |
 
 **Returns:**
 
-| Name        | Type      | Description                           |
-|-------------|-----------|---------------------------------------|
-| amountIn    | uint256   | Expected amount of tokens to add      |
+| Name     | Type    | Description                      |
+|----------|---------|----------------------------------|
+| amountIn | uint256 | Expected amount of tokens to add |
 
 ### `queryAddLiquidityCustom`
 
@@ -501,27 +526,32 @@ function queryAddLiquidityCustom(
     uint256 minBptAmountOut,
     address sender,
     bytes memory userData
-) external returns (uint256[] memory amountsIn, uint256 bptAmountOut, bytes memory returnData);
+) external returns (
+    uint256[] memory amountsIn,
+    uint256 bptAmountOut,
+    bytes memory returnData
+);
 ```
+
 Queries an `addLiquidityCustom` operation without actually executing it.
 
 **Parameters:**
 
-| Name            | Type        | Description                                                        |
-|-----------------|-------------|--------------------------------------------------------------------|
-| pool            | address     | Address of the liquidity pool                                      |
-| maxAmountsIn    | uint256[]   | Maximum amounts of tokens to be added, sorted in token registration order |
-| minBptAmountOut | uint256     | Expected minimum amount of pool tokens to receive                  |
-| sender | address | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
-| userData        | bytes       | Additional (optional) data required for the query                  |
+| Name            | Type             | Description                                                                             |
+|-----------------|------------------|-----------------------------------------------------------------------------------------|
+| pool            | address          | Address of the liquidity pool                                                           |
+| maxAmountsIn    | uint256[] memory | Expected maximum amounts of tokens to add, sorted in token registration order           |
+| minBptAmountOut | uint256          | Expected minimum amount of pool tokens to receive                                       |
+| sender          | address          | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
+| userData        | bytes memory     | Additional (optional) data sent with the query request                                  |
 
 **Returns:**
 
-| Name            | Type        | Description                                                        |
-|-----------------|-------------|--------------------------------------------------------------------|
-| amountsIn       | uint256[]   | Expected amounts of tokens to add, sorted in token registration order |
-| bptAmountOut    | uint256     | Expected amount of pool tokens to receive                         |
-| returnData      | bytes       | Arbitrary (optional) data with encoded response from the pool      |
+| Name         | Type             | Description                                                        |
+|--------------|------------------|--------------------------------------------------------------------|
+| amountsIn    | uint256[] memory | Expected amounts of tokens to add, sorted in token registration order |
+| bptAmountOut | uint256          | Expected amount of pool tokens to receive                          |
+| returnData   | bytes memory     | Arbitrary (optional) data with an encoded response from the pool   |
 
 ### `queryRemoveLiquidityProportional`
 
@@ -533,22 +563,23 @@ function queryRemoveLiquidityProportional(
     bytes memory userData
 ) external returns (uint256[] memory amountsOut);
 ```
+
 Queries a `removeLiquidityProportional` operation without actually executing it.
 
 **Parameters:**
 
-| Name              | Type        | Description                                            |
-|-------------------|-------------|--------------------------------------------------------|
-| pool              | address     | Address of the liquidity pool                          |
-| exactBptAmountIn  | uint256     | Exact amount of pool tokens provided for the query     |
-| sender | address | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
-| userData          | bytes       | Additional (optional) data required for the query      |
+| Name             | Type         | Description                                                                             |
+|------------------|--------------|-----------------------------------------------------------------------------------------|
+| pool             | address      | Address of the liquidity pool                                                           |
+| exactBptAmountIn | uint256      | Exact amount of pool tokens provided                                                    |
+| sender           | address      | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
+| userData         | bytes memory | Additional (optional) data sent with the query request                                  |
 
 **Returns:**
 
-| Name          | Type        | Description                                      |
-|---------------|-------------|--------------------------------------------------|
-| amountsOut    | uint256[]   | Expected amounts of tokens to receive, sorted in token registration order |
+| Name       | Type             | Description                                                             |
+|------------|------------------|-------------------------------------------------------------------------|
+| amountsOut | uint256[] memory | Expected amounts of tokens to receive, sorted in token registration order |
 
 ### `queryRemoveLiquiditySingleTokenExactIn`
 
@@ -561,23 +592,24 @@ function queryRemoveLiquiditySingleTokenExactIn(
     bytes memory userData
 ) external returns (uint256 amountOut);
 ```
+
 Queries a `removeLiquiditySingleTokenExactIn` operation without actually executing it.
 
 **Parameters:**
 
-| Name              | Type        | Description                                            |
-|-------------------|-------------|--------------------------------------------------------|
-| pool              | address     | Address of the liquidity pool                          |
-| exactBptAmountIn  | uint256     | Exact amount of pool tokens provided for the query     |
-| tokenOut          | IERC20      | Token used to remove liquidity                         |
-| sender | address | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
-| userData          | bytes       | Additional (optional) data required for the query      |
+| Name             | Type         | Description                                                                             |
+|------------------|--------------|-----------------------------------------------------------------------------------------|
+| pool             | address      | Address of the liquidity pool                                                           |
+| exactBptAmountIn | uint256      | Exact amount of pool tokens provided                                                    |
+| tokenOut         | IERC20       | Token to be received                                                                    |
+| sender           | address      | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
+| userData         | bytes memory | Additional (optional) data sent with the query request                                  |
 
 **Returns:**
 
-| Name          | Type      | Description                        |
-|---------------|-----------|------------------------------------|
-| amountOut     | uint256   | Expected amount of tokens to receive |
+| Name      | Type    | Description                          |
+|-----------|---------|--------------------------------------|
+| amountOut | uint256 | Expected amount of tokens to receive |
 
 ### `queryRemoveLiquiditySingleTokenExactOut`
 
@@ -590,23 +622,24 @@ function queryRemoveLiquiditySingleTokenExactOut(
     bytes memory userData
 ) external returns (uint256 bptAmountIn);
 ```
-Queries `a removeLiquiditySingleTokenExactOut` operation without actually executing it.
+
+Queries a `removeLiquiditySingleTokenExactOut` operation without actually executing it.
 
 **Parameters:**
 
-| Name              | Type        | Description                                            |
-|-------------------|-------------|--------------------------------------------------------|
-| pool              | address     | Address of the liquidity pool                          |
-| tokenOut          | IERC20      | Token used to remove liquidity                         |
-| exactAmountOut    | uint256     | Exact amount of tokens to receive                      |
-| sender | address | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
-| userData          | bytes       | Additional (optional) data required for the query      |
+| Name           | Type         | Description                                                                             |
+|----------------|--------------|-----------------------------------------------------------------------------------------|
+| pool           | address      | Address of the liquidity pool                                                           |
+| tokenOut       | IERC20       | Token to be received                                                                    |
+| exactAmountOut | uint256      | Exact amount of tokens to be received                                                   |
+| sender         | address      | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
+| userData       | bytes memory | Additional (optional) data sent with the query request                                  |
 
 **Returns:**
 
-| Name          | Type      | Description                            |
-|---------------|-----------|----------------------------------------|
-| bptAmountIn   | uint256   | Expected amount of pool tokens to burn |
+| Name        | Type    | Description                              |
+|-------------|---------|------------------------------------------|
+| bptAmountIn | uint256 | Expected amount of pool tokens to burn   |
 
 ### `queryRemoveLiquidityCustom`
 
@@ -617,50 +650,56 @@ function queryRemoveLiquidityCustom(
     uint256[] memory minAmountsOut,
     address sender,
     bytes memory userData
-) external returns (uint256 bptAmountIn, uint256[] memory amountsOut, bytes memory returnData);
+) external returns (
+    uint256 bptAmountIn,
+    uint256[] memory amountsOut,
+    bytes memory returnData
+);
 ```
+
 Queries a `removeLiquidityCustom` operation without actually executing it.
 
 **Parameters:**
 
-| Name              | Type           | Description                                            |
-|-------------------|----------------|--------------------------------------------------------|
-| pool              | address        | Address of the liquidity pool                          |
-| maxBptAmountIn    | maxBptAmountIn | Maximum amount of pool tokens provided                 |
-| minAmountsOut     | uint256[]      | Expected minimum amounts of tokens to receive, sorted in token registration order |
-| sender | address | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
-| userData          | bytes          | Additional (optional) data required for the query      |
+| Name           | Type             | Description                                                                             |
+|----------------|------------------|-----------------------------------------------------------------------------------------|
+| pool           | address          | Address of the liquidity pool                                                           |
+| maxBptAmountIn | uint256          | Maximum amount of pool tokens provided                                                  |
+| minAmountsOut  | uint256[] memory | Expected minimum amounts of tokens to receive, sorted in token registration order       |
+| sender         | address          | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
+| userData       | bytes memory     | Additional (optional) data sent with the query request                                  |
 
 **Returns:**
 
-| Name          | Type      | Description                            |
-|---------------|-----------|----------------------------------------|
-| bptAmountIn   | uint256   | Expected amount of pool tokens to burn |
-| amountsOut    | uint256[] | Expected amounts of tokens to receive, sorted in token registration order |
-| returnData    | bytes     | Arbitrary (optional) data with encoded response from the pool
+| Name        | Type             | Description                                                                |
+|-------------|------------------|----------------------------------------------------------------------------|
+| bptAmountIn | uint256          | Expected amount of pool tokens to burn                                     |
+| amountsOut  | uint256[] memory | Expected amounts of tokens to receive, sorted in token registration order  |
+| returnData  | bytes memory     | Arbitrary (optional) data with an encoded response from the pool           |
 
 ### `queryRemoveLiquidityRecovery`
 
 ```solidity
 function queryRemoveLiquidityRecovery(
     address pool,
-    uint256 exactBptAmountIn,
+    uint256 exactBptAmountIn
 ) external returns (uint256[] memory amountsOut);
 ```
+
 Queries a `removeLiquidityRecovery` operation without actually executing it.
 
 **Parameters:**
 
-| Name              | Type           | Description                                            |
-|-------------------|----------------|--------------------------------------------------------|
-| pool              | address        | Address of the liquidity pool                          |
-| exactBptAmountIn  | uint256        | MExact amount of pool tokens provided for the query    |
+| Name             | Type    | Description                              |
+|------------------|---------|------------------------------------------|
+| pool             | address | Address of the liquidity pool            |
+| exactBptAmountIn | uint256 | Exact amount of pool tokens provided for the query |
 
 **Returns:**
 
-| Name          | Type      | Description                            |
-|---------------|-----------|----------------------------------------|
-| amountsOut    | uint256[] | Expected amounts of tokens to receive, sorted in token registration order |
+| Name       | Type             | Description                                                             |
+|------------|------------------|-------------------------------------------------------------------------|
+| amountsOut | uint256[] memory | Expected amounts of tokens to receive, sorted in token registration order |
 
 ### `querySwapSingleTokenExactIn`
 
@@ -672,26 +711,27 @@ function querySwapSingleTokenExactIn(
     uint256 exactAmountIn,
     address sender,
     bytes calldata userData
-) external returns (uint256 amountCalculated);
+) external returns (uint256 amountOut);
 ```
-Queries an `swapSingleTokenExactIn` operation without actually executing it.
+
+Queries a swap operation specifying an exact input token amount without actually executing it.
 
 **Parameters:**
 
-| Name              | Type        | Description                                       |
-|-------------------|-------------|---------------------------------------------------|
-| pool              | address     | Address of the liquidity pool                     |
-| tokenIn           | IERC20      | Token to be swapped from                          |
-| tokenOut          | IERC20      | Token to be swapped to                            |
-| exactAmountIn     | uint256     | Exact amount of input tokens to send              |
-| sender | address | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
-| userData          | bytes       | Additional (optional) data required for the query |
+| Name          | Type           | Description                                                                             |
+|---------------|----------------|-----------------------------------------------------------------------------------------|
+| pool          | address        | Address of the liquidity pool                                                           |
+| tokenIn       | IERC20         | Token to be swapped from                                                                |
+| tokenOut      | IERC20         | Token to be swapped to                                                                  |
+| exactAmountIn | uint256        | Exact amount of input tokens to send                                                    |
+| sender        | address        | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
+| userData      | bytes calldata | Additional (optional) data sent with the query request                                  |
 
 **Returns:**
 
-| Name        | Type        | Description                                             |
-|-------------|-------------|---------------------------------------------------------|
-| amountOut   | uint256     | Calculated amount of output tokens to be received in exchange for the given input tokens |
+| Name      | Type    | Description                                                                                  |
+|-----------|---------|----------------------------------------------------------------------------------------------|
+| amountOut | uint256 | Calculated amount of output tokens to be received in exchange for the given input tokens     |
 
 ### `querySwapSingleTokenExactOut`
 
@@ -703,78 +743,27 @@ function querySwapSingleTokenExactOut(
     uint256 exactAmountOut,
     address sender,
     bytes calldata userData
-) external returns (uint256 amountCalculated);
+) external returns (uint256 amountIn);
 ```
-Queries an `swapSingleTokenExactOut` operation without actually executing it.
+
+Queries a swap operation specifying an exact output token amount without actually executing it.
 
 **Parameters:**
 
-| Name              | Type        | Description                                       |
-|-------------------|-------------|---------------------------------------------------|
-| pool              | address     | Address of the liquidity pool                     |
-| tokenIn           | IERC20      | Token to be swapped from                          |
-| tokenOut          | IERC20      | Token to be swapped to                            |
-| exactAmountIn     | uint256     | Exact amount of input tokens to receive           |
-| sender | address | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
-| userData          | bytes       | Additional (optional) data required for the query |
+| Name           | Type           | Description                                                                             |
+|----------------|----------------|-----------------------------------------------------------------------------------------|
+| pool           | address        | Address of the liquidity pool                                                           |
+| tokenIn        | IERC20         | Token to be swapped from                                                                |
+| tokenOut       | IERC20         | Token to be swapped to                                                                  |
+| exactAmountOut | uint256        | Exact amount of output tokens to receive                                                |
+| sender         | address        | The sender passed to the operation. It can influence results (e.g., with user-dependent hooks) |
+| userData       | bytes calldata | Additional (optional) data sent with the query request                                  |
 
 **Returns:**
 
-| Name        | Type        | Description                                             |
-|-------------|-------------|---------------------------------------------------------|
-| amountOut   | uint256     | Calculated amount of input tokens to be sent in exchange for the requested output tokens |
-
-## Router common
-
-These functions are shared between the `Router`, `BatchRouter`, `BufferRouter`, and `CompositeLiquidityRouter` (defined in `RouterCommon`).
-
-### `permitBatchAndCall`
-
-```solidity
-function permitBatchAndCall(
-    PermitApproval[] calldata permitBatch,
-    bytes[] calldata permitSignatures,
-    IAllowanceTransfer.PermitBatch calldata permit2Batch,
-    bytes calldata permit2Signature,
-    bytes[] calldata multicallData
-) external returns (bytes[] memory results);
-```
-Permits multiple allowances and executes a batch of function calls on this contract.
-
-**Parameters:**
-
-| Name              | Type                            | Description                                                        |
-|-------------------|---------------------------------|--------------------------------------------------------------------|
-| permitBatch       | PermitApproval[] calldata       | An array of `PermitApproval` structs, each representing an ERC20 permit request |
-| permitSignatures  | bytes[] calldata                | An array of bytes, corresponding to the permit request signature in `permitBatch` |
-| permit2Batch      | IAllowanceTransfer.PermitBatch calldata | A batch of permit2 approvals                                      |
-| permit2Signature  | bytes calldata                  | A permit2 signature for the batch approval                         |
-| multicallData     | bytes[] calldata                | An array of bytes arrays, each representing an encoded function call on this contract |
-
-**Returns:**
-
-| Name      | Type               | Description                                              |
-|-----------|--------------------|----------------------------------------------------------|
-| results   | bytes[] memory     | Array of bytes arrays, each representing the return data from each function call executed |
-
-### `multicall`
-
-```solidity
-function multicall(bytes[] calldata data) external returns (bytes[] memory results);
-```
-Executes a batch of function calls on this contract.
-
-**Parameters:**
-
-| Name    | Type             | Description                                            |
-|---------|------------------|--------------------------------------------------------|
-| data    | bytes[] calldata | Encoded function calls to be executed in the batch     |
-
-**Returns:**
-
-| Name      | Type             | Description                                              |
-|-----------|------------------|----------------------------------------------------------|
-| results   | bytes[] memory   | Array of bytes arrays, each representing the return data from each function call executed |
+| Name     | Type    | Description                                                                                       |
+|----------|---------|---------------------------------------------------------------------------------------------------|
+| amountIn | uint256 | Calculated amount of input tokens to be sent in exchange for the requested output tokens          |
 
 <style scoped>
 table {

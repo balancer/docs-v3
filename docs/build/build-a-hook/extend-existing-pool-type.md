@@ -19,7 +19,11 @@ A hooks contract should inherit the [BaseHooks.sol](https://github.com/balancer/
 * **Base implementation**: A complete implementation of the [IHooks.sol](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/interfaces/contracts/vault/IHooks.sol) interface, with each implemented function returning false.
 * **Configuration**: A virtual function `getHookFlags` that must be implemented by your hooks contract, defining which hooks your contract supports.
 
-Below, we present a naive implementation of a swap-fee discount hook contract giving any veBAL holder a reduced swap fee. Hooks should also inherit from `VaultGuard`, which stores a reference to the Vault and provides the `onlyVault` modifier. This is required for `onRegister` and hook overrides, to ensure they cannot be called except by the Vault.
+Below, we present a naive implementation of a swap-fee discount hook contract giving any veBAL holder a reduced swap fee. Hooks should also inherit from `VaultGuard`, which stores a reference to the Vault and provides the `onlyVault` modifier. **This is required for `onRegister` and hook overrides whenever they are capable of modifying the contract's state**, to ensure they cannot be called except by the Vault in the standard lifecycle of each particular operation. For hooks that are either `view` or `pure`, the modifier is not strictly necessary.
+
+::: warning veBAL is discontinued
+The example below is retained as an illustrative pattern for reading external-contract state from a hook. veBAL itself was discontinued in Q2 2026 (BAL emissions halted by [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001); Snapshot voting moved to raw BAL by [BIP-921](https://forum.balancer.fi/t/bip-921-1-bal-1-vote-reconfiguration-for-balancer-eth-snapshot-space/7052)) — existing veBAL locks remain on-chain until natural expiry but no longer carry economic or governance significance. In new code, prefer reading a live signal (e.g. raw BAL balance or the `BalVotingPower` contract) instead of veBAL.
+:::
 
 ```solidity
 contract VeBALFeeDiscountHook is BaseHooks, VaultGuard {

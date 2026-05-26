@@ -8,7 +8,11 @@ order: 3
 
 If you have any questions/feedback on our dashboards, feel free to reach out by filling out this [form](https://docs.google.com/forms/d/e/1FAIpQLScHCgRxCGfyJp02Dl_nK6shDnXY1FDDXpsd-sqjTeIsv5EteQ/viewform) or directly on [Discord](https://discord.balancer.fi/).
 
-**Here i a run-down of our dashboards:**
+**Here is a run-down of our dashboards:**
+
+:::info Historical dashboards
+The **veBAL**, **veBAL Analysis**, **veBAL Gauge Votes**, **veBAL Wrappers**, and **Balancer Governance** dashboards (BAL emissions/minted/supply) capture state prior to [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001) and [BIP-921](https://forum.balancer.fi/t/bip-921-1-bal-1-vote-reconfiguration-for-balancer-eth-snapshot-space/7052). BAL emissions are halted and veBAL no longer carries economic rights or escrow-multiplied voting weight; these dashboards are retained for historical reference. The **Protocol Fees** dashboard's "BAL emissions per round" and "Core Pools" columns are likewise historical.
+:::
 
 | Dashboard Name                                      | Main information                                                                                                  | Filters                                  |
 | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |

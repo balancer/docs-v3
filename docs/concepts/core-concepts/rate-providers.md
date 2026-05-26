@@ -1,3 +1,8 @@
+---
+order: 7
+title: Rate Providers
+---
+
 # Rate Providers
 
 ## Overview

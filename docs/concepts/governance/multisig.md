@@ -2,133 +2,251 @@
 
 ::: tip Multisig Permissions
 
-The core of Balancer smart contracts are immutable and do not use proxies or other upgrade mechanisms. The Multisig does **not** have custody of, nor control over, funds from liquidity providers that lie inside Balancer Protocol contracts. Balancer V2 was designed so that even if a multisig goes rogue, all the liquidity is safe and can be withdrawn by their rightful owners. Specific permisions can be found in the article below.
+The core of Balancer smart contracts are immutable and do not use proxies or other upgrade mechanisms. The Multisig does **not** have custody of, nor control over, funds from liquidity providers that lie inside Balancer Protocol contracts. Balancer V2 was designed so that even if a multisig goes rogue, all the liquidity is safe and can be withdrawn by their rightful owners. Specific permissions can be found in the article below.
 :::
 
-## The Multisigs and their addresses
+## Hierarchical Safe System
 
-| Name                   | <div style="width:350px">Purpose</div>                                                                                                  | Chain                                                                                                                                                                                                                                                                           | Address                                       | Signer Set                                                         |
-|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|--------------------------------------------------------------------|
-| Protocol Fees Multisig | Collect fees, and set A-Factors and Fees on pools (default pool-owner, except on mainnet where a separate Multisig is used to set fees. | [MAINNET](https://gnosis-safe.io/app/eth:0x7c68c42De679ffB0f16216154C996C354cF1161B/home), [ARBI](https://gnosis-safe.io/app/arb1:0x7c68c42De679ffB0f16216154C996C354cF1161B/home), [POLYGON](https://gnosis-safe.io/app/matic:0x7c68c42De679ffB0f16216154C996C354cF1161B/home) | `0x7c68c42De679ffB0f16216154C996C354cF1161B`  | [BAL Maxis](#operational-multisigs-signer-set-aka-balancer-maxis)  |
-| Mainnet Fee Setter     | Default pool owner for Mainnet that can set A-Factors and protocol fees.                                                                | [MAINNET](https://gnosis-safe.io/app/eth:0xf4A80929163C5179Ca042E1B292F5EFBBE3D89e6/home)                                                                                                                                                                                       | `0xf4A80929163C5179Ca042E1B292F5EFBBE3D89e6`  | [BAL Maxis](#operational-multisigs-signer-set-aka-balancer-maxis)  |
-| DAO Multlsig           | Funding BIPs, killing of gauges, veBAL allowlisting                                                                                     | [MAINNET](https://gnosis-safe.io/app/eth:0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f/home)                                                                                                                                                                                       | `0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f`  | [DAO Signers](#dao-multisig-signer-set)                            |
-| LM Multisig            | Used to manage gauges and liquidity mining tokens and manage liquidity supplied to multichain (bridge). New Gauge requests go here.     | [MAINNET](https://gnosis-safe.io/app/eth:0xc38c5f97B34E175FFd35407fc91a937300E33860/home), [ARBI](https://gnosis-safe.io/app/arb1:0xc38c5f97B34E175FFd35407fc91a937300E33860/home), [POLYGON](https://gnosis-safe.io/app/matic:0xc38c5f97B34E175FFd35407fc91a937300E33860/home) | `0xc38c5f97B34E175FFd35407fc91a937300E33860`  | [BAL Maxis](#operational-multisigs-signer-set-aka-balancer-maxis)  |
-| Linear Pool Control    | Manage limits on Mainnet Linear Pools                                                                                                   | [MAINNET](https://gnosis-safe.io/app/eth:0x75a52c0e32397A3FC0c052E2CeB3479802713Cf4/home)                                                                                                                                                                                       | `0x75a52c0e32397A3FC0c052E2CeB3479802713Cf4`  | [BAL Maxis](#operational-multisigs-signer-set-aka-balancer-maxis)  |
-| Maxi Payments          | Holds the Maxi Budget and is used to pay people and expenses.                                                                           | [MAINNET](https://gnosis-safe.io/app/eth:0x166f54F44F271407f24AA1BE415a730035637325/home)                                                                                                                                                                                       | `0x166f54F44F271407f24AA1BE415a730035637325`  | [BAL Maxis](#operational-multisigs-signer-set-aka-balancer-maxis)  |
-| Managed Treasury       | Holds treasury funds managed by Karpatkey as per [BIP-162](https://forum.balancer.fi/t/bip-162-karpatkey-investment-strategy)           | [MAINNET](https://app.safe.global/eth:0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89/home)                                                                                                                                                                                          | `0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89`  | [DAO Signers](#dao-multisig-signer-set)                            |
-| Arbitrum DAO Multisig  | Treasury + Admin functions on Arbitrum                                                                                                  | [ARBI](https://app.safe.global/arb1:0xaF23DC5983230E9eEAf93280e312e57539D098D0/home)                                                                                                                                                                                            | `0xaF23DC5983230E9eEAf93280e312e57539D098D0`  | [DAO Signers](#dao-multisig-signer-set)                            |
-| Polygon DAO Multisig   | Treasury + Admin functions on Polygon                                                                                                   | [POLYGON](https://app.safe.global/matic:0xeE071f4B516F69a1603dA393CdE8e76C40E5Be85/home)                                                                                                                                                                                        | `0xeE071f4B516F69a1603dA393CdE8e76C40E5Be85`  | [DAO Signers](#dao-multisig-signer-set)                            |
-| Optimsim DAO Multisg   | Treasury + Admin functions on Optimism                                                                                                  | [OPTIMISM](https://app.safe.global/oeth:0x043f9687842771b3dF8852c1E9801DCAeED3f6bc/home)                                                                                                                                                                                        | `0x043f9687842771b3dF8852c1E9801DCAeED3f6bc`  | [DAO Signers](#dao-multisig-signer-set)                            |
-| Opitimism Fees + LM    | Fee and liquidity mining management on Optimism                                                                                         | [OPTIMISM](https://app.safe.global/oeth:0x09Df1626110803C7b3b07085Ef1E053494155089/home)                                                                                                                                                                                        | `0x09Df1626110803C7b3b07085Ef1E053494155089`  | [BAL Maxis](##operational-multisigs-signer-set-aka-balancer-maxis) |
- | Gnosis Chain DAO       | DAO multisig on gnosis chain                                                                                                            | [GNOSIS](https://app.safe.global/home?safe=gno:0x2a5AEcE0bb9EfFD7608213AE1745873385515c18)                                                                                                                                                                                      | `0x2a5AEcE0bb9EfFD7608213AE1745873385515c18`  | [DAO Signers](#dao-multisig-signer-set)                            |
- | Gnosis Chain Fees + LM | Fee and liquidity mining management on Optimism                                                                                         | [GNOSIS](https://app.safe.global/home?safe=gno:0x14969B55a675d13a1700F71A37511bc22D90155a)                                                                                                                                                                                      | `0x14969B55a675d13a1700F71A37511bc22D90155a`  | [BAL Maxis](##operational-multisigs-signer-set-aka-balancer-maxis) |
- | Avalacnhe DAO          | DAO Multisig on Avax                                                                                                                    | [AVAX](https://app.safe.global/transactions/queue?safe=avax:0x17b11FF13e2d7bAb2648182dFD1f1cfa0E4C7cf3)                                                                                                                                                                         | `0x17b11FF13e2d7bAb2648182dFD1f1cfa0E4C7cf3`  | [DAO Signers](#dao-multisig-signer-set)                            |
- | Avalacnhe Maxi         | LM + Fees multisig on Avax                                                                                                              | [AVAX](https://app.safe.global/transactions/queue?safe=avax:0x326A7778DB9B741Cb2acA0DE07b9402C7685dAc6)                                                                                                                                                                         | `0x326A7778DB9B741Cb2acA0DE07b9402C7685dAc6`  | [BAL Maxis](##operational-multisigs-signer-set-aka-balancer-maxis) |
- | zkEVM DAO              | DAO Multisig on Polygon zkEVM                                                                                                           | [zkEVM](https://zksafe.quickswap.exchange/transactions/queue?safe=zkEVM:0x2f237e7643a3bF6Ef265dd6FCBcd26a7Cc38dbAa)                                                                                                                                                             | `0x2f237e7643a3bF6Ef265dd6FCBcd26a7Cc38dbAa`  | [DAO Signers](#dao-multisig-signer-set)                            |
- | zkEVM Maxi             | LM + Fees multisig on on Polygon zkEVM                                                                                                  | [zkEVM](https://zksafe.quickswap.exchange/transactions/queue?safe=zkEVM:0xB59Ab49CA8d064E645Bf2c546d9FE6d1d4147a09)                                                                                                                                                             | `0xB59Ab49CA8d064E645Bf2c546d9FE6d1d4147a09`  | [DAO Signers](#dao-multisig-signer-set)                            |
- | Base DAO               | DAO Multisig on Base                                                                                                                    | [BASE](https://app.safe.global/transactions/queue?safe=base:0xC40DCFB13651e64C8551007aa57F9260827B6462)                                                                                                                                                                         | `0xC40DCFB13651e64C8551007aa57F9260827B6462`  | [DAO Signers](#dao-multisig-signer-set)                            |
- | Base Maxi              | LM + Fees on Base                                                                                                                       | [BASE](https://app.safe.global/transactions/queue?safe=avax:0x326A7778DB9B741Cb2acA0DE07b9402C7685dAc6)                                                                                                                                                                         | `0x326A7778DB9B741Cb2acA0DE07b9402C7685dAc6`  |  [BAL Maxis](##operational-multisigs-signer-set-aka-balancer-maxis)|
-| Fraxtal DAO | Treasury + Admin functions on Fraxtal | [FRAXTAL](https://app.safe.global/transactions/queue?safe=fraxtal:0x326A7778DB9B741Cb2acA0DE07b9402C7685dAc6)                                                                                                                                                                   | `0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e` | [DAO Signers](#dao-multisig-signer-set)  |
-| Fraxtal Maxi | LM + Fees on Fraxtal | [FRAXTAL](https://app.safe.global/transactions/queue?safe=fraxtal:0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e)                                                                                                                                                                   | `0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e` | [BAL Maxis](##operational-multisigs-signer-set-aka-balancer-maxis)|
-| Mode DAO | Treasury + Admin functions on Mode | [MODE](https://app.safe.global/transactions/queue?safe=mode:0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e)                                                                                                                                                                         | `0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e` | [DAO Signers](#dao-multisig-signer-set)  |
-| Mode Maxi | LM + Fees on Mode | [MODE](https://app.safe.global/transactions/queue?safe=mode:0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e)                                                                                                                                                                         | `0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e` | [BAL Maxis](##operational-multisigs-signer-set-aka-balancer-maxis) |
+As of [BIP-882](https://forum.balancer.fi/t/bip-882-transitioning-onchain-operations-of-the-balancer-dao-to-balancer-onchain-limited/6859), Balancer operates through a hierarchical safe system with clear separation of responsibilities. This structure supports the transition of on-chain operations to [Balancer Onchain Limited](./corporate-structure.md).
 
-## Context 
+### Top-Level Safes
+
+These safes handle governance, treasury management, and high-level operational control.
+
+| Name                      | Address                                                                                                                        | Threshold | Signer Set                                    | Purpose                                               |
+|---------------------------|--------------------------------------------------------------------------------------------------------------------------------|-----------|-----------------------------------------------|-------------------------------------------------------|
+| DAO Multi-sig             | [0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f](https://app.safe.global/home?safe=eth:0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f) | 6/11      | [DAO Signers](#dao-multisig-signer-set)       | DAO administrative permissions                        |
+| Treasury Safe             | [0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89](https://app.safe.global/home?safe=eth:0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89) | 5/7       | [Treasury Council](#treasury-council)         | Main treasury holding all assets and DeFi strategies  |
+| Balancer OpCo Ltd Safe    | [0x3B8910F378034FD6E103Df958863e5c684072693](https://app.safe.global/home?safe=eth:0x3B8910F378034FD6E103Df958863e5c684072693) | 3/4       | [Foundation Directors](#foundation-directors) | Operational funding, dividends to Balancer Foundation |
+| Balancer Onchain Ltd Safe | [0x16b0056636Fcc85f92C49cD49a24bc519d4A1941](https://app.safe.global/home?safe=eth:0x16b0056636Fcc85f92C49cD49a24bc519d4A1941) | 3/4       | [Foundation Directors](#foundation-directors) | Central hub for on-chain operations, fee collection   |
+| BizDev Safe               | [0xF3B4829C8B9E2910C2396538F49a12b0c2475a7e](https://app.safe.global/home?safe=eth:0xF3B4829C8B9E2910C2396538F49a12b0c2475a7e) | 3/5       | [BizDev Team](#bizdev-team)                   | Third-party incentives and partnership funds          |
+| Operator Safe             | [0xBeF27037bC6311b96635E5e9Af3A73EBF6Ca8878](https://app.safe.global/home?safe=eth:0xBeF27037bC6311b96635E5e9Af3A73EBF6Ca8878) | 3/5       | [MAXYZ Operator](#operator)                   | Executes on-chain operations                          |
+
+#### Treasury Safe Multi-Chain Deployment
+
+The Treasury Safe is deployed at the same address across multiple chains to hold ecosystem assets and execute DeFi strategies:
+
+| Chain | Address |
+|-------|---------|
+| Ethereum | [0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89](https://app.safe.global/home?safe=eth:0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89) |
+| Gnosis | [0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89](https://app.safe.global/home?safe=gno:0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89) |
+| Arbitrum | [0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89](https://app.safe.global/home?safe=arb1:0x0EFcCBb9E2C09Ea29551879bd9Da32362b32fc89) |
+
+### Operational Multisigs
+
+All operational multisigs use a standardized **1/2 threshold** configuration with:
+- Balancer Onchain Ltd Safe (Foundation Directors)
+- Operator Safe (MAXYZ Service Provider)
+
+This configuration enables efficient execution with proper oversight.
+
+| Name | Purpose | Chains | Address |
+|------|---------|--------|---------|
+| Protocol Fees Multisig | Fee collection | [MAINNET](https://app.safe.global/home?safe=eth:0x7c68c42De679ffB0f16216154C996C354cF1161B), [ARBI](https://app.safe.global/home?safe=arb1:0x7c68c42De679ffB0f16216154C996C354cF1161B), [POLYGON](https://app.safe.global/home?safe=matic:0x7c68c42De679ffB0f16216154C996C354cF1161B) | `0x7c68c42De679ffB0f16216154C996C354cF1161B` |
+| Mainnet Fee Setter | Default pool owner for Mainnet fees | [MAINNET](https://app.safe.global/home?safe=eth:0xf4A80929163C5179Ca042E1B292F5EFBBE3D89e6) | `0xf4A80929163C5179Ca042E1B292F5EFBBE3D89e6` |
+| LM Multisig (Omni-sig) | Gauge management, liquidity mining | [MAINNET](https://app.safe.global/home?safe=eth:0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e) | `0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e` |
+| Aura Locker Safe | vlAURA management | [MAINNET](https://app.safe.global/home?safe=eth:0x9a5BDF08a6969A4bDb7724beE3c6d8964BDc0B28) | `0x9a5BDF08a6969A4bDb7724beE3c6d8964BDc0B28` |
+
+### Chain-Specific DAO Multisigs
+
+Per [BIP-918](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000), **L2 Authorizer admin permissions were transferred to the Omni-sig** (`0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e`). The **Ethereum DAO Multisig is excluded from this transfer** and retains Authorizer admin on Mainnet due to additional elevated privileges (notably **BAL minting**) that remain under DAO governance.
+
+Resulting split:
+
+- **Ethereum DAO Multisig** — Authorizer admin on Mainnet, BAL minting, plus the historical permission set (gauge controller, fee parameter configuration). BAL emissions to gauges were halted by [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001) — the gauge controller permission set is retained but no longer routes new BAL emissions.
+- **L2 DAO Multisigs** — Retained for residual governance functions (treasury holdings on-chain, historical roles), but **no longer hold Authorizer admin**; routine protocol parameter changes on L2s are now executed via the Omni-sig under the core team's operational mandate.
+
+All chain-specific DAO multisigs use the [DAO Signer Set](#dao-multisig-signer-set) with a 6/11 threshold.
+
+| Chain | Address | Authorizer Admin (post BIP-918) |
+|-------|---------|---------------------------------|
+| Ethereum | [0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f](https://app.safe.global/home?safe=eth:0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f) | **Yes** (retains admin + BAL minting + other elevated mainnet privileges) |
+| Arbitrum | [0xaF23DC5983230E9eEAf93280e312e57539D098D0](https://app.safe.global/home?safe=arb1:0xaF23DC5983230E9eEAf93280e312e57539D098D0) | No — transferred to Omni-sig |
+| Polygon | [0xeE071f4B516F69a1603dA393CdE8e76C40E5Be85](https://app.safe.global/home?safe=matic:0xeE071f4B516F69a1603dA393CdE8e76C40E5Be85) | No — transferred to Omni-sig |
+| Optimism | [0x043f9687842771b3dF8852c1E9801DCAeED3f6bc](https://app.safe.global/home?safe=oeth:0x043f9687842771b3dF8852c1E9801DCAeED3f6bc) | No — transferred to Omni-sig |
+| Gnosis | [0x2a5AEcE0bb9EfFD7608213AE1745873385515c18](https://app.safe.global/home?safe=gno:0x2a5AEcE0bb9EfFD7608213AE1745873385515c18) | No — transferred to Omni-sig |
+| Avalanche | [0x17b11FF13e2d7bAb2648182dFD1f1cfa0E4C7cf3](https://app.safe.global/home?safe=avax:0x17b11FF13e2d7bAb2648182dFD1f1cfa0E4C7cf3) | No — transferred to Omni-sig |
+| Base | [0xC40DCFB13651e64C8551007aa57F9260827B6462](https://app.safe.global/home?safe=base:0xC40DCFB13651e64C8551007aa57F9260827B6462) | No — transferred to Omni-sig |
+| Fraxtal | [0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e](https://safe.mainnet.frax.com/home?safe=fraxtal:0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e) | No — transferred to Omni-sig |
+| Mode | [0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e](https://safe.optimism.io/home?safe=mode:0x4f22C2784Cbd2B24a172566491Ee73fee1A63c2e) | No — transferred to Omni-sig |
+
+### Chain-Specific Operational Multisigs
+
+| Name | Chain | Address |
+|------|-------|---------|
+| Optimism Fees + LM | [OPTIMISM](https://app.safe.global/home?safe=oeth:0x09Df1626110803C7b3b07085Ef1E053494155089) | `0x09Df1626110803C7b3b07085Ef1E053494155089` |
+| Gnosis Chain Fees + LM | [GNOSIS](https://app.safe.global/home?safe=gno:0x14969B55a675d13a1700F71A37511bc22D90155a) | `0x14969B55a675d13a1700F71A37511bc22D90155a` |
+| Avalanche Ops | [AVAX](https://app.safe.global/home?safe=avax:0x326A7778DB9B741Cb2acA0DE07b9402C7685dAc6) | `0x326A7778DB9B741Cb2acA0DE07b9402C7685dAc6` |
+| Base Ops | [BASE](https://app.safe.global/home?safe=base:0x326A7778DB9B741Cb2acA0DE07b9402C7685dAc6) | `0x326A7778DB9B741Cb2acA0DE07b9402C7685dAc6` |
+| Fraxtal Ops | [FRAXTAL](https://safe.mainnet.frax.com/home?safe=fraxtal:0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e) | `0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e` |
+| Mode Ops | [MODE](https://safe.optimism.io/home?safe=mode:0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e) | `0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e` |
+
+## Context
 
 Since its inception, the long term vision for the Balancer Protocol is to be fully governed by BAL token holders, while token ownership is aimed to be widely spread across the Balancer community.
 
-But getting to that ideal, long-term vision of a truly decentralized and effective governance is no easy task. Protocol governance is a highly complex and rapidly evolving topic. The whole crypto ecosystem is still in the very early days of trying to figure out:
+Protocol governance is a highly complex and rapidly evolving topic. The Balancer community has taken a thoughtful approach to decentralization, with each step taken with due care and learning from others' experiences.
 
-- which mechanisms and processes work best
-- the necessary infrastructure, tooling, and user interfaces
-- the risks and concerns associated with each approach
+Balancer V2 contracts allow for some tweaking of core protocol parameters. As a placeholder for future on-chain governance, such limited admin powers have been granted to multisigs. The eventual goal remains moving entire governance and execution on-chain.
 
-While also actively experimenting with governance-related initiatives, the Balancer community has leaned towards the more cautious and thoughtful approach of not trying to rush the path to full decentralization, so each step towards a mature on-chain governance will be taken with due care, having learned from others’ experiences.
+## Current State of Operations
 
-Balancer V1 contracts are immutable, so up until now, there have been no core protocol parameters to tweak/change. Instead, our governance has focused on a fair, inclusive BAL token distribution, which is carried out mainly through the protocol’s liquidity mining. BAL holders have tweaked liquidity mining via off-chain voting. And to make that possible, Balancer Labs proudly developed in-house an open-source tool called Snapshot, which became the widely popular gold standard for off-chain voting in blockchain land. [Snapshot](https://snapshot.org/#/) was so successful that was as its own initiative. It has become a standard for DeFi governance.
+As of [BIP-882](https://forum.balancer.fi/t/bip-882-transitioning-onchain-operations-of-the-balancer-dao-to-balancer-onchain-limited/6859), all on-chain operational responsibilities have transitioned from the Balancer DAO to Balancer Onchain Limited. This provides:
 
-Balancer V2 contracts, on the other hand, do allow for some tweaking of core protocol parameters, for instance, in turning on protocol fees. As a placeholder for a future on-chain DAO, such limited admin powers has been initially granted to a Multisig.
+1. **Legal Clarity**: A formal entity for on-chain operations helps manage regulatory and legal risks
+2. **Operational Efficiency**: Centralized operations under a dedicated entity with clear service provider relationships
+3. **Enhanced Oversight**: The Treasury Council provides robust checks and balances
+4. **Risk Management**: Proper legal structure and self-insurance fund protect participants
 
-Balancer strives to continue to automate operations and governance execution. While the eventual goal is still to move the entire governance and execution on-chain, the current Multisigs have proven themselves as reliable executors of the wishes of veBAL voters. In the long run, BAL holders are expected to retire the Multisig in favor of a full-fledged Balancer DAO.
+Multisigs do NOT have decision-making power. Their role is to enact on-chain the decisions BAL holders make via off-chain voting and assist community members in the governance process.
 
-## Current state of Multisig Operations
+All Balancer Multisigs are deployed using [Safe](https://safe.global/) (formerly Gnosis Safe), the most battle-tested multisig contract on Ethereum.
 
-Balancer Governance has grown to into a system managed by a collection of Multisigs, which are activated by 2 different signer sets. First of all, a very important point: the Multisigs do NOT have decision making power, as their role is to simply enact and operate on-chain the decisions BAL holders make via off-chain voting and assist community members in the governance process.
+The [Balancer Multisig Ops Repo](https://github.com/balancer/multisig-ops) describes all multisigs and operations as well as the external touch-points available.
 
-Further, fee collection and processing requires tokens to be swept from the vault and swapped for dollars. This is an example of an operational pratice, defined by governance, that requires regular onchain intervention. The Balancer Maxis currently operate these processes through Multisigs, with a goal to automate as much as possible.
-
-All Balancer Multisigs are deployed using [Gnosis Safe](https://gnosis-safe.io/), the most battle-tested Multisig contract on Ethereum. The DAO and Treasury Multisigs with the ability to change protocol operations or access to treasury funds are require 6-of-11 singers to process transactions. The signer structure of the Multisigs may change if voted on through the governance process.
-
-Over time, various functions have been delegated to different Multisigs. The Balancer Maxis working group is responsible for ensuring the application of governance on chain. The [Balancer Multisig Ops Repo](https://github.com/BalancerMaxis/Multisig-ops) describes all Multisigs and operations as well as the external touch-points available.
-
-## The Signers
-
-Balancer’s Multisig signers are a diverse set of widely respected community members. These are the current signers as of February 2023:
-
-**Note that the list below was last updated in February 2023. The Maxis keep an up-to-date list of their signers and Multisigs [here](https://github.com/BalancerMaxis/Multisig-ops)**
+## Signer Groups
 
 ### DAO Multisig Signer Set
 
-The DAO Multisig Signer Set and associated Multisigs is reserved for major changes to protcool operations, and management of treasury funds.
+The DAO Multisig Signer Set is reserved for major changes to protocol operations and management of treasury funds. **Requires 6/11 signers.**
 
-| Signer                                             | Association              | Address                                      |
-|----------------------------------------------------|--------------------------| -------------------------------------------- |
-| [Alexander Lange](https://twitter.com/AlexLangeVC) | \(Inflection\)           | `0x3ABDc84Dd15b0058B281D7e26CCc3932cfb268aA` |
-| [0xMaki](https://twitter.com/0xMaki)               | \(LayerZero, AURA, DCV\) | `0x285b7EEa81a5B66B62e7276a24c1e0F83F7409c1` |
-| [Tritium](https://twitter.com/Tritium_DAOist)      | \(Balancer Maxis\)       | `0xcf4fF1e03830D692F52EB094c52A5A6A2181Ab3F` |
-| [Evan](https://twitter.com/0xSausageDoge)          | \(Fjord\)                | `0x59693BA1A5764e087CE166ac0E0085Fc071B9ea7` |
-| [Ernesto](https://twitter.com/eboadom)             | \(BGD\)                  | `0xA39a62304d8d43B35114ad7bd1258B0E50e139b3` |
-| [Mounir](https://twitter.com/mounibec)             | \(Paraswap\)             | `0x0951FF0835302929d6c0162b3d2495A85e38ec3A` |
-| [Trent McConaghy](https://twitter.com/trentmc0)    | \(Ocean Protocol\)       | `0x478eC43c6867c2884f87B21c164f1fD1308bD9a3` |
-| [Stefan](https://twitter.com/StefanDGeorge)        | \(Gnosis\)               | `0x9F7dfAb2222A473284205cdDF08a677726d786A0` |
-| [bonustrack87](https://twitter.com/bonustrack87)   | \(Snapshot\)             | `0x9BE6ff2A1D5139Eda96339E2644dC1F05d803600` |
-| [nanexcool](https://twitter.com/nanexcool)         | \(Ethereum OG\)          | `0x823DF0278e4998cD0D06FB857fBD51e85b18A250` |
-| [David Gerai](https://twitter.com/davgarai)        | \(Raft\)                 | `0xAc1aA53108712d7f38093A67d380aD54B562a650` |
+As of [BIP-907](https://forum.balancer.fi/t/bip-907-dao-multisig-signer-set-update/), the signer set has been updated to reflect current ecosystem participation:
 
-**DAO Multisigs always require 6/11 signers to execute a transaction.**
+| Signer | Association | Address |
+|--------|-------------|---------|
+| [0xMaki](https://twitter.com/0xMaki) | LayerZero, AURA, DCV | `0x285b7EEa81a5B66B62e7276a24c1e0F83F7409c1` |
+| [Ernesto](https://twitter.com/eboadom) | BGD | `0xA39a62304d8d43B35114ad7bd1258B0E50e139b3` |
+| [Mounir](https://twitter.com/mounibec) | Paraswap | `0x0951FF0835302929d6c0162b3d2495A85e38ec3A` |
+| [Stefan](https://twitter.com/StefanDGeorge) | Gnosis | `0x9F7dfAb2222A473284205cdDF08a677726d786A0` |
+| [bonustrack87](https://twitter.com/bonustrack87) | Snapshot | `0x9BE6ff2A1D5139Eda96339E2644dC1F05d803600` |
+| [David Gerai](https://twitter.com/davgarai) | Raft | `0xAc1aA53108712d7f38093A67d380aD54B562a650` |
+| [gosuto](https://twitter.com/gosaborern) | Balancer Contributor | `0x11e450c72c2258ec792d5f64a263ecb18e8c0f06` |
+| [elbagococina](https://twitter.com/elbagococina) | Karpatkey | `0x6578183A203b41C419b93DF9121b5e3b26561aC5` |
+| [netto.eth](https://twitter.com/nettofc) | Blockful/ENS | `0x235f00a6e9416b114780f0b97afcb40f623f65b4` |
+| [MikeB](https://twitter.com/MikeB_Eng) | former Balancer Maxis | `0xF01Cc7154e255D20489E091a5aEA10Bc136696a8` |
+| [hubert](https://twitter.com/hubert_LL) | StakeDAO | `0x02e4De712d99f4B1b1e12aa3675D8b0A582caA5D` |
 
-Beyond those current signers, [BIP-16](https://forum.balancer.fi/t/bip-16-update-dao-Multisig-replacement-list/3361) laid out a group of backup signers who could replace current signers without further governance. Note that since BIP-16, Moniur has become an active member of the DAO Multisig.
+Beyond current signers, [BIP-16](https://forum.balancer.fi/t/bip-16-update-dao-Multisig-replacement-list/3361) established a group of backup signers who can replace current signers without further governance.
 
-### Operational Multisigs Signer Set AKA Balancer Maxis
+### Treasury Council
 
-The Balancer Maxis operate a number of Multisigs with a reduced signer requirement, which are used for the regular operation of the protocol, as well as adding gauges to veBAL.
+The Treasury Council oversees the Treasury Safe and administers the self-insurance fund. Established by [BIP-882](https://forum.balancer.fi/t/bip-882-transitioning-onchain-operations-of-the-balancer-dao-to-balancer-onchain-limited/6859), it replaces the previous Ecosystem Council. **Requires 5/7 signers.**
 
-| Signer     | Discord Handle  | Address                                      |
-| ---------- |-----------------| -------------------------------------------- |
-| Solarcurve | solarcurve#5075 | `0x512fce9B07Ce64590849115EE6B32fd40eC0f5F3` |
-| Zen Dragon | Zen Dragon#2923 | `0x7c2eA10D3e5922ba3bBBafa39Dc0677353D2AF17` |
-| Zekraken   | zekraken#0645   | `0xafFC70b81D54F229A5F50ec07e2c76D2AAAD07Ae` |
-| Mike B     | d_w_b_w_d#0685  | `0xc4591c41e01a7a654B5427f39Bbd1dEe5bD45D1D` |
-| Xeonus     | Xeonus#4620     | `0x7019Be4E4eB74cA5F61224FeAf687d2b43998516` |
-| Tritium    | Tritium#0069    | `0xcf4fF1e03830D692F52EB094c52A5A6A2181Ab3F` |
+| Member | Address |
+|--------|---------|
+| 0xDanko | `0x122AFb4667C5f80e45721a42C7c81e9140C62FA4` |
+| Xeonus | `0xaa5af0dd9c52c773d36cdbc509a0b2a1ded4c196` |
+| danielmk | `0x7984aB7e6B51A50d970b74a437BC82156753b866` |
+| mendesfabio | `0xF162D64Cab37fD3335122024f23680AF7cf067ad` |
+| gosuto | `0x11e450c72c2258ec792d5f64a263ecb18e8c0f06` |
+| Marcus | `0xb7364Fca20EEC90f51b158C05199044AD362b675` |
+| franzns | `0xA574Af018138bBC2bf065f68015687Aa67388A2A` |
 
+The Treasury Council has authority to:
+- Object to Corporate Resolutions or activities not deemed in the ecosystem's best interests
+- Oversee distributions, liquidations, or other material actions proposed by Directors
+- Ensure alignment with Balancer governance resolutions
+- Administer the self-insurance fund
 
-**The Balancer Maxi Multisig set requires 2 or 3 out of 7 signers to execute, depending on the security level of the Multisig.**
+### Foundation Directors
 
-The Balancer Maxis are ratified by a BIP each quarter. [BIP-145](https://forum.balancer.fi/t/bip-145-fund-the-balancer-maxis-for-q1-2023/) is a recent example of such governance.
+Foundation Directors control the Balancer OpCo Ltd Safe and Balancer Onchain Ltd Safe. **Requires 3/4 signers.**
+
+The Foundation board consists of:
+- **Leeward Management Limited** - Corporate director appointed per [BIP-480](https://forum.balancer.fi/t/bip-480-appointment-of-director-to-the-balancer-foundation/5362)
+- Two community directors representing the Balancer ecosystem
+
+### BizDev Team
+
+The BizDev Team manages incentive funds and partnerships through the BizDev Safe. **Requires 3/5 signers.**
+
+| Member | Address |
+|--------|---------|
+| mendesfabio | `0xF162D64Cab37fD3335122024f23680AF7cf067ad` |
+| Zekraken | `0xafFC70b81D54F229A5F50ec07e2c76D2AAAD07Ae` |
+| Marcus BLabs | `0xb7364Fca20EEC90f51b158C05199044AD362b675` |
+| Danko | `0x122AFb4667C5f80e45721a42C7c81e9140C62FA4` |
+| Xeonus | `0x7019Be4E4eB74cA5F61224FeAf687d2b43998516` |
+
+### Operator
+
+The Operator Safe is a **3/5 multisig** currently managed by [MAXYZ](https://forum.balancer.fi/t/maxyz-flawless-onchain-execution/6851), a service provider engaged by Balancer Onchain Limited. The Operator executes on-chain operations through the operational multisigs.
+
+**Safe Address:** `0xBeF27037bC6311b96635E5e9Af3A73EBF6Ca8878` (deployed on all networks where Balancer V3 is active)
+
+The Operator can be exchanged for another service provider if needed—Balancer Onchain Ltd Safe maintains control and can replace the operator through the operational multisig configuration.
 
 ## Signer Duties
 
-All signers are expected to sign an Ethereum transaction ratifying each decision made by BAL holders through snapshot votes. This signature is expected to be done within the two weeks after the snapshot vote was concluded. Signers are encouraged to sign open requests even if they have already reached a quorum in order to signal their liveliness.
+All signers are expected to sign Ethereum transactions ratifying each decision made by BAL holders through snapshot votes. This signature is expected within two weeks after the snapshot vote concludes. Signers are encouraged to sign open requests even if they have already reached quorum to signal their liveliness.
 
-A signer shall lose his/her role \(by action of the remaining Multisig signers excluding him/her\) in case he/she:
+A signer shall lose their role (by action of the remaining multisig signers) in case they:
 
-- acts against BAL token holders’ off-chain voting;
-- goes through 3 months or 2 votes \(whichever takes longer\) without performing any of their signer duties.
+- Act against BAL token holders' off-chain voting
+- Go through 3 months or 2 votes (whichever takes longer) without performing any signer duties
 
-## Multisig Powers
+## Multisig Mandate & Authorizations
 
-V2 smart contracts can grant some specific powers to an “admin” address, which will initially point to the Multisig’s address.
+Balancer V2 and V3 have different governance models reflecting their maturity and deployment strategies. The following sections describe the on-chain authorizations granted to each multisig and the operational mandate under which they are exercised.
 
-These powers are:
+### Core Team Operational Mandate (BIP-918)
 
-- set a share of swap fees to be diverted to the protocol \(hard capped at 50% of the swap fee\)
-- set a flash loan fee
-- extract from the vault collected protocol fees and/or excess balances \(e.g. airdrops\), to any destination
-- set the address of the oracle implementation
-- set relayer addresses: relayers are \(user opt-in, audited\) contracts that can make calls to the vault
-  (with the transaction “sender” being any arbitrary address\) and use the sender’s ERC20 vault allowance,
-  internal balance or BPTs on their behalf
-- set dynamic-fee controllers: addresses \(initially assigned to Gauntlet\) that may change the swap fee for pools
-  created by the dynamic-fee pool factory that will be deployed by Balancer Labs
-- Add and removal of veBAL gauges
+[BIP-918](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000) grants the core team a defined operational mandate covering day-to-day protocol decisions. The following fall **within the core team's discretion** and do **not** require a Snapshot vote:
+
+- Protocol fee parameter changes
+- New chain deployments
+- Vendor selection and sprint priorities
+- Chain deprecation
+- Hiring/terminations within approved budget
+- Fee-split agreements and direct deal negotiations with partners
+
+The following continue to require a **DAO Multisig** decision (Snapshot vote):
+
+- New pool factories
+- Novel pool types
+- New chains (formal approval, in addition to the operational deployment work that may fall under the mandate)
+- BAL supply or minting parameter changes
+
+On-chain, this is reflected in the Authorizer admin transfer to the Omni-sig on all chains **except Mainnet** (which retains BAL minting and elevated privileges under the DAO Multisig). See [Chain-Specific DAO Multisigs](#chain-specific-dao-multisigs) for the resulting split.
+
+### Balancer V2 Authorizations
+
+V2 smart contracts grant specific authorizations to an "admin" address, which points to the appropriate multisig (typically DAO multisigs on established chains).
+
+These authorizations include:
+
+- Set a share of swap fees to be diverted to the protocol (hard capped at 50% of the swap fee)
+- Set a flash loan fee
+- Extract from the vault collected protocol fees and/or excess balances (e.g., airdrops), to any destination
+- Set the address of the oracle implementation
+- Set relayer addresses: relayers are (user opt-in, audited) contracts that can make calls to the vault (with the transaction "sender" being any arbitrary address) and use the sender's ERC20 vault allowance, internal balance or BPTs on their behalf
+- Set dynamic-fee controllers: addresses that may change the swap fee for pools created by the dynamic-fee pool factory
+- Add and remove gauges in the v2 gauge controller (historical: BAL emissions to gauges have been halted by [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001))
+
+### Balancer V3 Authorizations
+
+V3 deployments use a role-based permission system through the Authorizer contract. Admin authorizations include:
+
+- Configure protocol swap and yield fee percentages
+- Set pool creator fee percentages
+- Manage pool registration and configuration
+- Enable/disable vault query functionality
+- Pause/unpause the vault and pools
+- Manage hook permissions and configurations
+
+#### Established Chains
+
+- **Ethereum**: the **DAO Multisig** retains full administrative permissions, including Authorizer admin and BAL minting (the latter remaining under DAO governance due to its elevated risk profile).
+- **Arbitrum, Base, Gnosis, Avalanche, Optimism**: Authorizer admin was transferred to the **Omni-sig** under [BIP-918](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000); routine V3 protocol parameter changes on these L2s are executed by the Omni-sig under the core team's operational mandate. The chain-specific DAO multisigs remain in place but no longer act as the Authorizer admin for these chains.
+
+#### Newer Chain Deployments
+
+For newer V3 deployments on emerging chains, the **Omni-sig** (`0x9ff471F9f98F42E5151C7855fD1b5aa906b1AF7e`) holds Authorizer admin permissions and exercises them under the core team's operational mandate (per [BIP-918](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000)). This enables fast, low-friction operational responses on emerging chains where the existing operational mandate already covers routine protocol changes.
+
+**Chains under this model:** Plasma, HyperEVM, Monad, XLayer.
+
+There is **no planned hand-off to a chain-specific DAO multisig** — these chains remain under Omni-sig admin indefinitely, consistent with the L2 model established by BIP-918. If a deployment fails to gain traction, the DAO can propose to wind down operations on that chain via standard governance.
+
+Example deployment BIPs using this framework:
+- [BIP-862: Deploy Balancer v3 on HyperEVM](https://forum.balancer.fi/t/bip-862-deploy-balancer-v3-on-hyperevm/6628)
+- [BIP-858: Deploy Balancer v3 on Plasma](https://forum.balancer.fi/t/bip-858-deploy-balancer-v3-on-plasma/6606)

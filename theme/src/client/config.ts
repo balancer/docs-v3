@@ -1,6 +1,6 @@
 import { defineClientConfig } from '@vuepress/client';
 import { h } from 'vue';
-import { captureException, init, setTag } from '@sentry/browser';
+import { init } from '@sentry/browser';
 import {
   Badge,
   CodeGroup,

@@ -5,7 +5,7 @@ title: Create a custom router
 
 # Create a custom Router
 
-A custom Router is a smart contract which interacts with the Balancer Vault and utilizes the Vaults function in unique combinations. The deployment of a custom Router is beneficial for various projects in the DeFi space. To name some verticals this could be: 
+A custom Router is a smart contract which interacts with the Balancer Vault and utilizes the Vaults function in unique combinations. The deployment of a custom Router is beneficial for various projects in the DeFi space. To name some verticals this could be:
 
 - DEX aggregators, which want to tweak the default interaction via the Balancer Router in a certain way to deliver best prices to their users.
 - DeFi projects wanting to provide seamless liquidity migrations of their users from various Dexes to Balancer in order to participate from the deep liquidity offered on Balancer
@@ -13,6 +13,7 @@ A custom Router is a smart contract which interacts with the Balancer Vault and 
 - DeFi projects looking to enhance the liquidity mining experience for LPs by introducing a better staking and migration flow.
 
 The main work custom routers in the outlined examples above have in common is that:
+
 - They utilize multiple Vault interactions based on the required use-case
 - They add additional control flows and external interactions to the Router smart contract for granular liquidity operations
 
@@ -73,7 +74,7 @@ contract MigrationRouter {
         address gaugeToStakeIn,
         address sender
     ) external {
-        _vault.lock(
+        _vault.unlock(
             abi.encodeWithSignature(
                 "migrate8020PoolAndStakeHook(address,uint256,uint256[],uint256,address,address,address)",
                 poolToExit,

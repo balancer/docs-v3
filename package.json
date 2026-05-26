@@ -17,6 +17,14 @@
   "license": "MIT",
   "devDependencies": {
     "@balancer-labs/sdk": "^0.1.40",
+    "@ethersproject/abi": "^5.4.0",
+    "@ethersproject/abstract-signer": "^5.4.0",
+    "@ethersproject/address": "^5.4.0",
+    "@ethersproject/bignumber": "^5.4.0",
+    "@ethersproject/bytes": "^5.4.0",
+    "@ethersproject/constants": "^5.4.0",
+    "@ethersproject/contracts": "^5.4.0",
+    "@ethersproject/providers": "^5.4.5",
     "@types/ethereum-blockies": "^0.1.0",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
@@ -31,6 +39,7 @@
     "eslint-plugin-vue": "^9.6.0",
     "feather-icons": "^4.29.0",
     "glob": "^8.0.3",
+    "globby": "^13.2.2",
     "http-server": "^14.1.1",
     "lodash": "^4.17.21",
     "markdown-it-meta": "^0.0.1",
@@ -41,7 +50,6 @@
   },
   "dependencies": {
     "@balancer/sdk": "^0.0.3",
-    "@ethersproject/bignumber": "^5.7.0",
     "@headlessui/vue": "^1.7.14",
     "axios": "^1.4.0",
     "color": "^4.2.3",
@@ -49,9 +57,23 @@
     "ethers": "^6.4.0",
     "highlight.js": "^11.10.0",
     "lucide-vue-next": "^0.468.0",
+    "mdast-util-directive": "^3.1.0",
+    "mdast-util-gfm": "^3.1.0",
+    "mdast-util-to-markdown": "^2.1.2",
     "mersenne-twister": "^1.1.0",
+    "remark-directive": "^4.0.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0",
     "vue-prism-component": "^2.0.0",
     "vue-virtual-scroller": "^2.0.0-beta.8",
     "vue3-jazzicon": "^0.1.4"
+  },
+  "overrides": {
+    "dompurify": "^3.4.0",
+    "form-data": "^4.0.4",
+    "@babel/traverse": "^7.23.2"
   }
 }
