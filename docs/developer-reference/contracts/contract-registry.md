@@ -19,37 +19,17 @@ The registry categorizes contracts into the following types:
 
 | Type | Value | Description |
 |------|-------|-------------|
-| `OTHER` | 0 | Unspecified contract type |
+| `OTHER` | 0 | Unspecified contract type (catch-all for helper contracts, etc.) |
 | `POOL_FACTORY` | 1 | Factory contracts that deploy pools |
 | `ROUTER` | 2 | Router contracts for swaps and liquidity operations |
 | `HOOK` | 3 | Hook contracts for custom pool behavior |
-| `ERC4626` | 4 | ERC4626 wrapper contracts |
+| `ERC4626` | 4 | ERC4626 wrapper contracts (restricted to wrappers known to be compatible) |
 
-## Registered Contracts
+## Contract Aliases
 
-### Routers
+Aliases provide friendly names for common contracts. The aliases registered at deployment are listed below. Governance can update alias targets at any time (e.g., when migrating to a new pool version, such as LBP V3 to V4), so treat this list as illustrative only.
 
-The following routers are registered as trusted:
-
-| Router | Description | Deployment |
-|--------|-------------|------------|
-| Router v2 | Primary router for swaps and liquidity | `20250307-v3-router-v2` |
-| BatchRouter | Batch operations router | `20241205-v3-batch-router` |
-| BufferRouter | Buffer operations router | `20241205-v3-buffer-router` |
-| CompositeLiquidityRouter | Composite liquidity operations | `20250123-v3-composite-liquidity-router-v2` |
-
-### Pool Factories
-
-| Factory | Pool Type | Deployment |
-|---------|-----------|------------|
-| WeightedPoolFactory | Constant product pools | `20241205-v3-weighted-pool` |
-| StablePoolFactory | Stableswap pools | `20241205-v3-stable-pool` |
-| StableSurgePoolFactory | Stable pools with dynamic fees | `20250121-v3-stable-surge` |
-| LBPoolFactory | Liquidity bootstrapping pools | `20250307-v3-liquidity-bootstrapping-pool` |
-
-### Contract Aliases
-
-Aliases provide friendly names for common contracts:
+Query the registry on-chain via getBalancerContract(type, alias) for the current target.
 
 | Alias | Type | Target |
 |-------|------|--------|
@@ -130,20 +110,8 @@ When routing through Balancer:
 3. Monitor registry for newly added routers
 4. Update routing logic when contracts become inactive
 
-## Registry Initialization
-
-The registry was populated on March 14, 2025 via the `BalancerContractRegistryInitializer` deployment.
-
-**Details:**
-- **Task**: `20250314-balancer-registry-initializer`
-- **Code**: [GitHub Commit](https://github.com/balancer/balancer-v3-monorepo/commit/e1ae7f0091244ae20e5c1add3e7f89b6d33f48d23)
-- **Deployment**: [balancer-deployments](https://github.com/balancer/balancer-deployments/tree/master/v3/scripts/20250314-balancer-registry-initializer)
-
-The initializer registered all V3 routers and pool factories, then renounced its admin permissions to ensure the registry can only be updated by governance.
-
 ## See Also
 
 - [Vault Architecture](/concepts/vault/)
-- [Router Documentation](/developer-reference/contracts/router.html)
-- [Pool Factories](/developer-reference/contracts/pool-factories.html)
+- [Router Documentation](/developer-reference/contracts/router-api.html)
 - [Balancer Deployments](https://github.com/balancer/balancer-deployments)
