@@ -71,8 +71,8 @@ The DAO Multi-sig maintains DAO administrative permissions and represents the br
 **Responsibilities:**
 - DAO administrative permissions
 - Funding BIPs
-- Gauge killing
-- veBAL allowlisting
+- Gauge killing (historical: BAL emissions to gauges were halted by [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001))
+- veBAL allowlisting (historical permission; no new gauges are being added to the veBAL gauge controller)
 
 **Safe Address:** [0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f](https://app.safe.global/home?safe=eth:0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f)
 
@@ -123,6 +123,7 @@ The Treasury Council has the authority to:
 - Oversee distributions, liquidations, or other material actions proposed by Directors
 - Ensure alignment with Balancer governance resolutions
 - Administer the self-insurance fund
+- Channeling internal disputes and decision-making around the executive orders mandated to the core team by Governance resolutions.
 
 ### Members
 
@@ -130,11 +131,11 @@ The Treasury Council has the authority to:
 |--------|---------|
 | 0xDanko | `0x122AFb4667C5f80e45721a42C7c81e9140C62FA4` |
 | Xeonus | `0xaa5af0dd9c52c773d36cdbc509a0b2a1ded4c196` |
-| danielmk | `0x606681E47afC7869482660eCD61bd45B53523D83` |
-| mendesfabio | `0x90347b9CC81a4a28aAc74E8B134040d5ce2eaB6D` |
-| solarcurve | `0x512fce9B07Ce64590849115EE6B32fd40eC0f5F3` |
+| danielmk | `0x7984aB7e6B51A50d970b74a437BC82156753b866` |
+| mendesfabio | `0xF162D64Cab37fD3335122024f23680AF7cf067ad` |
 | gosuto | `0x11e450c72c2258ec792d5f64a263ecb18e8c0f06` |
-| notsoformal | `0xd17a9f089862351af82fa782435fac0f9e17786c` |
+| Marcus | `0xb7364Fca20EEC90f51b158C05199044AD362b675` |
+| franzns | `0xA574Af018138bBC2bf065f68015687Aa67388A2A` |
 
 The Treasury Council controls the Treasury Safe with a **5/7 threshold**.
 

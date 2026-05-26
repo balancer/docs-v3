@@ -1,85 +1,93 @@
 ---
-title: FAQ
+title: FAQ (Historical)
 ---
 
-# veBAL FAQ
+# veBAL FAQ (Historical)
 
-### How do I get veBAL?
+:::danger Deprecated — veBAL economic and governance rights ended in Q2 2026
+This FAQ describes the legacy veBAL system and is **no longer accurate**. Per [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001) and [BIP-921](https://forum.balancer.fi/t/bip-921-1-bal-1-vote-reconfiguration-for-balancer-eth-snapshot-space/7052), BAL emissions are halted, protocol fees route 100% to the DAO Treasury, and Snapshot voting is denominated in raw BAL (veBAL no longer earns fees, directs emissions, or confers an escrow voting multiplier).
 
-When you provide liquidity into a Balancer pool, you take out an ERC-20 token we call a "Balancer Pool Token", or BPT for short. In veBAL, the used BPT is from a B-80BAL-20WETH pool.
+Per [BIP-920 (veBAL Compensation Airdrop)](https://forum.balancer.fi/t/bip-920-vebal-compensation-airdrop/7025), veBAL holders received a **one-off compensation payment of 500,000 USDC**, distributed via direct CSV airdrop proportional to veBAL balance at the proposal snapshot. The bulk landed in major wrapper lockers (Aura, StakeDAO, Tetu); those wrappers will **unwind their veBAL positions and distribute the rewards to underlying users** (sdBAL, auraBAL, tetuBAL holders) accordingly.
 
-You will need to have BAL tokens or WETH to invest in the B-80BAL-20WETH pool. You can deposit a single asset, which will incur some price impact, or you can deposit both assets in the correct weights. You will receive BPT which you can then time lock here to receive veBAL.
+See the [Governance Overview](../README.md), [Voting](../voting.md), and [veBAL (Historical)](./README.md) pages for the current state. Retained below for historical reference only.
+:::
 
-The length of time the BPT is locked corresponds to how much veBAL you'll get. veBAL is a function of time and asset. 1 veBAL equals 1 BPT locked for 52 weeks. Where a 1 week lock of 1 BPT will give 1/52 veBAL.
+### How did users get veBAL?
 
-### Can I transfer BPTs or veBAL?
+When a user provided liquidity into a Balancer pool, they received an ERC-20 token called a "Balancer Pool Token", or BPT. For veBAL, the relevant BPT was from the B-80BAL-20WETH pool.
 
-Yes, you can transfer BPTs. Rewards will accrue in the wallet where they are held.
+A user needed BAL or WETH to invest in the B-80BAL-20WETH pool. They could deposit a single asset (incurring price impact) or both assets at the correct weights. Once received, the BPT could be time-locked to receive veBAL.
 
-veBAL is a non-standard ERC-20 token and cannot be transferred.
+The lock duration determined how much veBAL was received. veBAL was a function of time and asset: 1 veBAL equalled 1 BPT locked for 52 weeks; a 1-week lock of 1 BPT yielded 1/52 veBAL.
+
+### Could BPTs or veBAL be transferred?
+
+BPTs were transferable; rewards accrued in the wallet where they were held.
+
+veBAL was a non-standard ERC-20 token and could not be transferred.
 
 
-### Do veBAL holders receive a portion of the protocol fees?
+### Did veBAL holders receive a portion of the protocol fees?
 
-Yes. For more information, see [Protocol Fee Operations](../protocol-fees.md) and the [Protocol Fee Model](../protocol-fee-model/protocol-fee-model.md).
+Yes (historical). veBAL holders received a share of protocol fees in USDC. As of [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001), all protocol fees route 100% to the DAO Treasury and veBAL holders no longer receive fee distributions. See [Protocol Fee Operations](../protocol-fees.md) for the current model.
 
-### How are the protocol fees paid?
+### How were the protocol fees paid?
 
-veBAL holders receive protocol fees distributed in **USDC**. The fee distribution varies depending on whether fees come from core pools or non-core pools—see the [Protocol Fee Model](../protocol-fee-model/protocol-fee-model.md) for the current distribution splits.
+veBAL holders received protocol fees distributed in **USDC**. The fee distribution varied depending on whether fees came from core pools or non-core pools — see the Protocol Fee Model (historical) for the distribution splits that applied at the time.
 
-### When are incentives paid?
+### When were incentives paid?
 
-Incentives on mainnet are now accrued each block. Protocol fees are distributed on a weekly basis.
+Incentives on mainnet accrued each block. Protocol fees were distributed on a weekly basis.
 
-### Is there a way to view how much total veBAL there is?
+### Was there a way to view total veBAL?
 
-Yes, that information can be found on the [veBAL Dune Dashboard](https://dune.com/balancer/veBAL)
+The information was available on the [veBAL Dune Dashboard](https://dune.com/balancer/veBAL).
 
-### How much BPT (B-80BAL-20WETH) do I stake to maximize my multiplier? What amount do you need to stake at 1 year to hit the 2.5x boost for liquidity incentives?
+### How much BPT (B-80BAL-20WETH) was needed to maximize the multiplier? What amount needed to be staked at 1 year to hit the 2.5x boost for liquidity incentives?
 
-The incentives boost is related to your share of the pool and share of veBAL. Range limited from 1x to 2.5x. 
+The incentives boost was a function of a user's share of the pool and share of total veBAL — range-limited from 1x to 2.5x.
 
-Community contributors have developed a very useful [veBAL Boost Calculator](https://balancer.tools/veBAL) tool and the math is explained [here](/reference/vebal-and-gauges/boost-calculations.html).
+Community contributors built a [veBAL Boost Calculator](https://balancer.tools/veBAL) tool; the underlying math is explained in the historical boost-calculations reference (the page itself was retired alongside the gauge system).
 
-### If veBAL is on mainnet, can it boost staking incentives on L2?
+### If veBAL was on mainnet, could it boost staking incentives on L2?
 
-Yes, Balancer now supports cross-chain gauges to receive incentive boosts.
+Yes. Balancer supported cross-chain gauges, and veBAL boosted staking incentives on L2 gauges. The boost depended on the user's share of the gauge's staked liquidity and their share of total veBAL.
 
-The boost depends on what fraction of the gauge staked liquidity you hold and what fraction of the total veBAL you hold. See more on boosting [here](/reference/vebal-and-gauges/boost-calculations.html)
+### How did one extend their veBAL lock?
 
-### How do I extend my veBAL lock up?
+Via the veBAL UI: open the "Lock until" widget, click "+", choose the desired time, and confirm.
 
-Go to the [veBAL site](https://app.balancer.fi/vebal#/ethereum/vebal), see "Lock until" , click "+", choose the time desired, and confirm.
+### Did voters decide how emissions were split across networks, or was that preset?
 
-### Will voters vote on how much emissions go to each network or is that preset?
+Voters determined the amount of emissions going to gauge-listed pools on Ethereum mainnet and on L2 chains. The voting happened on Ethereum mainnet.
 
-Voters will determine the amount of emissions going to gauge listed pools on Ethereum mainnet and on L2 chains. The voting will happen on Ethereum mainnet.
+### Was the veBAL gauge vote on-chain, and did it require gas?
 
-### Is the veBAL gauge vote on-chain, and does it require gas fees?
+Yes. Gauge votes were on-chain and cost gas. They were cast in the Balancer dApp. Other governance decisions (e.g., approving new gauges) happened via [Snapshot](https://snapshot.org/#/balancer.eth) and were gasless.
 
-Yes, gauge votes are on-chain and will cost a gas fee. They can be cast in the [Balancer dAPP](https://app.balancer.fi/#/ethereum/vebal). Other governance decisions (i.e. approving new gauges) are done by [snapshot](https://snapshot.org/#/balancer.eth) and cost no gas.
+A weekly vote for veBAL holders ended at 00:00 UTC each Thursday. If the same pool allocation persisted across epochs, no new vote or gas was needed — veBAL holders voted once unless they wanted to change their allocation.
 
-There is a weekly vote for veBAL holders which ends at 00:00 UTC on Thursdays. If the same pools will be selected each epoch, no additional vote, transaction, or gas is needed. veBAL holders only have to vote once, unless they want to change their allocation.
+### Could votes be delegated?
 
-### Can I delegate my votes?
+veBAL gauge voting could not be delegated. Snapshot voting (covering general DAO governance and gauge approvals) could be delegated via the [Snapshot delegation page](https://snapshot.org/#/delegate/balancer.eth). A list of delegates and their vote rationales lived in the [Delegate Citadel](https://forum.balancer.fi/c/delegate-citadel/14) on the Balancer Forum. Note that the BIP-921 voting model now uses raw BAL across seven chains — see [Voting](../voting.md).
 
-veBAL gauge voting can not be delegated, however Snapshot voting covering general governance for DAO operations and management of gauges can be delegated [here](https://snapshot.org/#/delegate/balancer.eth). A list of delegates and more information about them and how/why they vote can be found [in the Delegate Citadel](https://forum.balancer.fi/c/delegate-citadel/14) on the Balancer Forum.
+### How did one make a pool eligible for gauge voting?
 
-### How do I make a pool eligible for gauge voting?
+A governance proposal was required. See the [Governance Process](../process.md). With BAL emissions halted by [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001), no new gauges are being added for BAL emissions.
 
-Need to make a governance proposal. See [Governance Process](../process.md) and [The instructions for a Gauge request on the Forum](https://forum.balancer.fi/t/instructions-overview/2674).
+### Did veBAL support Gnosis Safe?
 
-### Does veBAL support Gnosis Safe?
+Vote-escrowed (ve) systems typically did not allow arbitrary contracts to lock — otherwise the ve token would be trivial to tokenize, defeating the lock-up's purpose. Users could lock veBAL from an EOA and delegate it to a Gnosis Safe to receive the boost. Entities interested in locking a large veBAL position via a multisig could appeal to governance for whitelisting.
 
-It's normal for vote escrowed (ve) systems to not allow arbitrary contracts to lock as otherwise it's easy to tokenize the ve tokens which defeats the point if the tokenomics of said derivative does not require appropriate locking. Users can lock up veBAL from an EOA and delegate it to your Gnosis Safe to earn boosts. Entities interested in making a large investment in veBAL may appeal to governance to have a multisig whitelisted for veBAL participation.
+### Was there a repository of contract addresses for the staking and veBAL contracts?
 
-### Is there a repository for the contract addresses of all the new staking contracts and veBAL contracts?
+The veBAL and gauge contracts remain deployed on-chain (locks persist until natural expiry) but are no longer used for fee distribution, voting weight, or BAL emissions.
 
 | Contract                                                                                                        | Purpose                                              |
 |:----------------------------------------------------------------------------------------------------------------|:-----------------------------------------------------|
-| [veBAL](https://etherscan.io/tx/0xaa29cd251cdb024c415b0e13f67a0ca74fe5abc3de9a9fedd1ae26fd39be4025)             | Locks BPTs and reports veBAL balances                |
-| [Gauge Controller](https://etherscan.io/address/0xC128468b7Ce63eA702C1f104D55A2566b13D3ABD)                     | Manages Gauges and emissions                         |
-| [Gauge Adder](https://etherscan.io/address/0x2fFB7B215Ae7F088eC2530C7aa8E1B24E398f26a)                          | Adds new gauges approved by governance to the system |
+| [veBAL](https://etherscan.io/tx/0xaa29cd251cdb024c415b0e13f67a0ca74fe5abc3de9a9fedd1ae26fd39be4025)             | Locked BPTs and reported veBAL balances              |
+| [Gauge Controller](https://etherscan.io/address/0xC128468b7Ce63eA702C1f104D55A2566b13D3ABD)                     | Managed gauges and emissions                         |
+| [Gauge Adder](https://etherscan.io/address/0x2fFB7B215Ae7F088eC2530C7aa8E1B24E398f26a)                          | Added new gauges approved by governance              |
 | [Mainnet Uncapped Gauge Factory](https://etherscan.io/address/0x4e7bbd911cf1efa442bc1b2e9ea01ffe785412ec)       | Create gauges with no cap on Mainnet                 |
 | [Mainnet Capped Gauge Factory](https://etherscan.io/address/0xf1665e19bc105be4edd3739f88315cc699cc5b65)         | Create gauges with possible cap on Mainnet           |
 | [Polygon Capped Gauge Factory](https://etherscan.io/address/0xa98bce70c92ad2ef3288dbcd659bc0d6b62f8f13)         | Create gauges with a possible CAP on Polygon         |

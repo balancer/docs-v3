@@ -25,7 +25,7 @@ by [this vote](https://forum.balancer.fi/t/form-the-emergency-subdao/3197):
 |:------------|:---------------------------------------------|
 | Fabio       | `0x90347b9CC81a4a28aAc74E8B134040d5ce2eaB6D` |
 | Zen Dragon  | `0x7c2eA10D3e5922ba3bBBafa39Dc0677353D2AF17` |
-| Juani       | `0xDA07B188daE2ee63B2eC61Ee4cdB9673C03d2293` |
+| Danko       | `0x122AFb4667C5f80e45721a42C7c81e9140C62FA4` |
 | Hypernative | `0x202B1AA0d702898CA474aB6ED31d53BA309308D9` |
 | Franz       | `0x89c7D6ABA9Cd18D8A93571E583EEAc58Da75acE6` |
 | Daniel      | `0x606681E47afC7869482660eCD61bd45B53523D83` |
@@ -47,7 +47,7 @@ The Balancer Emergency subDAO operates through the following multisigs which are
 | Base      | <span class="address-link">[0x183C55A0dc7A7Da0f3581997e764D85Fd9E9f63a](https://app.safe.global/transactions/queue?safe=base:0x183C55A0dc7A7Da0f3581997e764D85Fd9E9f63a)</span>            |
 | Fraxtal   | <span class="address-link">[0xC66d0Ba27b8309D27cCa70064dfb40b73DB6de9E](https://safe.mainnet.frax.com/home?safe=fraxtal:0xC66d0Ba27b8309D27cCa70064dfb40b73DB6de9E)</span>                 |
 | Mode      | <span class="address-link">[0x66C4b8Ba38a7B57495b7D0581f25784E629516c2](https://safe.optimism.io/home?safe=mode:0x66C4b8Ba38a7B57495b7D0581f25784E629516c2)</span>                         |
-| HyperEVM  | <span class="address-link">[0x44613a28347206F5E26C1B8Db7Dc73f450219746](https://safe.onchainden.com/home?safe=hyperevm:0x44613a28347206F5E26C1B8Db7Dc73f450219746)</span>                  |
+| HyperEVM  | <span class="address-link">[0x44613a28347206F5E26C1B8Db7Dc73f450219746](https://app.safe.global/transactions/queue?safe=hyper-evm:0x44613a28347206F5E26C1B8Db7Dc73f450219746)</span>                  |
 | Plasma    | <span class="address-link">[0x0d3319A8057A0C8afd87dFEEA252541A76d56Ebf](https://app.safe.global/home?safe=plasma:0x0d3319A8057A0C8afd87dFEEA252541A76d56Ebf)</span>                        |
 | XLayer    | <span class="address-link">[0x6793df018B07C44E86D0b84C8C5f07EEc14E1270](https://app.safe.global/home?safe=xlayer:0x6793df018B07C44E86D0b84C8C5f07EEc14E1270)</span>                        |
 | Monad     | <span class="address-link">[0x3a921d6956C62012Dd88f95bD44224a7Ef5C9b5a](https://app.safe.global/home?safe=monad:0x3a921d6956C62012Dd88f95bD44224a7Ef5C9b5a)</span>                         |
@@ -98,3 +98,9 @@ As per [BIP-911](https://forum.balancer.fi/t/bip-911-emergency-subdao-signer-swa
 | Change                                | Scope                            | Purpose                                                                                              |
 |:--------------------------------------|:---------------------------------|:-----------------------------------------------------------------------------------------------------|
 | Signer swap (MikeB → Fabio)           | All emergency safes              | Replace MikeB with Fabio from BLabs to ensure responsive signer coverage across time-zones.          |
+
+Following the operational mandate granted to the core team by [BIP-918](https://forum.balancer.fi/t/bip-918-operational-restructuring-for-balancer/7000) — under which routine emergency-signer rotations no longer require a standalone BIP — a signer swap was executed across all emergency subDAO safes to replace Juani (`0xDA07B188daE2ee63B2eC61Ee4cdB9673C03d2293`) with Danko (`0x122AFb4667C5f80e45721a42C7c81e9140C62FA4`) following Juani's departure, maintaining the 3-of-7 multi-entity signer composition.
+
+| Change                                | Scope                            | Authority                                                                                            |
+|:--------------------------------------|:---------------------------------|:-----------------------------------------------------------------------------------------------------|
+| Signer swap (Juani → Danko)           | All emergency safes              | Core team operational mandate per BIP-918 (no standalone BIP required).                              |

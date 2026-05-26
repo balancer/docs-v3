@@ -5,7 +5,7 @@ order: 2
 
 # Onboarding Yield-bearing Assets
 
-This guide outlines the process of onboarding yield-bearing assets to Balancer v2. To fully leverage Balancer's technology, you'll need to complete several key steps including token setup, rate provider implementation, pool creation, and optional gauge setup for BAL rewards.
+This guide outlines the process of onboarding yield-bearing assets to Balancer v2. To fully leverage Balancer's technology, you'll need to complete several key steps including token setup, rate provider implementation, pool creation, and optional gauge setup for streaming your own secondary rewards.
 
 ## Step-by-Step Onboarding Process
 
@@ -28,7 +28,7 @@ Rate provider reviews typically take 1-2 weeks for Balancer Labs to complete. Mo
 
 ### 3. Pool Creation and Initialization
 
-Use the [community pool creator tool](https://balancer.defilytica.tools/pool-creator-v2) to create your pool:
+Use the [community pool creator tool](https://ops.balancer.fi/pool-creator-v2) to create your pool:
 
 1. Select ComposableStable Pool type
 2. Set `Yield Protocol Fee Exempt` to `false`
@@ -47,31 +47,12 @@ To ensure accurate yield metrics display:
 2. Register your endpoint in the [yield token registry](https://github.com/balancer/yield-tokens)
 3. This ensures correct APR display across Balancer frontend deployments
 
-### 5. BAL Rewards Setup (Optional)
+### 5. Secondary Rewards Setup (Optional)
 
-If you want to receive BAL rewards, you'll need to set up a gauge and apply through governance.
-
-#### Gauge Creation
-::: info Network-Specific Instructions
-Find detailed gauge creation endpoints for different networks in our [instructions overview](https://forum.balancer.fi/t/instructions-overview/2674)
-:::
-
-#### Governance Application Timeline
-
-1. Submit proposal following the [instruction set](https://forum.balancer.fi/t/instructions-overview/2674/2)
-2. Contributor review by Thursday
-3. Voting period: Thursday 8PM CET to Monday 8PM CET
-4. On-chain gauge controller transaction by Tuesday evening CET
-5. Gauge appears on [veBAL voting page](https://app.balancer.fi/#/ethereum/vebal)
-
-::: tip Reward Distribution
-- Ethereum mainnet: BAL rewards begin after voting round
-- L2 networks (Arbitrum, Polygon POS): One week delay before reward streaming
-  :::
+If you want to stream your own reward tokens to LPs (BAL emissions to gauges are halted per [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001)), set up a gauge and configure secondary rewards. See the [Gauge Onboarding Guide](../onboarding-overview/gauge-onboarding.md) and [Incentive Management Guide](../onboarding-overview/incentive-management.md) for full instructions.
 
 ## Additional Resources
 
 - [Gauge Onboarding Guide](../onboarding-overview/gauge-onboarding.md)
 - [Rate Provider Documentation](../onboarding-overview/rate-providers.md)
-- [Core Pool Framework](../onboarding-overview/core-pools.md)
 - [Protocol Fees Documentation](../../concepts/governance/protocol-fees.md)

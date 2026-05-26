@@ -20,7 +20,7 @@ Balancer v3 introduces a simplified and more efficient AMM infrastructure, optim
 1. Choosing and launching your pool
 2. Providing initial liquidity
 3. Implementing hooks (optional)
-4. Setting up incentives through the gauge and our incentive management systems
+4. (Optional) Standing up a gauge to stream your own secondary rewards (BAL emissions are halted per [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001))
 
 ### Pool Types and Use Cases
 
@@ -71,28 +71,17 @@ Check our [example hooks](https://github.com/balancer/balancer-v3-monorepo) for 
 
 ### Gauge System Integration
 
-The gauge system remains consistent with v2:
-
-1. BAL rewards through [veBAL](https://app.balancer.fi/#/ethereum/vebal) votes
-2. Integration with [vlAURA](https://app.aura.finance/#/1/lock)
-3. Direct incentive placement options
-
-See our [gauge onboarding documentation](../onboarding-overview/gauge-onboarding.md) for detailed setup instructions.
-
-::: tip Core Pool Status
-Review our [core pools documentation](../onboarding-overview/core-pools.md) for information about enhanced benefits and requirements.
-:::
+Gauges remain available for routing third-party (non-BAL) reward tokens to LPs. **BAL emissions to gauges have been halted per [BIP-919](https://forum.balancer.fi/t/bip-919-bal-tokenomics-revamp/7001)**, and voting-incentive markets have been terminated. AURA-side integrations and direct incentive placement on AURA Finance gauges remain separately available. See the [gauge onboarding documentation](../onboarding-overview/gauge-onboarding.md) for setup details.
 
 ## Developer Support
 
-- Grants program offering up to 150k BAL for v3 implementations
 - Hooks bounty program for innovative extensions
 - Direct support through [Balancer Discord](https://discord.balancer.fi)
 
 ## Additional Resources
 
 - [Technical Documentation](../../concepts/vault/README.md)
-- [Core Pool Framework](../onboarding-overview/core-pools.md)
+- [Pool Token Compatibility](../onboarding-overview/core-pools.md)
 - [Gauge System Guide](../onboarding-overview/gauge-onboarding.md)
 - [Incentives Management](../onboarding-overview/incentive-management.md)
 - [Pool Creation Guide](./pool-creation.md)
