@@ -17,8 +17,8 @@ The rounding direction is guided by a single general principle: amounts you rece
 
 | Operation | Rounding |
 |-----------|----------|
-| Swap, given an exact amount in | the amount out is rounded **down** — you receive the same or slightly less |
-| Swap, given an exact amount out | the amount in is rounded **up** — you pay the same or slightly more |
+| Swap, given an exact amount in | the amount out is rounded **down**: you receive the same or slightly less |
+| Swap, given an exact amount out | the amount in is rounded **up**: you pay the same or slightly more |
 | Add liquidity, receiving BPT | the BPT minted is rounded **down** |
 | Add liquidity, for an exact BPT amount out | the token amount in is rounded **up** |
 | Remove liquidity, receiving tokens | the token amounts out are rounded **down** |
