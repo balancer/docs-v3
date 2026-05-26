@@ -68,7 +68,7 @@ When using with yield-bearing assets and rate providers, the precision can be in
 
 ### AutoRange Pools
 
-[AutoRange Pools](../explore-available-balancer-pools/reclamm-pool/reclamm-pool.md) are the next logical step. To summarize the discussion above:
+[AutoRange Pools](../explore-available-balancer-pools/autorange-pool/reclamm-pool.md) are the next logical step. To summarize the discussion above:
 
 Uniswap pools offer highly granular concentrated liquidity positions, but they are non-fungible and must be actively managed by the LP. There is a direct trade-off between capital efficiency and ease of management.
 
