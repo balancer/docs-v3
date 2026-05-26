@@ -79,13 +79,13 @@ type Path = {
     tokens: TokenApi[];
     outputAmountRaw: bigint;
     inputAmountRaw: bigint;
-    vaultVersion: 2 | 3;
+    protocolVersion: 2 | 3;
 };
 ```
 * `pools` - an array of pools that will be swapped against, ordered sequentially for the path.
 * `tokens` - an array of tokens that will be swapped to/from, ordered sequentially for the path. `tokens[0]` is the initial `tokenIn` and `tokens[length-1]` is the final `tokenOut` for the path.
 * `inputAmountRaw`/`outputAmountRaw` - the final input/output amounts for the path.
-* `vaultVersion` - the version of the Balancer protocol. Note each path must use the same vaultVersion.
+* `protocolVersion` - the version of the Balancer protocol. Note each path must use the same protocolVersion.
 
 Using the input given above as an illustrative example:
 ```typescript
