@@ -90,7 +90,7 @@ export default defineUserConfig({
     // @vuepress/plugin-medium-zoom
     mediumZoomPlugin({
       selector:
-        '.theme-default-content :not(a, .card-icon-row, .NetworkSelect__button) > img',
+        '.theme-default-content :not(a, .card-icon-row) > img',
       zoomOptions: {},
       // should greater than page transition duration
       delay: 300,
