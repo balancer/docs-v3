@@ -33,21 +33,23 @@ The core concepts of adding liquidity are the same for any programming language 
 
 ## Example Scripts
 
-Run any of the scripts listed below against a local fork of Ethereum mainnet using the [v3 pool operation examples repo](https://github.com/MattPereira/v3-pool-operation-examples/tree/main?tab=readme-ov-file#balancer-v3-pool-operation-examples)
+:::tip  
+Run example scripts against a local fork using our [typescript SDK](https://github.com/balancer/balancer-v3-sdk-examples/tree/main) and [foundry starter](https://github.com/balancer/pool-operation-examples-v3) repos
+:::
 
 #### TypeScript SDK
 
-- [addLiquidityUnbalanced.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/add-liquidity/addLiquidityUnbalanced.ts)
-- [addLiquidityProportional.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/add-liquidity/addLiquidityProportional.ts)
-- [addLiquidityUnbalancedToERC4626.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/add-liquidity/addLiquidityUnbalancedToERC4626Pool.ts)
-- [addLiquidityProportionalToERC4626.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/add-liquidity/addLiquidityProportionalToERC4626Pool.ts)
+- [addLiquidityUnbalanced.ts](https://github.com/balancer/balancer-v3-sdk-examples/blob/main/scripts/add-liquidity/addLiquidityUnbalanced.ts)
+- [addLiquidityProportional.ts](https://github.com/balancer/balancer-v3-sdk-examples/blob/main/scripts/add-liquidity/addLiquidityProportional.ts)
+- [addLiquidityUnbalancedToERC4626.ts](https://github.com/balancer/balancer-v3-sdk-examples/blob/main/scripts/add-liquidity/addLiquidityUnbalancedToERC4626Pool.ts)
+- [addLiquidityProportionalToERC4626.ts](https://github.com/balancer/balancer-v3-sdk-examples/blob/main/scripts/add-liquidity/addLiquidityProportionalToERC4626Pool.ts)
 
 #### Solidity
 
-- [AddLiquidityUnbalanced.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/add-liquidity/AddLiquidityUnbalanced.s.sol)
-- [AddLiquidityProportional.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/add-liquidity/AddLiquidityProportional.s.sol)
-- [AddLiquidityUnbalancedToERC4626.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/add-liquidity/AddLiquidityUnbalancedToERC4626Pool.s.sol)
-- [AddLiquidityProportionalToERC4626.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/add-liquidity/AddLiquidityProportionalToERC4626Pool.s.sol)
+- [AddLiquidityUnbalanced.s.sol](https://github.com/balancer/pool-operation-examples-v3/blob/main/scripts/foundry/add-liquidity/AddLiquidityUnbalanced.s.sol)
+- [AddLiquidityProportional.s.sol](https://github.com/balancer/pool-operation-examples-v3/blob/main/scripts/foundry/add-liquidity/AddLiquidityProportional.s.sol)
+- [AddLiquidityUnbalancedToERC4626.s.sol](https://github.com/balancer/pool-operation-examples-v3/blob/main/scripts/foundry/add-liquidity/AddLiquidityUnbalancedToERC4626Pool.s.sol)
+- [AddLiquidityProportionalToERC4626.s.sol](https://github.com/balancer/pool-operation-examples-v3/blob/main/scripts/foundry/add-liquidity/AddLiquidityProportionalToERC4626Pool.s.sol)
 
 ## Beginner Tutorials
 

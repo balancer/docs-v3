@@ -40,4 +40,4 @@ npm install @balancer/sdk
 
 For detailed guides explaining how to use the SDK for common actions please see [Developer Guides](../../integration-guides/).
 
-There are also detailed examples that run against a local fork in the [pool operation examples repo](https://github.com/MattPereira/v3-pool-operation-examples).
+There are also detailed examples that run against a local fork in the [SDK examples repo](https://github.com/balancer/balancer-v3-sdk-examples/tree/main/scripts/swap).

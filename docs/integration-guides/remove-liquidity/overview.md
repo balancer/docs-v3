@@ -33,21 +33,23 @@ The core concepts of removing liquidity are the same for any programming languag
 
 ## Example Scripts
 
-Run example scripts against a local fork of Ethereum mainnet using the [v3 pool operation examples repo](https://github.com/MattPereira/v3-pool-operation-examples/tree/main?tab=readme-ov-file#balancer-v3-pool-operation-examples)
+:::tip  
+Run example scripts against a local fork using our [typescript SDK](https://github.com/balancer/balancer-v3-sdk-examples/tree/main) and [foundry starter](https://github.com/balancer/pool-operation-examples-v3) repos
+:::
 
 #### TypeScript SDK
 
-- [removeLiquidityProportional.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/remove-liquidity/removeLiquidityProportional.ts)
-- [removeLiquidityProportionalFromERC4626Pool.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/remove-liquidity/removeLiquidityProportionalFromERC4626Pool.ts)
-- [removeLiquiditySingleTokenExactIn.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/remove-liquidity/removeLiquiditySingleTokenExactIn.ts)
-- [removeLiquiditySingleTokenExactOut.ts](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/hardhat/remove-liquidity/removeLiquiditySingleTokenExactOut.ts)
+- [removeLiquidityProportional.ts](https://github.com/balancer/balancer-v3-sdk-examples/blob/main/scripts/remove-liquidity/removeLiquidityProportional.ts)
+- [removeLiquidityProportionalFromERC4626Pool.ts](https://github.com/balancer/balancer-v3-sdk-examples/blob/main/scripts/remove-liquidity/removeLiquidityProportionalFromERC4626Pool.ts)
+- [removeLiquiditySingleTokenExactIn.ts](https://github.com/balancer/balancer-v3-sdk-examples/blob/main/scripts/remove-liquidity/removeLiquiditySingleTokenExactIn.ts)
+- [removeLiquiditySingleTokenExactOut.ts](https://github.com/balancer/balancer-v3-sdk-examples/blob/main/scripts/remove-liquidity/removeLiquiditySingleTokenExactOut.ts)
 
 #### Solidity
 
-- [RemoveLiquidityProportional.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/remove-liquidity/RemoveLiquidityProportional.s.sol)
-- [RemoveLiquidityProportionalFromERC4626Pool.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/remove-liquidity/RemoveLiquidityProportionalFromERC4626Pool.s.sol)
-- [RemoveLiquiditySingleTokenExactIn.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/remove-liquidity/RemoveLiquiditySingleTokenExactIn.s.sol)
-- [RemoveLiquiditySingleTokenExactOut.s.sol](https://github.com/MattPereira/v3-pool-operation-examples/blob/main/scripts/foundry/remove-liquidity/RemoveLiquiditySingleTokenExactOut.s.sol)
+- [RemoveLiquidityProportional.s.sol](https://github.com/balancer/pool-operation-examples-v3/blob/main/scripts/foundry/remove-liquidity/RemoveLiquidityProportional.s.sol)
+- [RemoveLiquidityProportionalFromERC4626Pool.s.sol](https://github.com/balancer/pool-operation-examples-v3/blob/main/scripts/foundry/remove-liquidity/RemoveLiquidityProportionalFromERC4626Pool.s.sol)
+- [RemoveLiquiditySingleTokenExactIn.s.sol](https://github.com/balancer/pool-operation-examples-v3/blob/main/scripts/foundry/remove-liquidity/RemoveLiquiditySingleTokenExactIn.s.sol)
+- [RemoveLiquiditySingleTokenExactOut.s.sol](https://github.com/balancer/pool-operation-examples-v3/blob/main/scripts/foundry/remove-liquidity/RemoveLiquiditySingleTokenExactOut.s.sol)
 
 ## Beginner Tutorials
 

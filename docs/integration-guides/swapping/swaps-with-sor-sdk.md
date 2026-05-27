@@ -9,97 +9,7 @@ This guide showcases the capabilities of the Balancer Smart Order Router (SOR) a
 
 _This guide uses the Balancer API SOR which will find the best result using v2 and v3 liquidity. The SDK supports both._
 
-```typescript
-import {
-    BalancerApi,
-    ChainId,
-    Slippage,
-    SwapKind,
-    Token,
-    TokenAmount,
-    Swap,
-    SwapBuildOutputExactIn,
-    SwapBuildCallInput,
-    ExactInQueryOutput
-} from "@balancer/sdk";
-
-// User defined
-const chainId = ChainId.MAINNET;
-const swapKind = SwapKind.GivenIn;
-const tokenIn = new Token(
-    chainId,
-    "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-    18,
-    "WETH"
-);
-const tokenOut = new Token(
-    chainId,
-    "0xba100000625a3754423978a60c9317c58a424e3D",
-    18,
-    "BAL"
-);
-const wethIsEth = false; // If true, incoming ETH will be wrapped to WETH, otherwise the Vault will pull WETH tokens
-const deadline = 999999999999999999n; // Deadline for the swap, in this case infinite
-const slippage = Slippage.fromPercentage("0.1"); // 0.1%
-const swapAmount = TokenAmount.fromHumanAmount(tokenIn, "1.2345678910");
-
-// API is used to fetch best swap paths from available liquidity across v2 and v3
-const balancerApi = new BalancerApi(
-    "https://api-v3.balancer.fi/",
-    chainId
-);
-
-const sorPaths = await balancerApi.sorSwapPaths.fetchSorSwapPaths({
-    chainId,
-    tokenIn: tokenIn.address,
-    tokenOut: tokenOut.address,
-    swapKind,
-    swapAmount,
-});
-
-// Swap object provides useful helpers for re-querying, building call, etc
-const swap = new Swap({
-    chainId,
-    paths: sorPaths,
-    swapKind,
-});
-
-console.log(
-    `Input token: ${swap.inputAmount.token.address}, Amount: ${swap.inputAmount.amount}`
-);
-console.log(
-    `Output token: ${swap.outputAmount.token.address}, Amount: ${swap.outputAmount.amount}`
-);
-
-// Get up to date swap result by querying onchain
-const updated = await swap.query(RPC_URL) as ExactInQueryOutput;
-console.log(`Updated amount: ${updated.expectedAmountOut.amount}`);
-
-let buildInput: SwapBuildCallInput;
-// In v2 the sender/recipient can be set, in v3 it is always the msg.sender
-if (swap.protocolVersion === 2) {
-    buildInput = {
-        slippage,
-        deadline,
-        queryOutput: updated,
-        wethIsEth,
-        sender: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-        recipient: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-    };
-} else {
-    buildInput = {
-        slippage,
-        deadline,
-        queryOutput: updated,
-        wethIsEth,
-    };
-}
-const callData = swap.buildCall(buildInput) as SwapBuildOutputExactIn;
-
-console.log(
-    `Min Amount Out: ${callData.minAmountOut.amount}\n\nTx Data:\nTo: ${callData.to}\nCallData: ${callData.callData}\nValue: ${callData.value}`
-);
-```
+<GithubCode url="https://raw.githubusercontent.com/balancer/balancer-v3-sdk-examples/refs/heads/main/scripts/swap/swapSmartPath.ts" clipStartLines=4 clipEndLines=8 />
 
 ### Install the Balancer SDK
 
@@ -133,11 +43,8 @@ The three main helper classes we use from the SDK are:
 
 In this example we use the BalancerApi `fetchSorSwapPaths` function to fetch the optimized swap paths for a token pair and swap amount. 
 ```typescript
-const balancerApi = new BalancerApi(
-    'https://api-v3.balancer.fi/',
-    chainId,
-);
-const sorPaths = await balancerApi.sorSwapPaths.fetchSorSwapPaths({
+const balancerApi = new BalancerApi('https://api-v3.balancer.fi/', chainId);
+const paths = await balancerApi.sorSwapPaths.fetchSorSwapPaths({
     chainId,
     tokenIn: tokenIn.address,
     tokenOut: tokenOut.address,
@@ -156,13 +63,13 @@ By default the API will return the swap that gives the best result from either v
 [Router queries](../../concepts/router/queries.md) allow for simulation of operations without execution. In this example, when the `query` function is called: 
 
 ```typescript
-const updated = await swap.query(RPC_URL) as ExactInQueryOutput;
+const queryOutput = await swap.query(rpcUrl, await client.getBlockNumber());
 ```
 An onchain call is used to find an updated result for the swap paths, `expectedAmountOut`.
 
 In the next step `buildCall` uses the `amount` and the user defined `slippage` to calculate the `minAmountOut`:
 ```typescript
-const callData = swap.buildCall(buildInput) as SwapBuildOutputExactIn;
+const call = swap.buildCallWithPermit2({ queryOutput, slippage }, permit2);
 ```
 
 In the full example above, we defined our slippage as `Slippage.fromPercentage('1')`, meaning that we if we do not receive at least 99% of our expected `amount`, the transaction should revert.
