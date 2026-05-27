@@ -1,18 +1,5 @@
 <template>
   <div class="tools-container">
-    <h3>Core Tools</h3>
-    <div class="docs-cards tools-table">
-      <div v-for="tool in coreTools" :key="tool.title" class="tools-row">
-        <DocsCard
-          :title="tool.title"
-          :icon="tool.icon"
-          :link="tool.link"
-          :details="tool.details"
-          :target="_getLinkTarget(tool.link)"
-        />
-      </div>
-    </div>
-
     <h3>Calculators and dApps</h3>
     <h3></h3>
     <div class="docs-cards tools-table">
@@ -52,25 +39,7 @@
 <script setup lang="ts">
 import DocsCard from './DocsCardTools.vue';
 
-const coreTools = [
-  {
-    title: 'Batch Swaps',
-    icon: '/images/logo-balancer-white-512x512.svg',
-    details: 'Batch Swap Queries',
-    link: '/tools/core/batch-swap.html',
-  },
-  {
-    title: 'Pools',
-    icon: '/images/hero-circles.png',
-    details: 'Pool Swap, Join and Exit Queries',
-    link: '/tools/core/pools.html',
-  },
-  {
-    title: 'Smart Order Router',
-    icon: '/images/quick-link-guides.svg',
-    details: 'Query swap routes through the SOR ',
-    link: '/tools/core/smart-order-router.html',
-  },
+const calculatorsAndDApps = [
   {
     title: 'Maxis Operations UI',
     icon: '/images/toolshub/defilytica_simple.png',
@@ -78,10 +47,6 @@ const coreTools = [
       'DAO Operations tooling for incentive management and payload building',
     link: 'https://balancer.defilytica.tools',
   },
-  // Add more Core Tools as needed
-];
-
-const calculatorsAndDApps = [
   {
     title: 'veBAL Gauge Multivoter',
     icon: '/images/toolshub/zekraken.jpg',
