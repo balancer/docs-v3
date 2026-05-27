@@ -46,6 +46,11 @@ Balancer has developed, audited and deployed Router contracts with the goal of p
 - [API](../../developer-reference/contracts/unbalanced-add-via-swap-router-api.md)
 - [Code](https://github.com/balancer/balancer-v3-monorepo/blob/main/pkg/vault/contracts/UnbalancedAddViaSwapRouter.sol)
 
+### Aggregator Routers
+- Prepaid variants of the swap routers for contract callers such as aggregators, solvers, and smart wallets. The caller transfers input tokens to the Vault up front instead of approving via Permit2.
+- [Aggregator Router API](../../developer-reference/contracts/aggregator-router-api.md) (single swaps) and [Aggregator Batch Router API](../../developer-reference/contracts/aggregator-batch-router-api.md) (multi-hop swaps)
+- See [Token Approvals](./token-approvals.md) for how the prepaid and Permit2 models differ, and the [aggregator guides](/integration-guides/aggregators/introduction.md) for integration details.
+
 Additionally all Routers expose [Query Functions](./queries.md) providing the ability to query the result of an operation using the latest onchain state.
 
 Latest deployment of the Routers can be found in the [deployments section](/developer-reference/contracts/deployment-addresses/mainnet.html).

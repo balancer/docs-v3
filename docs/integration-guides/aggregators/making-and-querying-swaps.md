@@ -7,11 +7,15 @@ title: Making And Querying Swaps
 
 For a token to token swap through a single pool the following [Balancer Router](/developer-reference/contracts/router-api.md) functions should be used: [swapSingleTokenExactIn](/developer-reference/contracts/router-api.md#swapsingletokenexactin) and [swapSingleTokenExactOut](/developer-reference/contracts/router-api.md#swapsingletokenexactout) are the most gas efficient functions to use.
 
+Contract integrators can call the same `swapSingleTokenExactIn` and `swapSingleTokenExactOut` functions on the prepaid [Aggregator Router](/developer-reference/contracts/aggregator-router-api.md), which takes payment up front instead of via Permit2.
+
 Checkout Javascript and Solidity examples [here](/integration-guides/swapping/swapping-custom-paths-with-router.md#single-swap).
 
 ## Multi-path Swaps
 
 Swaps paths constructed of steps through multiple pools/tokens the following [Batch Router](/developer-reference/contracts/batch-router-api.md) functions should be used: [swapExactIn](/developer-reference/contracts/batch-router-api.md#swapexactin) and [swapExactOut](/developer-reference/contracts/batch-router-api.md#swapexactout) functions.
+
+As with single swaps, contract integrators can use the prepaid [Aggregator Batch Router](/developer-reference/contracts/aggregator-batch-router-api.md), which exposes the same `swapExactIn` and `swapExactOut` functions with prepaid settlement.
 
 A `SwapPathStep` is defined as:
 ```
