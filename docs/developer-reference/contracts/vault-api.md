@@ -229,7 +229,7 @@ function addLiquidity(
     AddLiquidityParams memory params
 ) external returns (uint256[] memory amountsIn, uint256 bptAmountOut, bytes memory returnData);
 ```
-This `Vault` function adds liquidity to a pool. Caution should be exercised when adding liquidity because the Vault has the capability to transfer tokens from any user, given that it holds all allowances. It returns the actual amounts of input tokens, the output pool token amount, and optional data with an encoded response from the pool.
+This `Vault` function adds liquidity to a pool. The Vault does not pull input tokens itself; the input tokens are moved into the Vault and the calling router settles them, through Permit2 for retail routers or a prepaid transfer for aggregator routers (see [Token Approvals](/concepts/router/token-approvals.md)). For this reason you should only add liquidity through audited routers. It returns the actual amounts of input tokens, the output pool token amount, and optional data with an encoded response from the pool.
 
 **Parameters:**
 
@@ -283,7 +283,7 @@ function removeLiquidity(
     RemoveLiquidityParams memory params
 ) external returns (uint256 bptAmountIn, uint256[] memory amountsOut, bytes memory returnData);
 ```
-This `Vault` function removes liquidity from a pool. Trusted routers can burn pool tokens belonging to any user and require no prior approval from the user. Untrusted routers require prior approval from the user. This is the only function allowed to call `_queryModeBalanceIncrease` (and only in a query context).
+This `Vault` function removes liquidity from a pool, burning the `from` account's pool tokens (BPT). The calling router must hold an allowance to spend that BPT, unless it is removing its own (`from` equals the caller); the allowance is granted with a standard ERC20 approval or an EIP-2612 `permit` signature, and a `type(uint256).max` allowance is treated as unlimited and is not decremented. This is the only function allowed to call `_queryModeBalanceIncrease`: in a query (static-call) context the router itself stands in as the `from` account and the Vault credits it a temporary BPT balance, so the `query` variants need neither BPT nor an approval.
 
 **Parameters:**
 
