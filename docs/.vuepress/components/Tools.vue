@@ -44,35 +44,14 @@ const calculatorsAndDApps = [
     title: 'Maxis Operations UI',
     icon: '/images/toolshub/defilytica_simple.png',
     details:
-      'DAO Operations tooling for incentive management and payload building',
+      'DAO Operations tooling for the Balancer ecosystem',
     link: 'https://balancer.defilytica.tools',
-  },
-  {
-    title: 'veBAL Gauge Multivoter',
-    icon: '/images/toolshub/zekraken.jpg',
-    details:
-      'Vote for multiple gauges in the one transaction - created by Zekraken',
-    link: 'https://vebalvoter.web.app/',
-  },
-  {
-    title: 'veBAL Gauge Multi-Voter with Hidden-Hand Integration',
-    icon: '/images/toolshub/defilytica_simple.png',
-    details:
-      'Use this tool to identify the highest yielding set of gauges to vote on given your veBAL voting power in one transaction - created by DeFilytica',
-    link: 'https://defilytica.tools/#/balancer/veBALMultiVoter',
-  },
-  {
-    title: 'veBAL Boost Calculator',
-    icon: '/images/toolshub/defilytica_simple.png',
-    details:
-      'Calculate your current or theoretical veBAL boost across all Balancer deployments in one dashboard - created by DeFilytica',
-    link: 'https://defilytica.tools/#/balancer/veBALBoost',
   },
   {
     title: 'Internal Balances Manager',
     icon: '/images/toolshub/balancer-symbol.svg',
     details:
-      'User-friendly interface designed for traders to easily manage and interact with their internal balances within the Vault - created by Bleu',
+      'User-friendly interface designed for traders to easily manage and interact with their internal balances within the V2 Vault - created by Bleu',
     link: 'https://tools.balancer.blue/internalmanager',
   },
   {
@@ -105,12 +84,6 @@ const analyticsSites = [
     icon: '/images/toolshub/tokenterminal.jpg',
     details: 'Tools to evaluate and track Balancer',
     link: 'https://tokenterminal.com/terminal/projects/balancer',
-  },
-  {
-    title: 'Dune veBAL',
-    icon: '/images/toolshub/DuneLogoCircle.svg',
-    details: 'veBAL Dashboard',
-    link: 'https://dune.com/balancerlabs/veBAL',
   },
   {
     title: 'DefiLlama',
