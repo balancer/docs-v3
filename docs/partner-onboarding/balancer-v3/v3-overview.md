@@ -37,7 +37,7 @@ Consult our [pool type](../../concepts/explore-available-balancer-pools) section
 
 ### Pool Creation and Liquidity
 
-1. Use the [Pool Creation UI](https://pool-creator.balancer.fi/v3) to:
+1. Use the [Pool Creation UI](https://balancer.fi/create/step-1-type) to:
     - Select pool type
     - Configure parameters
     - Set initial liquidity
