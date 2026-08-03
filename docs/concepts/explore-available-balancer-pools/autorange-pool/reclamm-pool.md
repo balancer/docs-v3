@@ -7,21 +7,21 @@ title: AutoRange Pool
 
 ## Overview
 
-AutoRange Pools are **fungible concentrated liquidity pools** that focus liquidity within a predefined price range, allowing LPs to earn greater fees with less capital—especially when the market price remains within that range. This concentration is initialized with a **target price** and **range bounds**, enabling the pool to deliver capital efficiency over traditional constant-product models.
+AutoRange Pools are **fungible concentrated liquidity pools** that focus liquidity within a predefined price range, allowing LPs to earn greater fees with less capital, especially when the market price remains within that range. This concentration is initialized with a **target price** and **range bounds**, enabling the pool to deliver capital efficiency over traditional constant-product models.
 
-What sets AutoRange Pools apart is their **adaptive nature**. As trading activity or liquidity operations shift the market price, AutoRange Pools are able to **automatically move** their price range—up or down the price curve—without any intervention from users or governance. This "re-centering" behavior activates only when the pool becomes sufficiently unbalanced, based on a margin threshold defined at deployment. Once triggered, the pool begins gradually shifting its range in the direction of market pressure, ensuring liquidity stays useful and active.
+What sets AutoRange Pools apart is their **adaptive nature**. As trading activity or liquidity operations shift the market price, AutoRange Pools are able to **automatically move** their price range, up or down the price curve, without any intervention from users or governance. This "re-centering" behavior activates only when the pool becomes sufficiently unbalanced, based on a margin threshold defined at deployment. Once triggered, the pool begins gradually shifting its range in the direction of market pressure, ensuring liquidity stays useful and active.
 To enable this adaptive behavior, AutoRange Pools are configured with a few key parameters:
 
 - A **target price**, often set near the current market price at deployment.
-- A **price range**, where all the pool’s liquidity is initially concentrated.
+- A **price range**, where all the pool's liquidity is initially concentrated.
 - A **margin**, expressed as a percentage, defining how much imbalance is tolerated before the range begins shifting.
 - A **daily shift exponent**, which controls how quickly the pool adjusts its range when out of balance.
 
-For example, if the margin is set at 20%, the pool tolerates up to a 60/40 imbalance (±10% deviation from a 50/50 balance). Once this threshold is crossed, the pool begins migrating its range incrementally over time, following the market.
+For example, if the margin is set at 20%, the pool tolerates up to a 60/40 imbalance (a deviation of 10% in either direction from a 50/50 balance). Once this threshold is crossed, the pool begins migrating its range incrementally over time, following the market.
 
 This design offers LPs the benefit of concentrated liquidity **without the need for manual range resets**. It suits passive LPs seeking to stay aligned with market trends while still capturing the fee benefits of a tighter range.
 
-Those familiar with other concentrated liquidity designs may notice echoes of similar mechanisms—like pools that start with fixed ranges around a target price—but unlike those, an AutoRange Pool's range is not locked. Instead, it evolves in response to the market, maintaining efficiency over time without additional user action.
+Those familiar with other concentrated liquidity designs may notice echoes of similar mechanisms, like pools that start with fixed ranges around a target price, but unlike those, an AutoRange Pool's range is not locked. Instead, it evolves in response to the market, maintaining efficiency over time without additional user action.
 
 The following diagram shows a pool that is `OUT OF RANGE`. The current price is within the price range (as it must be), but above the margin. In this state, the pool will be shifting the price range "up" toward higher prices, following the market, and attempting to bring the market price back inside the margins.
 
@@ -144,7 +144,7 @@ AutoRange Pools have one important operational restriction that does not apply t
 
 Recovery mode withdrawals go directly through the Vault and bypass all pool hooks. For most pools, this is harmless because the pool does not maintain state that must be updated during a withdrawal. However, AutoRange Pools are not stateless. When liquidity is removed normally, their virtual balances are scaled down along with their real balances. A recovery mode withdrawal bypasses that update, leaving the pool with virtual balances sized for liquidity that is no longer present.
 
-As a result, the pool’s quoted price no longer matches its real balances. The size of the mismatch depends on where the pool was within its range when the withdrawal occurred. A pool near the center may move very little, while a pool with centeredness of 0.3 or less can be displaced by more than one-third. Any subsequent swap would therefore execute against an incorrect price, at the expense of the remaining liquidity providers.
+As a result, the pool's quoted price no longer matches its real balances. The size of the mismatch depends on where the pool was within its range when the withdrawal occurred. A pool near the center may move very little, while a pool with centeredness of 0.3 or less can be displaced by more than one-third. Any subsequent swap would therefore execute against an incorrect price, at the expense of the remaining liquidity providers.
 
 **An AutoRange Pool that has processed a recovery mode withdrawal must not be returned to normal, swap-enabled operation.**
 
