@@ -14,7 +14,7 @@ _This guide is for Swapping on Balancer v3. The sdk supports swapping on v3 and 
 ## Core Concepts
 
 The core concepts of executing Swaps are the same for any programming language or framework:
-* The sender must approve the Vault (not the Router) for each swap input token
+* The sender must do a Permit2 approval with the Router as the spender for each swap input token (see [Token Approvals](/concepts/router/token-approvals.md))
 * Token amount inputs/outputs are always in the raw token scale, e.g. `1 USDC` should be sent as `1000000` because it has 6 decimals
 * Transactions are always sent to the [Router](../../developer-reference/contracts/router-api.md)
 * There are two different swap kinds:
