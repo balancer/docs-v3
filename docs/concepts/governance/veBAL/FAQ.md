@@ -85,7 +85,7 @@ The veBAL and gauge contracts remain deployed on-chain (locks persist until natu
 
 | Contract                                                                                                        | Purpose                                              |
 |:----------------------------------------------------------------------------------------------------------------|:-----------------------------------------------------|
-| [veBAL](https://etherscan.io/tx/0xaa29cd251cdb024c415b0e13f67a0ca74fe5abc3de9a9fedd1ae26fd39be4025)             | Locked BPTs and reported veBAL balances              |
+| [veBAL](https://etherscan.io/address/0xC128a9954e6c874eA3d62ce62B468bA073093F25)                               | Locked BPTs and reported veBAL balances              |
 | [Gauge Controller](https://etherscan.io/address/0xC128468b7Ce63eA702C1f104D55A2566b13D3ABD)                     | Managed gauges and emissions                         |
 | [Gauge Adder](https://etherscan.io/address/0x2fFB7B215Ae7F088eC2530C7aa8E1B24E398f26a)                          | Added new gauges approved by governance              |
 | [Mainnet Uncapped Gauge Factory](https://etherscan.io/address/0x4e7bbd911cf1efa442bc1b2e9ea01ffe785412ec)       | Create gauges with no cap on Mainnet                 |
