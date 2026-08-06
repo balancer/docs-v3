@@ -7,21 +7,21 @@ title: AutoRange Pool
 
 ## Overview
 
-AutoRange Pools are **fungible concentrated liquidity pools** that focus liquidity within a predefined price range, allowing LPs to earn greater fees with less capital—especially when the market price remains within that range. This concentration is initialized with a **target price** and **range bounds**, enabling the pool to deliver capital efficiency over traditional constant-product models.
+AutoRange Pools are **fungible concentrated liquidity pools** that focus liquidity within a predefined price range, allowing LPs to earn greater fees with less capital, especially when the market price remains within that range. This concentration is initialized with a **target price** and **range bounds**, enabling the pool to deliver capital efficiency over traditional constant-product models.
 
-What sets AutoRange Pools apart is their **adaptive nature**. As trading activity or liquidity operations shift the market price, AutoRange Pools are able to **automatically move** their price range—up or down the price curve—without any intervention from users or governance. This "re-centering" behavior activates only when the pool becomes sufficiently unbalanced, based on a margin threshold defined at deployment. Once triggered, the pool begins gradually shifting its range in the direction of market pressure, ensuring liquidity stays useful and active.
+What sets AutoRange Pools apart is their **adaptive nature**. As trading activity or liquidity operations shift the market price, AutoRange Pools are able to **automatically move** their price range, up or down the price curve, without any intervention from users or governance. This "re-centering" behavior activates only when the pool becomes sufficiently unbalanced, based on a margin threshold defined at deployment. Once triggered, the pool begins gradually shifting its range in the direction of market pressure, ensuring liquidity stays useful and active.
 To enable this adaptive behavior, AutoRange Pools are configured with a few key parameters:
 
 - A **target price**, often set near the current market price at deployment.
-- A **price range**, where all the pool’s liquidity is initially concentrated.
+- A **price range**, where all the pool's liquidity is initially concentrated.
 - A **margin**, expressed as a percentage, defining how much imbalance is tolerated before the range begins shifting.
 - A **daily shift exponent**, which controls how quickly the pool adjusts its range when out of balance.
 
-For example, if the margin is set at 20%, the pool tolerates up to a 60/40 imbalance (±10% deviation from a 50/50 balance). Once this threshold is crossed, the pool begins migrating its range incrementally over time, following the market.
+For example, if the margin is set at 20%, the pool tolerates up to a 60/40 imbalance (a deviation of 10% in either direction from a 50/50 balance). Once this threshold is crossed, the pool begins migrating its range incrementally over time, following the market.
 
 This design offers LPs the benefit of concentrated liquidity **without the need for manual range resets**. It suits passive LPs seeking to stay aligned with market trends while still capturing the fee benefits of a tighter range.
 
-Those familiar with other concentrated liquidity designs may notice echoes of similar mechanisms—like pools that start with fixed ranges around a target price—but unlike those, an AutoRange Pool's range is not locked. Instead, it evolves in response to the market, maintaining efficiency over time without additional user action.
+Those familiar with other concentrated liquidity designs may notice echoes of similar mechanisms, like pools that start with fixed ranges around a target price, but unlike those, an AutoRange Pool's range is not locked. Instead, it evolves in response to the market, maintaining efficiency over time without additional user action.
 
 The following diagram shows a pool that is `OUT OF RANGE`. The current price is within the price range (as it must be), but above the margin. In this state, the pool will be shifting the price range "up" toward higher prices, following the market, and attempting to bring the market price back inside the margins.
 
@@ -112,7 +112,13 @@ When the centeredness falls below 50%, the market price point will be above the 
 
 The daily price shift exponent is the final parameter (specific to AutoRange Pools) that must be set on deployment. Unlike the initial target and range, it is not immutable, and can be changed later by admin action.
 
-This is also a percentage, and it controls the "doubling rate" of the price shift. At 100%, the prices will double (or halve) in one day. This rate is non-linear, and means that the prices will be multiplied (or divided) by 2^(`dailyPriceShiftExponent`) per day. So 200% corresponds to 2^2 or 4x, and 300% corresponds to 2^3 or 8x. (The maximum is 100%, or doubling once per day.)
+This is also a percentage, and it controls the "doubling rate" of the price shift. The rate is non-linear: the exponent is the power of two applied per day, so an exponent of 100% corresponds to 2^1, or doubling in a day, and 50% corresponds to 2^0.5, or about 1.41x per day.
+
+**The maximum permitted value is 50%**, so the fastest a pool can be configured to shift is roughly 1.41x per day. Values above 50% are rejected at deployment with `DailyPriceShiftExponentTooHigh`. The 100% figure is the calibration reference the formula is built around, not a settable value.
+
+Note also that 2^(`dailyPriceShiftExponent`) per day is the rate when the out-of-range side of the pool holds no real balance. When it holds some, both virtual balances move during the shift and the price range moves faster than the exponent alone suggests. Treat the exponent as a calibration of the underlying decay rather than as a promise about how fast the price range will move in any given state.
+
+A higher exponent increases the pool's exposure to a trader pushing the pool out of range and unwinding against the shifted range, so it should be paired with a higher swap fee. As a guideline, keep the swap fee at or above `0.001% * (exponent / 5%)`: an exponent of 5% is safe at the 0.001% minimum fee, and the maximum 50% exponent should be configured with a fee of at least 0.01%.
 
 Note that the math prevents the price from "overshooting" in either direction due to inactivity (i.e., shifting past the center point, where centeredness equals 1, if there is an extended period with no swaps).
 
@@ -124,13 +130,30 @@ All of these functions require the pool to be initialized.
 
 To prevent manipulation, changing the margin also requires the Vault to be locked (i.e., not in the middle of a transaction, which could transiently set balances to arbitrary values), and the pool to be "in range" both before and after. It is not possible to "move the goal posts" by admin action in such a way as to make the pool start or stop an update.
 
-Similarly, the daily price shift exponent can only be changed when the Vault is locked. As it is only altering the speed of the update, it does not check for centeredness. As described above, the price shift exponent is capped at 100% (corresponding to doubling or halving once a day).
+Similarly, the daily price shift exponent can only be changed when the Vault is locked. As it is only altering the speed of the update, it does not check for centeredness. As described above, the price shift exponent is capped at 50%, corresponding to a shift of about 1.41x per day.
 
 Admins can also change the price ratio, supplying the new ratio and a start and end time. There is a minimum duration for the update (1 day), and a minimum amount of ratio change: 1e6 wei. (This is loosely analogous to Uniswap's "tick" resolution limit, introduced for similar reasons.)
 
 These are "best effort" checks to keep the pool well-behaved, but are not hard guarantees. There is also a way to simply stop an ongoing update, which will fix the price ratio at its current value. Note that it is not necessary to stop an ongoing update before starting a new one. Starting an update while one is ongoing is equivalent to stopping and immediately restarting with the new parameters.
 
 Note that it is possible for the price range to be both shifting up or down and expanding or contracting at the same time. Gas costs will be higher during these operations, compared to "in range" swaps with no ongoing price ratio update.
+
+## Recovery mode is one-way for AutoRange Pools
+
+AutoRange Pools have one important operational restriction that does not apply to most other pool types.
+
+Recovery mode withdrawals go directly through the Vault and bypass all pool hooks. For most pools, this is harmless because the pool does not maintain state that must be updated during a withdrawal. However, AutoRange Pools are not stateless. When liquidity is removed normally, their virtual balances are scaled down along with their real balances. A recovery mode withdrawal bypasses that update, leaving the pool with virtual balances sized for liquidity that is no longer present.
+
+As a result, the pool's quoted price no longer matches its real balances. The size of the mismatch depends on where the pool was within its range when the withdrawal occurred. A pool near the center may move very little, while a pool with centeredness of 0.3 or less can be displaced by more than one-third. Any subsequent swap would therefore execute against an incorrect price, at the expense of the remaining liquidity providers.
+
+**An AutoRange Pool that has processed a recovery mode withdrawal must not be returned to normal, swap-enabled operation.**
+
+Two practical details matter:
+
+ - Recovery mode does not itself disable swaps; pausing does. For other pool types, enabling recovery mode without pausing may be unusual but safe. For an AutoRange Pool, it is not. The pool should never be both unpaused and in recovery mode.
+- The dangerous action is restoring swaps by unpausing the pool. That does not necessarily require governance. If the pool was deployed with a pauseManager, that account can pause and unpause it independently. While the pool is paused, recovery mode is permissionless, so the pool can enter recovery mode without action from either governance or the pool admin.
+
+For the same reason, deploying an AutoRange Pool without pausing support is discouraged. Pausing is the mechanism that keeps the pool out of operation after a recovery mode withdrawal. Without it, this restriction cannot be enforced.
 
 ## Simulator
 
