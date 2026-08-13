@@ -84,6 +84,8 @@ Recall that the total balances (which determine the actual price) are defined as
 
 Given this information, we can calculate the "centeredness" of the pool (defined below). This is a measure of balance. A value of 1 means the pool is perfectly balanced, and 0 means it is at one of the edges of the range. We expect that the target price will be roughly in the middle of the target range, so that the initial centeredness is in the neighborhood of 1: but it does not need to be exact. What it does need to be is above the margin: otherwise, the pool would be out of range immediately. If this happens (i.e., the target price is too close to one of the edges), initialization will fail.
 
+That check is a minimum, not a recommendation. A target price close to one edge of the range can pass it while starting the pool only fractionally above the margin, and a pool in that state is one small price or rate movement away from going out of range. Choose the target price so the pool starts with real headroom above the margin. A target near the geometric center of the range starts at a centeredness close to 1, which is generally the best choice.
+
 The next step is to "scale" the virtual balances. This is basically the inverse of the operation above that calculated the theoretical virtual balances from arbitrary real balances. Now that we know the real token balances the initializer intends to deposit, we can use the ratios determined above to calculate the actual initial virtual balances.
 
 Finally, we validate that the ratio of the real balances corresponds to the theoretical ratio arising from the initial inputs, and that the actual price after initialization closely matches the initial target price. These values might not match exactly, due to rounding or precision errors, so there is a built-in tolerance of 0.01%. If any of these validations fail, initialization reverts, insuring the user against configuration errors.
@@ -91,6 +93,18 @@ Finally, we validate that the ratio of the real balances corresponds to the theo
 We provide a helper function, `computeInitialBalancesRaw`, to assist with these calculations. Given the actual intended deposit amount of one of the tokens - and the initial parameters set on deployment - the contract can calculate how much of the other token must be supplied to pass all the initialization checks.
 
 One final twist involves the handling of wrapped tokens with rate providers, which are expected to be commonly used in AutoRange Pools. Recall that the prices are passed in during initialization - but how were they calculated? It's possible the pool creator wants to use the direct price of the wrapped token (e.g., for non-boosted pools with tokens like wstETH). In this case, the price does not include the rate provider, even though the token has one. In other cases (e.g., boosted pools with tokens like waUSDC), the creator might want to use the price of the underlying token instead. In that case, the price does incorporate the rate, and the initialization calculation must accommodate that. Accordingly, along with the price range and target values, the pool is deployed with flags indicating whether to use the rate provider for each token during initialization.
+
+## Rate providers after initialization
+
+The rate enters the pool's math once, at initialization, where it is built into the starting virtual balances. It is not re-applied afterwards. The Vault continues to rate-scale the pool's real balances on every operation, but the virtual balances stay in the frame they were set in. As a rate rises, the pool's quoted price therefore drifts away from the true underlying price, and arbitrage collects the difference from liquidity providers.
+
+For a normal yield-bearing token this is a measured and negligible effect: a few parts per million of the yield the pool earns, comfortably covered by the minimum swap fee. It is not a reason to avoid these pools. The one lasting consequence is cosmetic rather than a risk to funds: over multi-year horizons the configured price range slides slightly in underlying terms as the rate compounds.
+
+What matters is how fast the rate moves, not how large it is. A rate that changes quickly, moves in both directions, or can be moved by an outside party is the unsuitable case, because the size of the drift between arbitrage opportunities is what sets the loss. Three practical consequences:
+
+- Prefer tokens whose rate accrues slowly and monotonically. Avoid rates that are volatile, that can jump, or that a third party can influence directly.
+- Check what it would cost someone to move the rate, against what the pool holds of that token. An ERC4626 wrapper accepts a transfer from anyone, and its assets per share rise in proportion, so its rate is movable at a price. That price scales with everything backing the wrapper while the gain scales with the pool's own balance, which means a pool holding a small share of a deeply backed wrapper is well protected, and a pool holding much of a thinly backed one is not. The ratio, not the absolute size, is what matters.
+- Give a pool with a rate provider extra headroom above its centeredness margin. A rate change moves the pool's centeredness without any swap taking place, so a pool sitting just above its margin can be pushed out of range by rate movement alone.
 
 ## Centeredness Margin
 
