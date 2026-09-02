@@ -10,4 +10,6 @@ We also provide a [JS/TS SDK](./sdk/README.md) to assist with interacting with t
 
 Checkout the [Integrations Guides](../developer-reference/sdk/README.md) for Solidity and Javascript examples on common actions like adding/removing liquidity and making swaps.
 
+For the source code behind these references, see [Balancer Repositories](./repositories.md), which explains how to find Balancer's public repositories on GitHub.
+
 Individuals are encouraged to contact our developers via [Discord](https://discord.balancer.fi/) to request further assistance.
