@@ -5,50 +5,74 @@ order: 5
 
 # Balancer Repositories
 
-The [Balancer GitHub organization](https://github.com/balancer) is the canonical directory of Balancer's public repositories. Rather than maintain a copy of that list here, this page explains the custom properties Balancer uses to label public repositories by purpose, lifecycle stage, and protocol generation, and shows how to filter on them to find the repositories you need.
+The [Balancer GitHub organization](https://github.com/balancer) is the canonical directory of Balancer's public repositories. Rather than maintain a copy of that list here, this page explains the repository topics Balancer uses to classify its public repositories by type, lifecycle stage, and protocol generation, and links to filtered views of the organization's [repository list](https://github.com/orgs/balancer/repositories) for common combinations.
 
-## Repository properties
+## Repository topics
 
-Public repositories in the organization may carry the three custom properties below. Their values are visible to anyone viewing the repository list.
+Public repositories in the organization carry topics from the three groups below. Their values are visible to anyone viewing the repository list, and a query that names several topics returns only the repositories that carry all of them.
 
-| Property | Value | Meaning |
-|----------|-------|---------|
-| `repo_type` | `protocol` | Protocol or smart contract implementation |
-| `repo_type` | `frontend` | User-facing web application or interface |
-| `repo_type` | `backend` | Backend service or API |
-| `repo_type` | `sdk-library` | Reusable SDK or software library |
-| `repo_type` | `canonical-data` | Authoritative reference data such as configuration, addresses, or metadata |
-| `repo_type` | `data-indexing` | Indexing, subgraph, analytics, or data pipeline work |
-| `repo_type` | `ops-tooling` | Operational, governance, deployment, or administrative tooling |
-| `repo_type` | `docs` | Documentation |
-| `repo_type` | `template-example` | Starter, template, or example for developers to reuse or learn from |
-| `repo_type` | `research-test` | Simulation, research, testing, or experimental validation |
-| `repo_type` | `other` | Not well described by the more specific categories |
-| `lifecycle` | `active` | Under active development or operation |
-| `lifecycle` | `maintenance` | Retained and supported, but not a primary development focus |
-| `lifecycle` | `legacy` | Superseded or historical work that is still kept as a live repository |
-| `generation` | `v1` | Primarily associated with Balancer V1 |
-| `generation` | `v2` | Primarily associated with Balancer V2 |
-| `generation` | `v3` | Primarily associated with Balancer V3 |
-| `generation` | `multi` | Spans more than one Balancer generation |
-| `generation` | `n-a` | Not tied to a particular Balancer generation |
+### Type
 
-## Finding repositories on GitHub
+What the repository is for. Each repository carries one type topic.
 
-1. Open the [Balancer GitHub organization](https://github.com/balancer).
-2. Select **Repositories**.
-3. In the repository filter bar, type `prop` to pick a custom property from the list, or type a qualifier directly in the form `props.PROPERTY_NAME:VALUE`.
-4. Add further qualifiers, separated by spaces, to narrow the results. A repository appears only if it matches every qualifier in the query.
+| Topic | Meaning |
+|-------|---------|
+| `balancer-type-protocol` | Protocol or smart contract implementation |
+| `balancer-type-frontend` | User-facing web application or interface |
+| `balancer-type-backend` | Backend service or API |
+| `balancer-type-sdk-library` | Reusable SDK or software library |
+| `balancer-type-canonical-data` | Authoritative reference data such as configuration, addresses, or metadata |
+| `balancer-type-data-indexing` | Indexing, subgraph, analytics, or data pipeline work |
+| `balancer-type-ops-tooling` | Operational, governance, deployment, or administrative tooling |
+| `balancer-type-docs` | Documentation |
+| `balancer-type-template-example` | Starter, template, or example for developers to reuse or learn from |
+| `balancer-type-research-test` | Simulation, research, testing, or experimental validation |
+| `balancer-type-other` | Not well described by the more specific categories |
 
-## Example searches
+### Lifecycle
 
-| What you want | Filter |
-|---------------|--------|
-| V2 frontends | `props.generation:v2 props.repo_type:frontend` |
-| Active V3 protocol repositories | `props.generation:v3 props.repo_type:protocol props.lifecycle:active` |
-| SDK and library repositories in maintenance | `props.repo_type:sdk-library props.lifecycle:maintenance` |
-| Templates and examples | `props.repo_type:template-example` |
+How actively the repository is developed. Each repository carries one lifecycle topic.
+
+| Topic | Meaning |
+|-------|---------|
+| `balancer-lifecycle-active` | Under active development or operation |
+| `balancer-lifecycle-maintenance` | Retained and supported, but not a primary development focus |
+| `balancer-lifecycle-legacy` | Superseded or historical work that is still kept as a live repository |
+
+### Generation
+
+Which Balancer protocol generations the repository supports. Unlike type and lifecycle, generation can have more than one value: new development generally targets V3, but V2 remains operational, and many repositories support both V2 and V3, so they carry both topics. A repository that is not tied to any protocol generation carries the not-applicable topic instead.
+
+| Topic | Meaning |
+|-------|---------|
+| `balancer-v1` | Supports Balancer V1 |
+| `balancer-v2` | Supports Balancer V2 |
+| `balancer-v3` | Supports Balancer V3 |
+| `balancer-generation-not-applicable` | Not tied to a particular Balancer protocol generation |
+
+## Filtered views
+
+Each link below opens the organization's repository list filtered to one combination of topics. The query it uses is shown alongside, so you can adjust it in the filter box on that page.
+
+| View | Query |
+|------|-------|
+| [V2 frontends](https://github.com/orgs/balancer/repositories?q=topic:balancer-type-frontend+topic:balancer-v2+archived:false) | `topic:balancer-type-frontend topic:balancer-v2 archived:false` |
+| [V3 frontends](https://github.com/orgs/balancer/repositories?q=topic:balancer-type-frontend+topic:balancer-v3+archived:false) | `topic:balancer-type-frontend topic:balancer-v3 archived:false` |
+| [Active V3 protocol repositories](https://github.com/orgs/balancer/repositories?q=topic:balancer-type-protocol+topic:balancer-v3+topic:balancer-lifecycle-active+archived:false) | `topic:balancer-type-protocol topic:balancer-v3 topic:balancer-lifecycle-active archived:false` |
+| [Active SDK and library repositories](https://github.com/orgs/balancer/repositories?q=topic:balancer-type-sdk-library+topic:balancer-lifecycle-active+archived:false) | `topic:balancer-type-sdk-library topic:balancer-lifecycle-active archived:false` |
+| [Templates and examples](https://github.com/orgs/balancer/repositories?q=topic:balancer-type-template-example+archived:false) | `topic:balancer-type-template-example archived:false` |
+| [Repositories supporting both V2 and V3](https://github.com/orgs/balancer/repositories?q=topic:balancer-v2+topic:balancer-v3+archived:false) | `topic:balancer-v2 topic:balancer-v3 archived:false` |
+| [Active repositories that still support V2](https://github.com/orgs/balancer/repositories?q=topic:balancer-v2+topic:balancer-lifecycle-active+archived:false) | `topic:balancer-v2 topic:balancer-lifecycle-active archived:false` |
+| [V3 data indexing](https://github.com/orgs/balancer/repositories?q=topic:balancer-type-data-indexing+topic:balancer-v3+archived:false) | `topic:balancer-type-data-indexing topic:balancer-v3 archived:false` |
+| [Current repositories that still support V1](https://github.com/orgs/balancer/repositories?q=topic:balancer-v1+archived:false) | `topic:balancer-v1 archived:false` |
+| [Not tied to a generation](https://github.com/orgs/balancer/repositories?q=topic:balancer-generation-not-applicable+archived:false) | `topic:balancer-generation-not-applicable archived:false` |
+
+## Building your own filter
+
+1. Open the organization's [repository list](https://github.com/orgs/balancer/repositories).
+2. In the filter box, type one or more `topic:` qualifiers separated by spaces, for example `topic:balancer-type-sdk-library topic:balancer-v3`. A repository appears only if it carries every topic in the query.
+3. Add `archived:false` to limit the results to current repositories.
 
 ::: info Archived repositories
-GitHub's Archived status is separate from the `lifecycle` property. Archived repositories remain discoverable on GitHub through its standard repository filters. The property filters on this page are meant for finding Balancer's current public repositories.
+GitHub's archived status is separate from the lifecycle topics. Archived repositories do not carry the classification topics, and the views above include `archived:false`, so they show current repositories only. Historical code, including the original V1 repositories, lives in archived repositories. To browse it, filter the repository list on `archived:true` and leave out the topic qualifiers.
 :::
